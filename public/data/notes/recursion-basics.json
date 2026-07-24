@@ -1,0 +1,123 @@
+{
+  "topic": "Recursion Basics",
+  "level": 3,
+  "slug": "recursion-basics",
+  "estimated_read": "12 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Recursion?",
+      "content": "Recursion means a function calls itself. The power of recursion is that it lets you express \"solve the big problem by solving smaller versions of the same problem.\" Instead of writing an explicit loop that tracks every intermediate state, you describe the solution in terms of itself - and the call stack manages the intermediate state for you.\n\nEvery recursive solution has exactly two parts: the **base case** (when to stop) and the **recursive case** (how to break the problem down). Without a base case, the function calls itself forever until the call stack overflows. Without a correct recursive case, the function doesn't make progress.\n\nThe key mental model is **trust**. Assume the recursive call works correctly on a smaller input. Your only job is: (1) handle the smallest case directly, and (2) figure out how to build the answer for the current input given that you already have the answer for a smaller input. This \"leap of faith\" is what makes recursive thinking click.\n\nRecursion and iteration are equally powerful - any recursive solution can be rewritten iteratively and vice versa. Recursion tends to be cleaner when the problem has naturally self-similar structure: trees, graphs, divide-and-conquer algorithms, and problems that require building all combinations. Iteration tends to be more efficient in practice because it avoids the function call overhead and stack space.\n\nUnderstanding recursion deeply is a prerequisite for backtracking, tree algorithms, divide and conquer, and dynamic programming. The techniques introduced here - base cases, the call stack, memoization - appear everywhere."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use recursion when the problem has **self-similar structure** - when solving the full problem requires solving one or more smaller versions of the same problem. Tree and graph traversals are the most common case in interviews: every subtree is itself a tree, so the traversal function calls itself on children. Divide-and-conquer algorithms (merge sort, binary search) split the problem into halves and recurse. Combinatorial problems (generate all subsets, all permutations) need recursion to explore every branch of a decision tree. When you see a problem that \"naturally nests\" - like evaluating nested parentheses, traversing a file system, or computing Fibonacci - recursion is usually the cleanest approach.",
+      "signals": [
+        "problem breaks into smaller identical subproblems",
+        "tree or graph traversal",
+        "generate all combinations or permutations",
+        "factorial or fibonacci pattern",
+        "nested structure like directories or parentheses",
+        "divide and conquer",
+        "explore all paths",
+        "self-similar structure"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "The Three Questions Framework",
+      "content": "For any recursive problem, ask three questions before writing code:\n\n**1. What is the smallest version of this problem I can solve trivially?**\nThis is your base case. For factorial, it's `factorial(0) = 1`. For tree height, it's `height(null) = 0`. The base case must be something you can return directly without recursing.\n\n**2. How can I express the answer for `n` in terms of the answer for `n-1` or a smaller input?**\nThis is your recursive case. For factorial: `factorial(n) = n * factorial(n-1)`. For tree height: `height(node) = 1 + max(height(node.left), height(node.right))`. You don't need to know HOW the recursive call works - trust that it returns the correct answer for the smaller input, and figure out how to combine it with the current step.\n\n**3. Does my recursion always move toward the base case?**\nIf each recursive call doesn't bring you strictly closer to the base case, you have infinite recursion. `factorial(n)` calls `factorial(n-1)`: n decreases each time, so we reach `factorial(0)`. If you accidentally called `factorial(n)` from within `factorial(n)`, the stack would overflow.\n\n## Head Recursion vs Tail Recursion\n\n**Head recursion**: the recursive call happens first, then you do work on the way back up the call stack. Classic example: `return n * factorial(n-1)`. The multiplication happens *after* the recursive call returns.\n\n**Tail recursion**: you do work first (accumulate the result), then recurse. Example: `return factTail(n-1, acc * n)`. The function doesn't need to do anything after the recursive call returns. This can be optimized by some compilers/runtimes to use O(1) stack space (tail call optimization), but most JS engines do not implement this optimization.\n\n## Memoization Preview\n\nWhen the same subproblem is solved multiple times, cache the result. Draw the call tree for `fib(5)`: `fib(3)` is computed twice, `fib(2)` is computed three times. Memoization wraps the recursive function in a cache lookup: if we've seen this input before, return the cached result instead of recomputing. This transforms `fib` from O(2^n) to O(n). Memoization is the bridge from recursion to dynamic programming."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// Generic recursion template\nfunction solve(input) {\n  // 1. Base case: smallest problem, solved directly\n  if (baseCondition(input)) {\n    return baseValue;\n  }\n\n  // 2. Recursive case: break down, trust the result\n  const smallerResult = solve(smallerInput(input));\n\n  // 3. Combine: build answer from smaller result\n  return combine(input, smallerResult);\n}\n\n// --- Concrete example: factorial ---\nfunction factorial(n) {\n  if (n <= 1) return 1;           // base case\n  return n * factorial(n - 1);   // recursive case\n}\n\n// --- With memoization wrapper ---\nfunction memoize(fn) {\n  const cache = new Map();\n  return function(n) {\n    if (cache.has(n)) return cache.get(n);\n    const result = fn(n);         // fn still calls the memoized version\n    cache.set(n, result);\n    return result;\n  };\n}\n\n// Memoized fibonacci\nconst fib = memoize(function(n) {\n  if (n <= 1) return n;\n  return fib(n - 1) + fib(n - 2); // fib here refers to memoized version\n});",
+      "language": "javascript",
+      "explanation": "The three-step template (base case, recursive call, combine) applies to almost every recursive problem. The memoization wrapper shows how to layer caching onto any recursive function without rewriting its logic."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Multiple Recursive Calls",
+          "description": "The function makes more than one recursive call per invocation. Binary tree traversal is the canonical example: you recurse on both the left and right child. This creates a branching call tree rather than a linear chain, leading to O(2^n) time if results are not cached.",
+          "example_problem": "Maximum Depth of Binary Tree",
+          "example_slug": "maximum-depth-of-binary-tree"
+        },
+        {
+          "name": "Accumulator Pattern (Tail-Recursive Style)",
+          "description": "Pass an accumulator argument that carries the result being built. Instead of computing on the way back up the stack, you compute on the way down. This makes the pattern easier to convert to iteration and avoids building up stack frames waiting for return values.",
+          "example_problem": "Fibonacci Number",
+          "example_slug": "fibonacci-number"
+        },
+        {
+          "name": "Mutual Recursion",
+          "description": "Two functions call each other: A calls B, B calls A. Useful for problems with two alternating states, like checking if a number is even/odd recursively. Less common in interviews but appears in parser and grammar problems.",
+          "example_problem": "Climbing Stairs",
+          "example_slug": "climbing-stairs"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n) for linear recursion; O(2^n) for binary recursion without memoization",
+      "space": "O(n) for call stack depth (one frame per recursive call)",
+      "explanation": "Each recursive call adds a frame to the call stack. For linear recursion (one call per step, depth n), space is O(n). For binary recursion like naive Fibonacci, time is O(2^n) because the call tree doubles at each level. Memoization reduces time to O(n) by ensuring each unique subproblem is computed once. Space is always at least O(depth) for the call stack, even with memoization."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Missing or wrong base case: the function never stops recursing, causing a stack overflow at runtime. Always identify the base case first before writing the recursive case.",
+        "Not moving toward the base case: recursing with the same input (e.g., calling `solve(n)` instead of `solve(n-1)`) causes infinite recursion. Every recursive call must reduce the problem size.",
+        "Pushing array reference instead of a copy: `result.push(path)` stores a reference to the array. When `path` changes in later calls, all previous entries in `result` change too. Use `result.push([...path])` to capture the current state.",
+        "Assuming recursion is always slower than iteration: with memoization, recursive solutions are often equivalent in time complexity to iterative ones. Naive recursion without memoization is slow, but memoized recursion is not.",
+        "Forgetting each recursive call has its own copy of local variables: mutations to local variables in one call do not affect other calls. However, mutations to objects or arrays passed by reference DO affect all callers sharing that reference."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Fibonacci Number",
+          "slug": "fibonacci-number",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "Canonical two-branch recursion. Exposes exponential time without memoization and teaches the memoization optimization directly."
+        },
+        {
+          "title": "Climbing Stairs",
+          "slug": "climbing-stairs",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "Fibonacci in disguise - reinforces recognizing recursive structure and applying the three-questions framework to a novel problem statement."
+        },
+        {
+          "title": "Merge Two Sorted Lists",
+          "slug": "merge-two-sorted-lists",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "Linear recursion on linked list nodes - practices identifying the base case (one list empty) and the recursive case (take smaller head, recurse on remainder)."
+        },
+        {
+          "title": "Maximum Depth of Binary Tree",
+          "slug": "maximum-depth-of-binary-tree",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "First exposure to multiple recursive calls. The solution is exactly the three-step template applied to a tree: base case is null node, recursive case calls on both children, combine with max + 1."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Backtracking",
+      "next_slug": "backtracking",
+      "why": "Backtracking is recursion plus an undo step. Every backtracking solution is built on the same base-case / recursive-case structure, but adds the concept of modifying shared state during the recursive call and restoring it afterward. Mastering recursion basics first makes the backtracking template immediately readable."
+    }
+  ]
+}

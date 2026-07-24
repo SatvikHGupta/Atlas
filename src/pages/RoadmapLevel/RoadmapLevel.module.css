@@ -1,0 +1,156 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  padding: var(--space-6) var(--space-8);
+}
+
+.loading { display: flex; justify-content: center; padding: var(--space-16); }
+
+.breadcrumb { margin-bottom: calc(var(--space-4) * -1); }
+
+.back {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  transition: border-color 0.15s, color 0.15s;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  cursor: pointer;
+  padding: 6px 12px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+.back:hover { border-color: var(--border-strong); color: var(--text-secondary); }
+
+.header { display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap; }
+
+.levelBadge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  background: var(--accent-subtle);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.header h1 { font-size: 1.6rem; font-weight: 700; }
+
+.levelProgress {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.levelProgressHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.levelProgressLabel { font-size: 0.8rem; color: var(--text-muted); }
+
+.levelUnlocked { font-size: 0.78rem; font-weight: 600; color: var(--solved); }
+
+.progressTrack {
+  height: 6px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progressFill {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  border-radius: 999px;
+  min-width: 0;
+}
+
+.topicSection { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.topicHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.topicTitle { font-size: 1rem; font-weight: 600; }
+.topicCount { font-size: 0.78rem; color: var(--text-muted); }
+
+.problemList { display: flex; flex-direction: column; gap: 2px; }
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  border: 1px solid transparent;
+  transition: border-color var(--transition-fast);
+  cursor: pointer;
+}
+.row:hover { border-color: var(--border); }
+.row[data-status='solved']    { background: var(--solved-bg); }
+.row[data-status='attempted'] { background: var(--attempted-bg); }
+
+.rowTitle {
+  flex: 1;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  transition: color var(--transition-fast);
+  text-decoration: none;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rowTitle:hover { color: var(--accent); }
+
+.rowActions { display: flex; gap: var(--space-1); flex-shrink: 0; }
+
+.actionBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+}
+.actionBtn:hover { border-color: var(--accent); color: var(--accent); }
+.actionBtn[data-active='true'] { background: var(--solved); border-color: var(--solved); color: #0a0a0f; font-weight: 700; }
+
+/* ---- mobile ---- */
+@media (max-width: 768px) {
+  .wrapper {
+    padding: var(--space-4) var(--space-3);
+    padding-bottom: calc(var(--bottom-nav-height, 60px) + env(safe-area-inset-bottom) + 16px);
+    gap: var(--space-5);
+  }
+  .header h1 { font-size: 1.3rem; }
+  .row { padding: var(--space-2) var(--space-3); }
+  .rowTitle { font-size: 0.85rem; }
+  .actionBtn { width: 34px; height: 34px; }
+}

@@ -1,0 +1,14 @@
+.wrapper {
+  width: 100%;
+  /* fill remaining card space - dashboard card has fixed height context */
+  flex: 1;
+  min-height: 180px;
+  position: relative;
+}
+
+.wrapper canvas {
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute;
+  inset: 0;
+}

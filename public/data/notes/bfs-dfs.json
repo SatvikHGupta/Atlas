@@ -1,0 +1,123 @@
+{
+  "topic": "BFS / DFS",
+  "level": 5,
+  "slug": "bfs-dfs",
+  "estimated_read": "14 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What are BFS and DFS?",
+      "content": "BFS and DFS are the two fundamental ways to explore a graph. Every graph algorithm \u2014 topological sort, shortest paths, cycle detection, connected components \u2014 is built on one of these two strategies.\n\n**DFS (Depth-First Search)** dives deep: follow one path as far as it goes, backtrack on a dead end or visited node, try the next branch. Naturally recursive (call stack mirrors recursion) or iterative with an explicit stack. Right tool for: cycle detection, path existence, connected components, topological sort, backtracking.\n\n**BFS (Breadth-First Search)** explores wide: visit all nodes at distance 1, then distance 2, and so on. Uses a queue. Because it explores level by level, it naturally finds the **shortest path** in an unweighted graph. Right tool for: shortest path unweighted, nearest nodes, flood fill, multi-source problems.\n\nBoth are O(V+E) \u2014 visit each vertex once, traverse each edge once. The difference is exploration order, which determines what problems each solves optimally.\n\nAlmost all interview problems use an **adjacency list** \u2014 `graph[node]` gives a list of neighbors. O(V+E) space. An adjacency matrix is O(V\u00b2) and rarely needed in interviews."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use BFS for shortest path in an unweighted graph or level-by-level exploration. Use DFS for path existence, cycle detection, connected components, or exhaustive exploration. For grids, DFS is simpler to code recursively; BFS is better when minimum steps is asked.",
+      "signals": [
+        "connected components",
+        "detect cycle",
+        "find path",
+        "flood fill",
+        "shortest path unweighted",
+        "all nodes reachable from",
+        "graph coloring",
+        "clone graph"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Graph Representation and Traversal Mechanics",
+      "content": "## Adjacency List\n\nBuild from edge list `[[u,v],...]` as first step:\n```\ngraph[u].push(v); if (!directed) graph[v].push(u);\n```\nSpace O(V+E). Iterating neighbors of a node: O(degree).\n\n## DFS \u2014 Critical Rule\n\nMark node as visited **before** recursing/pushing. Marking after allows cyclic graphs to recurse infinitely.\n\n**Post-order**: process node after all descendants are done \u2014 essential for topological sort.\n\n## BFS \u2014 Critical Rule\n\nMark neighbors as visited **when enqueuing**, not when dequeuing. Waiting until dequeue allows the same node to be enqueued multiple times.\n\nShortest path: `dist[neighbor] = dist[current] + 1` when enqueuing. First time BFS reaches a node is the shortest path.\n\n## Connected Components\n\nA single BFS/DFS explores one component. To find all: iterate over all nodes, start a new traversal for each unvisited node, count traversal starts.\n\n## Cycle Detection \u2014 Undirected\n\nDuring DFS, if a visited node is encountered that is not the current node's parent, a cycle exists. Track parent to avoid the trivial A\u2192B\u2192A false positive.\n\n## Cycle Detection \u2014 Directed\n\nNode coloring: **white** (unvisited), **gray** (in current DFS path), **black** (fully processed). Encountering a gray node means a back edge exists \u2014 cycle detected."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "function buildGraph(n, edges, directed=false) {\n  const g = Array.from({length:n}, ()=>[]);\n  for (const [u,v] of edges) {\n    g[u].push(v);\n    if (!directed) g[v].push(u);\n  }\n  return g;\n}\n\n// DFS iterative\nfunction dfs(graph, start, n) {\n  const visited = new Array(n).fill(false);\n  const stack = [start];\n  visited[start] = true; // mark before pushing\n  while (stack.length) {\n    const node = stack.pop();\n    // process node\n    for (const nb of graph[node]) {\n      if (!visited[nb]) { visited[nb]=true; stack.push(nb); }\n    }\n  }\n}\n\n// BFS \u2014 gives shortest distances in unweighted graph\nfunction bfs(graph, start, n) {\n  const visited = new Array(n).fill(false);\n  const dist = new Array(n).fill(-1);\n  const queue = [start];\n  visited[start]=true; dist[start]=0;\n  let head=0;\n  while (head < queue.length) {\n    const node = queue[head++];\n    for (const nb of graph[node]) {\n      if (!visited[nb]) {\n        visited[nb]=true;          // mark on enqueue, not dequeue\n        dist[nb]=dist[node]+1;\n        queue.push(nb);\n      }\n    }\n  }\n  return dist;\n}\n\n// Count connected components\nfunction countComponents(graph, n) {\n  const visited = new Array(n).fill(false);\n  let count=0;\n  for (let i=0;i<n;i++) {\n    if (!visited[i]) { count++; /* run bfs/dfs marking visited */ }\n  }\n  return count;\n}",
+      "language": "javascript",
+      "explanation": "DFS with explicit stack and BFS with index-based queue (avoids O(n) shift). Both mark visited before enqueue/push. buildGraph creates adjacency list from edge list."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Multi-Source BFS",
+          "description": "Enqueue all source nodes at distance 0 instead of a single source. BFS expands from all sources simultaneously \u2014 used for 'nearest land cell from water', 'walls and gates', 'rotting oranges'.",
+          "example_problem": "Pacific Atlantic Water Flow",
+          "example_slug": "pacific-atlantic-water-flow"
+        },
+        {
+          "name": "Bidirectional BFS",
+          "description": "Run BFS from both source and destination simultaneously, alternating layers. Stop when frontiers meet. Reduces explored nodes from O(b^d) to O(2 \u00d7 b^(d/2)) \u2014 significant speedup for large sparse graphs.",
+          "example_problem": "Clone Graph",
+          "example_slug": "clone-graph"
+        },
+        {
+          "name": "DFS with Color States",
+          "description": "Assign each node 0 (white/unvisited), 1 (gray/in path), 2 (black/done). Encountering a gray node during DFS signals a back edge and a cycle in a directed graph.",
+          "example_problem": "Course Schedule",
+          "example_slug": "course-schedule"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(V + E)",
+      "space": "O(V)",
+      "explanation": "Both visit each vertex once (O(V)) and traverse each edge once (O(E)). BFS queue holds at most O(V) nodes. DFS stack is O(V) in worst case (a path graph). In grid problems V = rows \u00d7 cols and E = 4V (4-directional), so O(V+E) = O(V)."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Not marking nodes visited before enqueuing/pushing \u2014 in cyclic graphs this causes infinite loops; in DAGs it causes exponential blowup as the same node is processed multiple times.",
+        "BFS: marking visited on dequeue instead of enqueue \u2014 the same node can be enqueued multiple times before processing, giving wrong shortest-path distances.",
+        "Undirected cycle detection: treating the parent edge as a cycle \u2014 B sees A is visited but A is B's parent. Track parent and skip it.",
+        "Directed vs undirected cycle detection require different approaches \u2014 simple visited boolean works for undirected; directed graphs need gray/black coloring.",
+        "Not resetting visited array between separate traversals in a loop \u2014 reuse causes components to appear already-visited."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Number of Islands",
+          "slug": "number-of-islands",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Connected components on a grid \u2014 tests DFS/BFS with 4-directional neighbors and visited marking."
+        },
+        {
+          "title": "Clone Graph",
+          "slug": "clone-graph",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "DFS/BFS while maintaining a node-mapping \u2014 visited map doubles as the clone registry."
+        },
+        {
+          "title": "Course Schedule",
+          "slug": "course-schedule",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Directed cycle detection \u2014 tests DFS with gray/black coloring or Kahn's in-degree approach."
+        },
+        {
+          "title": "Pacific Atlantic Water Flow",
+          "slug": "pacific-atlantic-water-flow",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Multi-source BFS \u2014 reverse BFS from both oceans and intersect results."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Topological Sort",
+      "next_slug": "topological-sort",
+      "why": "Topological sort is a direct application of DFS post-order on a directed graph. You already know cycle detection and the DFS skeleton; topological sort adds post-order stack logic and Kahn's BFS-based alternative."
+    }
+  ]
+}

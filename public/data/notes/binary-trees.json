@@ -1,0 +1,123 @@
+{
+  "topic": "Binary Trees",
+  "level": 4,
+  "slug": "binary-trees",
+  "estimated_read": "16 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What are Binary Trees?",
+      "content": "A binary tree is a node with at most two children: left and right. Each child is itself a binary tree. This self-referential definition is the most important thing to internalize: **trees are inherently recursive**. The left subtree of a tree is a tree. The right subtree is a tree. Every tree problem has a natural recursive solution because the data structure itself is recursive.\n\nThe core insight for solving tree problems: to solve a problem for a tree rooted at node N, assume you can already solve it for N's left subtree and for N's right subtree. Then figure out how to combine those two answers, along with N's own value, to get the answer for the full tree. The base case is always the null node (representing an empty tree) or sometimes the leaf node.\n\nThis pattern - handle null, recurse left, recurse right, combine - appears in almost every tree problem: compute height, check if balanced, find diameter, sum all paths, find LCA. Recognizing that a new tree problem fits this pattern is the primary skill.\n\nWhen recursion does not fit cleanly, **level-order traversal (BFS with a queue)** is the second major tool. Level-order processes nodes layer by layer and is the right choice when you need the depth of a node, the minimum depth, or results grouped by level.\n\nBinary trees are also the gateway to binary search trees, heaps, segment trees, and tries. Every advanced tree data structure builds on the binary tree node model. Time spent understanding how recursive tree solutions work - especially how values bubble up from children to parent - pays off across all of these."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use binary tree techniques whenever the input is a tree structure and the problem involves structural properties like height, balance, diameter, or symmetry; path properties like root-to-leaf sums or maximum path sums; node relationships like lowest common ancestor; or ordering and serialization. When the problem needs results grouped by depth (level order traversal, minimum depth, rightmost node at each level), use BFS with a queue instead of recursion. If the tree has the BST property (sorted), add BST-specific logic on top of the base tree template.",
+      "signals": [
+        "binary tree",
+        "root to leaf path",
+        "diameter",
+        "lowest common ancestor",
+        "height or depth",
+        "balanced tree",
+        "serialize or deserialize",
+        "level order"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Traversals, the Recursive Pattern, and Path Problems",
+      "content": "## The Three Traversals\n\n**Inorder (left - root - right)**: for a BST, inorder gives values in sorted ascending order. Useful for kth smallest, checking BST validity, and flattening a BST.\n\n**Preorder (root - left - right)**: visit the parent before children. Used for serialization (you need the root value to reconstruct the tree before you can place children).\n\n**Postorder (left - right - root)**: process children before parent. Used when the parent's result depends on both children's results - computing height, detecting balance, tree deletion.\n\n## The Generic Recursive Tree Pattern\n\nAlmost every tree problem follows this structure:\n\n```\nfunction solve(node):\n  if node is null: return base_value\n  leftResult = solve(node.left)\n  rightResult = solve(node.right)\n  return combine(node.val, leftResult, rightResult)\n```\n\n**Height example**: base is 0 for null. Combine is `1 + max(leftHeight, rightHeight)`.\n\nValues **flow up**: each call returns something useful to its caller. The root call returns the final answer. This bottom-up flow is the key to understanding why postorder is the natural order for most problems.\n\n## Level-Order Traversal (BFS)\n\nUse a queue. Start with the root. At each step, dequeue a node, process it, enqueue its non-null children. To separate levels, track the current queue size at the start of each level (process that many nodes, then increment depth).\n\n```\nqueue = [root]\nwhile queue is not empty:\n  levelSize = queue.length\n  for i in range(levelSize):\n    node = queue.shift()\n    process(node)\n    if node.left: queue.push(node.left)\n    if node.right: queue.push(node.right)\n  depth++\n```\n\n## Path Problems\n\n**Root-to-leaf paths**: pass a running sum or accumulated path down through function arguments. At leaves, check validity.\n\n**Any-path problems (maximum path sum, diameter)**: at each node, the path can use this node as the **turning point**. Compute left contribution + right contribution + node value. But when returning to the parent, you can only continue in one direction: return `node.val + max(leftContrib, rightContrib)`. This is why the diameter and max path sum problems maintain a global maximum updated at each node, while returning only the one-sided contribution to the parent."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// Generic recursive tree template\nfunction solve(node) {\n  if (node === null) return 0; // replace with appropriate base value\n\n  const leftResult = solve(node.left);\n  const rightResult = solve(node.right);\n\n  return 1 + Math.max(leftResult, rightResult); // example: height\n}\n\n// Level-order traversal (BFS template)\nfunction levelOrder(root) {\n  if (!root) return [];\n  const result = [];\n  const queue = [root];\n\n  while (queue.length > 0) {\n    const levelSize = queue.length; // snapshot current level size\n    const level = [];\n\n    for (let i = 0; i < levelSize; i++) {\n      const node = queue.shift();\n      level.push(node.val);\n      if (node.left) queue.push(node.left);\n      if (node.right) queue.push(node.right);\n    }\n    result.push(level);\n  }\n  return result;\n}\n\n// Diameter / max-path pattern: global max updated at each node\nfunction diameterOfBinaryTree(root) {\n  let maxDiameter = 0;\n\n  function height(node) {\n    if (node === null) return 0;\n    const left = height(node.left);\n    const right = height(node.right);\n    maxDiameter = Math.max(maxDiameter, left + right); // diameter through this node\n    return 1 + Math.max(left, right); // return height (one-sided) to parent\n  }\n\n  height(root);\n  return maxDiameter;\n}",
+      "language": "javascript",
+      "explanation": "The generic recursive template handles most tree problems by changing only the combine step. The level-order BFS template handles depth-based problems. The diameter pattern shows the global-max-plus-one-sided-return technique that applies to any 'path through a node as turning point' problem."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "N-ary Trees",
+          "description": "Each node has an array of children instead of just left and right. The recursive pattern still applies: loop over all children instead of calling left and right separately. Level-order BFS is identical - enqueue all children instead of just two.",
+          "example_problem": "Binary Tree Level Order Traversal",
+          "example_slug": "binary-tree-level-order-traversal"
+        },
+        {
+          "name": "Iterative Traversal with Explicit Stack",
+          "description": "Any recursive traversal can be converted to iterative using a stack. For inorder: push nodes going left, pop and process, then go right. For preorder: push right child first, then left. Useful when recursion depth is a concern or when the interviewer asks for an iterative solution.",
+          "example_problem": "Binary Tree Inorder Traversal",
+          "example_slug": "binary-tree-inorder-traversal"
+        },
+        {
+          "name": "Path Sum / Max Path",
+          "description": "Root-to-leaf path problems pass accumulated state downward as a parameter. Any-node path problems maintain a global maximum at each node and return only the single-direction contribution upward. The distinction between these two patterns resolves most path-related tree problems.",
+          "example_problem": "Diameter of Binary Tree",
+          "example_slug": "diameter-of-binary-tree"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n) for any full traversal - every node is visited exactly once",
+      "space": "O(h) for recursive call stack, where h is tree height. O(log n) for balanced trees, O(n) for degenerate trees. BFS uses O(w) where w is maximum width.",
+      "explanation": "Every node is visited exactly once in any traversal, so time is always O(n). Space depends on the call stack depth, which equals the height h. For a balanced tree h = O(log n). For a completely unbalanced tree h = O(n). BFS space depends on the maximum number of nodes at any level (width w), which is O(n/2) = O(n) for the last level of a complete binary tree."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Not handling the null node case: accessing `node.left` or `node.val` when `node` is null causes a runtime error. The null check must be the first line of every recursive tree function.",
+        "Confusing height with depth: height is the length of the longest path from a node DOWN to a leaf (computed bottom-up). Depth is the distance from the root DOWN to a node (computed top-down). Most recursive tree solutions compute height; BFS computes depth naturally.",
+        "Diameter calculation error: the diameter through a node is `leftHeight + rightHeight`. A common mistake is computing `max(leftHeight, rightHeight) + 1`, which is the height, not the diameter through that node.",
+        "Forgetting that the answer might not pass through the root: for max path sum, diameter, and similar problems, the optimal path might be entirely in a subtree. The global maximum must be updated at every node, not just at the root.",
+        "Treating leaf node and null node differently without intention: a leaf node (both children are null) returns the base case when called on its null children. If you check for null at the start of each call, leaves are handled automatically."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Maximum Depth of Binary Tree",
+          "slug": "maximum-depth-of-binary-tree",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "The minimal complete tree problem. Applies the generic recursive template directly: base case is null returns 0, combine is 1 + max(left, right)."
+        },
+        {
+          "title": "Binary Tree Inorder Traversal",
+          "slug": "binary-tree-inorder-traversal",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "Practice all three traversals. The iterative version with an explicit stack is commonly asked as a follow-up and trains the mental model of how the call stack works during recursion."
+        },
+        {
+          "title": "Diameter of Binary Tree",
+          "slug": "diameter-of-binary-tree",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "Introduces the global-maximum-updated-at-each-node pattern. The key insight (diameter through a node = left height + right height, but return only max height to parent) applies directly to Hard problems like Maximum Path Sum."
+        },
+        {
+          "title": "Binary Tree Level Order Traversal",
+          "slug": "binary-tree-level-order-traversal",
+          "difficulty": 3,
+          "difficulty_label": "Medium",
+          "why": "The canonical BFS template. Grouping nodes by level requires tracking level boundaries, which this problem teaches directly. The BFS skeleton here applies unchanged to minimum depth, right side view, and zigzag traversal."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "BST - Binary Search Trees",
+      "next_slug": "bst",
+      "why": "BSTs add the sorted ordering property to binary trees. With inorder traversal giving sorted output and search/insert/delete all following the BST property, BSTs combine the recursive tree patterns from this topic with sorted structure and binary search thinking."
+    }
+  ]
+}

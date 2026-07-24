@@ -1,0 +1,123 @@
+{
+  "topic": "BST - Binary Search Trees",
+  "level": 4,
+  "slug": "bst",
+  "estimated_read": "13 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is a BST?",
+      "content": "A Binary Search Tree is a binary tree with an ordering property: for every node, all values in the left subtree are strictly smaller, and all values in the right subtree are strictly larger. This invariant holds at every node, not just the root. The property enables binary search on a tree structure - at each node, you compare the target to the node's value and eliminate the entire left or right subtree from consideration. This gives O(log n) search, insert, and delete on a balanced BST.\n\nThe most useful property of a BST for interview problems is this: **in-order traversal (left - root - right) gives all values in sorted ascending order**. This single fact makes many problems trivial. Finding the kth smallest element becomes counting nodes in inorder. Checking if two BSTs have the same elements becomes comparing their inorder sequences. Converting a sorted array to a BST means the middle element is the root.\n\nBST operations are O(h) where h is the tree height. On a balanced BST, h = O(log n) and everything is fast. On a degenerate BST - created by inserting elements in sorted order - every node has only one child and h = O(n). The tree becomes a linked list, and search degrades to O(n). This is why self-balancing BSTs (AVL trees, Red-Black trees) exist: they maintain h = O(log n) through rotations during insert and delete.\n\nBST validation is a classic interview problem with a subtle trap. Understanding why the naive local-comparison approach fails, and how the correct min/max range approach works, reveals a deep truth about BST structure: the ordering property is global, not just local between parent and child."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use BST techniques when the problem involves a sorted dynamic set: you need to search, insert, and delete while maintaining order. BST inorder traversal applies when you need the kth element, need to process values in sorted order from a tree, or need to validate whether a binary tree has the BST property. BST search applies to problems about finding the closest value, floor (largest value smaller than target), or ceiling (smallest value larger than target) in a BST.",
+      "signals": [
+        "find kth smallest",
+        "sorted and need search",
+        "range sum query on sorted data",
+        "validate BST property",
+        "floor and ceiling",
+        "closest value in BST",
+        "convert sorted array to BST",
+        "in-order gives sorted sequence"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Search/Insert/Delete, Validation, and Inorder Properties",
+      "content": "## Search, Insert, Delete - All O(h)\n\n**Search**: compare target to node value. If equal, found. If target < node.val, recurse left. If target > node.val, recurse right. If you reach null, not found.\n\n**Insert**: search for the value. When you reach the null spot where it would have been found, insert there. The new node is always a leaf.\n\n**Delete** has three cases:\n- **No children (leaf)**: remove the node by returning null to parent.\n- **One child**: bypass the node, returning its single child to the parent.\n- **Two children**: find the **in-order successor** (the leftmost node in the right subtree). Copy the successor's value into the current node, then delete the successor from the right subtree.\n\n## Validating a BST - The Min/Max Range\n\nNaive approach (WRONG): check that each node's value is greater than its left child and less than its right child. **This fails** for cases where a node in the right subtree is actually smaller than the root.\n\nCorrect approach: pass a `[min, max]` range that each node's value must fall within.\n- Root: range is `(-Infinity, +Infinity)`.\n- When going left from a node with value v: the range becomes `(min, v)`.\n- When going right from a node with value v: the range becomes `(v, max)`.\n\nUse `null` instead of `Integer.MIN_VALUE`/`Integer.MAX_VALUE` to avoid overflow and to handle trees containing those extreme values.\n\n## Inorder Traversal on BSTs\n\nInorder (left - root - right) on a valid BST produces values in sorted ascending order. Problems that become trivial with this insight:\n\n- **Kth smallest**: run inorder, return the kth element visited.\n- **Convert sorted array to BST**: the middle element of each range becomes the root, left half becomes left subtree, right half becomes right subtree. This creates a balanced BST.\n\n## Balanced BSTs - Know They Exist\n\nAVL trees and Red-Black trees maintain h = O(log n) through rotations after insert/delete. You do not need to implement these in interviews. Know: (1) unbalanced BST degenerates to O(n); (2) self-balancing BSTs fix this with O(log n) guaranteed; (3) most standard library sorted sets (Java's `TreeSet`, C++'s `std::set`) are Red-Black trees under the hood."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// BST Search\nfunction search(root, target) {\n  if (root === null) return null;\n  if (root.val === target) return root;\n  if (target < root.val) return search(root.left, target);\n  return search(root.right, target);\n}\n\n// BST Validation with min/max range\nfunction isValidBST(root) {\n  function validate(node, min, max) {\n    if (node === null) return true;\n    if (min !== null && node.val <= min) return false;\n    if (max !== null && node.val >= max) return false;\n    return validate(node.left, min, node.val) &&\n           validate(node.right, node.val, max);\n  }\n  return validate(root, null, null);\n}\n\n// Kth smallest in BST (inorder counting)\nfunction kthSmallest(root, k) {\n  let count = 0;\n  let result = null;\n\n  function inorder(node) {\n    if (node === null || result !== null) return;\n    inorder(node.left);\n    count++;\n    if (count === k) { result = node.val; return; }\n    inorder(node.right);\n  }\n\n  inorder(root);\n  return result;\n}",
+      "language": "javascript",
+      "explanation": "BST search navigates in O(h) steps using the ordering property. The validation template passes min/max bounds that tighten as you go deeper - the correct global check. The kth smallest template shows how inorder counting retrieves the kth element with early termination."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Self-Balancing BSTs (AVL, Red-Black - Conceptual)",
+          "description": "AVL trees maintain the invariant that the heights of left and right subtrees differ by at most 1, rotating nodes to restore balance after insertions and deletions. Red-Black trees use a coloring scheme with fewer rotations on average. Both guarantee O(log n) height. You will not implement these in interviews but should know they exist and why.",
+          "example_problem": "Validate Binary Search Tree",
+          "example_slug": "validate-binary-search-tree"
+        },
+        {
+          "name": "Convert Sorted Array to BST",
+          "description": "Recursively take the middle element as root, left half as left subtree, right half as right subtree. This produces a height-balanced BST in O(n) time. Directly applies divide-and-conquer thinking to tree construction.",
+          "example_problem": "Convert Sorted Array to Binary Search Tree",
+          "example_slug": "convert-sorted-array-to-binary-search-tree"
+        },
+        {
+          "name": "Order Statistics Tree",
+          "description": "An augmented BST where each node stores the size of its subtree. This enables O(log n) kth-smallest queries and O(log n) rank queries. The augmentation is maintained through rotations. Appears in problems requiring dynamic order statistics.",
+          "example_problem": "Kth Smallest Element in a BST",
+          "example_slug": "kth-smallest-element-in-a-bst"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(log n) for search/insert/delete on balanced BST; O(n) worst case on degenerate BST",
+      "space": "O(h) for recursive call stack during traversal; O(n) to store the tree",
+      "explanation": "All BST operations navigate from root to a leaf, taking one step per level. On a balanced BST with h = O(log n), operations are O(log n). When elements are inserted in sorted order, each new node becomes the rightmost leaf, creating a tree of height n - 1. All operations degrade to O(n)."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Validating BST with only local parent-child comparison: checking node.val > node.left.val and node.val < node.right.val is wrong. A node deep in the right subtree can be smaller than the root while passing local checks. Always use the min/max range approach.",
+        "Using integer MIN/MAX as validation bounds: in JS this is less dangerous, but using extreme sentinel values fails if the tree contains those exact values. Use null to represent 'no constraint'.",
+        "Assuming BST is balanced: the problem says 'binary search tree', not 'balanced binary search tree'. Without explicit statement, assume O(n) worst case for height. Do not claim O(log n) unless the tree is stated to be balanced.",
+        "Delete with two children - wrong replacement: when deleting a node with two children, you must replace it with the in-order successor (leftmost node in the right subtree). The in-order successor has no left child, making its own deletion a simple case.",
+        "In-order gives sorted order ONLY for valid BSTs: if the tree is not a valid BST, in-order traversal does not give sorted order. Confirm the BST property before relying on in-order sorting."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Validate Binary Search Tree",
+          "slug": "validate-binary-search-tree",
+          "difficulty": 3,
+          "difficulty_label": "Medium",
+          "why": "Forces you to confront why local comparison is wrong and implement the min/max range approach. Understanding this is essential before any BST problem."
+        },
+        {
+          "title": "Kth Smallest Element in a BST",
+          "slug": "kth-smallest-element-in-a-bst",
+          "difficulty": 3,
+          "difficulty_label": "Medium",
+          "why": "Directly applies the inorder-gives-sorted-order property. Solving this in O(h + k) with early termination reinforces how to combine BST structure with inorder traversal."
+        },
+        {
+          "title": "Lowest Common Ancestor of a Binary Search Tree",
+          "slug": "lowest-common-ancestor-of-a-binary-search-tree",
+          "difficulty": 3,
+          "difficulty_label": "Medium",
+          "why": "LCA in a BST uses the BST property directly: if both targets are smaller than the current node, go left. If both larger, go right. Otherwise, current node is the LCA."
+        },
+        {
+          "title": "Convert Sorted Array to Binary Search Tree",
+          "slug": "convert-sorted-array-to-binary-search-tree",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "Applies divide-and-conquer to BST construction. The middle element is root, recurse on halves - produces a height-balanced BST and reinforces how sorted order maps to BST structure."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Heaps and Priority Queues",
+      "next_slug": "heaps-priority-queue",
+      "why": "Heaps are a different tree-based structure optimized for one operation: extracting the minimum or maximum in O(log n). They solve a different class of problems than BSTs - top-k elements, merge k sorted lists, scheduling - and introduce the heap property and array representation of a complete binary tree."
+    }
+  ]
+}

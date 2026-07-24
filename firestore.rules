@@ -1,0 +1,27 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // One doc per user per collection (docs/04-FIRESTORE-SCHEMA-AND-RULES.md).
+    // No get()/exists() calls anywhere - those are separately billed reads
+    // during rule evaluation. Pure path/uid checks only.
+
+    match /users/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    match /progress/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    match /bookmarks/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // Explicit deny-all default - not relying on Firestore's implicit
+    // default-deny, so intent is unambiguous to the next reader.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

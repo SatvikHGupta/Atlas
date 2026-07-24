@@ -1,0 +1,129 @@
+{
+  "topic": "Prefix Sum",
+  "level": 8,
+  "slug": "prefix-sum",
+  "estimated_read": "11 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Prefix Sum?",
+      "content": "Prefix sum is one of the simplest yet most powerful array preprocessing techniques in DSA. The idea: build a `prefix` array where `prefix[i]` stores the cumulative sum of `arr[0]` through `arr[i-1]`. Once built, any range sum query `arr[l..r]` can be answered in O(1) as `prefix[r+1] - prefix[l]`. Preprocessing takes O(n); each query is O(1). This transforms problems requiring many subarray sum queries from O(n²) to O(n).\n\nThe technique extends naturally beyond 1D. A **2D prefix sum** enables O(1) rectangle sum queries over a matrix. A **prefix XOR** array enables O(1) range XOR queries. A **difference array** (the inverse of prefix sum) enables O(1) range updates followed by a single O(n) reconstruction pass.\n\nPrefix sum also combines powerfully with **hash maps** for subarray counting problems. The pattern 'count subarrays with sum exactly k' cannot be solved efficiently with just a prefix array - but pairing prefix sums with a frequency map reduces it from O(n²) to O(n). This combination is one of the most common patterns in medium-hard array problems.\n\nPrefix sum should be learned early - it applies across arrays, matrices, strings, and graphs. It is not a standalone algorithm but a building block that eliminates repeated range computation throughout a solution."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use prefix sum when you need to answer multiple range sum (or range XOR) queries over a static array efficiently. Use the prefix sum + hash map pattern when counting subarrays or subsequences with a specific sum, product, or XOR. Use difference arrays when you need to apply multiple range update operations followed by a single read pass. Use 2D prefix sums for rectangle sum queries over a matrix. If the array changes between queries, use a Fenwick Tree or Segment Tree instead.",
+      "signals": [
+        "sum of subarray",
+        "range sum query",
+        "subarray sum equals k",
+        "count subarrays with sum",
+        "2D matrix rectangle sum",
+        "running total or cumulative sum",
+        "range add then point query",
+        "number of subarrays with property based on sum"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## 1D Prefix Sum\n\nBuild a 1-indexed prefix array of size `n + 1`:\n- `prefix[0] = 0` (empty prefix - no elements)\n- `prefix[i] = prefix[i-1] + arr[i-1]` for i from 1 to n\n\nRange sum of `arr[l..r]` (0-indexed): `prefix[r+1] - prefix[l]`.\n\nThe convention of making prefix size `n+1` with `prefix[0] = 0` eliminates special cases - the query formula works uniformly even when `l = 0`.\n\n## Prefix Sum + Hash Map for Subarray Problems\n\nTo **count subarrays with sum exactly k**: iterate through the array maintaining a running sum. At each position, check how many previous running sums equal `runningSum - k`. If they do, the subarray between that earlier position and the current one has sum exactly k.\n\nImplementation: maintain a hash map `countMap` where `countMap[s]` is how many times running sum `s` has appeared. Before iterating, initialize `countMap[0] = 1` - this accounts for subarrays starting at index 0. For each element: `runningSum += arr[i]`, then `result += countMap[runningSum - k] || 0`, then `countMap[runningSum] = (countMap[runningSum] || 0) + 1`.\n\n**Why `{0: 1}`**: if `runningSum === k` at some position, we need `countMap[0]` to exist. Without it, subarrays from the start are missed.\n\n## Difference Arrays for Range Updates\n\nA difference array `diff` where `diff[i] = arr[i] - arr[i-1]` (with `diff[0] = arr[0]`) encodes the array as its own differences. A range update 'add v to all elements in [l, r]' becomes just two point updates: `diff[l] += v` and `diff[r+1] -= v` (if `r+1 <= n`). Reconstruct the updated array by taking the prefix sum of `diff`. O(1) per update, O(n) for final reconstruction.\n\n## 2D Prefix Sum\n\nFor an m×n matrix, build `prefix[i][j]` = sum of all elements in the rectangle from `(0,0)` to `(i-1, j-1)` (1-indexed prefix, 0-indexed matrix). Build formula using inclusion-exclusion:\n```\nprefix[i][j] = mat[i-1][j-1] + prefix[i-1][j] + prefix[i][j-1] - prefix[i-1][j-1]\n```\nRectangle sum from `(r1, c1)` to `(r2, c2)` (0-indexed):\n```\nprefix[r2+1][c2+1] - prefix[r1][c2+1] - prefix[r2+1][c1] + prefix[r1][c1]\n```\nThe `+ prefix[r1][c1]` at the end corrects for the corner being subtracted twice."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// --- 1D Prefix Sum ---\nfunction buildPrefix(arr) {\n  const n = arr.length;\n  const prefix = new Array(n + 1).fill(0);\n  for (let i = 1; i <= n; i++) {\n    prefix[i] = prefix[i - 1] + arr[i - 1];\n  }\n  return prefix;\n}\n\n// range sum [l, r] inclusive (0-indexed)\nfunction rangeSum(prefix, l, r) {\n  return prefix[r + 1] - prefix[l];\n}\n\n// --- Prefix Sum + Hash Map: count subarrays with sum === k ---\nfunction subarraySum(nums, k) {\n  const countMap = new Map();\n  countMap.set(0, 1); // empty prefix has sum 0\n  let running = 0;\n  let result = 0;\n\n  for (const num of nums) {\n    running += num;\n    // check how many prefixes end at a sum that makes this subarray sum to k\n    result += countMap.get(running - k) || 0;\n    countMap.set(running, (countMap.get(running) || 0) + 1);\n  }\n\n  return result;\n}\n\n// --- Difference Array: range updates in O(1), reconstruct in O(n) ---\nfunction applyRangeUpdates(n, updates) {\n  const diff = new Array(n + 1).fill(0);\n  for (const [l, r, v] of updates) {\n    diff[l] += v;\n    if (r + 1 <= n) diff[r + 1] -= v; // boundary check\n  }\n  // reconstruct by prefix summing the diff array\n  const result = new Array(n).fill(0);\n  let running = 0;\n  for (let i = 0; i < n; i++) {\n    running += diff[i];\n    result[i] = running;\n  }\n  return result;\n}",
+      "language": "javascript",
+      "explanation": "Three core prefix sum patterns in one template: standard 1D prefix for range queries, prefix+hashmap for subarray count problems, and difference array for range updates. Each solves a distinct class of problems with O(n) preprocessing and O(1) or O(Q) total query cost."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "XOR Prefix Sum",
+          "description": "Replace addition with XOR: `prefixXor[i] = prefixXor[i-1] ^ arr[i-1]`. Range XOR of `[l, r]` is `prefixXor[r+1] ^ prefixXor[l]` - works because XOR is its own inverse. O(1) per range XOR query after O(n) build.",
+          "example_problem": "XOR Queries of a Subarray",
+          "example_slug": "xor-queries-of-a-subarray"
+        },
+        {
+          "name": "Difference Array",
+          "description": "Inverse of prefix sum. Store differences between adjacent elements. Range updates become two point updates. Reconstruct the final array with a single prefix sum pass. Optimal when you have many range updates followed by a single read.",
+          "example_problem": "Range Addition",
+          "example_slug": "range-addition"
+        },
+        {
+          "name": "2D Prefix Sum",
+          "description": "Extend prefix sums to matrices for O(1) rectangle sum queries. Build using inclusion-exclusion in O(m*n). Query uses the 4-corner formula. Useful for sub-matrix sum problems and 2D sliding window problems.",
+          "example_problem": "Range Sum Query 2D - Immutable",
+          "example_slug": "range-sum-query-2d-immutable"
+        },
+        {
+          "name": "Sparse Table (Range Min/Max)",
+          "description": "For static arrays, build a sparse table in O(n log n) to answer range min/max queries in O(1). Unlike prefix sums, it uses the overlap-friendly property of min/max (overlapping ranges give the same result). Best for heavy min/max query workloads without updates.",
+          "example_problem": "Range Minimum Query",
+          "example_slug": "range-minimum-query"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n) build, O(1) per range query",
+      "space": "O(n)",
+      "explanation": "Building the prefix array makes one pass over the input: O(n). Each range sum query is a single subtraction: O(1). For Q queries over an array of size n: O(n + Q) total, versus O(nQ) for naive per-query summation. 2D prefix sum: O(m*n) build, O(1) per rectangle query. Difference array: O(1) per update, O(n) for final reconstruction - optimal when updates >> reads. Prefix+hashmap subarray counting: O(n) time, O(n) space for the hash map."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Off-by-one in index: `prefix[i]` stores the sum of the first `i` elements (not including index i of the original array). Range `[l, r]` (0-indexed) sum is `prefix[r+1] - prefix[l]`, not `prefix[r] - prefix[l-1]` - these are equivalent but the latter breaks when `l = 0` (negative index).",
+        "Prefix+hashmap: not initializing `countMap.set(0, 1)` before iterating - this misses all subarrays starting at index 0 where the prefix sum exactly equals k. The empty prefix must be pre-seeded.",
+        "2D prefix sum: forgetting to add back the top-left corner in the query formula - `prefix[r2+1][c2+1] - prefix[r1][c2+1] - prefix[r2+1][c1] + prefix[r1][c1]`. The minus-minus double-subtracts the top-left rectangle; the final `+ prefix[r1][c1]` corrects this.",
+        "Difference array: applying `diff[r+1] -= v` without checking `r+1 <= n` - writing to `diff[n+1]` when `r = n-1` is out of bounds. Always guard the right boundary.",
+        "Using prefix sum when the array has updates between queries - prefix sums are static. For dynamic arrays with interleaved updates and queries, use a Fenwick Tree or Segment Tree."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Range Sum Query - Immutable",
+          "slug": "range-sum-query-immutable",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "The canonical 1D prefix sum problem - build prefix array once, answer all range sum queries in O(1)."
+        },
+        {
+          "title": "Subarray Sum Equals K",
+          "slug": "subarray-sum-equals-k",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "The canonical prefix sum + hash map problem - count subarrays with exact sum using running sum and frequency map."
+        },
+        {
+          "title": "Product of Array Except Self",
+          "slug": "product-of-array-except-self",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests applying the prefix sum pattern to products - build prefix product array and suffix product array, combine for O(n) O(1)-space solution."
+        },
+        {
+          "title": "Number of Ways to Split Array",
+          "slug": "number-of-ways-to-split-array",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests prefix sum for comparing left and right subarray sums at each split point - direct application of prefix array for multiple range queries."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Monotonic Stack",
+      "next_slug": "monotonic-stack",
+      "why": "Monotonic Stack is the next Others topic. Like prefix sum, it is a linear-time preprocessing technique - but for 'next greater/smaller element' problems. Many problems combine prefix sums and monotonic stacks, so learning both back-to-back builds the pattern library quickly."
+    }
+  ]
+}

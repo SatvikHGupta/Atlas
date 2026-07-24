@@ -1,0 +1,129 @@
+{
+  "topic": "Fenwick Tree / BIT",
+  "level": 7,
+  "slug": "fenwick-tree-bit",
+  "estimated_read": "10 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is a Fenwick Tree / BIT?",
+      "content": "A Fenwick Tree (also called a Binary Indexed Tree or BIT) is a compact data structure that supports two operations on an array: **prefix sum query** (sum of elements from index 1 to i) in O(log n) and **point update** (add a delta to element i) in O(log n). It was introduced by Peter Fenwick in 1994 as a simpler and more cache-friendly alternative to segment trees for the specific case of prefix sums.\n\nIt is not a tree in the traditional sense - it is a flat array with a clever indexing scheme. The magic comes from the expression `i & (-i)`, which in two's complement isolates the **lowest set bit** of `i`. This single operation determines how many elements each index is responsible for, and drives both the query and update traversals.\n\nThe result is a structure that requires less code than a segment tree, uses roughly half the memory, and is faster in practice due to better cache behavior. The trade-off: it is less general. A BIT natively supports prefix queries (not arbitrary range aggregation) and works cleanly for sum and XOR. Extending it to range min/max requires extra tricks, whereas a segment tree handles those naturally.\n\nBITs show up in competitive programming whenever you need **inversion count**, **count of smaller elements dynamically**, or **prefix sums with updates**."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use a Fenwick Tree when you need prefix sum queries with point updates, and the operation is sum or XOR. It is the go-to for inversion counting (coordinate compress + BIT) and for order statistics on a dynamic stream of insertions. Prefer it over a segment tree when the problem fits, because the implementation is shorter and faster. If you need range min/max with updates, or range updates with range queries, use a segment tree instead.",
+      "signals": [
+        "prefix sum with point updates",
+        "count elements smaller than x dynamically",
+        "inversion count",
+        "rank of element in sorted stream",
+        "add to position query prefix",
+        "order statistics on dynamic set",
+        "count elements in range dynamically",
+        "running frequency count with range lookups"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## The BIT Array and Responsibility\n\nPosition `i` in the BIT stores the sum of a specific range ending at `i`. The range length is determined by `i & (-i)` - the value of the lowest set bit of `i`. For example:\n- `i = 6` → binary `110` → `6 & -6 = 2` → stores sum of 2 elements: `arr[5..6]`\n- `i = 8` → binary `1000` → `8 & -8 = 8` → stores sum of 8 elements: `arr[1..8]`\n\nThis overlapping responsibility means any prefix sum `[1..i]` can be reconstructed by summing at most `log(n)` BIT positions.\n\n## Query - Prefix Sum [1..i]\n\nStart at index `i`. Add `bit[i]` to the running sum. Move to `i - (i & -i)` - this strips the lowest set bit, jumping to the next position responsible for a range ending before the current range. Repeat until `i` reaches 0. At most `log(n)` iterations.\n\n## Update - Add Delta to Position i\n\nStart at index `i`. Add `delta` to `bit[i]`. Move to `i + (i & -i)` - this adds the lowest set bit, propagating the change to all BIT positions whose responsibility range includes `i`. Repeat until `i > n`. At most `log(n)` iterations. Note the direction is **opposite** to query: query goes left (strip bit), update goes right (add bit).\n\n## Range Sum and Difference BIT\n\nTo query the sum of an arbitrary range `[l, r]`: compute `query(r) - query(l - 1)`. This is not a single traversal but two prefix queries.\n\nFor **range update + point query** (the inverse problem - add `v` to all elements in `[l, r]`, then read a single element), use a **difference BIT**: apply `update(l, v)` and `update(r + 1, -v)`. Then `query(i)` gives the effective value at position `i`."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "class FenwickTree {\n  constructor(n) {\n    this.n = n;\n    // 1-indexed; index 0 is unused\n    this.bit = new Array(n + 1).fill(0);\n  }\n\n  // add delta to position i (1-indexed)\n  update(i, delta) {\n    for (; i <= this.n; i += i & (-i)) {\n      this.bit[i] += delta;\n    }\n  }\n\n  // prefix sum [1..i]\n  prefixSum(i) {\n    let sum = 0;\n    for (; i > 0; i -= i & (-i)) {\n      sum += this.bit[i];\n    }\n    return sum;\n  }\n\n  // range sum [l..r] (both 1-indexed)\n  rangeSum(l, r) {\n    return this.prefixSum(r) - this.prefixSum(l - 1);\n  }\n}\n\n// Build from existing array in O(n)\nfunction buildBIT(arr) {\n  const ft = new FenwickTree(arr.length);\n  for (let i = 0; i < arr.length; i++) {\n    // arr is 0-indexed; BIT is 1-indexed\n    ft.update(i + 1, arr[i]);\n  }\n  return ft;\n}",
+      "language": "javascript",
+      "explanation": "Standard 1-indexed Fenwick Tree supporting O(log n) point updates and prefix sum queries. The `rangeSum` method combines two prefix queries. Build from an existing array using the `buildBIT` helper in O(n log n)."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "2D Fenwick Tree",
+          "description": "Extends BIT to a 2D grid for rectangle sum queries with point updates. Both update and query run in O(log(rows) * log(cols)). The implementation nests two BIT loops: outer loop over rows, inner loop over columns.",
+          "example_problem": "Range Sum Query 2D - Mutable",
+          "example_slug": "range-sum-query-2d-mutable"
+        },
+        {
+          "name": "Range Update + Range Query BIT",
+          "description": "Uses two BITs (B1 and B2) to support both range updates and range queries in O(log n) each. The math: prefix sum with range updates can be expressed as a function of two BIT prefix sums. More complex than standard BIT but avoids needing a segment tree.",
+          "example_problem": "Range Sum Query - Mutable",
+          "example_slug": "range-sum-query-mutable"
+        },
+        {
+          "name": "BIT for Order Statistics (Coordinate Compressed)",
+          "description": "Coordinate-compress the values into [1..n], then use a BIT where position `v` represents 'how many times value v has been inserted so far.' A prefix sum query gives the count of inserted elements <= v. This solves inversion count and 'count of smaller numbers after self.'",
+          "example_problem": "Count of Smaller Numbers After Self",
+          "example_slug": "count-of-smaller-numbers-after-self"
+        },
+        {
+          "name": "Difference BIT (Range Update + Point Query)",
+          "description": "To add `v` to all elements in [l, r]: call `update(l, v)` and `update(r+1, -v)` on a difference BIT. Then `prefixSum(i)` gives the effective value at position `i`. This is the inverse of the standard BIT use case.",
+          "example_problem": "Range Addition",
+          "example_slug": "range-addition"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n log n) build, O(log n) update, O(log n) prefix query",
+      "space": "O(n)",
+      "explanation": "Each update or query traversal moves along the binary representation of the index, either stripping or adding the lowest set bit. An n-bit index can undergo at most n such operations, giving O(log n) per operation. Building from an array calls update n times: O(n log n). There is an O(n) build possible by direct construction, but the update-based build is standard. Space is exactly n+1 integers for the BIT array."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "BIT is 1-indexed - accessing `bit[0]` is either unused or causes bugs. When your array is 0-indexed, always shift by +1 when calling `update` and `prefixSum`. Forgetting this shift gives wrong counts silently.",
+        "Confusing query direction with update direction - query strips the lowest set bit (`i -= i & -i`, moving left), update adds it (`i += i & -i`, moving right). Mixing them produces garbage results.",
+        "BIT natively gives only prefix sums - range [l, r] requires `query(r) - query(l-1)`. Calling `query(r - l)` or similar is wrong and a common mistake under pressure.",
+        "Coordinate compression required for values outside [1..n] - if you're counting 'how many elements smaller than x' where x can be any integer, compress values to [1..n] first. Skipping this leads to out-of-bounds BIT access or incorrectly sized arrays.",
+        "Forgetting `i & (-i)` in JS works on 32-bit signed integers - for `n` larger than 2^30, the lowest-set-bit calculation can overflow into negative numbers. For typical interview constraints (n <= 10^5) this is not an issue, but be aware."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Range Sum Query - Mutable",
+          "slug": "range-sum-query-mutable",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Direct application of BIT for point update and range sum query - the canonical BIT problem."
+        },
+        {
+          "title": "Count of Smaller Numbers After Self",
+          "slug": "count-of-smaller-numbers-after-self",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Tests BIT with coordinate compression for order statistics - count elements inserted so far that are smaller than current."
+        },
+        {
+          "title": "Create Sorted Array Through Instructions",
+          "slug": "create-sorted-array-through-instructions",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Tests BIT for counting elements less than and greater than a value in a dynamically growing sorted array."
+        },
+        {
+          "title": "Reverse Pairs",
+          "slug": "reverse-pairs",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Tests BIT with coordinate compression for counting pairs (i, j) where i < j and arr[i] > 2 * arr[j] - a harder inversion counting variant."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Advanced Graph - Bridges, Articulation Points, SCC",
+      "next_slug": "advanced-graph",
+      "why": "After mastering tree-based data structures for range queries, the next step in Level 7 is advanced graph algorithms. These require deep DFS understanding - tracking discovery times and low values - which builds on the recursive thinking used in segment trees and BIT."
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "topic": "Sparse Table",
+  "level": 8,
+  "slug": "sparse-table",
+  "estimated_read": "13 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is a Sparse Table?",
+      "content": "A **sparse table** answers **static range minimum (or maximum) queries** in O(1) per query after O(n log n) preprocessing. 'Static' means the array does not change after preprocessing - there are no updates. If your problem has updates, use a segment tree instead. The sparse table is the go-to data structure when you have a large number of range min/max queries on a fixed array and need the absolute fastest query time.\n\nThe key insight enabling O(1) queries is the **overlap-friendly** (idempotent) property of min and max: `min(A, A) = A`. Because querying the same element twice doesn't change the answer, you can decompose any range `[l, r]` into two potentially overlapping ranges of power-of-2 length, take the min of both, and get the correct answer. This is fundamentally different from sum, where overlapping counts elements twice and produces wrong results.\n\nThe table itself is defined as `st[i][j]` = the minimum of the range `[i, i + 2^j - 1]` (a range of length `2^j` starting at index i). The base case is `st[i][0] = arr[i]`. The recurrence splits larger ranges into two overlapping halves: `st[i][j] = min(st[i][j-1], st[i + 2^(j-1)][j-1])`. Building the full table takes O(n log n) time and O(n log n) space.\n\nSparse table appears in problems with heavy range min/max query workloads with no updates - including Lowest Common Ancestor via Euler tour reduction, range GCD queries, and range bitwise AND/OR queries. The same power-of-2 decomposition also underlies binary lifting for LCA on trees, where `up[v][j]` = the 2^j-th ancestor of node v is built and queried with an identical pattern."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use sparse table when the array is static (no updates after construction), you have many range minimum or maximum queries (Q up to 10^6 is fine - O(1) per query), and the operation is idempotent (min, max, GCD, bitwise AND/OR). If the array changes between queries, sparse table is invalid - use a segment tree instead.",
+      "signals": [
+        "range minimum query",
+        "RMQ",
+        "range maximum static",
+        "static array many queries",
+        "range GCD",
+        "lowest common ancestor binary lifting",
+        "offline range min/max"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## Building the Sparse Table\n\nDefine `st[i][j]` = minimum of `arr[i..i + 2^j - 1]` (the range of length `2^j` starting at i).\n\n**Base case**: `st[i][0] = arr[i]` for all i (range of length 1).\n\n**Recurrence**: `st[i][j] = min(st[i][j-1], st[i + 2^(j-1)][j-1])` - split the 2^j range into two halves of length 2^(j-1).\n\n**Fill order**: outer loop j from 1 to `floor(log2(n))`, inner loop i from 0 to `n - 2^j`. This ensures the right half `st[i + 2^(j-1)][j-1]` is already computed when we compute `st[i][j]`.\n\n**Table size**: allocate `n` rows and `floor(log2(n)) + 1` columns.\n\n## O(1) Range Minimum Query\n\nFor query `[l, r]`:\n1. Compute `k = Math.floor(Math.log2(r - l + 1))`.\n2. Return `min(st[l][k], st[r - (1 << k) + 1][k])`.\n\nThe two ranges `[l, l + 2^k - 1]` and `[r - 2^k + 1, r]` together cover `[l, r]` completely. They may overlap, but since min is idempotent, the overlap doesn't corrupt the answer. Exactly two table lookups + one min operation = O(1).\n\n**Performance tip**: precompute `logTable[i] = floor(log2(i))` for all i from 1 to n before running queries to avoid calling `Math.log2` inside every query.\n\n## Range GCD and Bitwise Operations\n\nMin/max aren't the only idempotent operations. `gcd(a, a) = a`, so sparse table extends to range GCD queries in O(1) - replace min with gcd in both build and query. Same for range bitwise AND (`a & a === a`) and range bitwise OR (`a | a === a`).\n\nRange SUM is NOT idempotent - `a + a = 2a ≠ a`. Never use sparse table for range sum queries; use prefix sums.\n\n## Sparse Table for Binary Lifting (LCA)\n\nThe same power-of-2 decomposition applies to trees. `up[v][j]` = the 2^j-th ancestor of node v. Build: `up[v][0] = parent[v]`, then `up[v][j] = up[up[v][j-1]][j-1]`. LCA query: lift the deeper node to the same depth using binary jumps, then simultaneously lift both nodes until they meet. O(n log n) build, O(log n) LCA query. This is sparse table applied to a tree structure instead of a flat array - the decomposition principle is identical."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "language": "javascript",
+      "code": "function buildSparseTable(arr) {\n  const n = arr.length;\n  const LOG = Math.floor(Math.log2(n)) + 1;\n\n  // st[i][j] = min of arr[i .. i + 2^j - 1]\n  const st = Array.from({ length: n }, () => new Array(LOG).fill(0));\n\n  // base case: ranges of length 1\n  for (let i = 0; i < n; i++) st[i][0] = arr[i];\n\n  // fill by increasing power of 2\n  for (let j = 1; j < LOG; j++) {\n    for (let i = 0; i + (1 << j) <= n; i++) {\n      st[i][j] = Math.min(st[i][j - 1], st[i + (1 << (j - 1))][j - 1]);\n    }\n  }\n\n  // precompute log table to avoid Math.log2 in every query\n  const logTable = new Array(n + 1).fill(0);\n  for (let i = 2; i <= n; i++) logTable[i] = logTable[i >> 1] + 1;\n\n  // O(1) range minimum query\n  function query(l, r) {\n    const k = logTable[r - l + 1];\n    return Math.min(st[l][k], st[r - (1 << k) + 1][k]);\n  }\n\n  return query;\n}\n\n// Usage\nconst rmq = buildSparseTable([2, 4, 3, 1, 6, 7, 8, 9, 1, 7]);\nconsole.log(rmq(0, 4)); // min of arr[0..4] = 1\nconsole.log(rmq(2, 7)); // min of arr[2..7] = 1",
+      "explanation": "Builds the sparse table in O(n log n) with a precomputed log table, then answers each range minimum query in O(1) using two overlapping power-of-2 ranges."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Range Maximum Query",
+          "description": "Identical structure to range minimum - replace `Math.min` with `Math.max` in both build and query. Max is idempotent (`max(a, a) = a`), so the two-overlapping-range trick works identically.",
+          "example_problem": "Range Minimum Query",
+          "example_slug": "range-minimum-query"
+        },
+        {
+          "name": "Range GCD",
+          "description": "Replace min with `gcd` in both the build recurrence and the query. GCD is idempotent (`gcd(a, a) = a`), so overlapping ranges produce the correct answer. Enables O(1) range GCD on a static array.",
+          "example_problem": "GCD of Array Elements from Given Queries",
+          "example_slug": "gcd-of-array-elements-from-given-queries"
+        },
+        {
+          "name": "Binary Lifting for LCA",
+          "description": "Apply the power-of-2 decomposition to a rooted tree: `up[v][j]` = 2^j-th ancestor of v. Build in O(n log n) via DFS, answer each LCA query in O(log n) by equalizing depths then simultaneously lifting both nodes until they meet.",
+          "example_problem": "Kth Ancestor of a Tree Node",
+          "example_slug": "kth-ancestor-of-a-tree-node"
+        },
+        {
+          "name": "Disjoint Sparse Table",
+          "description": "An advanced variant that supports non-idempotent operations (like sum) in O(1) query time after O(n log n) preprocessing, by building non-overlapping range blocks at each level. Each query decomposes into exactly two non-overlapping segments whose ranges are guaranteed not to cross block boundaries.",
+          "example_problem": "Minimum Number of Jumps",
+          "example_slug": "minimum-number-of-jumps"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n log n) build; O(1) query",
+      "space": "O(n log n)",
+      "explanation": "The build fills n × log(n) table entries, each in O(1) - total O(n log n). Each query does exactly two table lookups plus one min/max - O(1). Space is O(n log n) for the table itself - for n = 10^5 that's about 10^5 × 17 ≈ 1.7M entries, which is fine. Precomputing the log table adds O(n) space and eliminates the floating-point `Math.log2` call from every query."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Using sparse table on a mutable array - any update invalidates the entire preprocessed table because all entries covering that index are stale; for arrays with updates, use a segment tree (O(log n) update and query) instead.",
+        "Off-by-one in the query's second range: the second range starts at `r - (1 << k) + 1`, not `r - (1 << k)` - the off-by-one shifts the second range left by one, leaving a gap of size 1 at the right boundary and producing wrong min for queries at that boundary.",
+        "Calling `Math.log2` inside every query loop - while technically O(1), the floating-point computation adds significant constant overhead for large query counts; precompute `logTable[i]` for all i before queries and use integer table lookups.",
+        "Allocating the wrong number of columns: use `floor(log2(n)) + 1` columns - allocating fewer columns causes the build loop to skip the largest power-of-2 level, leaving large-range queries with uninitialized or zero values.",
+        "Using sparse table for range sum - sum is not idempotent (`a + a = 2a`), so overlapping ranges double-count the middle elements and produce wrong sums; use prefix sums for range sum queries."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Range Minimum Query",
+          "slug": "range-minimum-query",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Direct application of sparse table build and O(1) query - tests correct table construction, log precomputation, and the two-overlapping-range query formula."
+        },
+        {
+          "title": "Kth Ancestor of a Tree Node",
+          "slug": "kth-ancestor-of-a-tree-node",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Binary lifting is the tree analog of sparse table - tests building the `up[v][j]` ancestor table and decomposing k into binary to answer k-th ancestor queries in O(log n)."
+        },
+        {
+          "title": "Minimum Number of Jumps",
+          "slug": "minimum-number-of-jumps",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Range maximum query on a static array - tests substituting max for min in the sparse table and applying O(1) RMQ to a greedy problem."
+        },
+        {
+          "title": "GCD of Array Elements from Given Queries",
+          "slug": "gcd-of-array-elements-from-given-queries",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Range GCD with sparse table - tests recognizing that GCD is idempotent and substituting it into the standard build/query template for O(1) range GCD."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Eulerian Path & Circuit",
+      "next_slug": "eulerian-path",
+      "why": "Sparse table completes the static range query section. Eulerian path is the next Level 7 topic - a graph algorithm that also relies on efficient preprocessing (degree checking) before running the main traversal, reinforcing the pattern of verify-then-execute."
+    }
+  ]
+}

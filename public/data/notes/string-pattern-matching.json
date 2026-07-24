@@ -1,0 +1,129 @@
+{
+  "topic": "String Pattern Matching",
+  "level": 7,
+  "slug": "string-pattern-matching",
+  "estimated_read": "14 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is String Pattern Matching?",
+      "content": "**String pattern matching** asks: given a text of length n and a pattern of length m, find all positions in the text where the pattern occurs. The naive approach compares the pattern against every position in the text: O(n×m). For long texts and patterns, this is too slow. Three linear-time algorithms solve this: **KMP** (Knuth-Morris-Pratt), **Z-algorithm**, and **Rabin-Karp** (rolling hash). Each has a different mechanism but all achieve O(n+m).\n\n**KMP** preprocesses the pattern into a failure function (also called the LPS array - Longest Proper Prefix which is also Suffix) that tells you how far to shift when a mismatch occurs - avoiding redundant comparisons by reusing already-matched prefix information. When a mismatch happens at position j in the pattern, instead of restarting from 0, you fall back to `lps[j-1]`, skipping work you already did.\n\nThe **Z-algorithm** computes a Z-array where `Z[i]` is the length of the longest substring starting at index i that matches a prefix of the string. For pattern matching, concatenate `pattern + '$' + text` (using a separator not in either string), build the Z-array on the concatenation, and any position where `Z[i] === m` is a match location. Z-algorithm is often simpler to implement than KMP in competitive programming.\n\n**Rabin-Karp** uses hashing to compare pattern and substring fingerprints in O(1), only falling back to character comparison on hash matches. Its power lies in **multiple pattern search** - compute all pattern hashes into a hash set and check each window hash against it, finding any matching pattern in O(n+total_pattern_length). These three algorithms together cover the full spectrum of string search problems you'll encounter at Level 7 and above."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use string pattern matching algorithms when naive O(n×m) search is too slow, typically when text or pattern lengths are in the tens of thousands or more. The clearest triggers are finding all occurrences of a pattern, checking for repeated substrings, determining the shortest period of a string, or searching for any one of multiple patterns simultaneously. Problems mentioning 'KMP', 'Z function', or 'rolling hash' directly name the technique.",
+      "signals": [
+        "find all occurrences of pattern",
+        "string search linear time",
+        "KMP",
+        "Z function",
+        "rolling hash",
+        "repeated substring",
+        "string period",
+        "pattern matching in stream"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## KMP Failure Function (LPS Array)\n\nThe failure function `lps[i]` (Longest Proper Prefix which is also Suffix) for the pattern says: if you mismatch at position `i+1` in the pattern, you can fall back to `lps[i]` and continue from there without rechecking already-matched characters.\n\n**Building `lps`**: start with `len = 0`, `i = 1`, `lps[0] = 0`. If `pattern[i] === pattern[len]`: `lps[i] = ++len; i++`. If mismatch and `len > 0`: `len = lps[len-1]` (don't increment i - critical). If mismatch and `len === 0`: `lps[i] = 0; i++`.\n\n**KMP Search**: scan text with pointer `i` and pattern with pointer `j`. Match: advance both (`i++; j++`). Mismatch: if `j > 0`, set `j = lps[j-1]` (shift pattern, keep text pointer); if `j === 0`, advance `i`. Record match when `j === m`, then set `j = lps[j-1]` to continue searching for overlapping matches.\n\n## Z-Algorithm\n\nBuild Z-array for string `s` where `Z[i]` = length of the longest substring starting at `s[i]` that matches a prefix of `s`. `Z[0]` is undefined (full string length by convention). Maintain a window `[L, R]` - the rightmost Z-box seen. For each `i`: if `i > R`, extend naively. If `i <= R`, use `Z[i - L]` as a starting estimate (previously computed), then extend if at the boundary.\n\nFor pattern matching: concatenate `pattern + '$' + text` (separator must not appear in either string), build Z-array on the concatenation. Any position where `Z[i] === m` is a match location at text index `i - m - 1`.\n\n## Rabin-Karp Rolling Hash\n\nCompute a hash of the pattern and a hash of each length-m window of the text. If hashes match, verify character by character (to handle collisions). The key: compute the next window's hash from the previous in O(1) by subtracting the leaving character's contribution and adding the entering character's.\n\nStandard polynomial hash: `hash = (hash * base - text[i-m] * pow(base, m) + text[i]) % mod`. Choose a large prime mod and prime base to minimize collisions. Rabin-Karp shines for **multiple pattern search** - store all pattern hashes in a Set and check each window hash against it.\n\n## When to Use Which\n\n- **KMP**: single pattern search in a stream, or when you need the failure function structure for other purposes (e.g., shortest period: if `m % (m - lps[m-1]) === 0` then a repeated period exists).\n- **Z-algorithm**: single pattern search, string periodicity problems, often simpler to implement than KMP.\n- **Rabin-Karp**: multiple pattern search, 2D pattern matching, problems reducible to 'does this substring match any of these patterns?'"
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "language": "javascript",
+      "code": "// KMP: build failure function (LPS array), then search\nfunction kmpSearch(text, pattern) {\n  const n = text.length, m = pattern.length;\n  if (m === 0) return [];\n\n  // Step 1: build LPS (Longest Proper Prefix = Suffix) array\n  const lps = new Array(m).fill(0);\n  let len = 0, i = 1;\n  while (i < m) {\n    if (pattern[i] === pattern[len]) {\n      lps[i++] = ++len;\n    } else if (len > 0) {\n      len = lps[len - 1]; // fall back - do NOT increment i\n    } else {\n      lps[i++] = 0;\n    }\n  }\n\n  // Step 2: search text using the LPS array\n  const matches = [];\n  let j = 0; // pointer into pattern\n  i = 0;     // pointer into text\n  while (i < n) {\n    if (text[i] === pattern[j]) {\n      i++; j++;\n    }\n    if (j === m) {\n      matches.push(i - m); // match starts here\n      j = lps[j - 1];      // continue for overlapping matches\n    } else if (i < n && text[i] !== pattern[j]) {\n      if (j > 0) j = lps[j - 1]; // shift pattern\n      else i++;                   // advance text\n    }\n  }\n  return matches;\n}",
+      "explanation": "Builds the LPS failure function in O(m), then searches the text in O(n) by reusing matched prefix information on mismatch instead of restarting from zero."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Z-Algorithm",
+          "description": "Concatenate `pattern + '$' + text`, build the Z-array on the full string, then collect positions where `Z[i] === pattern.length`. The separator prevents Z values from spanning the junction. Often simpler to implement than KMP for competitive programming.",
+          "example_problem": "Find the Index of the First Occurrence in a String",
+          "example_slug": "find-the-index-of-the-first-occurrence-in-a-string"
+        },
+        {
+          "name": "Rabin-Karp Rolling Hash",
+          "description": "Compute polynomial hashes for the pattern and each length-m window of the text, updating the hash in O(1) per step. On hash match, verify character-by-character to rule out collisions. Best for searching multiple patterns simultaneously using a hash set.",
+          "example_problem": "Find All Anagrams in a String",
+          "example_slug": "find-all-anagrams-in-a-string"
+        },
+        {
+          "name": "Repeated Substring Pattern via KMP",
+          "description": "The LPS failure function reveals the period of a string directly: if `m % (m - lps[m-1]) === 0`, the string is made of repeated copies of a substring of length `m - lps[m-1]`. No additional search needed - just inspect `lps[m-1]`.",
+          "example_problem": "Repeated Substring Pattern",
+          "example_slug": "repeated-substring-pattern"
+        },
+        {
+          "name": "Shortest Palindrome (KMP on Reversed String)",
+          "description": "To find the shortest palindrome by prepending characters, concatenate the original string, a separator, and the reversed string. Run KMP and the LPS value at the last position tells you the longest palindromic prefix - the rest must be prepended in reverse.",
+          "example_problem": "Shortest Palindrome",
+          "example_slug": "shortest-palindrome"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n + m)",
+      "space": "O(m) for KMP; O(n + m) for Z-algorithm concatenation",
+      "explanation": "KMP builds the LPS array in O(m) - each character is processed at most twice (advance i, then fall back through lps). The search runs in O(n) - text pointer i never decrements, so at most n iterations. Z-algorithm is O(n+m) for the same reason: the window [L, R] only moves right. Rabin-Karp is O(n+m) average with O(1) hash updates, but O(nm) worst case if all windows hash-collide with the pattern."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "KMP failure function: when mismatch at `len > 0`, setting `len = 0` instead of `len = lps[len-1]` - falling back to 0 discards already-computed prefix information, causing O(n×m) worst-case behavior and wrong LPS values for the remaining pattern.",
+        "Z-algorithm separator: using a character that appears in the pattern or text as the separator - this allows Z values to bleed across the junction, producing false matches at positions inside the text where Z[i] === m but the match actually spans the separator.",
+        "Rabin-Karp: not verifying character-by-character on hash match - hash collisions produce false positives that count as valid matches, giving wrong output without the verification fallback.",
+        "KMP search: when `j === m` (full match found), forgetting to reset `j = lps[j-1]` before continuing - this misses all overlapping matches after the first one, making the function return at most one occurrence.",
+        "Off-by-one in match position with Z-array: a match at position i in the concatenated string `pattern + '$' + text` starts at index `i - m - 1` in the original text (subtract pattern length and the separator); using `i - m` or `i` directly returns wrong indices."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Find the Index of the First Occurrence in a String",
+          "slug": "find-the-index-of-the-first-occurrence-in-a-string",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "Direct application of KMP or Z-algorithm for single pattern search - tests correct LPS construction and the mismatch fallback logic."
+        },
+        {
+          "title": "Repeated Substring Pattern",
+          "slug": "repeated-substring-pattern",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "Tests using the LPS failure function value at `lps[m-1]` to determine the period of a string - the KMP insight beyond basic search."
+        },
+        {
+          "title": "Shortest Palindrome",
+          "slug": "shortest-palindrome",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Requires KMP on the concatenation of a string and its reverse to find the longest palindromic prefix - tests creative application of the failure function."
+        },
+        {
+          "title": "Find All Anagrams in a String",
+          "slug": "find-all-anagrams-in-a-string",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Sliding window anagram search - tests the ability to recognize when rolling hash or frequency comparison applies as a pattern matching variant."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Sparse Table",
+      "next_slug": "sparse-table",
+      "why": "Both KMP and sparse table preprocess a structure in O(n log n) or O(n+m) to answer subsequent queries efficiently. Sparse table extends the preprocessing-then-query paradigm to range minimum/maximum problems using the same power-of-2 decomposition idea."
+    }
+  ]
+}

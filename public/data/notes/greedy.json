@@ -1,0 +1,122 @@
+{
+  "topic": "Greedy Algorithms",
+  "level": 8,
+  "slug": "greedy",
+  "estimated_read": "11 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What are Greedy Algorithms?",
+      "content": "A greedy algorithm makes the **locally optimal choice** at each step, never reconsidering past decisions. When it works, greedy is elegant \u2014 simple code, fast execution. When it doesn't, it fails silently, returning a plausible-looking but suboptimal answer.\n\nThe central challenge: **proving correctness**. Unlike DP which exhaustively explores all options, greedy commits irrevocably. Two primary proof strategies: the **exchange argument** (show any deviation from greedy can be swapped back without loss) and **greedy stays ahead** (show greedy is at least as good as any algorithm at every step).\n\nIn practice: if you can't find a counterexample after trying a few cases, the greedy is likely correct. Canonical examples \u2014 interval scheduling, Huffman coding, Dijkstra, Prim's MST \u2014 all have clean exchange argument proofs.\n\nThe failure cases matter equally. Coin change with arbitrary denominations, 0/1 knapsack, and graph coloring look like they should have greedy solutions but don't. The tell: if taking item X today constrains items Y and Z you can take tomorrow in ways that depend on future state, greedy fails and DP is needed."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Reach for greedy when there is a clear 'best local choice' at each step and the problem has optimal substructure where local optima combine into a global optimum. If you can sort the inputs and make a single linear sweep with one obvious decision per element, greedy likely works.",
+      "signals": [
+        "maximize number of activities",
+        "minimum number of operations",
+        "assign tasks optimally",
+        "interval scheduling",
+        "job sequencing",
+        "minimum cost greedy",
+        "always pick the best available"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Exchange Argument, Interval Scheduling, and When Greedy Fails",
+      "content": "## The Exchange Argument\n\n1. Let G be the greedy solution and OPT be any optimal solution.\n2. Find the first position where G and OPT differ.\n3. Show you can modify OPT to match G's choice without making OPT worse.\n4. Repeat until OPT = G \u2014 concluding G is also optimal.\n\nClassic: interval scheduling. Greedy picks the interval ending earliest. Exchange: if OPT picks a different interval ending later, swapping it for greedy's choice can only free up more future time.\n\n## Interval Scheduling\n\n**Sort by end time.** Maintain end time of last selected interval. For each interval: if it starts at or after last end, select it and update. Why end time? Sorting by start picks early starters that may end late and block many future intervals.\n\nVariants: minimum intervals to remove = n \u2212 maximum non-overlapping. Interval partitioning (minimum rooms) = maximum number of overlapping intervals at any point (use min-heap of end times).\n\n## When Greedy Fails\n\n- **Coin change with arbitrary denominations**: {1,3,4} target 6. Greedy: 4+1+1 = 3 coins. Optimal: 3+3 = 2 coins. Use DP.\n- **0/1 Knapsack**: high value/weight ratio items may leave wasted capacity. Use DP.\n- **Graph coloring**: greedy may use more colors than optimal. NP-hard in general.\n\n## Jump Game Pattern\n\nTrack maximum reachable index at each position. At each step extend reach as far as possible. The choice of which jump to take within reachable range doesn't matter \u2014 only the furthest reach does.\n\n## Gas Station Pattern\n\nIf total gas \u2265 total cost, a solution exists. Find start: track running `gas-cost` sum, reset start to `i+1` whenever running sum goes negative."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// Interval scheduling: minimum intervals to remove for non-overlap\nfunction eraseOverlapIntervals(intervals) {\n  if (!intervals.length) return 0;\n  intervals.sort((a,b)=>a[1]-b[1]); // sort by END time\n  let removed=0, lastEnd=-Infinity;\n  for (const [start,end] of intervals) {\n    if (start>=lastEnd) lastEnd=end;  // no overlap: select\n    else removed++;                    // overlap: remove\n  }\n  return removed;\n}\n\n// Jump Game II: minimum jumps to reach end\nfunction jump(nums) {\n  let jumps=0, curReach=0, nextReach=0;\n  for (let i=0;i<nums.length-1;i++) {\n    nextReach=Math.max(nextReach, i+nums[i]);\n    if (i===curReach) { jumps++; curReach=nextReach; }\n  }\n  return jumps;\n}\n\n// Gas station: find valid starting position\nfunction canCompleteCircuit(gas, cost) {\n  let total=0, curr=0, start=0;\n  for (let i=0;i<gas.length;i++) {\n    const delta=gas[i]-cost[i];\n    total+=delta; curr+=delta;\n    if (curr<0) { start=i+1; curr=0; } // reset start on deficit\n  }\n  return total>=0 ? start : -1;\n}",
+      "language": "javascript",
+      "explanation": "Three canonical greedy patterns: interval scheduling (sort by end time, sweep), jump game II (current and next reach boundaries), gas station (reset start on negative surplus)."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Fractional Knapsack",
+          "description": "Unlike 0/1 knapsack, fractional items can be taken. Greedy works: sort by value/weight ratio, take items in order until capacity is full, take a fraction of the last item if needed. The exchange argument holds because fractions are divisible.",
+          "example_problem": "Jump Game",
+          "example_slug": "jump-game"
+        },
+        {
+          "name": "Non-Overlapping Interval Removal",
+          "description": "Minimum intervals to remove = n minus maximum non-overlapping set size. Same sort-by-end-time greedy with a removal counter instead of a selection counter.",
+          "example_problem": "Non-Overlapping Intervals",
+          "example_slug": "non-overlapping-intervals"
+        },
+        {
+          "name": "Greedy with Priority Queue",
+          "description": "When the best local choice changes dynamically, maintain options in a max-heap. Extract the best at each step, update heap with new options. Combines greedy decision-making with O(log n) priority queue updates.",
+          "example_problem": "Gas Station",
+          "example_slug": "gas-station"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n log n) for sort-based greedy; O(n) for linear sweep greedy",
+      "space": "O(1) for linear greedy; O(n) for priority-queue greedy",
+      "explanation": "Most greedy algorithms sort first O(n log n) then do a single linear sweep O(n). Pure sweeps (jump game, gas station) requiring no sort run in O(n). Priority-queue greedy adds O(log n) per element for O(n log n) total. Greedy preferred over DP when provably correct \u2014 same asymptotic but typically O(1) extra space vs O(n) DP table."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Sorting by start time instead of end time for interval scheduling: early starters that end late block more future intervals. Always sort by END time for maximum non-overlap.",
+        "Applying greedy to coin change with arbitrary denominations: denominations like {1,3,4} break the greedy. Always test with small counterexamples before committing. If one exists, use DP.",
+        "Confusing greedy with DP: if choosing item at step i affects availability at step j in a non-trivial way, greedy gives suboptimal results. Dependency between choices is the signal to use DP.",
+        "Wrong tiebreaker in sorting: when multiple choices share the primary sort key, the tiebreaker determines correctness. Wrong tiebreaker produces wrong answers that pass most test cases.",
+        "Not verifying feasibility before greedy: gas station greedy requires total gas >= total cost. Applying without this check returns garbage when no solution exists."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Jump Game",
+          "slug": "jump-game",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Greedy reachability \u2014 track maximum reachable index while sweeping to determine if end is reachable without BFS or DP."
+        },
+        {
+          "title": "Jump Game II",
+          "slug": "jump-game-ii",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Greedy jump counting \u2014 current and next reach boundaries count minimum jumps, testing the two-boundary greedy pattern."
+        },
+        {
+          "title": "Non-Overlapping Intervals",
+          "slug": "non-overlapping-intervals",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Interval scheduling core \u2014 sort by end time and count removals, testing the canonical greedy that minimizes blocked future intervals."
+        },
+        {
+          "title": "Gas Station",
+          "slug": "gas-station",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Greedy with reset \u2014 surplus-tracking with start reset tests understanding of why the last valid start after a full circuit is the answer."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "String Matching",
+      "next_slug": "string-matching",
+      "why": "String matching brings together linear-time algorithms (KMP, Z-algorithm) that use preprocessing to enable fast search \u2014 structurally similar to greedy's sort-first sweep-after pattern. Completing string matching finishes the entire Atlas DSA roadmap."
+    }
+  ]
+}

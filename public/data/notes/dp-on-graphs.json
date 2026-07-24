@@ -1,0 +1,129 @@
+{
+  "topic": "DP on Graphs",
+  "level": 6,
+  "slug": "dp-on-graphs",
+  "estimated_read": "12 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is DP on Graphs?",
+      "content": "**DP on graphs** means defining states over graph nodes and transitions over edges. The critical requirement: the graph must be a **DAG** (Directed Acyclic Graph) for standard DP to apply. DP requires filling states in some valid order - you must compute a state's value before computing any state that depends on it. A topological ordering of the DAG gives exactly this valid order. Cycles prevent any such ordering from existing, making naive DP fail or loop infinitely.\n\nTwo main patterns arise. In **DAG DP**, you compute answers directly over the graph's structure - counting paths, finding the longest or shortest path, or computing some aggregate over all paths from source to target. In **DP with extended state**, you augment the node with additional information to create a state-space graph that is a DAG even when the original graph has cycles. For example, `(node, steps_taken)` or `(node, visited_bitmask)` creates states that only move forward and never revisit the same state.\n\nThe connection to shortest-path algorithms is deep. Dijkstra's algorithm is DP on a graph where the state is `(node, current_min_distance)` and the priority queue ensures states are processed in optimal order. Bellman-Ford is DP where each of K iterations relaxes all edges - `dp[node][k]` is the minimum cost path using at most `k` edges. Understanding graph DP as a generalization of these classical algorithms makes it easier to adapt them to new constraints.\n\nA particularly powerful extension is **bitmask DP on graphs**, where the state `(node, visited_mask)` tracks which nodes have been visited. This encodes the entire history of the path in a compact integer. For `n ≤ 20` nodes, there are `n × 2^n` states - feasible in time and memory - enabling optimal solutions to otherwise NP-hard problems like the Traveling Salesman Problem."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use graph DP when the problem involves counting or optimizing paths in a directed graph, with possible constraints on the number of steps or which nodes have been visited. If the graph is a DAG (or can be processed as one via topological sort), DAG DP applies. If paths have bounded length (at most k edges), the Bellman-Ford style k-step DP applies. If n is small (≤ 20) and you need to visit all nodes optimally, bitmask DP applies.",
+      "signals": [
+        "number of paths from source to target in DAG",
+        "longest path in a directed graph",
+        "cheapest flight with at most k stops",
+        "minimum cost visiting all nodes",
+        "number of ways to reach destination",
+        "directed graph with no cycles",
+        "jump game paths count",
+        "paths with bounded steps or cost"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## DAG DP\n\nCompute topological order of the DAG first (Kahn's algorithm or DFS-based). Then iterate nodes in topological order. For each node, compute `dp[node]` from all its predecessors' dp values.\n\n- **Count paths**: `dp[node] = sum(dp[prev])` for all predecessors\n- **Longest path**: `dp[node] = max(dp[prev] + 1)` for all predecessors  \n- **Shortest path with uniform weights**: BFS order is equivalent to topological order here\n\nBase case: `dp[source] = 1` for count (one way to start), or `0` for shortest path (zero cost at source).\n\n## Bounded-Step DP (Bellman-Ford Variant)\n\n`dp[node][k]` = optimal cost to reach `node` using **at most** `k` edges. Iterate `k` from 1 to K. For each k, iterate all edges `(u, v, w)`: `dp[v][k] = min(dp[v][k-1], dp[u][k-1] + w)`. Base: `dp[source][0] = 0`, all others Infinity.\n\nCritical: copy the previous DP array before each k-iteration (`prev = [...dp[k-1]]`) and read from `prev` when updating `dp[k]`. Without this, updates within the same k-step propagate through multiple edges in one pass, violating the k-step constraint.\n\n## State Space Graph (Extended State)\n\nWhen the graph has cycles but the problem has a parameter that strictly increases (steps taken, nodes visited), create a state `(node, parameter)`. This state space is always a DAG because the parameter only increases. Apply standard DAG DP on the state space.\n\nExample: `dp[node][steps]` for 'minimum cost path with exactly k steps' - transitions increase steps by 1, so no state cycles.\n\n## Bitmask DP on Graphs\n\n`dp[mask][node]` = minimum cost to have visited exactly the nodes in `mask`, currently at `node`. Transition: for each unvisited node `next` (bit not set in mask): `dp[mask | (1 << next)][next] = min(dp[mask][next], dp[mask][node] + dist[node][next])`.\n\nBase: `dp[1 << start][start] = 0`. Answer for TSP: `min(dp[fullMask][node] + dist[node][start])` over all `node`. States: `n × 2^n`. Feasible for n ≤ 20."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// DAG DP - count paths from source to target using topological order\nfunction countPaths(n, edges, source, target) {\n  const adj = Array.from({ length: n }, () => []);\n  const inDegree = new Array(n).fill(0);\n  for (const [u, v] of edges) {\n    adj[u].push(v);\n    inDegree[v]++;\n  }\n\n  // Kahn's topological sort\n  const queue = [];\n  for (let i = 0; i < n; i++) if (inDegree[i] === 0) queue.push(i);\n\n  const dp = new Array(n).fill(0);\n  dp[source] = 1; // one way to be at source\n  let head = 0;\n\n  while (head < queue.length) {\n    const u = queue[head++];\n    for (const v of adj[u]) {\n      dp[v] += dp[u]; // propagate path count\n      if (--inDegree[v] === 0) queue.push(v);\n    }\n  }\n  return dp[target];\n}\n\n// Bounded-step DP (cheapest flight with at most K stops)\nfunction findCheapestPrice(n, flights, src, dst, k) {\n  let dp = new Array(n).fill(Infinity);\n  dp[src] = 0;\n\n  for (let step = 0; step <= k; step++) {\n    const prev = [...dp]; // COPY before updating - prevent intra-step bleeding\n    for (const [u, v, w] of flights) {\n      if (prev[u] !== Infinity) {\n        dp[v] = Math.min(dp[v], prev[u] + w);\n      }\n    }\n  }\n  return dp[dst] === Infinity ? -1 : dp[dst];\n}",
+      "language": "javascript",
+      "explanation": "DAG DP integrates topological sort with DP fill - as each node becomes reachable (in-degree hits 0), propagate its dp value to successors. Bounded-step DP copies the previous state before each iteration to prevent multi-hop updates within the same step count - this is the most common bug in this pattern."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Memoized DFS on DAG (Top-Down)",
+          "description": "Instead of computing topological order explicitly, use recursive DFS with memoization. When visiting a node, recursively solve all its successors, cache the result. Works naturally on DAGs since no cycles means no infinite recursion. Often cleaner to write than Kahn's-based bottom-up.",
+          "example_problem": "Longest Increasing Path in a Matrix",
+          "example_slug": "longest-increasing-path-in-a-matrix"
+        },
+        {
+          "name": "TSP with Bitmask DP",
+          "description": "dp[mask][node] = minimum cost visiting exactly the nodes in mask, ending at node. Transition adds one unvisited node at a time. O(n² × 2^n) time. Feasible for n ≤ 20. The full mask (all 1s) gives the answer - add return cost to source.",
+          "example_problem": "Find the Shortest Superstring",
+          "example_slug": "find-the-shortest-superstring"
+        },
+        {
+          "name": "Probability DP on Graphs",
+          "description": "dp[node] = probability of reaching this node from source. Transition: dp[v] += dp[u] × prob(u→v). Works on DAGs in topological order. For graphs with cycles, convert to a system of equations or use iterative methods.",
+          "example_problem": "Count All Possible Routes",
+          "example_slug": "count-all-possible-routes"
+        },
+        {
+          "name": "Shortest Path DP Connection",
+          "description": "Dijkstra's is DP where states are (node, current_distance) processed in priority order. Bellman-Ford is DP with k-step iterations. Floyd-Warshall is DP where dp[k][i][j] = shortest path from i to j using only nodes 0..k as intermediaries. Understanding these as DP unifies shortest-path algorithms.",
+          "example_problem": "Number of Ways to Arrive at Destination",
+          "example_slug": "number-of-ways-to-arrive-at-destination"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(V+E) for DAG DP, O(K×E) for bounded-step, O(n² × 2^n) for bitmask DP",
+      "space": "O(V) for DAG DP, O(V) for bounded-step (rolling), O(n × 2^n) for bitmask",
+      "explanation": "DAG DP processes each vertex and edge once in topological order: O(V + E). Bounded-step DP runs K iterations each processing all E edges: O(K × E). Bitmask DP has n × 2^n states with n transitions each: O(n² × 2^n) time and O(n × 2^n) space. For n=20: 20M states × 20 transitions = 400M operations - borderline feasible with fast constant. For n=25: 25 × 33M = 800M states - generally infeasible."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Applying DAG DP to a graph with cycles - cycles create infinite dependencies; the DP has no valid fill order and either infinite-loops or produces wrong answers; always verify the graph is a DAG or use Bellman-Ford / memoized DFS with cycle detection instead.",
+        "Wrong topological order direction - must process nodes BEFORE their successors; processing in reverse topological order (successors before predecessors) means dp[successor] isn't ready when dp[node] tries to use it.",
+        "Not copying the dp array before each k-step iteration in bounded-step DP - `prev[u]` must reflect values from k-1 steps, not the current k-step's partially-updated values; without copying, a path u→v→w can be applied in a single k=1 iteration, giving k=2 reachability.",
+        "Bitmask DP exponential blowup - 2^20 = ~1M is feasible, 2^25 = ~33M starts hitting memory limits, 2^30 = ~1B is infeasible; always check that n ≤ 20 before attempting bitmask DP.",
+        "Confusing longest path in a DAG (solvable in O(V+E) with DP) with longest path in a general graph (NP-hard) - the DAG constraint is what makes it tractable; remove it and the problem becomes computationally intractable."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Number of Ways to Arrive at Destination",
+          "slug": "number-of-ways-to-arrive-at-destination",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Combines Dijkstra's shortest path with DAG DP count - count paths achieving the minimum distance, using the shortest-path DAG as the underlying structure."
+        },
+        {
+          "title": "Cheapest Flights Within K Stops",
+          "slug": "cheapest-flights-within-k-stops",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Direct bounded-step DP - tests the critical 'copy prev before updating' pattern and the K+1 iteration count."
+        },
+        {
+          "title": "Count All Possible Routes",
+          "slug": "count-all-possible-routes",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Top-down memoized DP on a graph with bounded fuel - state is (city, fuel_remaining), transitions reduce fuel, tests memoization on a non-tree graph."
+        },
+        {
+          "title": "Longest Increasing Path in a Matrix",
+          "slug": "longest-increasing-path-in-a-matrix",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Memoized DFS on an implicit DAG - the increasing constraint ensures no cycles, making the grid a DAG where dp[cell] = longest path starting at that cell."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Bitmask DP",
+      "next_slug": "bitmask-dp",
+      "why": "Graph DP introduced the idea of encoding visited nodes as a bitmask state. Bitmask DP formalizes this into a full technique - representing any subset of n elements as a binary integer and DP-ing over all 2^n subsets. It extends graph DP to assignment, covering, and optimal sequencing problems."
+    }
+  ]
+}

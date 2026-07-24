@@ -1,0 +1,129 @@
+{
+  "topic": "Advanced Graph - Bridges, Articulation Points, SCC",
+  "level": 7,
+  "slug": "advanced-graph",
+  "estimated_read": "14 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Advanced Graph Analysis?",
+      "content": "Advanced graph algorithms find the structural weak points and strongly connected regions within a graph. Three concepts are central here: **bridges**, **articulation points**, and **strongly connected components (SCCs)**.\n\nA **bridge** is an edge whose removal increases the number of connected components - it is a critical connection with no alternative path around it. A **articulation point** (also called a cut vertex) is a vertex whose removal disconnects the graph. Together, bridges and articulation points represent the fragile structure of a network: the edges and nodes that, if removed, would fragment it.\n\nA **Strongly Connected Component (SCC)** applies to directed graphs. An SCC is a maximal subset of vertices such that every vertex in the subset is reachable from every other vertex. SCCs reveal the 'islands of mutual reachability' in a directed graph - for instance, in a web graph, all pages that can reach each other through directed links form an SCC.\n\nAll three can be computed in O(V + E) using DFS-based algorithms. The key insight across all of them is the concept of **back edges** in a DFS tree and the **low value** - the earliest discovery time reachable from a subtree via at most one back edge. These algorithms appear in network reliability analysis, dependency resolution, circuit design, and social network analysis."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use bridge/articulation point algorithms when the problem asks for edges or nodes whose removal disconnects a network - 'critical connections,' 'critical servers,' '2-edge-connected components,' or network reliability. Use SCC algorithms when the problem involves directed graphs and asks for groups of mutually reachable nodes, condensation of a directed graph, or safe nodes in a directed graph. These algorithms are not needed for simple reachability or shortest-path problems.",
+      "signals": [
+        "critical connections in a network",
+        "critical nodes whose removal disconnects",
+        "strongly connected components",
+        "directed graph components",
+        "2-edge-connected or 2-vertex-connected",
+        "network reliability",
+        "tarjan algorithm",
+        "find eventual safe states"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## Bridges and Tarjan's Bridge Algorithm\n\nRun DFS and track two values for each node `u`:\n- `disc[u]` - the **discovery time** when `u` was first visited (a global timer incremented each visit)\n- `low[u]` - the **lowest discovery time reachable** from the subtree rooted at `u` using at most one back edge\n\nUpdate rules:\n- After recursing into child `v` (tree edge): `low[u] = Math.min(low[u], low[v])`\n- When `v` is already visited and not the parent (back edge): `low[u] = Math.min(low[u], disc[v])`\n\nAn edge `(u, v)` is a **bridge** if `low[v] > disc[u]`. This means `v`'s subtree has no back edge reaching `u` or any ancestor of `u` - the only connection between `v`'s component and the rest is the edge `(u, v)` itself.\n\n**Critical for undirected graphs**: when recursing from `u` into neighbor `v`, skip the edge back to `u`'s parent. Track the parent node explicitly and skip `if (v === parent)`. Without this, the direct parent edge is counted as a back edge and `low[u]` is incorrectly reduced.\n\n## Articulation Points\n\nSimilar to bridges but identifies vertices instead of edges. Node `u` is an **articulation point** if either:\n1. `u` is the **root** of the DFS tree and has **2 or more children** (removing it disconnects those children)\n2. `u` is **not the root** and has a child `v` where `low[v] >= disc[u]` - meaning `v`'s subtree cannot reach any ancestor of `u`, so removing `u` disconnects `v`'s subtree\n\nThe difference from bridges: bridges use `low[v] > disc[u]`, articulation points use `low[v] >= disc[u]`.\n\n## Tarjan's SCC Algorithm (Directed Graphs)\n\nMaintains a **stack** of nodes currently in the DFS path (distinct from the `visited` set). Tracks `disc` and `low` values. When `low[u] === disc[u]`, node `u` is the root of an SCC. Pop all nodes from the stack down to and including `u` - they form one SCC.\n\nA node is in the stack if it is part of the current DFS path and its SCC has not yet been finalized. Back edges in directed graphs update `low[u]` only if the neighbor is on the current stack (not just visited - a node already popped belongs to a different, already-finalized SCC).\n\n## Kosaraju's SCC Algorithm\n\nAn alternative to Tarjan's using two full DFS passes:\n1. DFS on the **original graph**, push each node onto a stack in **finish order** (node is pushed after all its neighbors are processed)\n2. **Transpose** the graph (reverse all edge directions)\n3. Pop nodes from the stack and DFS on the **transposed graph** in that order. Each DFS tree in pass 2 is one SCC\n\nConceptually cleaner than Tarjan's. Same O(V + E) complexity. The intuition: the node that finishes last in pass 1 can reach the most nodes; in the transposed graph, it can only be reached from its own SCC."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// Tarjan's Bridge Finding - most commonly asked in interviews\nfunction findBridges(n, edges) {\n  const adj = Array.from({ length: n }, () => []);\n  for (const [u, v] of edges) {\n    adj[u].push(v);\n    adj[v].push(u);\n  }\n\n  const disc = new Array(n).fill(-1);\n  const low = new Array(n).fill(-1);\n  const bridges = [];\n  let timer = 0;\n\n  function dfs(u, parent) {\n    disc[u] = low[u] = timer++;\n\n    for (const v of adj[u]) {\n      // skip the edge back to parent (undirected graph)\n      if (v === parent) continue;\n\n      if (disc[v] === -1) {\n        // tree edge - recurse\n        dfs(v, u);\n        // pull up the lowest reachable from v's subtree\n        low[u] = Math.min(low[u], low[v]);\n        // bridge condition: v's subtree can't reach u or above\n        if (low[v] > disc[u]) {\n          bridges.push([u, v]);\n        }\n      } else {\n        // back edge - update low directly from disc[v]\n        low[u] = Math.min(low[u], disc[v]);\n      }\n    }\n  }\n\n  // handle disconnected graphs\n  for (let i = 0; i < n; i++) {\n    if (disc[i] === -1) dfs(i, -1);\n  }\n\n  return bridges;\n}",
+      "language": "javascript",
+      "explanation": "Implements Tarjan's bridge-finding algorithm. For each DFS tree edge (u, v), a bridge is detected when low[v] > disc[u] - meaning v's subtree has no back edge to reach u or above. Returns all bridge edges as [u, v] pairs."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Articulation Points",
+          "description": "Minor modification to the bridge algorithm. A non-root node u is an articulation point if any child v has `low[v] >= disc[u]`. The root is an articulation point if it has 2+ children in the DFS tree. Track a `children` count for the root separately.",
+          "example_problem": "Critical Connections in a Network",
+          "example_slug": "critical-connections-in-a-network"
+        },
+        {
+          "name": "Tarjan's SCC (Directed)",
+          "description": "Single-pass DFS with a stack to find strongly connected components in a directed graph. When low[u] === disc[u], pop the stack to collect the SCC. A node on the stack is 'in the current path'; a popped node belongs to a finished SCC and must not update low values.",
+          "example_problem": "Strongly Connected Component",
+          "example_slug": "strongly-connected-component"
+        },
+        {
+          "name": "Kosaraju's SCC",
+          "description": "Two-pass DFS: first pass on original graph records finish order; second pass on transposed graph processes nodes in reverse finish order. Each DFS tree in pass 2 is one SCC. Easier to reason about correctness but requires building the transposed graph.",
+          "example_problem": "Find Eventual Safe States",
+          "example_slug": "find-eventual-safe-states"
+        },
+        {
+          "name": "Biconnected Components",
+          "description": "Find maximal 2-edge-connected subgraphs (no bridges within them). Uses the same DFS framework - track edges on a stack and pop them when a bridge is found. Each popped group forms a biconnected component.",
+          "example_problem": "Minimum Number of Days to Disconnect Island",
+          "example_slug": "minimum-number-of-days-to-disconnect-island"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(V + E)",
+      "space": "O(V + E)",
+      "explanation": "All three algorithms (Tarjan's bridge, Tarjan's SCC, Kosaraju's SCC) perform a constant number of DFS traversals. Each DFS visits every vertex once and processes each edge once: O(V + E). Space is O(V + E) for the adjacency list, plus O(V) for the disc, low, visited, and stack arrays. Kosaraju's also builds the transposed graph: O(V + E) additional space."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Bridge algorithm on undirected graphs: not tracking the parent node and skipping the edge back to it - the parent edge looks like a back edge and incorrectly reduces `low[u]`, making real bridges invisible. Always pass `parent` and skip `if (v === parent)`.",
+        "Tarjan's SCC requires a stack separate from the visited set - a node can be 'visited' (disc != -1) but already popped from the stack (its SCC is finalized). Back edges should update `low[u]` only if the neighbor is still on the stack, not just visited.",
+        "Initializing disc and low to `0` instead of `-1` - using 0 conflates 'unvisited' with 'visited at time 0', causing the algorithm to skip nodes. Always initialize to -1.",
+        "Applying SCC algorithms to undirected graphs - SCCs are defined only for directed graphs. On an undirected graph, every connected component is trivially strongly connected. Use simple DFS/BFS for undirected components.",
+        "Off-by-one in the timer: using a per-call local timer instead of a shared closure/reference timer - each DFS subtree gets its own time starting at 0, making all disc values equal and breaking all comparisons."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Critical Connections in a Network",
+          "slug": "critical-connections-in-a-network",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "The canonical bridge-finding problem - direct application of Tarjan's bridge algorithm with disc and low values."
+        },
+        {
+          "title": "Find Eventual Safe States",
+          "slug": "find-eventual-safe-states",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests understanding of directed graph cycle detection and SCC concepts - safe nodes are those not part of or leading into cycles."
+        },
+        {
+          "title": "Minimum Number of Days to Disconnect Island",
+          "slug": "minimum-number-of-days-to-disconnect-island",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Tests bridge and articulation point concepts - if the grid has a bridge or articulation point, disconnection requires removing 1 cell instead of 2."
+        },
+        {
+          "title": "Strongly Connected Component",
+          "slug": "strongly-connected-component",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Direct application of Tarjan's SCC or Kosaraju's algorithm - find all SCCs in a directed graph."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Mo's Algorithm",
+      "next_slug": "mos-algorithm",
+      "why": "After advanced graph algorithms, the next Level 7 topic is Mo's Algorithm - a completely different domain (offline range queries) that introduces the square-root decomposition paradigm. It broadens your toolkit from graph-based thinking to array query optimization."
+    }
+  ]
+}

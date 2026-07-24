@@ -1,0 +1,31 @@
+.chip {
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  background: transparent;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  font-family: inherit;
+  touch-action: manipulation;
+}
+
+.chip:hover { border-color: var(--accent); color: var(--accent); }
+
+.chip[data-active='true'] {
+  background: var(--accent-subtle);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  .chip {
+    padding: 6px 12px;
+    font-size: 0.78rem;
+    min-height: 34px;
+    display: inline-flex;
+    align-items: center;
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "topic": "Matrix Operations",
+  "level": 8,
+  "slug": "matrix",
+  "estimated_read": "12 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What are Matrix Operations?",
+      "content": "Matrices appear in DSA in two distinct contexts. The first \u2014 2D grids for BFS/DFS \u2014 is covered in the 2D Arrays topic. The second is matrices as **mathematical objects** supporting multiplication, which unlocks powerful algorithms for linear recurrences and path counting.\n\n**Matrix exponentiation** computes M^k using repeated squaring: the same idea as fast modular exponentiation. Each squaring step halves the exponent, so M^k requires only O(log k) multiplications. For small matrices (2\u00d72 or 3\u00d73), each multiplication is effectively O(1), making the entire computation O(log k). This transforms computing the nth Fibonacci number from O(n) to O(log n).\n\nThe deeper insight: **any linear recurrence** of order d can be represented as matrix multiplication on a d-dimensional state vector. Raise the transition matrix to the (n-1)th power and multiply by the initial state. Works for Fibonacci, Tribonacci, any recurrence `f(n) = a1*f(n-1) + a2*f(n-2) + ...`\n\nMatrix exponentiation also solves **graph path counting**: the (i,j) entry of the adjacency matrix raised to the kth power gives the number of walks of exactly length k from node i to node j.\n\nThe second cluster is **grid transformations**: rotating a matrix 90 degrees (transpose + row reverse), reflecting it, spiral traversal."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Reach for matrix exponentiation when a problem asks for the nth term of a linear recurrence with large n (where O(n) is too slow), or counting graph paths of exact length k. Use grid transformation techniques for matrix rotation, reflection, and spiral traversal problems.",
+      "signals": [
+        "nth fibonacci large n",
+        "count paths of length k",
+        "linear recurrence",
+        "matrix exponentiation",
+        "rotate matrix",
+        "spiral order",
+        "transpose",
+        "nth term of recurrence"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Matrix Multiplication, Exponentiation, and Grid Operations",
+      "content": "## Matrix Multiplication\n\n`C[i][j] = sum over k of A[i][k] * B[k][j]`. O(n\u00b3) for n\u00d7n matrices.\n\nKey properties: **associative** (A\u00d7B\u00d7C = A\u00d7(B\u00d7C)) \u2014 this makes exponentiation valid. **NOT commutative** (A\u00d7B \u2260 B\u00d7A). Identity matrix I has 1s on diagonal, 0s elsewhere. M\u00d7I = M.\n\n## Matrix Exponentiation\n\n```\nmatpow(M, k):\n  if k===0: return identity\n  if k even: half=matpow(M,k/2); return half\u00d7half\n  if k odd: return M\u00d7matpow(M,k-1)\n```\nO(log k) multiplications, each O(n\u00b3).\n\n## Fibonacci via Matrix\n\n`[[F(n+1)],[F(n)]] = [[1,1],[1,0]]^n \u00d7 [[F(1)],[F(0)]]`\n\nRaise the 2\u00d72 transition matrix to the nth power to get F(n) in O(log n).\n\n## Any Linear Recurrence\n\nFor `f(n) = a*f(n-1) + b*f(n-2) + c*f(n-3)`, build a 3\u00d73 transition matrix. First row encodes coefficients; remaining rows shift state. Raise to (n-3)th power, multiply by initial state vector.\n\n## Graph Path Counting\n\n`A^k[i][j]` = number of walks of exactly length k from node i to j where A is the adjacency matrix.\n\n## Grid Operations\n\n**Rotate 90\u00b0 clockwise**: transpose (swap A[i][j] and A[j][i] for j > i) then reverse each row.\n**Spiral traversal**: maintain four boundaries (top, bottom, left, right), peel one layer per cycle."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "function matMul(A, B, mod=0) {\n  const n=A.length;\n  const C=Array.from({length:n},()=>new Array(n).fill(0));\n  for (let i=0;i<n;i++)\n    for (let k=0;k<n;k++)\n      if (A[i][k]!==0)\n        for (let j=0;j<n;j++) {\n          C[i][j]+=A[i][k]*B[k][j];\n          if (mod) C[i][j]%=mod;\n        }\n  return C;\n}\n\nfunction identity(n) {\n  return Array.from({length:n},(_,i)=>Array.from({length:n},(_,j)=>i===j?1:0));\n}\n\nfunction matPow(M, k, mod=0) {\n  let result=identity(M.length);\n  let base=M.map(r=>[...r]);\n  while (k>0) {\n    if (k&1) result=matMul(result,base,mod);\n    base=matMul(base,base,mod);\n    k>>=1;\n  }\n  return result;\n}\n\nfunction fib(n) {\n  if (n<=1) return n;\n  const T=[[1,1],[1,0]];\n  return matPow(T,n-1)[0][0];\n}\n\nfunction rotate(matrix) {\n  const n=matrix.length;\n  for (let i=0;i<n;i++)\n    for (let j=i+1;j<n;j++)\n      [matrix[i][j],matrix[j][i]]=[matrix[j][i],matrix[i][j]];\n  for (let i=0;i<n;i++) matrix[i].reverse();\n}",
+      "language": "javascript",
+      "explanation": "Generic matrix exponentiation kernel with optional modular arithmetic. Includes Fibonacci specialization and in-place 90-degree rotation as grid operation reference."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Higher-Order Recurrences",
+          "description": "For order-d recurrences, build a d\u00d7d transition matrix. First row encodes coefficients, remaining rows shift state. Raise to (n-d)th power and multiply by initial d-element state vector.",
+          "example_problem": "Count Vowels Permutation",
+          "example_slug": "count-vowels-permutation"
+        },
+        {
+          "name": "Graph Path Counting via Adjacency Matrix",
+          "description": "Build adjacency matrix A. A^k[i][j] gives walks of exactly length k from i to j. Combine with modular exponentiation for k up to 10^18.",
+          "example_problem": "Knight Dialer",
+          "example_slug": "knight-dialer"
+        },
+        {
+          "name": "Grid Rotation and Spiral Traversal",
+          "description": "Rotate Image requires in-place 90-degree rotation via transpose + row reverse. Spiral Matrix requires four-boundary peeling. Both test spatial reasoning and careful index management.",
+          "example_problem": "Fibonacci Number",
+          "example_slug": "fibonacci-number"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n\u00b3 log k) for matrix exponentiation of n\u00d7n matrix to kth power",
+      "space": "O(n\u00b2)",
+      "explanation": "Each matrix multiplication is O(n\u00b3). Fast exponentiation performs O(log k) multiplications. For Fibonacci n=2 so this is O(log k) effectively. Grid transformations (rotate, spiral) visit each cell a constant number of times: O(n\u00b2)."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Matrix multiplication is NOT commutative \u2014 in the exponentiation loop, always apply result = result \u00d7 base to maintain the correct power accumulation invariant.",
+        "Identity matrix has 1s on the diagonal and 0s everywhere else. Using the zero matrix as identity causes M \u00d7 I = zero matrix.",
+        "Off-by-one in exponent for Fibonacci: raise T to the (n-1)th power, not nth. Verify manually with n=2: T^1 \u00d7 [F(1), F(0)] should give [F(2), F(1)].",
+        "Missing modular arithmetic inside matrix multiplication: each element accumulates up to n products of large values. Take mod after each addition in the inner loop, not just at the end.",
+        "Grid rotation: transpose requires iterating j > i only (upper triangle). Iterating all (i,j) pairs swaps each element twice, returning the matrix to its original state."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Fibonacci Number",
+          "slug": "fibonacci-number",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "Baseline matrix exponentiation \u2014 implement the 2\u00d72 Fibonacci transition matrix and verify the power-to-index mapping."
+        },
+        {
+          "title": "Count Vowels Permutation",
+          "slug": "count-vowels-permutation",
+          "difficulty": 8,
+          "difficulty_label": "Hard",
+          "why": "Higher-order recurrence via matrix \u2014 derive the 5\u00d75 transition matrix from vowel adjacency rules then apply exponentiation."
+        },
+        {
+          "title": "Number of Ways to Stay in the Same Place After Some Steps",
+          "slug": "number-of-ways-to-stay-in-the-same-place-after-some-steps",
+          "difficulty": 8,
+          "difficulty_label": "Hard",
+          "why": "State-space matrix construction \u2014 positions form the state space, moves define the transition matrix, exponentiation counts paths returning to origin."
+        },
+        {
+          "title": "Knight Dialer",
+          "slug": "knight-dialer",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Adjacency matrix path counting \u2014 knight moves define edges, A^n counts all n-hop sequences starting from each digit."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Simulation",
+      "next_slug": "simulation",
+      "why": "Simulation is the counterpoint to matrix exponentiation: sometimes there is no mathematical shortcut and careful direct implementation is the right approach. After learning to reduce O(k) recurrences to O(log k), simulation teaches when to recognize that brute-force IS the intended solution."
+    }
+  ]
+}

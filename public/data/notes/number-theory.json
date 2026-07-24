@@ -1,0 +1,124 @@
+{
+  "topic": "Number Theory",
+  "level": 8,
+  "slug": "number-theory",
+  "estimated_read": "15 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Number Theory in DSA?",
+      "content": "Number theory is the branch of mathematics dealing with integers and their properties. In competitive programming, number theory problems appear regularly: 'count pairs with sum divisible by k', 'find nth Fibonacci mod 10^9+7', 'how many numbers in [1,n] are coprime to n?' The core toolkit is small but powerful: prime factorization, GCD and LCM, modular arithmetic (especially modular inverse for division under mod), Euler's totient function, and basic combinatorics under mod.\n\nIn interviews, number theory mostly appears in math-flavored problems that seem intractable until you know the right identity or algorithm. Knowing that the GCD of two numbers can be computed in O(log min(a,b)) via Euclid's algorithm, that modular inverse exists when two numbers are coprime, and that the Sieve of Eratosthenes finds all primes up to n in O(n log log n) transforms these problems from 'impossible without math background' to 'straightforward implementation'.\n\nThe most common number theory operation in competitive programming is **modular exponentiation**: computing `a^b mod m` in O(log b) using fast power (binary exponentiation). This appears in almost every problem that asks for an answer modulo 10^9+7, since answers often involve large powers or factorials whose modular inverses require this technique.\n\nJavaScript's number representation as 64-bit IEEE 754 floating point gives exact integers up to 2^53 - 1 (approximately 9 x 10^15). Products of two numbers near 10^9 reach 10^18, exceeding this bound and causing silent precision loss. Number theory code in JS must be structured to take mod before intermediate products become large, or use BigInt for guaranteed exact arithmetic."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use number theory when the problem involves: answers that must be returned modulo a prime (almost always 10^9+7), GCD or LCM of array elements, counting divisors or prime factors of numbers, checking or generating prime numbers, computing combinations (nCr) under mod, or counting integers in a range satisfying a divisibility property. The strongest signals are explicit mentions of 'mod 10^9+7' (which requires modular inverse for any division in the answer) and problems asking about coprimality or Euler's totient function.",
+      "signals": [
+        "answer mod 10^9+7",
+        "greatest common divisor",
+        "least common multiple",
+        "count prime factors",
+        "divisible by",
+        "coprime",
+        "Euler's totient",
+        "modular inverse",
+        "fast exponentiation"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Primes, GCD, Modular Arithmetic, and Euler's Totient",
+      "content": "## Prime Numbers\n\n**Trial division** for a single primality check: test all divisors from 2 to sqrt(n). If none divide n, n is prime. Time: O(sqrt(n)). Sufficient for single queries.\n\n**Sieve of Eratosthenes** for all primes up to n: initialize a boolean array `isPrime[0..n]` with all true. Mark 0 and 1 as false. For each prime p starting from 2, mark all multiples of p (from p^2 up) as false. Time: O(n log log n). Use when you need multiple primality queries or the smallest prime factor of each number.\n\n**Fundamental theorem of arithmetic**: every integer > 1 has a unique prime factorization.\n\n## GCD, LCM, and Extended Euclidean\n\n**Euclidean algorithm**: `gcd(a, b) = gcd(b, a % b)`, base case `gcd(a, 0) = a`. Terminates in O(log min(a,b)) steps.\n\n**LCM**: `lcm(a, b) = a / gcd(a, b) * b`. Divide before multiplying to prevent overflow.\n\n**Extended Euclidean**: finds integers x, y such that `ax + by = gcd(a, b)`. Used for computing modular inverse when mod is not prime (gcd(a, m) must equal 1 for inverse to exist).\n\n## Modular Arithmetic\n\n- Addition: `(a + b) % m = ((a % m) + (b % m)) % m`\n- Multiplication: `(a * b) % m = ((a % m) * (b % m)) % m`\n- Division: NOT `(a / b) % m`. Must use modular inverse: `a / b mod m = a * b^(-1) mod m`\n\n**Modular inverse when m is prime** (Fermat's little theorem): `b^(-1) mod m = b^(m-2) mod m`. Compute with fast power.\n\n**Modular inverse when m is not prime**: use extended Euclidean algorithm.\n\n**Fast power** (binary exponentiation): compute `a^b mod m` in O(log b). If b is even: `a^b = (a^(b/2))^2`. If b is odd: `a^b = a * a^(b-1)`. Halve b each step.\n\n## Euler's Totient Function\n\nphi(n) = count of integers in [1, n] that are coprime to n.\n\n- phi(prime p) = p - 1\n- phi(n) = n * product(1 - 1/p) for each prime p dividing n\n- Example: phi(12) = 12 * (1 - 1/2) * (1 - 1/3) = 4\n\nEuler's theorem: `a^phi(m) = 1 (mod m)` when gcd(a, m) = 1. Used to compute modular inverse for non-prime m."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "const MOD = 1_000_000_007;\n\n// Fast modular exponentiation: a^b mod m in O(log b)\nfunction modPow(base, exp, mod) {\n  let result = 1n;\n  base = BigInt(base) % BigInt(mod);\n  exp = BigInt(exp);\n  mod = BigInt(mod);\n  while (exp > 0n) {\n    if (exp % 2n === 1n) result = result * base % mod;\n    base = base * base % mod;\n    exp = exp / 2n;\n  }\n  return Number(result);\n}\n\n// Modular inverse (mod must be prime) via Fermat's little theorem\nfunction modInverse(a, mod = MOD) {\n  return modPow(a, mod - 2, mod);\n}\n\n// GCD (Euclidean algorithm)\nfunction gcd(a, b) {\n  while (b !== 0) { [a, b] = [b, a % b]; }\n  return a;\n}\n\n// LCM - divide first to prevent overflow\nfunction lcm(a, b) {\n  return (a / gcd(a, b)) * b;\n}\n\n// Sieve of Eratosthenes: all primes up to n\nfunction sieve(n) {\n  const isPrime = new Array(n + 1).fill(true);\n  isPrime[0] = isPrime[1] = false;\n  for (let p = 2; p * p <= n; p++) {\n    if (isPrime[p]) {\n      for (let multiple = p * p; multiple <= n; multiple += p) {\n        isPrime[multiple] = false;\n      }\n    }\n  }\n  return isPrime;\n}",
+      "language": "javascript",
+      "explanation": "Fast power uses BigInt to avoid JavaScript's 2^53 precision limit during intermediate multiplications. The sieve starts marking from p*p (all smaller multiples already marked by smaller primes) and runs only up to sqrt(n) for the outer loop, giving O(n log log n) total marks."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Miller-Rabin Primality Test",
+          "description": "A probabilistic primality test that runs in O(k log^2 n) where k is the number of witness rounds. For competitive programming, using a fixed set of witnesses gives a deterministic result for all n below 3.3 x 10^24. Faster than trial division for large numbers.",
+          "example_problem": "Count Primes",
+          "example_slug": "count-primes"
+        },
+        {
+          "name": "Chinese Remainder Theorem",
+          "description": "Given a system of congruences x = a1 (mod m1), x = a2 (mod m2), ... where all moduli are pairwise coprime, CRT gives a unique solution modulo the product of all moduli. Used in problems that decompose a large modular constraint into smaller coprime constraints.",
+          "example_problem": "Super Pow",
+          "example_slug": "super-pow"
+        },
+        {
+          "name": "Pollard's Rho Factorization",
+          "description": "A randomized integer factorization algorithm that finds a non-trivial factor of n in expected O(n^(1/4)) time, much faster than trial division O(sqrt(n)) for large n. Uses Floyd's cycle detection on a pseudorandom sequence.",
+          "example_problem": "Ugly Number II",
+          "example_slug": "ugly-number-ii"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "Fast power: O(log b). GCD: O(log min(a,b)). Sieve: O(n log log n). Trial division: O(sqrt(n)).",
+      "space": "O(n) for sieve. O(log b) call stack for recursive fast power. O(1) for GCD and LCM.",
+      "explanation": "Fast power halves the exponent each step, giving O(log b) multiplications. GCD terminates in O(log min(a,b)) steps because the remainder decreases geometrically. The sieve marks each composite number once for each of its prime factors; the harmonic sum of reciprocals of primes up to n is O(log log n), giving O(n log log n) total marks."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "JavaScript integer overflow: multiplying two numbers near 10^9 gives ~10^18, which exceeds Number.MAX_SAFE_INTEGER (2^53 ~ 9x10^15). The result is silently rounded to the nearest representable float. Use BigInt for modular multiplications involving large numbers.",
+        "Negative modulo in JS: `(-1) % m` returns -1 in JavaScript, not m-1. Any time the input could be negative, use `((n % m) + m) % m` to guarantee a non-negative result.",
+        "Modular inverse only exists when gcd(a, m) = 1: if a and m share a common factor > 1, there is no modular inverse. Using Fermat's little theorem on a non-coprime pair silently returns a wrong value with no error.",
+        "Fermat's little theorem requires m to be prime: `a^(m-2) mod m` equals a's inverse only when m is prime. For composite m, use the extended Euclidean algorithm instead.",
+        "Sieve initialization: index 0 and 1 must be explicitly set to false after initializing the array to all-true. Forgetting this causes those indices to be incorrectly treated as prime."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Count Primes",
+          "slug": "count-primes",
+          "difficulty": 6,
+          "difficulty_label": "Medium",
+          "why": "Direct sieve of Eratosthenes implementation. Tests whether you start marking from p*p and run the outer loop only to sqrt(n), and whether you correctly initialize index 0 and 1."
+        },
+        {
+          "title": "Ugly Number II",
+          "slug": "ugly-number-ii",
+          "difficulty": 6,
+          "difficulty_label": "Medium",
+          "why": "Uses prime factorization structure (only factors 2, 3, 5) with three-pointer DP to generate ugly numbers in order. Tests understanding of prime factor generation without a sieve."
+        },
+        {
+          "title": "Super Pow",
+          "slug": "super-pow",
+          "difficulty": 6,
+          "difficulty_label": "Medium",
+          "why": "Modular exponentiation with a very large exponent given as an array. Applies the fast power template with the property that a^(digits) mod m can be computed digit by digit."
+        },
+        {
+          "title": "Fraction to Recurring Decimal",
+          "slug": "fraction-to-recurring-decimal",
+          "difficulty": 6,
+          "difficulty_label": "Medium",
+          "why": "Long division simulation that detects cycles using a remainder map. Tests modular arithmetic reasoning: a recurring decimal cycle appears when the same remainder is encountered twice during division."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Geometry Basics",
+      "next_slug": "geometry",
+      "why": "Geometry is the next mathematical domain in the Others track. While number theory deals with integers and their algebraic properties, geometry deals with spatial relationships. The cross product at the center of 2D computational geometry connects back to the arithmetic foundations in number theory."
+    }
+  ]
+}

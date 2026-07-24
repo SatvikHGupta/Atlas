@@ -1,0 +1,37 @@
+{
+  "name": "atlas-cp",
+  "version": "2.0.0",
+  "author": "Satvik Hemant Gupta",
+  "type": "module",
+  "scripts": {
+    "dev":     "vite",
+    "build":   "vite build",
+    "preview": "vite preview",
+    "test":    "vitest run",
+    "test:watch": "vitest",
+    "test:rules": "firebase emulators:exec --only firestore \"vitest run src/services/__tests__/firestore.rules.test.js --config vitest.rules.config.js\""
+  },
+  "dependencies": {
+    "@emotion/react":             "^11.14.0",
+    "@emotion/styled":            "^11.14.0",
+    "@mui/icons-material":        "^9.0.1",
+    "@mui/material":              "^9.0.1",
+    "@tanstack/react-query":      "^5.100.14",
+    "chart.js":                   "^4.4.9",
+    "dompurify":                  "^3.2.6",
+    "firebase":                   "^11.8.0",
+    "marked":                     "^14.1.4",
+    "motion":                     "^12.40.0",
+    "react":                      "^19.1.0",
+    "react-dom":                  "^19.1.0",
+    "react-router-dom":           "^7.6.0",
+    "react-syntax-highlighter":   "^16.1.1",
+    "zustand":                    "^5.0.4"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^4.0.1",
+    "@vitejs/plugin-react": "^6.0.2",
+    "vite":                 "^8.0.14",
+    "vitest":                "^3.0.0"
+  }
+}

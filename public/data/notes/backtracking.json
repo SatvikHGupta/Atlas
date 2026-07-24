@@ -1,0 +1,123 @@
+{
+  "topic": "Backtracking",
+  "level": 3,
+  "slug": "backtracking",
+  "estimated_read": "14 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Backtracking?",
+      "content": "Backtracking is recursion with an undo step. You build a candidate solution incrementally, and when you reach a dead end - either a constraint is violated or you have exhausted all options from the current path - you undo the last decision and try the next option. The three-word summary: **try, check, undo**.\n\nThink of backtracking as depth-first search on a **decision tree**. Every node in the tree is a partial solution. Every edge represents one choice. When you reach a leaf - either a complete valid solution or a dead end - you backtrack up the tree and explore the next branch. The algorithm explores every path in this decision tree unless it can prune a branch early.\n\nBacktracking differs from plain recursion in one key way: there is **shared mutable state** (the `path` array or a grid marking visited cells) that all recursive calls read and write. When you undo (backtrack), you restore this shared state to exactly what it was before the recursive call. Forgetting this undo step is the most common backtracking bug.\n\nBacktracking solves three major problem archetypes: generating all subsets, all permutations, and all valid combinations. It also powers constraint satisfaction problems like N-Queens and Sudoku, and grid search problems like Word Search. If a problem says \"find ALL\" or \"generate ALL\", backtracking is almost always involved.\n\nTime complexity for backtracking is typically exponential because you are exploring an exponential number of paths. Pruning reduces the constant factor but rarely changes the worst-case exponent. The goal in interviews is not to make backtracking polynomial - it is to prune cleverly and implement the template cleanly."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use backtracking when the problem asks you to **generate all** valid solutions, **count** valid arrangements, or **find** one valid arrangement subject to constraints. The signature is a decision tree where at each step you have multiple choices, and some paths through the tree are valid while others are not. If the problem can be phrased as \"at each step choose from these options, then check if the choice leads to a solution\" - that is backtracking. Grid problems like Word Search also fit because the visited cells form the shared mutable state.",
+      "signals": [
+        "generate all permutations",
+        "find all subsets",
+        "all valid combinations",
+        "place N items with constraints",
+        "solve a constraint puzzle",
+        "path in grid visiting all cells",
+        "word search",
+        "N-Queens or Sudoku"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Decision Trees, Pruning, and the Three Archetypes",
+      "content": "## The Decision Tree Model\n\nEvery backtracking problem is DFS on a decision tree. Draw the tree before coding. For generating all subsets of `[1,2,3]`: at each level, decide include or exclude the current element. The tree has 8 leaves (2^3 paths). For permutations of `[1,2,3]`: at each level, choose which unused element to place next. The tree has 6 leaves (3! paths). Drawing the tree reveals the loop structure and base case immediately.\n\n**The universal template pattern:**\n```\nfunction backtrack(start, path) {\n  // Base case: path is complete - record it\n  // Loop: for each valid choice starting at start\n  //   make choice, recurse, undo choice\n}\n```\n\n## Pruning\n\nPruning cuts off branches you know cannot lead to a valid solution. This is what separates a slow backtracking solution from a fast one. Before recursing deeper, check: \"can this partial solution possibly lead to a valid complete solution?\" If not, return immediately without recursing.\n\nExamples of pruning:\n- In combination sum, if the current running sum already exceeds the target (and all remaining candidates are positive), stop.\n- In N-Queens, if a queen is already attacking the column or diagonal you are considering, skip that column.\n- Sort the input first so you can break early when candidates exceed the target.\n\n## The Three Archetypes\n\n**Subsets** (include/exclude each element): each element is considered once, order does not matter, inner loop advances `start` by 1 each time.\n\n**Combinations** (choose k from n, order does not matter): inner loop starts at `start` (not 0) to avoid re-picking earlier elements. Stop when `path.length === k`.\n\n**Permutations** (order matters, no reuse): inner loop starts at 0 every time, but maintains a `used` boolean array (or removes/reinserts elements) to skip already-chosen elements. The key difference from combinations: the loop always starts at 0 because a different ordering is a different permutation."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// Universal backtracking template\n// Works for subsets, combinations, permutations with small tweaks\n\nfunction backtrackingTemplate(nums) {\n  const result = [];\n  const path = [];\n\n  function backtrack(start) {\n    // Base case: valid complete solution - record a COPY, not reference\n    result.push([...path]);\n\n    // Loop over choices (start=0 for permutations, start=start for combinations)\n    for (let i = start; i < nums.length; i++) {\n      // Prune: skip if this choice violates constraints\n      // (e.g., duplicate: if i > start && nums[i] === nums[i-1]) continue;\n\n      path.push(nums[i]);     // make choice\n      backtrack(i + 1);       // recurse (use i+1 for combinations, 0 for permutations)\n      path.pop();             // UNDO choice - this is what makes it backtracking\n    }\n  }\n\n  // nums.sort((a, b) => a - b); // sort first if need to skip duplicates\n  backtrack(0);\n  return result;\n}\n\n// Permutations variant: loop from 0, track used elements\nfunction permutations(nums) {\n  const result = [];\n  const path = [];\n  const used = new Array(nums.length).fill(false);\n\n  function backtrack() {\n    if (path.length === nums.length) {\n      result.push([...path]);\n      return;\n    }\n    for (let i = 0; i < nums.length; i++) {\n      if (used[i]) continue;   // skip already placed elements\n      path.push(nums[i]);\n      used[i] = true;\n      backtrack();\n      path.pop();\n      used[i] = false;         // undo\n    }\n  }\n\n  backtrack();\n  return result;\n}",
+      "language": "javascript",
+      "explanation": "The subset/combination template passes `start` to prevent re-using earlier elements. The permutation template uses a `used` array and always loops from 0, since each ordering is a distinct permutation. Both templates share the core pattern: push, recurse, pop."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Backtracking with a Visited Set (Grid)",
+          "description": "For grid problems like Word Search, mark a cell as visited before recursing into neighbors and unmark it after. The grid itself is the shared mutable state. Four-directional DFS explores all paths; the visited marking prevents using the same cell twice in one path.",
+          "example_problem": "Word Search",
+          "example_slug": "word-search"
+        },
+        {
+          "name": "Constraint Propagation (Sudoku-style)",
+          "description": "Before recursing, aggressively prune by propagating constraints. In Sudoku, if placing a digit makes another cell have zero valid options, backtrack immediately rather than waiting to discover the conflict ten moves later. Heavy pruning can make an exponential problem tractable.",
+          "example_problem": "Combination Sum",
+          "example_slug": "combination-sum"
+        },
+        {
+          "name": "Backtracking on Phone Digits (Mapping Choices)",
+          "description": "When choices at each level come from a lookup table rather than the input array itself, the template loops over the mapped options rather than array indices. The depth of recursion equals the number of levels (digits), and at each level the branching factor equals the number of mapped characters.",
+          "example_problem": "Letter Combinations of a Phone Number",
+          "example_slug": "letter-combinations-of-a-phone-number"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(2^n) for subsets; O(n!) for permutations; O(n * 2^n) or O(n * n!) with copying",
+      "space": "O(n) for the recursion stack depth + O(output size) for stored results",
+      "explanation": "Backtracking explores the entire decision tree in the worst case. For subsets, there are 2^n leaves (each element included or excluded). For permutations, there are n! leaves. Copying the path at each leaf adds a factor of O(n) to the time. Pruning improves the average case but not the worst case. Stack depth equals the maximum path length, which is O(n)."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Forgetting the undo step: without `path.pop()` after the recursive call, the path array accumulates all choices ever made instead of only the current path. This corrupts every result pushed to the output array.",
+        "Pushing array reference instead of copy: `result.push(path)` stores a live reference. When the backtracking continues and modifies `path`, all previously stored results in `result` change too. Always use `result.push([...path])`.",
+        "Not sorting input when duplicates need to be skipped: the standard duplicate-skip trick `if (i > start && nums[i] === nums[i-1]) continue` only works if equal elements are adjacent, which requires sorting first.",
+        "Starting inner loop at wrong index: for combinations use `backtrack(i + 1)` to avoid reuse; for permutations loop from 0 with a `used` array. Mixing these up either produces duplicates or misses valid permutations.",
+        "Pruning condition inverted: pruning too early skips valid solutions; pruning too late wastes time but is still correct. An incorrect prune condition silently produces incomplete results with no error."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Letter Combinations of a Phone Number",
+          "slug": "letter-combinations-of-a-phone-number",
+          "difficulty": 3,
+          "difficulty_label": "Medium",
+          "why": "Introduces backtracking where choices come from a mapping rather than the input array itself. Depth equals number of digits; branching factor varies per digit."
+        },
+        {
+          "title": "Permutations",
+          "slug": "permutations",
+          "difficulty": 3,
+          "difficulty_label": "Medium",
+          "why": "Pure permutation archetype. Requires the `used` array and looping from 0 every level. Exposes why the inner loop structure differs from combinations."
+        },
+        {
+          "title": "Combination Sum",
+          "slug": "combination-sum",
+          "difficulty": 3,
+          "difficulty_label": "Medium",
+          "why": "Combination archetype with element reuse allowed. Teaches the pruning trick: sort input so you can break the loop early when candidates exceed the remaining target."
+        },
+        {
+          "title": "Word Search",
+          "slug": "word-search",
+          "difficulty": 3,
+          "difficulty_label": "Medium",
+          "why": "Backtracking on a 2D grid. The visited marking (modify cell in-place, recurse, restore cell) is the core technique and directly mirrors the push/pop pattern on arrays."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Sorting Algorithms",
+      "next_slug": "sorting-algorithms",
+      "why": "Sorting is a prerequisite for many other patterns: two pointers, binary search, and greedy algorithms all require ordered input. Several sorting algorithms (merge sort, quicksort) are also excellent recursion practice that reinforces the divide-and-conquer thinking developed in recursion basics."
+    }
+  ]
+}

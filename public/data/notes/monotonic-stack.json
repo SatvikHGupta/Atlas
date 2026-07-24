@@ -1,0 +1,123 @@
+{
+  "topic": "Monotonic Stack",
+  "level": 8,
+  "slug": "monotonic-stack",
+  "estimated_read": "13 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is a Monotonic Stack?",
+      "content": "A monotonic stack is a stack that is always sorted - either strictly increasing or strictly decreasing from bottom to top. You maintain this invariant by popping elements that violate the order before pushing a new element. The critical performance insight: every element is pushed and popped at most once, so the total work across all n iterations is O(n). This makes monotonic stacks the key tool for 'next greater element', 'previous smaller element', and area/volume problems like histogram rectangles and trapping rain water.\n\nThe core discovery happens at pop time. When you pop element x to make room for element y (because y breaks the decreasing invariant), you have just discovered that y is x's **next greater element**. You did not have to scan forward to find it - the stack gave it to you for free as part of maintaining order. This implicit pairing between a popped element and the element that caused the pop is the mechanism behind every monotonic stack algorithm.\n\nMonotonic stacks almost always store **indices**, not values. Storing indices lets you compute distances (for width calculations in histogram problems), handle circular arrays (wrap with modulo), and retrieve values with `arr[i]` anyway. Storing only values loses the positional information needed for most problems.\n\nThe pattern is compact enough to implement in under 15 lines and fast enough to replace O(n^2) brute force scans. It appears frequently enough in interviews that recognizing 'next greater/smaller element' as the signal and reaching for a monotonic stack template should be automatic."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use a monotonic stack whenever the problem asks for, for each element, the nearest element to its left or right that is greater or smaller than it. The canonical forms are: next greater element, previous smaller element, next smaller element, previous greater element. Problems that reduce to these include: largest rectangle in histogram (need previous smaller and next smaller for each bar's width), trapping rain water (need previous greater and next greater to determine water level), stock span, and sum of subarray minimums.",
+      "signals": [
+        "next greater element",
+        "previous smaller element",
+        "stock span",
+        "largest rectangle",
+        "trapping rain water",
+        "sum of subarray minimums",
+        "monotonically maintain order",
+        "nearest larger or smaller element"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Next Greater, Next Smaller, and the Histogram Pattern",
+      "content": "## Next Greater Element (Decreasing Stack)\n\nMaintain a **decreasing stack** (values decrease from bottom to top). For each element:\n1. While the stack is non-empty AND `arr[stack.top] < currentElement`: pop the top. The current element is the next greater element for the popped index.\n2. Push the current index.\n\nElements remaining in the stack after the full pass have no next greater element - assign -1 or n.\n\nTime: O(n) - each index is pushed once and popped once.\n\n## Next Smaller Element (Increasing Stack)\n\nMaintain an **increasing stack** (values increase from bottom to top). Pop when `arr[stack.top] > currentElement`. The current element is the next smaller for the popped index.\n\n## Histogram Rectangle Pattern\n\nFor each bar at index i with height `h[i]`, the largest rectangle that uses exactly this height extends:\n- **Left** until the first bar shorter than `h[i]` (previous smaller element)\n- **Right** until the first bar shorter than `h[i]` (next smaller element)\n\nWidth = `nextSmaller[i] - prevSmaller[i] - 1`. Area = `h[i] * width`.\n\nThis can be computed in a single pass: maintain an increasing stack; when you pop index `i` because the current element is smaller, the current index is `nextSmaller[i]` and the new stack top is `prevSmaller[i]`.\n\n## Circular Arrays\n\nFor 'next greater in a circular array', iterate from 0 to 2n-1 using `i % n` to index. Only push to the stack (and record results) for indices 0 to n-1. The second pass (indices n to 2n-1) processes remaining stack elements that wrap around."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// Monotonic decreasing stack: next greater element for each index\n// Stores INDICES, not values\nfunction nextGreaterElement(arr) {\n  const n = arr.length;\n  const result = new Array(n).fill(-1); // default: no next greater\n  const stack = []; // indices, decreasing by arr[index] from bottom to top\n\n  for (let i = 0; i < n; i++) {\n    // Pop all indices whose value is smaller than current element\n    while (stack.length > 0 && arr[stack[stack.length - 1]] < arr[i]) {\n      const idx = stack.pop();\n      result[idx] = arr[i]; // arr[i] is the next greater for idx\n    }\n    stack.push(i);\n  }\n  return result;\n}\n\n// Largest rectangle in histogram (single pass)\nfunction largestRectangleArea(heights) {\n  const stack = []; // increasing stack of indices\n  let maxArea = 0;\n  const n = heights.length;\n\n  for (let i = 0; i <= n; i++) {\n    const h = i === n ? 0 : heights[i]; // sentinel 0 flushes remaining stack\n    while (stack.length > 0 && heights[stack[stack.length - 1]] > h) {\n      const height = heights[stack.pop()];\n      const left = stack.length > 0 ? stack[stack.length - 1] : -1;\n      const width = i - left - 1;\n      maxArea = Math.max(maxArea, height * width);\n    }\n    stack.push(i);\n  }\n  return maxArea;\n}",
+      "language": "javascript",
+      "explanation": "The first template finds next greater for all elements in O(n) by pairing each popped index with the element that caused the pop. The histogram template adds a sentinel value of 0 at the end to flush all remaining elements from the stack, computing their rectangles without a separate post-loop pass."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Monotonic Increasing Stack (Previous/Next Smaller)",
+          "description": "Swap the comparison direction: pop when the current element is smaller than the stack top. Used for previous smaller element and next smaller element. Powers the histogram rectangle and sum of subarray minimums problems.",
+          "example_problem": "Sum of Subarray Minimums",
+          "example_slug": "sum-of-subarray-minimums"
+        },
+        {
+          "name": "Monotonic Deque (Sliding Window Maximum)",
+          "description": "Replace the stack with a deque to support removal from both ends. Maintain a decreasing deque of indices within the current window. When the window advances, remove the front if it is outside the window. When adding a new element, remove all smaller elements from the back. The front is always the window maximum.",
+          "example_problem": "Next Greater Element II",
+          "example_slug": "next-greater-element-ii"
+        },
+        {
+          "name": "Two-Pass Stack for Previous and Next Boundaries",
+          "description": "Some problems need both previous smaller and next smaller for each element. Run the monotonic stack twice: once forward to find next smaller, once backward to find previous smaller. Combine the two arrays to compute each element's contribution range.",
+          "example_problem": "Largest Rectangle in Histogram",
+          "example_slug": "largest-rectangle-in-histogram"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n) - each element is pushed and popped at most once across all iterations",
+      "space": "O(n) for the stack in the worst case (strictly increasing or decreasing input means nothing gets popped until the end)",
+      "explanation": "Although there is a while loop inside a for loop, the total number of pop operations across the entire run is bounded by n - each index can only be popped once after being pushed. So the total work is O(n) pushes and O(n) pops = O(n)."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Storing values instead of indices: when you pop a value, you lose the position. Width calculations in histogram problems require knowing the index of the popped bar and the index of the current bar. Always store indices and retrieve values as `arr[stack[stack.length - 1]]`.",
+        "Stack direction confusion: a decreasing stack (pop when current is GREATER than top) finds next greater elements. An increasing stack (pop when current is SMALLER than top) finds next smaller elements. Mixing up the comparison operator produces completely wrong answers with no runtime error.",
+        "Not handling remaining stack elements after the main loop: elements left in the stack have no next greater (or next smaller). Assign them -1 or n as sentinel. Forgetting this leaves uninitialized entries in the result array.",
+        "Off-by-one in histogram width: the width is `i - left - 1` where `i` is the current index (exclusive right boundary) and `left` is the new stack top after popping (exclusive left boundary). Using `i - left` or `i - left - 2` gives wrong areas.",
+        "Circular array: pushing result indices beyond n-1 on the second pass overwrites correct first-pass results. Only record results for indices 0 to n-1; use the second pass solely to resolve remaining stack elements."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Daily Temperatures",
+          "slug": "daily-temperatures",
+          "difficulty": 6,
+          "difficulty_label": "Medium",
+          "why": "Pure next greater element pattern. The result stores how many days until a warmer temperature - directly the index distance between a popped element and the element that caused the pop."
+        },
+        {
+          "title": "Largest Rectangle in Histogram",
+          "slug": "largest-rectangle-in-histogram",
+          "difficulty": 6,
+          "difficulty_label": "Hard",
+          "why": "Full histogram pattern: uses an increasing stack to find both previous smaller and next smaller simultaneously in one pass. The sentinel value at the end is the key implementation trick."
+        },
+        {
+          "title": "Sum of Subarray Minimums",
+          "slug": "sum-of-subarray-minimums",
+          "difficulty": 6,
+          "difficulty_label": "Medium",
+          "why": "Contribution technique: for each element as the minimum, count how many subarrays have it as minimum using previous smaller and next smaller boundaries."
+        },
+        {
+          "title": "Next Greater Element II",
+          "slug": "next-greater-element-ii",
+          "difficulty": 6,
+          "difficulty_label": "Medium",
+          "why": "Circular array variant. Forces you to iterate 2n times with index modulo n, and to only push indices during the first pass."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Divide and Conquer",
+      "next_slug": "divide-conquer",
+      "why": "Divide and conquer is the algorithmic paradigm behind merge sort, quicksort, and binary search. After monotonic stacks, which solve problems in O(n) via clever single-pass invariants, divide and conquer introduces the recursive halving strategy and the Master Theorem for analyzing recurrences."
+    }
+  ]
+}

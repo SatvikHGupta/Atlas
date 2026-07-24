@@ -1,0 +1,7 @@
+/* PageWrapper: only provides min-height and page transition container.
+   Each page's .wrapper handles its own max-width, margin:auto, and padding. */
+.page {
+  flex: 1;
+  min-height: calc(100dvh - var(--navbar-height));
+  width: 100%;
+}

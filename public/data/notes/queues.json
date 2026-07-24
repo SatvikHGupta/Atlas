@@ -1,0 +1,132 @@
+{
+  "topic": "Queues",
+  "level": 2,
+  "slug": "queues",
+  "estimated_read": "13 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What are Queues?",
+      "content": "A **queue** is a First-In-First-Out (FIFO) data structure. The first element you enqueue is the first element you dequeue. The physical analogy is a line at a ticket counter: the person who arrived first gets served first. Queues appear everywhere real-world ordering matters: print jobs, CPU task scheduling, and network packet processing all use queues.\n\nIn JavaScript, queues are typically simulated with arrays using `push` (enqueue to back) and `shift` (dequeue from front). However, `shift` is O(n) because it moves every remaining element one position left in memory. For interview problems with small inputs, this is fine. For large inputs (n ≥ 10⁵), this hidden O(n) cost per dequeue turns a BFS from O(V + E) into O(V² + E). The correct solution is a pointer-based dequeue: maintain a `head` pointer and advance it instead of shifting.\n\nThe most important use of queues in algorithms is **Breadth-First Search (BFS)**. BFS explores a graph layer by layer - first all nodes at distance 1 from the source, then distance 2, then distance 3. This layer-by-layer property is guaranteed by the FIFO behavior of the queue: nodes are processed in the order they were discovered, which is exactly the order of increasing distance.\n\nThe second important structure is the **deque** (double-ended queue) - a queue that supports O(1) push and pop from both ends. The deque is the backbone of the sliding window maximum and minimum pattern, where we need to efficiently track the extremum of a sliding window."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "A queue is the right structure any time you need to process items in the order they were discovered or added, and you need the oldest item first. BFS is the clearest trigger - any 'shortest path' on an unweighted graph or grid, any 'level-order traversal' of a tree, and any 'process nodes in layers' problem needs a queue. Sliding window maximum (where monotonic deque applies) and multi-source propagation problems are the other major triggers.",
+      "signals": [
+        "level order traversal of a tree",
+        "shortest path in an unweighted graph or grid",
+        "breadth-first search",
+        "process nodes layer by layer",
+        "sliding window maximum or minimum",
+        "multi-source BFS (start from multiple nodes simultaneously)",
+        "task scheduling in arrival order"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "BFS with a Queue",
+      "content": "**BFS** uses a queue to ensure nodes are processed in order of distance from the source. The algorithm:\n\n1. Enqueue the source node, mark it visited.\n2. While the queue is not empty: dequeue the front node, process it, enqueue all unvisited neighbors and mark them visited immediately.\n\nThe 'mark visited before enqueue, not after dequeue' rule is critical: if you mark after dequeue, the same node can be enqueued multiple times (once from each neighbor that discovers it), causing O(V²) work instead of O(V + E).\n\n```javascript\nfunction bfs(graph, start) {\n  const visited = new Set([start]);\n  const queue = [start];\n  let head = 0; // pointer-based dequeue: no shift needed\n  while (head < queue.length) {\n    const node = queue[head++];\n    for (const neighbor of graph[node]) {\n      if (!visited.has(neighbor)) {\n        visited.add(neighbor); // mark before enqueue\n        queue.push(neighbor);\n      }\n    }\n  }\n}\n```\n\n## Level Tracking\n\nTo track which level (distance) each node is at, record the queue's size at the start of each level. Process exactly that many nodes for the current level, then everything newly enqueued is the next level."
+    },
+    {
+      "type": "concept",
+      "title": "Deque and Monotonic Deque",
+      "content": "A **deque** (double-ended queue) supports O(1) push and pop at both the front and the back. JavaScript doesn't have a built-in deque, but we can simulate one with an array and a `front` index pointer for the left end (amortized O(1) per left-pop).\n\n## Monotonic Deque for Sliding Window Maximum\n\nFor a window of size `k` sliding across an array, the naive approach to find the maximum each step is O(k) per slide → O(nk) total. The **monotonic deque** gives O(n) total.\n\nMaintain a deque of **indices** such that the corresponding values are in **decreasing order** from front to back. For each new element at index `right`:\n1. Remove from the front if the front index is outside the current window (`front <= right - k`).\n2. Remove from the back any index whose value is smaller than the current value - the current element dominates them for all future windows.\n3. Push `right` to the back.\n4. The front of the deque is the index of the maximum in the current window.\n\n```javascript\nfunction slidingWindowMax(arr, k) {\n  const deque = []; // indices, values decrease front to back\n  const result = [];\n  for (let i = 0; i < arr.length; i++) {\n    if (deque.length && deque[0] <= i - k) deque.shift(); // expired\n    while (deque.length && arr[deque[deque.length-1]] < arr[i]) deque.pop(); // dominated\n    deque.push(i);\n    if (i >= k - 1) result.push(arr[deque[0]]);\n  }\n  return result;\n}\n```"
+    },
+    {
+      "type": "concept",
+      "title": "Multi-Source BFS",
+      "content": "**Multi-source BFS** starts BFS from multiple source nodes simultaneously. Instead of enqueuing a single start node, enqueue ALL source nodes at once before beginning the main loop. Each source is treated as if it were at distance 0.\n\n## Why It Works\n\nBFS always expands in order of distance. When all sources are enqueued at distance 0, the BFS naturally propagates outward from all of them simultaneously. Each cell is reached first by its nearest source - because BFS guarantees no shorter path will be found later.\n\n## Example: Distance to Nearest 0 in a Binary Grid\n\nEnqueue all positions where `grid[i][j] === 0` with distance 0. Run BFS: each 1-cell is reached by the nearest 0-cell first.\n\n```javascript\nconst queue = [];\nfor (let i = 0; i < m; i++)\n  for (let j = 0; j < n; j++)\n    if (grid[i][j] === 0) { queue.push([i, j]); dist[i][j] = 0; }\n// then standard BFS from all sources in queue\n```"
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// === BFS LEVEL-ORDER (pointer-based, no shift) ===\nfunction bfsLevelOrder(graph, start) {\n  const visited = new Set([start]);\n  const queue = [start];\n  let head = 0, level = 0;\n\n  while (head < queue.length) {\n    const levelSize = queue.length - head; // nodes at current level\n    for (let i = 0; i < levelSize; i++) {\n      const node = queue[head++];\n      // process node here\n      for (const neighbor of (graph[node] || [])) {\n        if (!visited.has(neighbor)) {\n          visited.add(neighbor); // mark before enqueue, not after dequeue\n          queue.push(neighbor);\n        }\n      }\n    }\n    level++;\n  }\n}\n\n// === MONOTONIC DEQUE (sliding window maximum) ===\nfunction slidingWindowMax(arr, k) {\n  const deque = []; // stores indices; front = max of current window\n  const result = [];\n  for (let i = 0; i < arr.length; i++) {\n    // remove indices outside the window\n    if (deque.length && deque[0] <= i - k) deque.shift();\n    // remove indices whose values are dominated by current element\n    while (deque.length && arr[deque[deque.length - 1]] < arr[i]) deque.pop();\n    deque.push(i);\n    // window is fully formed starting at index k-1\n    if (i >= k - 1) result.push(arr[deque[0]]);\n  }\n  return result;\n}",
+      "language": "javascript",
+      "explanation": "BFS uses a head pointer instead of shift for O(1) dequeue - the queue array grows but each element is accessed exactly once. Level size is computed at the start of each level (not dynamically) so newly enqueued nodes don't corrupt the current level's count. Monotonic deque maintains decreasing values so the front is always the maximum; expired indices are removed from front, dominated indices from back."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Priority Queue (Min-Heap)",
+          "description": "A priority queue dequeues the minimum (or maximum) priority element rather than the oldest. JavaScript has no built-in priority queue - implement with a min-heap. Used for Dijkstra's shortest path and the Kth largest element. Covered in the Heaps topic.",
+          "example_problem": "Kth Largest Element in a Stream",
+          "example_slug": "kth-largest-element-in-a-stream"
+        },
+        {
+          "name": "Circular Queue",
+          "description": "A queue implemented with a fixed-size array that wraps around using modulo arithmetic. When the tail pointer reaches the array end, it wraps to index 0. Avoids the need for a dynamic array. `Design Circular Queue` on LeetCode is the direct practice problem.",
+          "example_problem": "Design Circular Queue",
+          "example_slug": "design-circular-queue"
+        },
+        {
+          "name": "Multi-Source BFS",
+          "description": "Enqueue all source nodes before starting the BFS loop. Each source is at distance 0; all other nodes are reached by whichever source is nearest. Used in '01 Matrix' (nearest 0), 'Rotting Oranges' (spread from all rotten oranges simultaneously), and similar propagation problems.",
+          "example_problem": "Rotting Oranges",
+          "example_slug": "rotting-oranges"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(V + E) for BFS, O(n) for monotonic deque sliding window",
+      "space": "O(V) for BFS queue and visited set, O(k) for monotonic deque",
+      "explanation": "BFS visits each vertex once and traverses each edge once - O(V + E). The visited set ensures no vertex is enqueued more than once. For the monotonic deque, each element is added to the deque exactly once and removed at most once (from either end), giving O(n) total work across the entire sliding window traversal. The deque holds at most k indices at any time."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Using `arr.shift()` for dequeue in performance-critical BFS: `shift` is O(n) in JavaScript because it shifts all remaining elements. For n=10⁵ nodes, this turns O(n) BFS into O(n²). Use a `head` pointer and increment it instead of shifting.",
+        "Marking nodes visited after dequeue instead of before enqueue: if you mark `visited[node] = true` when popping from the queue, a node can be enqueued multiple times (once for each neighbor that discovers it before it's processed). Mark immediately when pushing to prevent duplicate enqueues.",
+        "Confusing BFS queue order with DFS stack order: BFS with a queue processes nodes in order of increasing distance. Accidentally using a stack (LIFO) instead of a queue (FIFO) produces DFS traversal - correct paths but wrong distances, causing 'shortest path' problems to return wrong answers.",
+        "Forgetting to reset the visited set between multiple independent BFS calls: if your solution runs BFS from multiple source nodes in sequence (not multi-source BFS), each new BFS must start with a fresh visited set, or nodes from previous runs appear already-visited and are incorrectly skipped.",
+        "Off-by-one in level size for level-order: computing `levelSize = queue.length` dynamically inside the level loop (instead of computing it once at the start of each level as `const levelSize = queue.length - head`) picks up nodes enqueued in the current level, inflating the level size."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Implement Queue Using Stacks",
+          "slug": "implement-queue-using-stacks",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Tests understanding of FIFO vs LIFO - building a queue from two stacks reinforces the core operational difference."
+        },
+        {
+          "title": "Number of Islands",
+          "slug": "number-of-islands",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "BFS/DFS on a grid for connected component counting - tests the 4-directional BFS template on a 2D input."
+        },
+        {
+          "title": "Binary Tree Level Order Traversal",
+          "slug": "binary-tree-level-order-traversal",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Direct application of BFS level-order - tests the levelSize snapshot technique for grouping nodes by level."
+        },
+        {
+          "title": "Sliding Window Maximum",
+          "slug": "sliding-window-maximum",
+          "difficulty": 3,
+          "difficulty_label": "Hard",
+          "why": "Direct application of the monotonic deque - the only efficient O(n) solution to this problem requires the deque structure."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Linked Lists",
+      "next_slug": "linked-lists",
+      "why": "Linked lists are the foundational pointer-based data structure - the pointer manipulation you'll practice there (rewiring nodes, detecting cycles) is the exact skill that carries over to trees and graphs, where every edge is a pointer."
+    }
+  ]
+}

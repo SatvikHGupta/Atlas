@@ -1,0 +1,129 @@
+{
+  "topic": "Heaps / Priority Queue",
+  "level": 4,
+  "slug": "heaps-priority-queue",
+  "estimated_read": "12 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is a Heap?",
+      "content": "A heap is a complete binary tree satisfying the **heap property**: in a min-heap every parent is \u2264 its children, so the root always holds the minimum. In a max-heap every parent is \u2265 its children.\n\nThe complete binary tree structure lets a heap be stored in an array without pointers. Node at index `i` has left child `2i+1`, right child `2i+2`, parent `Math.floor((i-1)/2)`.\n\nHeaps power **priority queues** \u2014 dequeue always returns the highest-priority item. When the problem says 'always give me the cheapest/fastest/most frequent next item', you want a heap.\n\nJS has no built-in heap. Implement a min-heap from scratch (~25 lines) or simulate with a sorted array for small n. Sorted array gives O(n) insert vs O(log n) for a real heap.\n\nThree canonical patterns: **Top K elements** (min-heap of size K), **Merge K sorted lists** (heap with one entry per list), **Median of a stream** (two-heap split)."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Reach for a heap when you need to repeatedly extract the minimum or maximum from a dynamically changing set. Sorting gives a one-shot answer; heaps handle dynamic insertions in O(log n) per operation.",
+      "signals": [
+        "kth largest or smallest",
+        "top K elements",
+        "merge K sorted lists",
+        "median of running stream",
+        "always get minimum cost next",
+        "priority-based scheduling",
+        "Dijkstra shortest path",
+        "task scheduling by priority"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Heap Structure and Core Operations",
+      "content": "## Array Index Math\n\nParent of i: `Math.floor((i-1)/2)`. Left child: `2i+1`. Right child: `2i+2`.\n\n## Insert \u2014 Bubble Up\n\nAppend element, compare with parent, swap if out of order, repeat until heap property holds. O(log n).\n\n## Extract Min \u2014 Bubble Down\n\nSwap root with last element, remove last, bubble down new root: swap with smaller child, repeat. O(log n).\n\n## Build Heap in O(n)\n\nFloyd's heapify: call bubbleDown on every non-leaf from `Math.floor(n/2)-1` down to 0. O(n) due to geometric series of work per level.\n\n## Top K Pattern\n\nMin-heap of size K: push each element, if size > K pop the minimum. After all elements, heap contains the K largest. O(n log K).\n\n## K-Way Merge\n\nMin-heap with one entry per list storing `(value, listIndex, position)`. Extract min \u2192 add to result \u2192 push next from that list. O(N log K)."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "class MinHeap {\n  constructor() { this.heap = []; }\n  parent(i) { return Math.floor((i-1)/2); }\n  left(i)   { return 2*i+1; }\n  right(i)  { return 2*i+2; }\n  peek()    { return this.heap[0]; }\n  size()    { return this.heap.length; }\n\n  push(val) { this.heap.push(val); this._up(this.heap.length-1); }\n\n  pop() {\n    if (this.size()===1) return this.heap.pop();\n    const min=this.heap[0];\n    this.heap[0]=this.heap.pop();\n    this._down(0);\n    return min;\n  }\n\n  _up(i) {\n    while (i>0 && this.heap[this.parent(i)]>this.heap[i]) {\n      [this.heap[this.parent(i)],this.heap[i]]=[this.heap[i],this.heap[this.parent(i)]];\n      i=this.parent(i);\n    }\n  }\n\n  _down(i) {\n    const n=this.size();\n    while (true) {\n      let s=i,l=this.left(i),r=this.right(i);\n      if (l<n && this.heap[l]<this.heap[s]) s=l;\n      if (r<n && this.heap[r]<this.heap[s]) s=r;\n      if (s===i) break;\n      [this.heap[s],this.heap[i]]=[this.heap[i],this.heap[s]]; i=s;\n    }\n  }\n}\n\n// Top K largest via min-heap of size K\nfunction topK(nums, k) {\n  const h=new MinHeap();\n  for (const n of nums) { h.push(n); if (h.size()>k) h.pop(); }\n  return h.heap;\n}",
+      "language": "javascript",
+      "explanation": "Array-based min-heap with O(log n) push/pop. topK demonstrates the min-heap of size K pattern for finding K largest elements."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Max-Heap",
+          "description": "Invert all comparisons in _up and _down. Root holds maximum. Use for 'K smallest' by maintaining a max-heap of size K and evicting the maximum.",
+          "example_problem": "Kth Largest Element in an Array",
+          "example_slug": "kth-largest-element-in-an-array"
+        },
+        {
+          "name": "Two-Heap (Median Maintenance)",
+          "description": "Max-heap for the lower half and min-heap for the upper half, sizes balanced to differ by at most 1. Median is top of larger heap or average of both tops. O(log n) per insertion.",
+          "example_problem": "Find Median from Data Stream",
+          "example_slug": "find-median-from-data-stream"
+        },
+        {
+          "name": "Heap with Custom Comparator",
+          "description": "For (frequency, value) pairs, store tuples and compare on the first element. Extend MinHeap with a comparator function passed to the constructor.",
+          "example_problem": "Top K Frequent Elements",
+          "example_slug": "top-k-frequent-elements"
+        },
+        {
+          "name": "K-Way Merge with Heap",
+          "description": "Initialize heap with first element of each list. Each pop gives the globally next smallest element; push the next element from that list. O(N log K) total.",
+          "example_problem": "Merge K Sorted Lists",
+          "example_slug": "merge-k-sorted-lists"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(log n) insert/delete, O(1) peek",
+      "space": "O(n)",
+      "explanation": "Insert and delete traverse one root-to-leaf path of height log2(n). Peek reads index 0. Floyd's heapify builds from n elements in O(n). Space is O(n) for the array with no pointer overhead."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Using a min-heap for 'top K largest' seems backward but is correct \u2014 you evict the smallest, keeping the K largest. A max-heap of size K would require draining the whole heap at the end.",
+        "JS has no built-in heap \u2014 a sorted array gives O(n) insert, turning O(n log K) into O(n^2). Fine for n < 1000, catastrophic for n = 10^6.",
+        "Forgetting n < K edge case \u2014 when the array has fewer than K elements, return all of them.",
+        "Floyd's heapify is O(n); inserting n elements one-by-one is O(n log n). Use heapify only when the full array is known upfront.",
+        "Parent index off-by-one: Math.floor((i-1)/2) not Math.floor(i/2) for 0-indexed arrays."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Kth Largest Element in an Array",
+          "slug": "kth-largest-element-in-an-array",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Direct min-heap of size K \u2014 tests understanding of why a min-heap finds K largest elements."
+        },
+        {
+          "title": "Merge K Sorted Lists",
+          "slug": "merge-k-sorted-lists",
+          "difficulty": 8,
+          "difficulty_label": "Hard",
+          "why": "K-way merge \u2014 tests storing tuple entries and managing multiple list pointers in the heap."
+        },
+        {
+          "title": "Find Median from Data Stream",
+          "slug": "find-median-from-data-stream",
+          "difficulty": 8,
+          "difficulty_label": "Hard",
+          "why": "Two-heap median \u2014 tests splitting data into lower/upper halves with balanced sizes."
+        },
+        {
+          "title": "Top K Frequent Elements",
+          "slug": "top-k-frequent-elements",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Frequency map combined with custom comparator heap \u2014 tests composing heap with preprocessing."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Tries",
+      "next_slug": "tries",
+      "why": "Tries exploit shared prefixes for O(L) operations \u2014 the Level 4 tree structure counterpart to heaps. Together they complete the specialized tree toolkit before graph algorithms where heaps reappear inside Dijkstra."
+    }
+  ]
+}

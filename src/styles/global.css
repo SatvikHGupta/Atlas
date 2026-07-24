@@ -1,0 +1,99 @@
+@import './theme.css';
+@import './typography.css';
+@import './animations.css';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #050508;
+  background-image:
+    radial-gradient(at 0% 0%,   hsla(253, 40%, 15%, 0.9) 0, transparent 60%),
+    radial-gradient(at 100% 0%, hsla(200, 70%, 12%, 0.7) 0, transparent 55%),
+    radial-gradient(at 100% 100%, hsla(225, 50%, 20%, 0.8) 0, transparent 60%),
+    radial-gradient(at 0% 100%, hsla(280, 60%, 10%, 0.6) 0, transparent 55%);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100dvh;
+  /* prevent horizontal overflow on mobile */
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  /* remove 300ms tap delay on mobile */
+  touch-action: manipulation;
+}
+
+input, textarea, select {
+  font-family: inherit;
+  /* prevent iOS zoom on focus - font-size must be >= 16px */
+  font-size: 16px;
+}
+
+/* remove iOS tap highlight flash */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* scrollbar - desktop only */
+@media (min-width: 769px) {
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: var(--radius-full); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+}
+
+/* hide scrollbar on mobile but keep scroll */
+@media (max-width: 768px) {
+  ::-webkit-scrollbar { display: none; }
+  * { scrollbar-width: none; }
+}
+
+pre, code { font-family: var(--font-mono); }
+
+/* horizontal scroll utility - used for tag rows, chip rows on mobile */
+.scroll-x {
+  display: flex;
+  overflow-x: auto;
+  gap: var(--space-2);
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 2px;
+}
+.scroll-x::-webkit-scrollbar { display: none; }
+
+/* bottom padding utility - clears bottom nav on mobile */
+@media (max-width: 768px) {
+  .page-content {
+    padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom) + 16px);
+  }
+}

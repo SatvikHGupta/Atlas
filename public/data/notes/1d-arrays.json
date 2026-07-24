@@ -1,0 +1,132 @@
+{
+  "topic": "1D Arrays",
+  "level": 1,
+  "slug": "1d-arrays",
+  "estimated_read": "14 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What are 1D Arrays?",
+      "content": "**Arrays** are the most fundamental data structure in programming. Every other structure - stacks, queues, heaps, hash tables - is built on top of arrays or inspired by their properties. Mastering arrays is not a prerequisite for DSA; it *is* DSA at its foundation.\n\nAn array stores elements in **contiguous memory locations**. Because of this, accessing any element by index is O(1) - the CPU can jump directly to `base_address + index * element_size`. This is the defining property of arrays and the reason they're used everywhere. The tradeoff: inserting or deleting at the middle requires shifting elements - O(n) cost.\n\n**Cache locality** is why arrays are fast in practice beyond their asymptotic complexity. Modern CPUs load memory in cache lines (blocks of ~64 bytes). When you access `arr[i]`, the CPU also preloads `arr[i+1]`, `arr[i+2]`, etc. Sequential array traversal therefore benefits from hardware prefetching. Linked lists, which scatter nodes in memory, lose this advantage entirely.\n\nIn JavaScript, arrays are dynamic - they resize automatically. Under the hood, V8 uses actual contiguous memory when all elements are the same type (called a 'fast array'). Once you mix types or create sparse arrays, V8 falls back to a hash-map representation that loses the cache advantage. This is worth knowing when writing performance-sensitive code."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Arrays are the default data structure - you'll use them in almost every problem. The specific techniques in this topic have more precise triggers. Prefix sums are the right tool whenever a problem asks about sums over a range or subarray. The write-pointer (in-place) technique appears when the problem says 'O(1) extra space' or 'modify the array in place'. Kadane's algorithm applies to any 'maximum sum contiguous subarray' formulation.",
+      "signals": [
+        "sum of elements in a subarray or range",
+        "range sum queries on a static array",
+        "maximum or minimum subarray",
+        "remove duplicates in-place",
+        "O(1) extra space requirement",
+        "rotate or reverse the array",
+        "find the subarray with a given property"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Traversal Patterns",
+      "content": "**Forward traversal** is the default: `for (let i = 0; i < n; i++)`. **Backward traversal** (`for (let i = n-1; i >= 0; i--)`) is useful when you process from the end - removing elements from the back of a stack-like structure, or when a decision depends on what came after.\n\n**Every k-th element**: `for (let i = 0; i < n; i += k)` - use when sampling, chunking, or working with periodic structures.\n\n**Two indices moving together**: `let i = 0, j = n - 1` where both advance inward - classic for palindrome check, reversing in place, or two-sum on a sorted array.\n\n**Write pointer technique** for in-place operations: maintain a `write` index that only advances when you place a valid element. Read index `i` advances every step; `write` advances only on valid data. Removes duplicates from a sorted array in O(n) time, O(1) space:\n\n```javascript\nlet write = 1;\nfor (let i = 1; i < n; i++) {\n  if (arr[i] !== arr[i - 1]) arr[write++] = arr[i];\n}\n// arr[0..write-1] is the deduplicated array\n```"
+    },
+    {
+      "type": "concept",
+      "title": "Prefix Sums",
+      "content": "The **prefix sum** array `pre` is defined as `pre[i] = arr[0] + arr[1] + ... + arr[i]`. Once built, any range sum `arr[l] + ... + arr[r]` is answered in O(1) as `pre[r] - pre[l-1]` (with `pre[-1] = 0` as a base case).\n\n## Construction\n\n```javascript\nconst pre = new Array(n + 1).fill(0);  // pre[0] = 0 (empty prefix)\nfor (let i = 0; i < n; i++) {\n  pre[i + 1] = pre[i] + arr[i];\n}\n// Range sum [l, r] (0-indexed): pre[r+1] - pre[l]\n```\n\n## Why It Matters\n\nWithout prefix sums, answering `q` range queries on an array of size `n` costs O(nq). With prefix sums, it costs O(n) preprocessing + O(1) per query = O(n + q). For `q = n`, that's O(n) vs O(n²).\n\n## Foundation for More\n\nPrefix sums extend to 2D matrices (rectangle sum queries), difference arrays (range update in O(1)), and hash map combinations (subarray sum equals k)."
+    },
+    {
+      "type": "concept",
+      "title": "Kadane's Algorithm (Maximum Subarray)",
+      "content": "**Kadane's algorithm** finds the maximum sum contiguous subarray in O(n). The insight: at each position, the maximum subarray ending at `i` is either just `arr[i]` alone, or `arr[i]` appended to the best subarray ending at `i-1`. If the previous best is negative, discard it.\n\n```javascript\nlet maxEndingHere = arr[0];\nlet maxSoFar = arr[0];\nfor (let i = 1; i < n; i++) {\n  maxEndingHere = Math.max(arr[i], maxEndingHere + arr[i]);\n  maxSoFar = Math.max(maxSoFar, maxEndingHere);\n}\n```\n\nThis is an example of **optimal substructure** in arrays: the optimal answer at position `i` is derived from the optimal answer at `i-1`. This pattern generalizes to many DP problems."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// === PREFIX SUM TEMPLATE ===\nfunction buildPrefix(arr) {\n  const n = arr.length;\n  const pre = new Array(n + 1).fill(0);\n  for (let i = 0; i < n; i++) {\n    pre[i + 1] = pre[i] + arr[i];\n  }\n  return pre;\n}\n// Range sum [l, r] inclusive, 0-indexed:\n// pre[r + 1] - pre[l]\n\n// === KADANE'S ALGORITHM ===\nfunction maxSubarray(arr) {\n  let maxHere = arr[0];\n  let maxTotal = arr[0];\n  for (let i = 1; i < arr.length; i++) {\n    // extend previous subarray or start fresh at current element\n    maxHere = Math.max(arr[i], maxHere + arr[i]);\n    maxTotal = Math.max(maxTotal, maxHere);\n  }\n  return maxTotal;\n}\n\n// === WRITE POINTER (IN-PLACE FILTER) ===\nfunction removeDuplicatesSorted(arr) {\n  if (!arr.length) return 0;\n  let write = 1;\n  for (let i = 1; i < arr.length; i++) {\n    // only write when element is new\n    if (arr[i] !== arr[i - 1]) arr[write++] = arr[i];\n  }\n  return write; // valid length\n}",
+      "language": "javascript",
+      "explanation": "Three essential array templates: prefix sum with 1-indexed prefix array for clean range queries, Kadane's for maximum subarray via running optimal state, and write pointer for in-place filtering without extra space."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Circular Arrays",
+          "description": "Some problems treat the array as circular - index `n` wraps around to `0`. Use `index % n` for all accesses. For maximum subarray in a circular array, the answer is either the standard Kadane's result or `totalSum - minSubarraySum` (the subarray not included wraps around the ends).",
+          "example_problem": "Maximum Sum Circular Subarray",
+          "example_slug": "maximum-sum-circular-subarray"
+        },
+        {
+          "name": "Sorted Arrays",
+          "description": "A sorted array enables binary search (O(log n) lookup), two-pointer techniques for pair problems, and prefix sum with binary search for count queries. Many problems give a sorted constraint specifically to enable these efficient approaches.",
+          "example_problem": "Two Sum II - Input Array Is Sorted",
+          "example_slug": "two-sum-ii-input-array-is-sorted"
+        },
+        {
+          "name": "Difference Arrays",
+          "description": "The inverse of prefix sums: to apply a range update `[l, r] += val` in O(1), modify a difference array at positions l and r+1, then reconstruct the array with a prefix sum. Enables O(1) range updates and O(n) final reconstruction.",
+          "example_problem": "Range Addition",
+          "example_slug": "range-addition"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n) for single traversal, O(1) per prefix sum query after O(n) build",
+      "space": "O(n) for prefix sum array, O(1) for in-place traversal algorithms",
+      "explanation": "A single pass over the array is the baseline O(n) cost - you must visit each element at least once to consider it. Prefix sums trade O(n) space for converting O(n) per query into O(1), a classic space-time tradeoff. In-place techniques (write pointer, reversal) achieve O(n) time with O(1) space by using the input array itself for output."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Mutating an array while iterating over it: deleting or inserting elements during a for loop changes indices mid-iteration, causing elements to be skipped or processed twice. Use a write pointer or collect results in a separate pass.",
+        "JavaScript's `arr.sort()` is lexicographic by default: `[1, 10, 2].sort()` returns `[1, 10, 2]` not `[1, 2, 10]`. Always pass a comparator: `arr.sort((a, b) => a - b)` for ascending numeric sort.",
+        "Copying arrays with `=` copies the reference, not the values: `const copy = original` makes both variables point to the same array. Modifying `copy` modifies `original`. Use `const copy = [...original]` or `original.slice()` for a shallow copy.",
+        "Forgetting the empty array edge case: `arr[0]` on an empty array is `undefined`, not an error, which silently corrupts Kadane's algorithm and other single-element initializations. Check `if (!arr.length) return` or equivalent before entering.",
+        "Off-by-one in prefix sum range queries: for a 1-indexed prefix array, the range sum `[l, r]` (0-indexed) is `pre[r+1] - pre[l]`, not `pre[r] - pre[l-1]`. Mixing these indexing conventions is a constant source of wrong answers."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Two Sum",
+          "slug": "two-sum",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Tests the fundamental array traversal with a hash map complement lookup - the most common array problem pattern."
+        },
+        {
+          "title": "Maximum Subarray",
+          "slug": "maximum-subarray",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Direct application of Kadane's algorithm - tests understanding of maintaining optimal running state during traversal."
+        },
+        {
+          "title": "Product of Array Except Self",
+          "slug": "product-of-array-except-self",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Requires prefix product and suffix product arrays - direct extension of prefix sum technique to multiplicative context."
+        },
+        {
+          "title": "Container With Most Water",
+          "slug": "container-with-most-water",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Tests two-index traversal from both ends with a clear invariant - the pointer that moves is always the shorter wall."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "2D Arrays / Matrix",
+      "next_slug": "2d-arrays-matrix",
+      "why": "A matrix is an array of arrays - the traversal patterns, prefix sums, and in-place techniques you just learned extend directly to two dimensions, with the added challenge of spatial reasoning about rows, columns, and diagonals."
+    }
+  ]
+}

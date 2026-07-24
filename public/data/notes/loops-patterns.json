@@ -1,0 +1,131 @@
+{
+  "topic": "Loops & Patterns",
+  "level": 0,
+  "slug": "loops-patterns",
+  "estimated_read": "11 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What are Loops & Patterns?",
+      "content": "**Pattern problems** - print a triangle of stars, print a number pyramid, print a diamond - are not busywork. They are the training ground for a critical skill: translating a 2D visual structure into nested loop logic. Once you can do this fluently, problems involving grid traversal, matrix operations, and 2D dynamic programming feel far less intimidating.\n\nThe core mental model is simple: **the outer loop controls the row, the inner loop controls the column, and what you print is a function of the row and column indices**. Everything else - the shape, the fill, the alignment - is just choosing the right function and the right loop bounds.\n\nPattern problems also introduce **loop invariants** - the property that must hold true at every step of a loop for the loop to be correct. Thinking about what stays constant during a loop is the beginning of formal reasoning about algorithm correctness. This thinking transfers directly to sliding window problems, two-pointer problems, and binary search, all of which depend on maintaining a precise invariant.\n\nFinally, nested loops are where Big-O complexity becomes tactile. A single loop over `n` rows is O(n). Adding an inner loop over columns adds another factor - making the total cost visible and intuitive before you ever study formal complexity."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use nested loops with deliberate bound selection whenever you need to produce or process a 2D structure. Pattern problems are the direct application. More practically: building a matrix from a formula, iterating over all pairs in an array, and constructing DP tables all use the same nested loop skeleton. If a problem says 'for each row, for each column' - you are writing nested loops.",
+      "signals": [
+        "print a star or number pattern",
+        "build or fill a 2D matrix",
+        "iterate over all pairs (i, j) in an array",
+        "construct a DP table row by row",
+        "traverse a grid cell by cell",
+        "generate Pascal's triangle rows",
+        "simulate a grid-based game or process"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "The Translation Method",
+      "content": "Given any pattern, the process to derive the loop is:\n\n1. **Count the rows** - this is your outer loop bound, typically `1` to `n`.\n2. **Count the columns per row** - is it constant (rectangle)? Does it equal the row number (right triangle)? Does it equal `n - row` (inverted triangle)?\n3. **Identify what gets printed** - is it always `*`? Is it the column number? Is it `*` only on the border?\n\n## Example: Right Triangle\n\nPattern for n=4:\n```\n*\n* *\n* * *\n* * * *\n```\nRow 1 has 1 star, row 2 has 2 stars, ..., row i has i stars. The outer loop runs `i` from 1 to n, the inner loop runs `j` from 1 to `i`, and we print `*` each step.\n\n```javascript\nfor (let i = 1; i <= n; i++) {\n  let row = '';\n  for (let j = 1; j <= i; j++) {\n    row += '* ';\n  }\n  console.log(row.trimEnd());\n}\n```\n\n## Example: Inverted Triangle\n\nRow 1 has n stars, row 2 has n-1 stars, ..., row i has `n - i + 1` stars. Inner loop runs to `n - i + 1`.\n\n## Example: Diamond\n\nTop half is a right triangle growing to n, bottom half is an inverted triangle shrinking from n-1. Print as two separate loops."
+    },
+    {
+      "type": "concept",
+      "title": "Loop Invariants",
+      "content": "A **loop invariant** is a condition that is true before the loop starts, remains true after every iteration, and at loop termination gives you the result you want.\n\nExample: summing an array with `let sum = 0; for (let i = 0; i < n; i++) sum += arr[i];`\n\nThe invariant: *after iteration `i`, `sum` equals the sum of `arr[0..i-1]`*. Before any iteration: `sum = 0`, which is the empty sum - true. After iteration `i`: `sum` was updated by `arr[i]` - invariant maintained. After the last iteration: `sum` equals sum of all elements - desired result.\n\nThis isn't just academic. When you write a sliding window or binary search, explicitly stating the invariant tells you exactly what your pointer updates must maintain. Bugs in these algorithms almost always come from violating the invariant at an edge case."
+    },
+    {
+      "type": "concept",
+      "title": "Common Patterns Reference",
+      "content": "## Right Triangle (star on and below diagonal: `j <= i`)\nOuter: i from 1 to n. Inner: j from 1 to i.\n\n## Inverted Triangle (star on and above anti-diagonal: `j <= n-i+1`)\nOuter: i from 1 to n. Inner: j from 1 to n-i+1.\n\n## Number Pyramid (centered, row i has 2i-1 numbers with leading spaces)\nOuter: i from 1 to n. Print `n-i` spaces, then numbers 1 to i, then i-1 back to 1.\n\n## Hollow Rectangle (print `*` only on border: `i===1 || i===n || j===1 || j===m`)\nTwo nested loops over all cells; conditional print based on position.\n\n## Diagonal Check in Matrix\nMain diagonal: `i === j`. Anti-diagonal: `i + j === n - 1` (0-indexed)."
+    },
+    {
+      "type": "template",
+      "title": "Pattern Translation Template",
+      "code": "// Generic nested loop skeleton - adapt bounds and print condition\nfor (let i = 1; i <= n; i++) {\n  let row = '';\n\n  // leading spaces (for centered/pyramid patterns: n-i spaces)\n  for (let s = 0; s < n - i; s++) row += ' ';\n\n  // main content: j bound determines shape\n  for (let j = 1; j <= i; j++) {         // right triangle: j <= i\n    // for inverted: j <= n - i + 1\n    // for rectangle: j <= m\n    // for hollow: only print on border\n    const onBorder = (i === 1 || i === n || j === 1 || j === i);\n    row += onBorder ? '* ' : '  ';\n  }\n\n  console.log(row.trimEnd());\n}",
+      "language": "javascript",
+      "explanation": "This template shows the three-part structure: optional leading spaces for alignment, main content loop with adjustable bounds, and a border condition for hollow variants. Change the bound `j <= i` and the print condition to produce any pattern."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Number Patterns",
+          "description": "Instead of `*`, print the row number, column number, or a running count. The loop structure is identical; only the printed value changes. Number pyramids and Floyd's triangle are common examples. The challenge is computing the correct value as a function of `(i, j)`.",
+          "example_problem": "Pascal's Triangle",
+          "example_slug": "pascals-triangle"
+        },
+        {
+          "name": "Hollow Patterns",
+          "description": "Print the shape's border only, leaving the interior empty. The loop iterates over all cells, but only prints a character when on the border. The border condition is `i===1 || i===n || j===1 || j===innerBound` - varies by shape.",
+          "example_problem": "Rotate Image",
+          "example_slug": "rotate-image"
+        },
+        {
+          "name": "Diagonal Patterns",
+          "description": "Patterns where content follows diagonals rather than rows. In a matrix, all cells on the same anti-diagonal have the same `i+j` sum. Iterating by diagonal value then collecting cells on each diagonal is the pattern, used in problems like zigzag traversal.",
+          "example_problem": "Spiral Matrix",
+          "example_slug": "spiral-matrix"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n²)",
+      "space": "O(n) per row for string building, O(1) if printing directly",
+      "explanation": "A pattern of n rows where each row has up to n columns means at most n² characters total - O(n²) time. If you accumulate the entire output in a 2D structure, space is O(n²); if you print row by row and discard, space is O(n) for the current row."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Off-by-one in outer loop bounds: using `i < n` when the pattern requires n rows gives only n-1 rows. Always verify: does row `n` get printed? If `i` starts at 1 and you want n iterations, the condition must be `i <= n`.",
+        "Not accounting for spaces in aligned patterns: a centered pyramid printed without leading spaces produces a left-aligned triangle, not a pyramid. Count the spaces as explicitly as the stars - they are part of the output.",
+        "Confusing row-major vs column-major mental models: when iterating over a matrix as `matrix[i][j]`, `i` is the row (vertical position) and `j` is the column (horizontal position). Printing column-major (inner loop over rows) produces a transposed output - a common source of wrong answers in matrix problems.",
+        "Building the output string with repeated `+=` in a deeply nested loop: O(n²) string concatenations in JS produce O(n⁴) total work due to string immutability. Collect characters in an array and `join` at the end of each row."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Valid Sudoku",
+          "slug": "valid-sudoku",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Requires nested iteration over rows, columns, and 3×3 sub-boxes simultaneously - tests whether you can write multiple coordinated nested loops."
+        },
+        {
+          "title": "Rotate Image",
+          "slug": "rotate-image",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Requires iterating over matrix layers (outer loop) and positions within each layer (inner loop) - the nested structure is non-obvious without the translation method."
+        },
+        {
+          "title": "Spiral Matrix",
+          "slug": "spiral-matrix",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Requires shrinking boundary loops in four directions - the most complex nested iteration pattern, directly derived from the template above."
+        },
+        {
+          "title": "Pascal's Triangle",
+          "slug": "pascals-triangle",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Each row is a loop and each element is a function of row and column index - clean application of the outer-row / inner-column mental model."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "1D Arrays",
+      "next_slug": "1d-arrays",
+      "why": "The loop patterns you've practiced on visual problems now apply to arrays - traversal, prefix sums, and in-place operations all use the same controlled iteration, but now the data has algorithmic structure worth exploiting."
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.scrollWrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+  padding-bottom: 4px;
+}
+
+.scrollWrap::-webkit-scrollbar {
+  height: 4px;
+}
+.scrollWrap::-webkit-scrollbar-track { background: transparent; }
+.scrollWrap::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--radius-full);
+}
+
+.canvas {
+  display: block;
+  cursor: crosshair;
+  image-rendering: crisp-edges;
+  /* canvas width is set via JS - don't constrain it */
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.legendLabel {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.legendCell {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+@media (max-width: 768px) {
+  .legend {
+    margin-left: 0;
+  }
+}

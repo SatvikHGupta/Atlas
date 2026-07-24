@@ -1,0 +1,91 @@
+/* desktop layout: sidebar + content side by side */
+.layout {
+  display: flex;
+  min-height: calc(100dvh - var(--navbar-height));
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+/* mobile top bar - hidden on desktop */
+.mobileTopBar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobileTopBar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px 10px; /* bottom padding creates gap between search bar and content */
+    position: sticky;
+    top: var(--navbar-height);
+    z-index: 50;
+    background: var(--bg-primary);
+  }
+
+  .mobileSearch {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .filterBtn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0 12px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    flex-shrink: 0;
+    white-space: nowrap;
+    touch-action: manipulation;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .filterBtn[data-active='true'] {
+    border-color: var(--accent);
+    color: var(--accent-light);
+    background: var(--accent-subtle);
+  }
+
+  .filterCount {
+    font-size: 0.65rem;
+    font-weight: 700;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 999px;
+    padding: 0 5px;
+    min-width: 16px;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .content {
+    padding-top: 0;
+    padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom) + 12px);
+  }
+}
+
+/* error state */
+.errorState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+.errorIcon { font-size: 2.5rem; opacity: 0.6; }
+.errorState h3 { font-size: 1.1rem; color: var(--text-primary); margin: 0; }
+.errorState p  { font-size: 0.875rem; max-width: 400px; margin: 0; line-height: 1.6; }
+.errorState code { background: var(--bg-elevated); padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.8rem; color: var(--accent); }

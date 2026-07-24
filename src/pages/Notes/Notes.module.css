@@ -1,0 +1,179 @@
+.wrapper {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  width: 100%;
+  overflow-x: hidden; /* prevent card title overflow from blowing layout */
+  box-sizing: border-box;
+}
+
+.header { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.title {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.progress {
+  font-size: 0.8rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+  color: var(--accent);
+  margin-left: 0.4rem;
+  white-space: nowrap;
+}
+
+.levelGroup { display: flex; flex-direction: column; gap: 0.875rem; }
+
+.levelHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.levelBadge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+
+.levelName {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.topicsGrid {
+  display: grid;
+  /* min(220px, 45%) ensures cards never overflow at any zoom level */
+  grid-template-columns: repeat(auto-fill, minmax(min(220px, 45%), 1fr));
+  gap: 0.5rem;
+}
+
+.card {
+  min-width: 0; /* allows grid cell to shrink below content size */
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  text-decoration: none;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+
+.card:hover:not([data-unavailable='true']) {
+  border-color: var(--accent);
+  background: rgba(108, 99, 255, 0.06);
+  transform: translateY(-1px);
+}
+
+.card[data-unavailable='true'] {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.cardIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.cardTitle {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  /* 2 lines max- long titles like "2D Dynamic Programming" fit without cutoff */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+  white-space: normal;
+}
+
+.cardStatus { font-size: 0.68rem; color: var(--text-muted); }
+.cardStatus[data-ready='true'] { color: var(--accent); }
+
+.loading, .error {
+  padding: 3rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  padding: var(--space-1) 0;
+  margin-bottom: var(--space-4);
+  transition: color 0.15s;
+  gap: 4px;
+}
+.backBtn:hover { color: var(--text-secondary); }
+
+/* ---- mobile ---- */
+@media (max-width: 768px) {
+  .wrapper {
+    padding: var(--space-3) var(--space-3);
+    padding-bottom: calc(var(--bottom-nav-height, 60px) + env(safe-area-inset-bottom) + 16px);
+    gap: 1.5rem;
+  }
+  .title { font-size: 1.4rem; }
+  .subtitle { font-size: 0.82rem; }
+  .progress {
+    display: inline-block;
+    margin-left: 0;
+    margin-top: 4px;
+  }
+  /* 2 columns on mobile- 160px fits comfortably at 360px with 12px padding each side */
+  .topicsGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem;
+  }
+  .card { padding: 0.5rem 0.6rem; gap: 0.5rem; }
+  .cardIcon { width: 28px; height: 28px; font-size: 0.85rem; }
+  .cardTitle { font-size: 0.72rem; -webkit-line-clamp: 2; }
+}
+
+@media (max-width: 360px) {
+  .topicsGrid { grid-template-columns: 1fr; }
+}

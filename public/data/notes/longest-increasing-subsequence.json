@@ -1,0 +1,129 @@
+{
+  "topic": "Longest Increasing Subsequence",
+  "level": 6,
+  "slug": "longest-increasing-subsequence",
+  "estimated_read": "11 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is the Longest Increasing Subsequence?",
+      "content": "The **Longest Increasing Subsequence (LIS)** problem: given an array of integers, find the length of the longest subsequence such that all elements are in strictly increasing order. A **subsequence** is not required to be contiguous - you can skip elements, but you cannot rearrange them. For `[10, 9, 2, 5, 3, 7, 101, 18]` the LIS is `[2, 3, 7, 18]` or `[2, 5, 7, 18]` - length 4.\n\nThe naive approach (enumerate all 2^n subsequences) is exponential. The standard DP solution runs in O(n²): `dp[i]` = length of the longest increasing subsequence ending at index i. For each i, check all j < i where `arr[j] < arr[i]` and take `dp[j] + 1`. This is correct and sufficient for n ≤ 5000. For larger n, the O(n log n) patience sorting solution - which maintains a 'tails' array and binary searches it - brings the complexity down substantially.\n\nThe patience sorting approach is named after the card game patience (solitaire). It maintains an array `tails` where `tails[i]` stores the smallest possible tail element of all increasing subsequences of length `i+1` found so far. For each new element, binary search `tails` for the first tail >= current element and replace it. Append if none found. The length of `tails` at the end is the LIS length. **Important**: `tails` itself is NOT the actual LIS - it only gives the correct length. Use the O(n²) DP with parent tracking if you need to reconstruct the actual subsequence.\n\nLIS variants are heavily tested: Longest Decreasing Subsequence (reverse the array then run LIS), Russian Doll Envelopes (2D LIS - sort by width ascending, then height descending on ties, then LIS on heights), and Number of LIS (count all subsequences achieving maximum length). The O(n log n) patience sorting approach and the sort-trick for 2D LIS are among the most elegant algorithmic ideas at this level."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use LIS when the problem asks for the longest chain of elements satisfying a strict ordering constraint, where elements don't need to be adjacent. The 2D version (Russian Doll, box stacking) requires recognizing that sorting by one dimension and running LIS on the other converts a 2D problem into a 1D one. 'Minimum deletions to make array sorted' is `n - LIS_length`.",
+      "signals": [
+        "longest increasing subsequence",
+        "LIS length",
+        "minimum number of chains",
+        "Russian doll envelopes",
+        "patience sorting",
+        "longest chain of pairs",
+        "minimum deletions to make sorted",
+        "box stacking"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## O(n²) DP Solution\n\n`dp[i]` = length of LIS ending at index i. Initialize all `dp[i] = 1` (every element is a subsequence of length 1 by itself). For each i from 1 to n-1: for each j from 0 to i-1: if `arr[j] < arr[i]`, then `dp[i] = Math.max(dp[i], dp[j] + 1)`. Answer = `Math.max(...dp)`.\n\nTo reconstruct the actual subsequence, store a `parent` array tracking which j gave the best dp[i], then walk back from the index achieving max dp. This is the only approach that supports actual-subsequence reconstruction.\n\n## O(n log n) Patience Sorting\n\nMaintain array `tails` (initially empty). For each element `x`:\n- Binary search `tails` for the leftmost position where `tails[pos] >= x` (lower_bound).\n- If found, replace `tails[pos] = x` (keep tails as small as possible).\n- If not found (x is larger than all tails), append x to tails.\n\nThe length of tails at the end is LIS length. Why does replacing work? Keeping tail values minimal maximizes the chance that future elements can extend subsequences of each length.\n\n**Binary search detail**: for strictly increasing LIS, use lower_bound (`>=`). For non-strictly increasing (longest non-decreasing), use upper_bound (`>`). Getting the inequality direction wrong silently converts LIS to LNDS or vice versa.\n\n## Russian Doll Envelopes - 2D LIS\n\nEach envelope has width and height - one fits inside another if BOTH dimensions are strictly smaller. Sort envelopes by width **ascending**, but by height **descending** when widths are equal. Then run LIS on heights only.\n\nWhy descending on ties? If two envelopes have the same width, one cannot contain the other. But if you sort ascending on height for equal widths, LIS on heights would incorrectly treat them as nestable. The descending tie-break ensures same-width envelopes are never consecutive in the LIS - they can't all be picked together.\n\n## Number of LIS\n\nExtend the O(n²) DP with two arrays: `len[i]` (LIS length ending at i) and `cnt[i]` (number of subsequences of that length ending at i). For each i and j < i where `arr[j] < arr[i]`:\n- If `len[j] + 1 > len[i]`: update `len[i] = len[j] + 1`, `cnt[i] = cnt[j]`.\n- If `len[j] + 1 === len[i]`: add `cnt[i] += cnt[j]`.\n\nAnswer = sum of `cnt[i]` for all i where `len[i] === maxLen`."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "language": "javascript",
+      "code": "// O(n log n) patience sorting - gives LIS length\nfunction lisLength(arr) {\n  const tails = []; // tails[i] = smallest tail of all IS of length i+1\n\n  for (const x of arr) {\n    // binary search: find leftmost pos where tails[pos] >= x\n    let lo = 0, hi = tails.length;\n    while (lo < hi) {\n      const mid = (lo + hi) >> 1;\n      if (tails[mid] < x) lo = mid + 1; // strictly increasing: use <\n      else hi = mid;\n    }\n    tails[lo] = x; // replace or append\n  }\n\n  return tails.length;\n}\n\n// O(n²) DP - gives actual subsequence via parent tracking\nfunction lisActual(arr) {\n  const n = arr.length;\n  const dp = new Array(n).fill(1);\n  const parent = new Array(n).fill(-1);\n\n  let maxLen = 1, maxIdx = 0;\n  for (let i = 1; i < n; i++) {\n    for (let j = 0; j < i; j++) {\n      if (arr[j] < arr[i] && dp[j] + 1 > dp[i]) {\n        dp[i] = dp[j] + 1;\n        parent[i] = j;\n      }\n    }\n    if (dp[i] > maxLen) { maxLen = dp[i]; maxIdx = i; }\n  }\n\n  // reconstruct subsequence by following parent pointers\n  const result = [];\n  for (let i = maxIdx; i !== -1; i = parent[i]) result.push(arr[i]);\n  return result.reverse();\n}",
+      "explanation": "Patience sorting runs in O(n log n) using binary search on the tails array - gives correct LIS length but tails itself is not the subsequence. The O(n²) version with parent tracking is needed to reconstruct the actual LIS."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Russian Doll Envelopes (2D LIS)",
+          "description": "Sort by width ascending, height descending on width ties, then run O(n log n) LIS on heights only. The descending tie-break on equal widths prevents same-width envelopes from being picked consecutively in the LIS.",
+          "example_problem": "Russian Doll Envelopes",
+          "example_slug": "russian-doll-envelopes"
+        },
+        {
+          "name": "Number of LIS",
+          "description": "Extend O(n²) DP with a parallel count array: when a new longer subsequence is found, replace the count; when a tie is found, add to the count. Answer is the sum of counts at all positions achieving maximum LIS length.",
+          "example_problem": "Number of Longest Increasing Subsequence",
+          "example_slug": "number-of-longest-increasing-subsequence"
+        },
+        {
+          "name": "Minimum Deletions to Make Array Sorted",
+          "description": "The answer is `n - LIS_length` - the LIS is the maximum set of elements you can keep in sorted order, and everything else must be deleted. No separate algorithm needed beyond computing LIS.",
+          "example_problem": "Longest Increasing Subsequence",
+          "example_slug": "longest-increasing-subsequence"
+        },
+        {
+          "name": "Longest Increasing Path in Matrix",
+          "description": "LIS concept generalized to a 2D grid: DFS with memoization, where the 'strictly increasing' constraint on neighbors prevents cycles and makes the implicit graph a DAG. Not standard LIS but the same 'longest chain under strict ordering' thinking.",
+          "example_problem": "Longest Increasing Path in a Matrix",
+          "example_slug": "longest-increasing-path-in-a-matrix"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n log n) patience sorting; O(n²) standard DP",
+      "space": "O(n) for both",
+      "explanation": "Patience sorting: n elements each trigger one binary search over a tails array of size at most n - O(n log n) total. Standard DP: two nested loops over n elements - O(n²). Both use O(n) space: tails array or dp/parent arrays of length n. Number of LIS extends the O(n²) DP with one additional O(n) array - still O(n²) time and O(n) space."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Patience sorting: treating `tails` as the actual LIS - tails stores the minimum possible tail for each LIS length but is overwritten freely and does not represent a valid subsequence; use O(n²) DP with parent tracking if the actual subsequence is needed.",
+        "Off-by-one in binary search inequality: strictly increasing LIS uses lower_bound (`tails[mid] < x`, find first >= x); non-strictly increasing uses upper_bound (`tails[mid] <= x`, find first > x); reversing the inequality silently converts one variant to the other.",
+        "Russian Doll: sorting height ascending on equal widths instead of descending - same-width envelopes become consecutively choosable in the LIS scan, causing the algorithm to count them as nestable when they're not; always sort descending on the second dimension for equal first-dimension values.",
+        "Number of LIS: not initializing `cnt[i] = 1` for all i before the double loop - each element alone is one valid subsequence of length 1; leaving cnt[i] at 0 makes the count for any element with no valid predecessor remain 0, cascading into wrong final counts.",
+        "O(n²) DP: initializing `dp[i] = 0` instead of `dp[i] = 1` and taking `max(dp[n-1])` as the answer instead of `max over all dp[i]` - every element is an LIS of length 1 by itself, so dp[i] must start at 1, and the global max must scan all positions since the longest LIS might not end at the last element."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Longest Increasing Subsequence",
+          "slug": "longest-increasing-subsequence",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests both the O(n²) DP state definition ('ending at index i') and the O(n log n) patience sorting binary search - the problem that defines this entire topic."
+        },
+        {
+          "title": "Russian Doll Envelopes",
+          "slug": "russian-doll-envelopes",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Tests the 2D-to-1D reduction via the sort trick (ascending width, descending height on ties) - recognizing that this preprocessing converts the problem to standard LIS."
+        },
+        {
+          "title": "Number of Longest Increasing Subsequence",
+          "slug": "number-of-longest-increasing-subsequence",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests extending the O(n²) DP with a parallel count array, correctly handling both the 'new max' and 'tie' cases when updating len[i] and cnt[i]."
+        },
+        {
+          "title": "Longest Increasing Path in a Matrix",
+          "slug": "longest-increasing-path-in-a-matrix",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Tests applying the 'longest chain under strict ordering' thinking to a 2D grid via DFS + memoization, where the DAG structure from strictly increasing neighbors enables the same DP principle."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Binary Search on Answer",
+      "next_slug": "binary-search-on-answer",
+      "why": "The O(n log n) LIS solution uses binary search on the tails array - binary searching over a constructed solution space. Binary search on answer generalizes this idea: instead of searching a data array, you binary search the answer space itself using a feasibility check function."
+    }
+  ]
+}

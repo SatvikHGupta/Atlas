@@ -1,0 +1,129 @@
+{
+  "topic": "Merge Intervals",
+  "level": 3,
+  "slug": "merge-intervals",
+  "estimated_read": "10 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Merge Intervals?",
+      "content": "Interval problems involve ranges represented as `[start, end]` pairs. The core challenge is reasoning about **overlap**: do two intervals share any range? Can they be merged into one? The merge intervals pattern appears in calendar problems, meeting room scheduling, task ranges, and anywhere you need to consolidate or query overlapping time windows or numeric ranges.\n\nThe fundamental insight is that **sorting intervals by start time** transforms an otherwise O(n²) overlap check into a single O(n) linear scan. Once sorted, you only ever need to compare the current interval against the last merged interval - no earlier intervals can possibly overlap with new ones that come after. This single observation unlocks the entire category.\n\nThe merge intervals pattern is one of the most consistently tested categories on LeetCode with problems ranging from Easy to Hard. Calendar booking, scheduling conflicts, range consolidation, and sweep-line problems all reduce to variations of this core idea. It builds directly on sorting knowledge and introduces the sweep-line technique used in more advanced problems.\n\nBeyond merging, the same interval reasoning appears in **insert interval** (adding a new range into an already-sorted non-overlapping list), **meeting rooms** (how many rooms needed for simultaneous meetings - answered by counting maximum overlap at any point), and **non-overlapping intervals** (minimum removals to eliminate all overlaps - a greedy problem on interval end times)."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use the merge intervals pattern when your problem involves ranges, time windows, or numeric intervals and asks you to consolidate overlapping ones, count simultaneous overlaps, find gaps, or check for conflicts. The signature shape is: you receive a list of `[start, end]` pairs and need to reason about how they relate to each other.",
+      "signals": [
+        "merge overlapping intervals",
+        "find gaps between intervals",
+        "schedule meetings without conflict",
+        "minimum rooms required",
+        "insert interval into sorted list",
+        "non-overlapping intervals",
+        "calendar booking overlap",
+        "maximum simultaneous events"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## Overlap Detection\n\nTwo intervals `[a, b]` and `[c, d]` overlap if and only if `a <= d && c <= b`. A simpler way to remember: they do NOT overlap only if one ends before the other starts - `b < c` or `d < a`. Negate that to get the overlap condition. This single inequality drives every interval algorithm.\n\nEdge case: intervals `[1, 2]` and `[2, 3]` share the point 2 and DO overlap. The condition is `<=` not `<`.\n\n## Merge Intervals Algorithm\n\nSort intervals by start time. Initialize a result array with the first interval. For each subsequent interval, compare its start with the last result interval's end:\n- If `current.start <= last.end` → they overlap. Extend: `last.end = Math.max(last.end, current.end)`. Use max because the current interval might be fully contained inside last (e.g., `[1, 10]` then `[2, 3]` - don't shrink to 3).\n- If `current.start > last.end` → no overlap. Push current as a new interval.\n\nThis runs in O(n log n) due to sorting. The scan itself is O(n).\n\n## Insert Interval Into Sorted List\n\nGiven a sorted non-overlapping list, insert a new interval and re-merge. Three phases:\n1. Add all intervals that end **before** the new interval starts (`existing.end < newInterval.start`) - no overlap possible, add directly.\n2. Merge all intervals that overlap with the new interval by expanding its bounds: `newInterval.start = min(newInterval.start, existing.start)`, `newInterval.end = max(newInterval.end, existing.end)`.\n3. Add the merged interval, then add all remaining intervals.\n\nThis is O(n) since the list is already sorted - no sort step needed.\n\n## Sweep Line for Meeting Rooms\n\n'Minimum meeting rooms' asks: given meeting time ranges, what is the maximum number of meetings happening simultaneously? This equals the maximum overlap count at any point.\n\nSweep line approach: create events - `+1` at each start time, `-1` at each end time. Sort all events by time (break ties: ends before starts, so a meeting that ends at time t doesn't overlap with one starting at t). Scan events maintaining a running count. The peak count is the answer.\n\nAlternative: sort start times and end times separately. Use two pointers - greedily match the earliest start with the earliest end."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// Merge overlapping intervals - O(n log n)\nfunction merge(intervals) {\n  if (intervals.length <= 1) return intervals;\n\n  // sort by start time\n  intervals.sort((a, b) => a[0] - b[0]);\n\n  const result = [intervals[0]];\n\n  for (let i = 1; i < intervals.length; i++) {\n    const last = result[result.length - 1];\n    const curr = intervals[i];\n\n    if (curr[0] <= last[1]) {\n      // overlap - extend the last interval's end if needed\n      last[1] = Math.max(last[1], curr[1]);\n    } else {\n      // no overlap - start a new merged interval\n      result.push(curr);\n    }\n  }\n\n  return result;\n}\n\n// Insert interval into sorted non-overlapping list - O(n)\nfunction insert(intervals, newInterval) {\n  const result = [];\n  let i = 0;\n  const n = intervals.length;\n\n  // phase 1: add all intervals ending before newInterval starts\n  while (i < n && intervals[i][1] < newInterval[0]) {\n    result.push(intervals[i++]);\n  }\n\n  // phase 2: merge all overlapping intervals into newInterval\n  while (i < n && intervals[i][0] <= newInterval[1]) {\n    newInterval[0] = Math.min(newInterval[0], intervals[i][0]);\n    newInterval[1] = Math.max(newInterval[1], intervals[i][1]);\n    i++;\n  }\n  result.push(newInterval);\n\n  // phase 3: add all remaining intervals\n  while (i < n) result.push(intervals[i++]);\n\n  return result;\n}",
+      "language": "javascript",
+      "explanation": "The merge function sorts and consolidates overlapping intervals in O(n log n). The insert function efficiently adds a new interval into an already-sorted non-overlapping list in O(n) using three distinct phases."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Insert Interval",
+          "description": "Insert a new interval into an already sorted non-overlapping list and merge any resulting overlaps. The three-phase approach (add non-overlapping left, merge overlapping middle, add non-overlapping right) runs in O(n) without re-sorting.",
+          "example_problem": "Insert Interval",
+          "example_slug": "insert-interval"
+        },
+        {
+          "name": "Meeting Rooms II (Minimum Rooms)",
+          "description": "Find the minimum number of conference rooms needed for a set of meetings. Equals the maximum number of simultaneously active meetings. Solved via sweep line events (+1 at start, -1 at end) or the two-sorted-arrays pointer approach.",
+          "example_problem": "Meeting Rooms II",
+          "example_slug": "meeting-rooms-ii"
+        },
+        {
+          "name": "Non-Overlapping Intervals",
+          "description": "Find the minimum number of intervals to remove so that no two intervals overlap. Greedy: sort by end time, always keep the interval that ends earliest. Equivalent to finding maximum non-overlapping intervals and subtracting from total.",
+          "example_problem": "Non-Overlapping Intervals",
+          "example_slug": "non-overlapping-intervals"
+        },
+        {
+          "name": "Employee Free Time",
+          "description": "Given multiple employees each with a sorted list of work intervals, find all free time slots common to all employees. Flatten all intervals into one list, sort, merge, then find the gaps between consecutive merged intervals.",
+          "example_problem": "Employee Free Time",
+          "example_slug": "employee-free-time"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n log n)",
+      "space": "O(n)",
+      "explanation": "The sort dominates at O(n log n). The subsequent linear scan to merge is O(n). The result array holds at most n intervals in the worst case (no overlaps), so space is O(n). The insert-interval variant skips sorting (input is already sorted) and runs in O(n) time and space."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Not sorting by start time first - the algorithm is entirely wrong without sorting; two intervals adjacent in the input may not be adjacent in the sorted order, causing missed merges or incorrect splits.",
+        "Using `curr[1]` instead of `Math.max(last[1], curr[1])` when merging - the current interval might be fully contained inside the last (e.g., `[1, 10]` followed by `[2, 3]`); replacing last's end with 3 would incorrectly shrink it.",
+        "Off-by-one in overlap condition - using `curr[0] < last[1]` instead of `curr[0] <= last[1]` means adjacent intervals like `[1,2]` and `[2,3]` are not merged, even though they share point 2.",
+        "Insert interval: mixing the three phases - processing overlapping and non-overlapping intervals in the wrong order causes intervals to be added before they've been fully merged; always complete all three phases in strict order.",
+        "Meeting rooms sweep line: not breaking ties with ends before starts - if a meeting ends at time t and another starts at t, they don't need the same room; process end events before start events at the same timestamp."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Merge Intervals",
+          "slug": "merge-intervals",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "The canonical problem - sort by start then do a single linear scan merging overlapping intervals into the result."
+        },
+        {
+          "title": "Insert Interval",
+          "slug": "insert-interval",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests the three-phase insert approach on an already-sorted list - no re-sort, pure O(n) interval reasoning."
+        },
+        {
+          "title": "Non-Overlapping Intervals",
+          "slug": "non-overlapping-intervals",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests greedy interval reasoning - sort by end time, keep earliest-ending intervals, count removals."
+        },
+        {
+          "title": "Meeting Rooms II",
+          "slug": "meeting-rooms-ii",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests the sweep line / two-sorted-arrays approach to find maximum simultaneous overlap count."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Greedy Algorithms",
+      "next_slug": "greedy-algorithms",
+      "why": "Non-overlapping intervals is already a greedy problem - you just used a greedy choice (pick earliest end time) without formalizing it. Greedy algorithms generalizes this thinking: when does a locally optimal choice always lead to a globally optimal answer, and how do you prove it?"
+    }
+  ]
+}

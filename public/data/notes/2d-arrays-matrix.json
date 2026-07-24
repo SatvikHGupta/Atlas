@@ -1,0 +1,136 @@
+{
+  "topic": "2D Arrays / Matrix",
+  "level": 1,
+  "slug": "2d-arrays-matrix",
+  "estimated_read": "15 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What are 2D Arrays / Matrices?",
+      "content": "A **matrix** is an array of arrays: each element `matrix[row][col]` is accessed by two indices. But working with matrices requires more than just knowing the syntax - it requires a mental model shift. A 2D structure has spatial properties that 1D arrays lack: rows, columns, diagonals, and boundaries. The key discipline is keeping straight which index is which.\n\nIn JavaScript, `matrix[i][j]` means: the `i`-th sub-array (row), then the `j`-th element in that row (column). `i` moves vertically (down), `j` moves horizontally (right). This is the **row-major** convention. It's opposite to Cartesian coordinates where `x` (horizontal) comes first - a persistent source of bugs.\n\nReal uses of matrices span many domains. **Grid problems** model game boards, mazes, and maps as matrices where each cell has coordinates. **Image processing** represents a greyscale image as a matrix of pixel intensities. **Graph adjacency matrices** encode edges between nodes. **DP tables** use a 2D matrix to store subproblem results for problems with two varying parameters.\n\nThe techniques from 1D arrays extend cleanly: traversal becomes 2D traversal, prefix sums become 2D prefix sums, and BFS/DFS on arrays becomes BFS/DFS on grids. Each technique adds one dimension of complexity but uses the same underlying logic."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Matrix techniques apply whenever data has a 2D spatial structure or whenever two independent indices define a state. Grid problems are the most common: islands, paths, and shortest routes in a grid all need 2D traversal and BFS/DFS. When the problem says 'm × n' you are working with a matrix. Rotation, transposition, and spiral traversal are matrix-specific operations that appear frequently in interviews.",
+      "signals": [
+        "grid, matrix, or m × n input",
+        "adjacent cells (up/down/left/right)",
+        "island counting or flood fill",
+        "path exists from source to destination in grid",
+        "rotate or transpose the matrix",
+        "rectangle sum query",
+        "word search in a 2D grid"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Traversal Patterns",
+      "content": "## Row-Major Traversal\nVisit every cell: outer loop over rows `i` from 0 to `m-1`, inner loop over columns `j` from 0 to `n-1`. Standard for reading or writing every cell.\n\n## Column-Major Traversal\nOuter loop over columns, inner over rows. Useful when processing the matrix column by column.\n\n## Diagonal Traversal\nMain diagonal (top-left to bottom-right): all cells where `i === j`. Anti-diagonal: all cells where `i + j === n - 1` (for a square matrix of side `n`). To iterate all cells on a given diagonal, fix `i - j` (main diagonals) or `i + j` (anti-diagonals) and collect cells with that value.\n\n## Spiral Order\nMaintain four boundaries: `top`, `bottom`, `left`, `right`. Traverse right across top row, down the right column, left across bottom row, up the left column. Shrink the corresponding boundary after each pass. Repeat while `top <= bottom && left <= right`.\n\n```javascript\nconst result = [];\nlet top = 0, bottom = m - 1, left = 0, right = n - 1;\nwhile (top <= bottom && left <= right) {\n  for (let j = left; j <= right; j++) result.push(matrix[top][j]);\n  top++;\n  for (let i = top; i <= bottom; i++) result.push(matrix[i][right]);\n  right--;\n  if (top <= bottom)\n    for (let j = right; j >= left; j--) result.push(matrix[bottom][j]);\n  bottom--;\n  if (left <= right)\n    for (let i = bottom; i >= top; i--) result.push(matrix[i][left]);\n  left++;\n}\n```"
+    },
+    {
+      "type": "concept",
+      "title": "In-Place Matrix Transformations",
+      "content": "## Transpose\n**Transposing** a matrix swaps `matrix[i][j]` with `matrix[j][i]`. Only iterate the upper triangle to avoid double-swapping:\n\n```javascript\nfor (let i = 0; i < n; i++)\n  for (let j = i + 1; j < n; j++)\n    [matrix[i][j], matrix[j][i]] = [matrix[j][i], matrix[i][j]];\n```\n\n## Rotate 90° Clockwise\nA 90° clockwise rotation equals: **transpose** then **reverse each row**. To see why geometrically: the top row of the original becomes the rightmost column after rotation. Transposing makes it the top row of the transposed matrix; reversing each row then moves it to the right.\n\n```javascript\n// Step 1: transpose\ntranspose(matrix);\n// Step 2: reverse each row\nfor (const row of matrix) row.reverse();\n```\n\n## Rotate 90° Counter-Clockwise\nReverse each row first, then transpose. Or transpose then reverse each column."
+    },
+    {
+      "type": "concept",
+      "title": "2D Prefix Sums",
+      "content": "**2D prefix sum** `pre[i][j]` stores the sum of all elements in the rectangle from `(0,0)` to `(i-1, j-1)`. Any sub-rectangle sum is answered in O(1) using inclusion-exclusion:\n\n`sum(r1, c1, r2, c2) = pre[r2+1][c2+1] - pre[r1][c2+1] - pre[r2+1][c1] + pre[r1][c1]`\n\n## Construction\n\n```javascript\nconst pre = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));\nfor (let i = 1; i <= m; i++)\n  for (let j = 1; j <= n; j++)\n    pre[i][j] = matrix[i-1][j-1] + pre[i-1][j] + pre[i][j-1] - pre[i-1][j-1];\n```\n\nThe inclusion-exclusion formula avoids double-counting the top-left overlap rectangle that both `pre[i-1][j]` and `pre[i][j-1]` include."
+    },
+    {
+      "type": "concept",
+      "title": "BFS / DFS on a Grid",
+      "content": "A grid can be treated as an **implicit graph**: each cell `(r, c)` is a node, and edges connect it to its 4 (or 8) neighbors. BFS from a source cell visits cells in order of distance - useful for shortest path. DFS explores connected regions - useful for flood fill and island counting.\n\n```javascript\nconst dirs = [[0,1],[0,-1],[1,0],[-1,0]]; // right, left, down, up\n\nfunction bfs(grid, startR, startC) {\n  const m = grid.length, n = grid[0].length;\n  const visited = Array.from({ length: m }, () => new Array(n).fill(false));\n  const queue = [[startR, startC]];\n  visited[startR][startC] = true;\n  while (queue.length) {\n    const [r, c] = queue.shift();\n    for (const [dr, dc] of dirs) {\n      const nr = r + dr, nc = c + dc;\n      if (nr >= 0 && nr < m && nc >= 0 && nc < n && !visited[nr][nc]) {\n        visited[nr][nc] = true; // mark BEFORE enqueuing\n        queue.push([nr, nc]);\n      }\n    }\n  }\n}\n```\n\nFor DFS, replace the queue with a recursive call or explicit stack."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// === GRID BFS (4-DIRECTIONAL) ===\nconst dirs = [[0,1],[0,-1],[1,0],[-1,0]];\n\nfunction gridBFS(grid, startR, startC) {\n  const m = grid.length, n = grid[0].length;\n  const visited = Array.from({length: m}, () => new Array(n).fill(false));\n  const queue = [[startR, startC]];\n  visited[startR][startC] = true;\n\n  while (queue.length) {\n    const [r, c] = queue.shift();\n    // process cell (r, c) here\n    for (const [dr, dc] of dirs) {\n      const nr = r + dr, nc = c + dc;\n      // boundary check + unvisited check\n      if (nr >= 0 && nr < m && nc >= 0 && nc < n && !visited[nr][nc]) {\n        visited[nr][nc] = true; // mark before enqueue, not after dequeue\n        queue.push([nr, nc]);\n      }\n    }\n  }\n}\n\n// === 2D PREFIX SUM ===\nfunction build2DPrefix(matrix) {\n  const m = matrix.length, n = matrix[0].length;\n  const pre = Array.from({length: m+1}, () => new Array(n+1).fill(0));\n  for (let i = 1; i <= m; i++)\n    for (let j = 1; j <= n; j++)\n      pre[i][j] = matrix[i-1][j-1] + pre[i-1][j] + pre[i][j-1] - pre[i-1][j-1];\n  return pre;\n}\n// Rectangle sum (r1,c1) to (r2,c2) inclusive, 0-indexed:\n// pre[r2+1][c2+1] - pre[r1][c2+1] - pre[r2+1][c1] + pre[r1][c1]",
+      "language": "javascript",
+      "explanation": "Grid BFS visits cells level by level from a source, marking visited before enqueuing to prevent duplicate processing. The 2D prefix sum enables O(1) rectangle sum queries after O(mn) construction using inclusion-exclusion to avoid double-counting."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "8-Directional Grid",
+          "description": "Add the four diagonal directions `[[1,1],[1,-1],[-1,1],[-1,-1]]` to the directions array. Used in problems where diagonal movement is allowed (chess-style). Boundary checks remain the same.",
+          "example_problem": "Word Search",
+          "example_slug": "word-search"
+        },
+        {
+          "name": "Multi-Source BFS",
+          "description": "When you need the distance from the nearest source cell (e.g., nearest 0 in a matrix of 0s and 1s), enqueue ALL source cells at the start with distance 0, then run BFS normally. Each cell is reached by the nearest source first due to BFS level-order property.",
+          "example_problem": "01 Matrix",
+          "example_slug": "01-matrix"
+        },
+        {
+          "name": "Grid with Obstacles",
+          "description": "Add a condition to skip blocked cells during BFS/DFS expansion. Instead of just checking `!visited[nr][nc]`, also check `grid[nr][nc] !== obstacle`. Path-finding and flood fill problems use this variant.",
+          "example_problem": "Number of Islands",
+          "example_slug": "number-of-islands"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(m×n) for traversal and BFS/DFS, O(m×n) for 2D prefix build",
+      "space": "O(m×n) for visited array and 2D prefix sum",
+      "explanation": "Every cell is visited at most once in BFS/DFS (due to the visited check), giving O(mn) time and O(mn) space for the visited array. The 2D prefix sum requires one pass over all mn cells to build, and O(mn) extra space for the prefix array - both unavoidable since every cell contributes to some rectangle query."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Row vs column index confusion: `matrix[row][col]` has `row` as the vertical index (0 = top) and `col` as the horizontal index (0 = left). This is opposite to Cartesian (x, y) coordinates where x is horizontal first. Writing `matrix[col][row]` reads the transposed matrix and produces wrong results.",
+        "Mutating the grid as a visited marker without resetting: marking cells as visited by modifying the grid (e.g., `grid[r][c] = '0'`) is a common shortcut but fails when the same grid is used for multiple BFS calls or when the original grid is needed for subsequent operations.",
+        "Missing boundary checks before array access: accessing `matrix[r][c]` without checking `r >= 0 && r < m && c >= 0 && c < n` first throws 'Cannot read properties of undefined' or silently reads `undefined`. Always check bounds before accessing.",
+        "Marking visited after dequeue instead of before enqueue: if you mark visited when a cell is popped from the queue, the same cell can be enqueued multiple times (once from each neighbor that reaches it), causing exponential work and incorrect distances in BFS."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Valid Sudoku",
+          "slug": "valid-sudoku",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Tests 2D traversal in multiple directions simultaneously - rows, columns, and 3×3 boxes require coordinated nested loops."
+        },
+        {
+          "title": "Rotate Image",
+          "slug": "rotate-image",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Direct application of transpose + reverse rows for 90° rotation - tests in-place matrix transformation."
+        },
+        {
+          "title": "Number of Islands",
+          "slug": "number-of-islands",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Classic BFS/DFS on a grid - counts connected components, the fundamental grid graph algorithm."
+        },
+        {
+          "title": "Word Search",
+          "slug": "word-search",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "DFS from every starting cell with backtracking - tests 4-directional grid DFS with state tracking."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "String Manipulation",
+      "next_slug": "string-manipulation",
+      "why": "Strings are character arrays - all the traversal and two-pointer techniques from 1D and 2D arrays apply directly, with added string-specific patterns like frequency maps and palindrome checking."
+    }
+  ]
+}

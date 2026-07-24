@@ -1,0 +1,129 @@
+{
+  "topic": "LCA & Binary Lifting",
+  "level": 7,
+  "slug": "lca-binary-lifting",
+  "estimated_read": "12 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is LCA & Binary Lifting?",
+      "content": "The **Lowest Common Ancestor (LCA)** of two nodes u and v in a rooted tree is the deepest node that is an ancestor of both u and v. For a tree rooted at node 0, the LCA of nodes 5 and 7 might be node 2 if both are in the subtree rooted at 2. LCA appears in problems about tree path distances (`dist(u, v) = depth[u] + depth[v] - 2 × depth[LCA(u,v)]`), path sum queries, and any query about the relationship between two arbitrary nodes in a tree.\n\nThe naive LCA algorithm moves the deeper node up one parent at a time until both nodes reach the same depth, then moves both up one at a time until they meet. This is O(n) per query in the worst case (a linear chain tree). For a tree with n nodes and q queries, naive LCA is O(nq) - too slow for q up to 10^5.\n\n**Binary lifting** preprocesses the tree in O(n log n) to answer each LCA query in O(log n). It builds a table `up[v][j]` where `up[v][j]` = the 2^j-th ancestor of node v. Base case: `up[v][0] = parent[v]`. Recurrence: `up[v][j] = up[up[v][j-1]][j-1]` - the 2^j-th ancestor is the 2^(j-1)-th ancestor of the 2^(j-1)-th ancestor. This is built in O(n log n) with a DFS, then each LCA query decomposes depth differences and simultaneous lifting into binary jumps.\n\nBinary lifting uses the same power-of-2 decomposition as sparse table - both precompute answers at powers of 2 and combine them to answer arbitrary queries. The tree structure and the definition of 'ancestor' make it slightly more complex than flat array sparse table, but the core mechanism is identical. Understanding sparse table first makes binary lifting much easier to internalize."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use binary lifting when you need to answer multiple LCA or k-th ancestor queries on a static rooted tree efficiently. The preprocessing cost of O(n log n) is worth it when there are many queries (q >= 100). For single one-off queries, the naive O(n) approach may suffice. For dynamic trees (edges added/removed), binary lifting doesn't apply - use link-cut trees instead.",
+      "signals": [
+        "lowest common ancestor",
+        "LCA query",
+        "distance between tree nodes",
+        "path between two nodes in tree",
+        "kth ancestor",
+        "binary lifting on tree",
+        "tree path sum query",
+        "LCA with weighted edges"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## Building the Binary Lifting Table\n\nRoot the tree and compute `depth[]` for all nodes via DFS. During the same DFS, set `up[v][0] = parent[v]` (direct parent). Handle root: `up[root][0] = root` (root's parent is itself - sentinel to prevent out-of-bounds when lifting past the root).\n\nAfter DFS, fill the rest of the table:\n```\nfor j from 1 to LOG:\n  for each node v:\n    up[v][j] = up[up[v][j-1]][j-1]\n```\n`LOG = Math.ceil(Math.log2(n))` - the maximum number of binary lifting levels needed. Table size: n × LOG integers. Build time: O(n log n).\n\n## LCA Query Using Binary Lifting\n\nTo find `LCA(u, v)`:\n1. Ensure `depth[u] >= depth[v]` (swap if needed so u is the deeper node).\n2. Lift u up by `depth[u] - depth[v]` steps using binary decomposition - for each set bit j in the depth difference, jump `u = up[u][j]`. Now u and v are at the same depth.\n3. If `u === v`, LCA is u (v was an ancestor of u - done).\n4. Simultaneously lift both u and v: for j from LOG-1 down to 0: if `up[u][j] !== up[v][j]`, lift both (`u = up[u][j]`, `v = up[v][j]`). After this loop, `up[u][0]` = LCA.\n5. Return `up[u][0]`.\n\nTotal per query: O(log n).\n\n## Tree Path Distance Using LCA\n\n**Unweighted tree**: `dist(u, v) = depth[u] + depth[v] - 2 × depth[LCA(u, v)]`.\n\n**Weighted tree**: replace depth with `dist[v]` = sum of edge weights from root to v (precomputed in the DFS). Then path distance = `dist[u] + dist[v] - 2 × dist[LCA(u, v)]`. This reduces any tree path query to two lookups and one LCA - O(log n) total.\n\n## Kth Ancestor Query\n\nBinary lifting directly answers 'what is the k-th ancestor of node v?' Decompose k into binary: for each set bit j in k, jump `v = up[v][j]`. After processing all bits, v is the k-th ancestor. This is O(log n) and is the primitive operation that LCA is built on top of - the k-th ancestor query is actually simpler than full LCA."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "language": "javascript",
+      "code": "function buildLCA(n, edges, root = 0) {\n  const LOG = Math.ceil(Math.log2(n + 1)) + 1;\n  const adj = Array.from({ length: n }, () => []);\n  for (const [u, v] of edges) { adj[u].push(v); adj[v].push(u); }\n\n  const depth = new Array(n).fill(0);\n  const up = Array.from({ length: n }, () => new Array(LOG).fill(root));\n\n  // DFS to compute depth and up[v][0] (direct parent)\n  const stack = [[root, -1]];\n  while (stack.length) {\n    const [v, par] = stack.pop();\n    up[v][0] = par === -1 ? root : par; // root is its own ancestor\n    for (const u of adj[v]) {\n      if (u === par) continue;\n      depth[u] = depth[v] + 1;\n      stack.push([u, v]);\n    }\n  }\n\n  // fill binary lifting table\n  for (let j = 1; j < LOG; j++)\n    for (let v = 0; v < n; v++)\n      up[v][j] = up[up[v][j - 1]][j - 1];\n\n  function lca(u, v) {\n    // ensure u is deeper\n    if (depth[u] < depth[v]) [u, v] = [v, u];\n\n    // lift u to same depth as v\n    let diff = depth[u] - depth[v];\n    for (let j = 0; j < LOG; j++)\n      if ((diff >> j) & 1) u = up[u][j];\n\n    if (u === v) return u;\n\n    // simultaneously lift both until just below LCA\n    for (let j = LOG - 1; j >= 0; j--)\n      if (up[u][j] !== up[v][j]) { u = up[u][j]; v = up[v][j]; }\n\n    return up[u][0];\n  }\n\n  return { lca, depth };\n}",
+      "explanation": "Iterative DFS builds depth[] and up[][0] in O(n), then the double loop fills the full binary lifting table in O(n log n). Each LCA query runs in O(log n) using two-phase binary lifting."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Kth Ancestor of a Tree Node",
+          "description": "Direct application of the binary lifting table without the full LCA logic - decompose k in binary and jump through the ancestor table. O(log n) per query after O(n log n) build.",
+          "example_problem": "Kth Ancestor of a Tree Node",
+          "example_slug": "kth-ancestor-of-a-tree-node"
+        },
+        {
+          "name": "LCA with Path Sum",
+          "description": "Extend the DFS to precompute prefix sums along root-to-node paths. Path sum from u to v = prefixSum[u] + prefixSum[v] - 2 × prefixSum[LCA(u,v)]. O(log n) per query after O(n log n) preprocessing.",
+          "example_problem": "Path Sum III",
+          "example_slug": "path-sum-iii"
+        },
+        {
+          "name": "Tarjan's Offline LCA",
+          "description": "Process all queries in one DFS using Union-Find: when finishing a node's subtree, union it with its parent. For each query (u, v) processed when v is finished, LCA = find(u). Total O((n + q) α(n)) - better than binary lifting for very large q when all queries are known upfront.",
+          "example_problem": "Lowest Common Ancestor of a Binary Tree",
+          "example_slug": "lowest-common-ancestor-of-a-binary-tree"
+        },
+        {
+          "name": "LCA on Binary Tree (Naive DFS)",
+          "description": "For small trees or single queries, recursive DFS suffices: if root is u or v, return root; recurse left and right. If both return non-null, root is LCA. If one returns null, propagate the other. O(n) per query, no preprocessing.",
+          "example_problem": "Lowest Common Ancestor of Deepest Leaves",
+          "example_slug": "lowest-common-ancestor-of-deepest-leaves"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n log n) build; O(log n) per LCA query",
+      "space": "O(n log n) for the ancestor table",
+      "explanation": "The build fills n × LOG table entries in O(1) each - total O(n log n). Each LCA query does at most 2 × LOG binary jumps - O(log n). Space is O(n log n) for the up[][] table - for n = 10^5 and LOG = 17, that's about 1.7M integers, which is fine. The depth[] array adds O(n) space."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Setting `up[root][0] = -1` or leaving it uninitialized instead of `up[root][0] = root` - when lifting brings a node to or past the root, further lifting must stay at root; using -1 causes an out-of-bounds array access in the next jump, crashing or producing garbage values.",
+        "Building the up table inside the DFS before all `up[v][0]` values are set - `up[v][j] = up[up[v][j-1]][j-1]` requires the entire column j-1 to be finalized first; computing higher levels during DFS (before DFS completes) means some `up[v][0]` entries are still at their initial values, corrupting all higher-level ancestor entries.",
+        "LCA query phase 2: lifting u and v when `up[u][j] === up[v][j]` instead of only when they differ - the logic must lift ONLY when ancestors differ (to stay just below LCA without overshooting); lifting when equal moves both past the LCA, causing the final `up[u][0]` to be above the actual LCA.",
+        "Wrong LOG value - LOG must be at least `ceil(log2(n))`; using a smaller value (e.g., hardcoding 16 for n up to 10^5 when 17 is needed) means some ancestor jumps of 2^LOG or larger aren't representable, and lifting stops short of the correct depth equalization for deep nodes.",
+        "Depth equalization phase: not checking `if (u === v) return u` after equalizing depths - if v was already an ancestor of u, they are the same node after lifting; entering the simultaneous-lifting phase lifts both past the LCA and returns a wrong ancestor above it."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Kth Ancestor of a Tree Node",
+          "slug": "kth-ancestor-of-a-tree-node",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Pure binary lifting without the LCA wrapper - tests building the ancestor table and decomposing k in binary to answer k-th ancestor queries in O(log n)."
+        },
+        {
+          "title": "Lowest Common Ancestor of a Binary Tree",
+          "slug": "lowest-common-ancestor-of-a-binary-tree",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Introduces the LCA concept and naive DFS solution - foundational understanding of what LCA means before moving to the binary lifting optimization."
+        },
+        {
+          "title": "Lowest Common Ancestor of Deepest Leaves",
+          "slug": "lowest-common-ancestor-of-deepest-leaves",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "LCA on a constrained set of nodes (deepest leaves) - tests identifying candidate nodes via DFS depth tracking and then finding their common ancestor."
+        },
+        {
+          "title": "Path Sum III",
+          "slug": "path-sum-iii",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests using prefix sums combined with LCA to compute path sums between arbitrary pairs of nodes in O(log n) per query - the path-sum variant of binary lifting."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Segment Trees",
+      "next_slug": "segment-trees",
+      "why": "Binary lifting preprocesses a tree in O(n log n) to answer ancestry queries in O(log n). Segment trees apply the same 'preprocess into a tree structure for fast queries' paradigm to arrays - enabling range queries and point updates in O(log n) on dynamic (mutable) arrays, where sparse table's static-only limitation prevents its use."
+    }
+  ]
+}

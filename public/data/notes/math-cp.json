@@ -1,0 +1,123 @@
+{
+  "topic": "Math for CP",
+  "level": 8,
+  "slug": "math-cp",
+  "estimated_read": "10 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Math for CP?",
+      "content": "Competitive programming math problems require recognizing mathematical patterns, applying formulas, and translating problem statements into equations. Unlike number theory (integers and divisibility) or combinatorics (structured counting), 'math for CP' is a grab-bag of techniques: arithmetic and geometric series sums, floor/ceiling manipulation, coordinate transformations, and pattern-finding.\n\nThe key skill is **pattern recognition** \u2014 noticing that a problem's answer follows a simple closed-form formula, or that a counting problem reduces to a known mathematical identity. Many CP problems that look like they require iteration have O(1) or O(\u221an) solutions.\n\nThese techniques appear as standalone problems ('count multiples in range', 'sum of all subarray elements') and as subroutines inside larger algorithms. Knowing the standard formulas cold prevents you from wasting time deriving them under pressure.\n\nBefore reaching for a loop, ask: does this quantity have a closed form? If you are summing an arithmetic or geometric sequence, computing a count of multiples, or measuring grid distances, there is likely a formula."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Apply CP math when the problem asks for a sum, count, or aggregate with arithmetic structure \u2014 sums over ranges, counts of multiples, contributions of elements to all subarrays. Also when geometric distances can be simplified by a coordinate transformation.",
+      "signals": [
+        "sum of first n",
+        "arithmetic sequence",
+        "geometric series",
+        "count multiples in range",
+        "floor division",
+        "chessboard distance",
+        "pigeonhole",
+        "closed form answer"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Series Sums, Floor Arithmetic, Pigeonhole, and Coordinate Tricks",
+      "content": "## Series and Sums\n\n- Sum 1 to n: `n*(n+1)/2`\n- Sum of squares 1\u00b2 to n\u00b2: `n*(n+1)*(2n+1)/6`\n- Sum of cubes: `[n*(n+1)/2]\u00b2`\n- Geometric: `a*(r^n-1)/(r-1)` for r\u22601\n\n**Subarray contribution**: `arr[i]` appears in `(i+1)*(n-i)` subarrays of length-n array. Total sum of all subarray sums = `sum of arr[i]*(i+1)*(n-i)`. Converts O(n\u00b2) to O(n).\n\n## Floor/Ceiling Arithmetic\n\n- Multiples of k in [1,n]: `Math.floor(n/k)`\n- Multiples of k in [l,r]: `Math.floor(r/k) - Math.floor((l-1)/k)`\n- Integer ceiling of n/k: `Math.floor((n+k-1)/k)`\n\n## Pigeonhole Principle\n\nIf n items go into m containers and n > m, at least one container holds \u2265 2 items. Proves existence: given n+1 integers from [1,n], two must be equal. Used to bound solutions and prove collision inevitability.\n\n## Coordinate Rotation for L\u221e Distance\n\nTransform `(x,y)` \u2192 `(x+y, x-y)`. Under this transformation, Chebyshev distance (max of |dx|, |dy|) relates simply to axis-aligned ranges in the new coordinates. Finding max Chebyshev distance = finding max range of u coordinates and max range of v coordinates independently.\n\n## Pattern-Finding\n\nBulb switcher: bulb k is toggled once per divisor of k; ends on iff it has an odd number of divisors; only perfect squares have odd divisors. Answer = floor(sqrt(n)). Recognize exhaustive simulation has a mathematical answer."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// Core closed-form formulas\nconst sumTo = n => n*(n+1)/2;\nconst sumSquares = n => n*(n+1)*(2*n+1)/6;\nconst geoSum = (a,r,n) => r===1 ? a*n : a*(Math.pow(r,n)-1)/(r-1);\n\n// Count multiples of k in [l, r]\nconst countMultiples = (l,r,k) => Math.floor(r/k)-Math.floor((l-1)/k);\n\n// Integer ceiling without float division\nconst ceilDiv = (n,k) => Math.floor((n+k-1)/k);\n\n// Sum of all subarray sums: arr[i] contributes to (i+1)*(n-i) subarrays\nfunction subarraySum(arr) {\n  const n=arr.length;\n  let total=0;\n  for (let i=0;i<n;i++) total+=arr[i]*(i+1)*(n-i);\n  return total;\n}\n\n// Coordinate rotation: (x,y) -> (x+y, x-y)\n// Max Chebyshev distance = max range in either transformed coordinate\nfunction maxChebyshevDistance(points) {\n  let minU=Infinity,maxU=-Infinity,minV=Infinity,maxV=-Infinity;\n  for (const [x,y] of points) {\n    const u=x+y, v=x-y;\n    minU=Math.min(minU,u); maxU=Math.max(maxU,u);\n    minV=Math.min(minV,v); maxV=Math.max(maxV,v);\n  }\n  return Math.max(maxU-minU, maxV-minV);\n}",
+      "language": "javascript",
+      "explanation": "Reference implementations of core CP math formulas. subarraySum demonstrates the element-contribution pattern replacing O(n^2) nested loops with O(n). Coordinate rotation converts Chebyshev distance maximization to simple range queries."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Perfect Square / Divisor Count Problems",
+          "description": "Problems where the answer depends on counting perfect squares or numbers with odd divisor count. Only perfect squares have odd divisors because divisors come in pairs (d and n/d) except when d = sqrt(n).",
+          "example_problem": "Bulb Switcher",
+          "example_slug": "bulb-switcher"
+        },
+        {
+          "name": "Minimum Moves via Mathematical Insight",
+          "description": "Minimum operations problems often reduce to a formula. 'Minimum moves to make all elements equal' = sum of differences from the minimum. Recognizing the mathematical invariant avoids simulation entirely.",
+          "example_problem": "Minimum Moves to Equal Array Elements",
+          "example_slug": "minimum-moves-to-equal-array-elements"
+        },
+        {
+          "name": "Floor Division Range Counting",
+          "description": "Count integers in a range satisfying a divisibility condition in O(1) using floor division. Generalizes to any modular condition: count multiples of k in [l,r] = floor(r/k) - floor((l-1)/k).",
+          "example_problem": "Count Odd Numbers in an Interval Range",
+          "example_slug": "count-odd-numbers-in-an-interval-range"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(1) for closed-form formulas; O(n) for subarray contribution patterns",
+      "space": "O(1)",
+      "explanation": "Closed-form formulas compute in O(1) regardless of n. Subarray contribution requires one pass: O(n). Coordinate rotation is O(n) to transform all points and find extremes. The power of these techniques is replacing O(n^2) or O(n*k) loops with O(1) or O(n)."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Integer overflow in sum formulas: n*(n+1)/2 overflows 32-bit integers for n > ~65535. In JavaScript safe up to n \u2248 2^26 before floating point precision loss. Use BigInt for very large n.",
+        "Integer vs float division: n/k in JavaScript returns a float. Always use Math.floor(n/k) explicitly when you need integer quotient.",
+        "Sum of 1 to n vs 0 to n-1: n*(n+1)/2 for 1..n; n*(n-1)/2 for 0..n-1. Off-by-one in the formula produces answers that are close but wrong.",
+        "Ceiling formula confusion: Math.ceil(n/k), Math.floor((n+k-1)/k), and Math.floor((n-1)/k)+1 are all equivalent. Pick one and use it consistently \u2014 mixing them when n is an exact multiple of k causes subtle bugs.",
+        "Coordinate rotation scaling: after rotating (x,y) to (x+y, x-y), distances in the new space are scaled relative to original. When comparing transformed distances to thresholds, verify the scaling factor."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Count Odd Numbers in an Interval Range",
+          "slug": "count-odd-numbers-in-an-interval-range",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "Floor division range counting \u2014 derive the O(1) formula for counting integers satisfying a modular condition without iteration."
+        },
+        {
+          "title": "Minimum Moves to Equal Array Elements",
+          "slug": "minimum-moves-to-equal-array-elements",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Mathematical invariant \u2014 incrementing n-1 elements equals decrementing one, reducing to summing differences from the minimum."
+        },
+        {
+          "title": "Bulb Switcher",
+          "slug": "bulb-switcher",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Divisor count pattern \u2014 answer is count of perfect squares \u2264 n, testing whether you derive the mathematical pattern instead of simulating."
+        },
+        {
+          "title": "Minimum Number of Steps to Make Two Strings Anagram",
+          "slug": "minimum-number-of-steps-to-make-two-strings-anagram",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Frequency difference formula \u2014 reduce an operations problem to summing excess character frequencies."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Greedy Algorithms",
+      "next_slug": "greedy",
+      "why": "Greedy algorithms combine mathematical reasoning with algorithmic decision-making. The exchange argument (primary greedy proof technique) is a form of mathematical reasoning about invariants. Strong CP math foundations make it easier to reason about why a greedy choice is locally and globally optimal."
+    }
+  ]
+}

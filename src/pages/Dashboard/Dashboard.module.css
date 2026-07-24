@@ -1,0 +1,171 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: 920px;
+  margin: 0 auto;
+  width: 100%;
+  padding: var(--space-6) var(--space-8);
+}
+
+.greeting { margin-bottom: var(--space-2); }
+
+.greeting h1 {
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-1);
+}
+
+.greeting p { color: var(--text-muted); font-size: 0.9rem; }
+
+.streakRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 2rem;
+}
+
+.streakItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  flex: 1;
+}
+
+.streakVal {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.streakLabel {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.streakDivider {
+  width: 1px;
+  height: 44px;
+  background: var(--border-strong);
+  flex-shrink: 0;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  transition: border-color var(--transition-fast);
+}
+.card:hover { border-color: rgba(108, 99, 255, 0.3); }
+
+.cardTitle { font-size: 0.95rem; font-weight: 700; color: var(--text-primary); }
+
+.cardSub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: calc(var(--space-1) * -1);
+}
+
+.chartsRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+}
+
+.goalCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  transition: border-color var(--transition-fast);
+}
+.goalCard:hover { border-color: rgba(108, 99, 255, 0.3); }
+
+.goalText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+}
+
+.goalMotivation {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 420px;
+}
+
+.historyLink {
+  color: var(--accent-light);
+  font-size: 0.85rem;
+  transition: opacity 0.15s;
+  text-decoration: none;
+}
+.historyLink:hover { opacity: 0.75; }
+
+/* ---- responsive ---- */
+@media (max-width: 680px) {
+  .chartsRow { grid-template-columns: 1fr; }
+  .streakRow {
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+  }
+  .streakDivider { display: none; }
+  .streakItem { flex: 1; min-width: 80px; }
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding: var(--space-4) var(--space-3);
+    padding-bottom: calc(var(--bottom-nav-height, 60px) + env(safe-area-inset-bottom) + 16px);
+    gap: var(--space-4);
+  }
+  .greeting h1 { font-size: 1.45rem; }
+  .card { padding: var(--space-4); gap: var(--space-3); }
+  .goalCard { padding: var(--space-4); gap: var(--space-3); }
+  .goalMotivation { max-width: 100%; font-size: 0.85rem; }
+}
+.cardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.historyBtn {
+  flex-shrink: 0;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--accent);
+  background: rgba(124, 58, 237, 0.1);
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  border-radius: var(--radius-md);
+  padding: 0.3rem 0.75rem;
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.historyBtn:hover {
+  background: rgba(124, 58, 237, 0.2);
+  border-color: rgba(124, 58, 237, 0.5);
+}

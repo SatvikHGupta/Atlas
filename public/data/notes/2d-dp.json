@@ -1,0 +1,129 @@
+{
+  "topic": "2D Dynamic Programming",
+  "level": 6,
+  "slug": "2d-dp",
+  "estimated_read": "13 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is 2D Dynamic Programming?",
+      "content": "**2D DP** arises when the state requires two independent indices to describe it. The table has m×n cells, each depending on a constant number of neighboring cells. Two scenarios dominate: (1) **two sequences** - `dp[i][j]` represents the answer for the first `i` characters of string A and the first `j` characters of string B; (2) **a grid** - `dp[i][j]` represents the optimal answer when at cell (i, j) of a 2D grid. Both give O(mn) time and O(mn) space, often reducible to O(min(m,n)) with the rolling-row technique.\n\nThe most important two-sequence problems are **Longest Common Subsequence (LCS)** and **Edit Distance**. LCS counts the longest sequence of characters appearing in the same relative order in both strings - a foundation for diff tools and bioinformatics. Edit Distance counts the minimum insertions, deletions, and replacements to transform one string into another - the core of spell checkers and autocorrect. Both use the same `dp[i][j]` framework with slightly different recurrences.\n\nGrid DP is the other major form. **Unique Paths** counts routes through a grid moving only right or down. **Minimum Path Sum** finds the path from top-left to bottom-right minimizing total cell values. Both have the same structure: `dp[i][j]` depends on `dp[i-1][j]` (from above) and `dp[i][j-1]` (from left). **0/1 Knapsack** is also 2D DP - `dp[i][w]` = maximum value using first `i` items with weight capacity `w`.\n\nThe same three-step process from 1D DP applies: define `dp[i][j]` precisely, write the recurrence relating it to smaller states, initialize base cases for the first row and column. The only new challenge is keeping the 1-indexed offset straight - `dp[i]` uses `arr[i-1]` because the dp table is 1-indexed (with row 0 and column 0 as the empty-prefix base cases) while the input arrays are 0-indexed."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use 2D DP when the problem involves comparing two sequences, finding optimal paths in a grid, or making selection decisions constrained by two parameters (like items and capacity in knapsack). The state naturally requires two indices to be fully described - if you find yourself needing 'how far into string 1' AND 'how far into string 2', that's 2D DP.",
+      "signals": [
+        "longest common subsequence",
+        "edit distance between two strings",
+        "minimum path in grid",
+        "unique paths or count paths in grid",
+        "knapsack with weight and value",
+        "interleaving strings",
+        "two strings DP comparison",
+        "match pattern with wildcard"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## Two-String Problems\n\n`dp[i][j]` = answer considering first `i` chars of `s1` and first `j` chars of `s2`. Base case: `dp[0][j] = dp[i][0] = 0` (empty string compared to anything).\n\n**Longest Common Subsequence**:\n- If `s1[i-1] === s2[j-1]`: `dp[i][j] = dp[i-1][j-1] + 1` (characters match, extend LCS)\n- Else: `dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1])` (skip one character from either string)\n\n**Edit Distance** (Levenshtein distance):\n- If `s1[i-1] === s2[j-1]`: `dp[i][j] = dp[i-1][j-1]` (no operation needed)\n- Else: `dp[i][j] = 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])` (delete from s1, insert into s1, replace)\n- Base cases: `dp[i][0] = i` (delete i chars to match empty), `dp[0][j] = j` (insert j chars).\n\n## Grid DP\n\n`dp[i][j]` = optimal answer to reach cell (i, j). Base case: first row and column filled first.\n\n**Unique Paths**: `dp[i][j] = dp[i-1][j] + dp[i][j-1]`. Base: `dp[0][j] = dp[i][0] = 1`.\n\n**Minimum Path Sum**: `dp[i][j] = grid[i][j] + Math.min(dp[i-1][j], dp[i][j-1])`.\n\n## 0/1 Knapsack\n\n`dp[i][w]` = maximum value using the first `i` items with weight capacity `w`.\n- Don't take item i: `dp[i][w] = dp[i-1][w]`\n- Take item i (only if `weight[i-1] <= w`): `dp[i][w] = dp[i-1][w - weight[i-1]] + value[i-1]`\n- Take the max of both options.\n\nBase case: `dp[0][w] = 0` for all w (no items = no value).\n\n## Space Optimization (Rolling Row)\n\nWhen `dp[i][j]` only depends on row `i-1` and the same row `i`, maintain only two 1D arrays (current row and previous row). For 0/1 knapsack, reduce to a single 1D array by iterating the weight dimension **backward** to prevent picking the same item twice."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// LCS - two-string 2D DP\nfunction lcs(s1, s2) {\n  const m = s1.length, n = s2.length;\n  // 1-indexed: dp[i][j] = LCS of s1[0..i-1] and s2[0..j-1]\n  const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));\n\n  for (let i = 1; i <= m; i++) {\n    for (let j = 1; j <= n; j++) {\n      if (s1[i - 1] === s2[j - 1]) {\n        dp[i][j] = dp[i - 1][j - 1] + 1; // characters match\n      } else {\n        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]); // skip one char\n      }\n    }\n  }\n  return dp[m][n];\n}\n\n// 0/1 Knapsack - space-optimized to 1D (iterate weight backward)\nfunction knapsack(weights, values, capacity) {\n  const n = weights.length;\n  const dp = new Array(capacity + 1).fill(0); // dp[w] = max value at capacity w\n\n  for (let i = 0; i < n; i++) {\n    // iterate backward: prevents using item i more than once\n    for (let w = capacity; w >= weights[i]; w--) {\n      dp[w] = Math.max(dp[w], dp[w - weights[i]] + values[i]);\n    }\n  }\n  return dp[capacity];\n}",
+      "language": "javascript",
+      "explanation": "LCS shows the 1-indexed 2D table where dp[i][j] maps to s1[i-1] and s2[j-1] - this offset is the most common 2D DP indexing pattern. Knapsack shows space optimization to 1D by iterating weight backward, which prevents the same item from being added twice (if iterated forward, dp[w - weight] would already include the current item)."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Unbounded Knapsack",
+          "description": "Items can be used multiple times. Same recurrence as 0/1 knapsack but iterate the weight dimension forward instead of backward - this allows reusing the same item's updated dp value within the same pass.",
+          "example_problem": "Coin Change II",
+          "example_slug": "coin-change-ii"
+        },
+        {
+          "name": "Edit Distance Variants",
+          "description": "Restrict operations (only insert and delete, no replace) or add operation costs. The recurrence adjusts the minimum: use only the applicable operations' dp values. Wildcard matching and regex matching are also 2D DP variants of string comparison.",
+          "example_problem": "Edit Distance",
+          "example_slug": "edit-distance"
+        },
+        {
+          "name": "Palindrome DP",
+          "description": "Longest palindromic subsequence: LCS of the string with its reverse. Minimum cuts for palindrome partitioning: a different 2D DP where dp[i][j] = whether s[i..j] is a palindrome, precomputed for the main cut DP.",
+          "example_problem": "Longest Common Subsequence",
+          "example_slug": "longest-common-subsequence"
+        },
+        {
+          "name": "Grid DP with Obstacles",
+          "description": "Skip cells marked as obstacles by setting dp[i][j] = 0 (for count problems) or Infinity (for min-cost problems) when grid[i][j] is blocked. Initialize base cases carefully - if an obstacle appears in the first row or column, all subsequent cells in that row/column are unreachable.",
+          "example_problem": "Unique Paths II",
+          "example_slug": "unique-paths-ii"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(m×n) for two-string and grid DP, O(n×W) for knapsack",
+      "space": "O(m×n) full table, reducible to O(min(m,n)) with rolling row",
+      "explanation": "Every cell in the 2D table is filled exactly once using O(1) previous states - so time is O(mn) for an m×n table. Space is O(mn) for the full 2D array. For two-string problems, rolling to two rows reduces space to O(n). For 0/1 knapsack, rolling to one 1D array of size W gives O(W) space. The backward iteration in knapsack ensures correctness - without it, the space reduction breaks the 0/1 constraint."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Index offset confusion - dp[i][j] typically uses arr[i-1] and arr2[j-1] because the dp array is 1-indexed (row 0 and column 0 are base cases for the empty prefix) while input arrays are 0-indexed; mixing these up gives wrong answers that are hard to debug.",
+        "0/1 knapsack space-optimized MUST iterate weight backward - iterating forward allows using the same item multiple times (you'd read dp[w - weight[i]] which already includes item i from this pass), silently converting 0/1 knapsack to unbounded knapsack.",
+        "Missing 2D base case initialization - the first row (dp[0][j]) and first column (dp[i][0]) must be initialized before the main loop; for edit distance these are dp[i][0] = i and dp[0][j] = j (cost to convert to/from empty string), not 0.",
+        "Mistaking subsequence for substring - LCS allows skipping characters (non-contiguous), while longest common substring requires contiguous characters and uses a different recurrence: dp[i][j] = dp[i-1][j-1] + 1 only if chars match, else 0 (no max of neighbors).",
+        "Forgetting the grid obstacle case - for grid DP with obstacles, not setting dp[i][j] = 0 or Infinity when grid[i][j] is blocked propagates incorrect counts through all cells reachable from the obstacle."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Unique Paths",
+          "slug": "unique-paths",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "The simplest grid DP - dp[i][j] = dp[i-1][j] + dp[i][j-1] with first row and column all 1s as base case."
+        },
+        {
+          "title": "Longest Common Subsequence",
+          "slug": "longest-common-subsequence",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "The canonical two-string 2D DP - tests the character-match branch vs the skip-one-character branch of the recurrence."
+        },
+        {
+          "title": "Edit Distance",
+          "slug": "edit-distance",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Two-string DP with three operations - tests the min of three previous states and non-trivial base case initialization."
+        },
+        {
+          "title": "Coin Change II",
+          "slug": "coin-change-ii",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Unbounded knapsack - count ways to make amount; tests forward iteration (vs backward for 0/1 knapsack) to allow reuse."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "DP on Trees",
+      "next_slug": "dp-on-trees",
+      "why": "2D DP on grids and sequences establishes the table-filling mindset. Tree DP applies the same bottom-up computation to tree structures - instead of a rectangular table, the 'table' is the tree itself and the recurrence runs in post-order DFS."
+    }
+  ]
+}

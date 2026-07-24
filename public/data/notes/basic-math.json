@@ -1,0 +1,138 @@
+{
+  "topic": "Basic Math for CP",
+  "level": 0,
+  "slug": "basic-math",
+  "estimated_read": "14 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Basic Math for CP?",
+      "content": "Mathematics is not optional in competitive programming - it is a constant companion. Almost every non-trivial problem touches number theory, combinatorics, or arithmetic in some way. The question is whether you have the right tools ready or whether you get stuck re-deriving them under time pressure.\n\n**Modular arithmetic** appears whenever answers get large. Problems say 'output the answer modulo 10^9+7' because the actual answer can be astronomically large - bigger than any integer type can hold. Understanding mod is not just a formatting requirement; it changes how you compute intermediate values.\n\n**GCD and LCM** appear in fraction problems, problems asking about common divisors, period/cycle detection, and more. The Euclidean algorithm is one of the oldest algorithms in existence and is still the tool you reach for here.\n\n**Prime numbers** appear in factorization problems, cryptography-adjacent problems, and anytime the structure of a number's divisors matters. Knowing when to use trial division versus a sieve is a practical skill.\n\n**Combinatorics** - counting arrangements and selections - appears in probability problems, DP state counting, and 'count the number of ways' problems. The factorial grows faster than almost anything, so you need to know how to compute binomial coefficients without overflow."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Pull from this toolkit whenever a problem involves counting, divisibility, large number arithmetic, or asks about prime factors. The phrase 'modulo 10^9+7' in the output specification is the clearest signal that modular arithmetic is required. 'How many ways' signals combinatorics. 'Divisible by', 'common divisor', or 'reduce the fraction' signals GCD/LCM.",
+      "signals": [
+        "count the number of ways (combinatorics)",
+        "output the answer mod 10^9+7",
+        "divisible by / not divisible by",
+        "prime factorization / prime numbers up to n",
+        "how many pairs satisfy a condition",
+        "find the GCD or LCM",
+        "reduce a fraction to lowest terms",
+        "power of a number modulo m"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Modular Arithmetic",
+      "content": "**Modular arithmetic** treats numbers as if they wrap around at a modulus `m`. `a mod m` is the remainder when `a` is divided by `m`.\n\n## Key Identities\n\n```\n(a + b) % m = ((a % m) + (b % m)) % m\n(a * b) % m = ((a % m) * (b % m)) % m\n(a - b) % m = ((a % m) - (b % m) + m) % m   // +m to handle negatives\n```\n\nDivision is NOT this simple - you need modular inverse (see Variants).\n\n## Why We Mod\n\nNumbers in CP can exceed 10^18. JavaScript's safe integer limit is 2^53 - 1 ≈ 9 × 10^15. Products of two 10^9 numbers overflow. By taking mod at every step, we keep intermediate values small.\n\n## Modular Exponentiation (Fast Power)\n\nComputing `a^n % m` naively with a loop is O(n). **Fast power** uses repeated squaring: `a^n = (a^(n/2))^2` if n is even, `a * a^(n-1)` if n is odd. This is O(log n).\n\n```javascript\nfunction modPow(base, exp, mod) {\n  let result = 1n;\n  base = BigInt(base) % BigInt(mod);\n  exp = BigInt(exp);\n  mod = BigInt(mod);\n  while (exp > 0n) {\n    if (exp % 2n === 1n) result = result * base % mod;\n    base = base * base % mod;\n    exp >>= 1n;\n  }\n  return Number(result);\n}\n```"
+    },
+    {
+      "type": "concept",
+      "title": "GCD and LCM",
+      "content": "The **Greatest Common Divisor** (GCD) of two numbers is the largest number that divides both. The **Euclidean algorithm** computes it efficiently using one key insight: `gcd(a, b) = gcd(b, a % b)`. This works because any divisor of both `a` and `b` also divides `a % b`.\n\nBase case: `gcd(a, 0) = a`.\n\n```javascript\nfunction gcd(a, b) {\n  return b === 0 ? a : gcd(b, a % b);\n}\n```\n\nThe number of recursive calls is O(log(min(a, b))) - the remainder shrinks by at least half every two steps.\n\n## LCM from GCD\n\n`lcm(a, b) = (a / gcd(a, b)) * b`\n\nDivide before multiplying to avoid overflow: `(a / gcd(a, b)) * b` rather than `(a * b) / gcd(a, b)`."
+    },
+    {
+      "type": "concept",
+      "title": "Primes",
+      "content": "A **prime** is a number greater than 1 with no divisors other than 1 and itself. Note: **1 is NOT prime**.\n\n## Trial Division - O(√n)\n\nTo check if `n` is prime, try dividing by all integers from 2 to √n. If none divide evenly, it's prime. We stop at √n because if `n = a * b` and `a > √n`, then `b < √n` - the smaller factor would have been found already.\n\n```javascript\nfunction isPrime(n) {\n  if (n < 2) return false;\n  for (let i = 2; i * i <= n; i++) {\n    if (n % i === 0) return false;\n  }\n  return true;\n}\n```\n\n## Sieve of Eratosthenes - O(n log log n)\n\nTo find **all primes up to n**, use the Sieve. Mark all multiples of each prime as composite, starting from 2. What remains unmarked is prime.\n\n```javascript\nfunction sieve(n) {\n  const isPrime = new Array(n + 1).fill(true);\n  isPrime[0] = isPrime[1] = false;\n  for (let i = 2; i * i <= n; i++) {\n    if (isPrime[i]) {\n      for (let j = i * i; j <= n; j += i) {\n        isPrime[j] = false;\n      }\n    }\n  }\n  return isPrime;\n}\n```\n\nUse trial division for a single number. Use the sieve when you need all primes in a range."
+    },
+    {
+      "type": "concept",
+      "title": "Combinatorics Basics",
+      "content": "**Combinatorics** counts arrangements and selections. The core operation is **nCr** (n choose r): the number of ways to choose `r` items from `n` items without regard to order.\n\n`nCr = n! / (r! * (n-r)!)`\n\n## Pascal's Triangle\n\nPascal's triangle gives nCr values without computing factorials directly. Each cell is the sum of the two above it: `C(n, r) = C(n-1, r-1) + C(n-1, r)`. This is an O(n²) precomputation that answers any nCr query in O(1).\n\n## Factorial Overflow\n\n`20!` overflows a 64-bit integer. For large `n`, compute nCr modulo a prime `p` using: `nCr % p = n! * modInverse(r!) * modInverse((n-r)!) % p`. This requires modular inverse (Fermat's little theorem: `modInverse(a, p) = modPow(a, p-2, p)` when `p` is prime)."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// GCD - Euclidean algorithm\nfunction gcd(a, b) {\n  return b === 0 ? a : gcd(b, a % b);\n}\n\n// LCM - divide first to prevent overflow\nfunction lcm(a, b) {\n  return (a / gcd(a, b)) * b;\n}\n\n// Fast modular exponentiation - O(log exp)\nfunction modPow(base, exp, mod) {\n  let result = 1n;\n  base = BigInt(base) % BigInt(mod);\n  mod = BigInt(mod);\n  exp = BigInt(exp);\n  while (exp > 0n) {\n    if (exp & 1n) result = result * base % mod;  // odd exponent: multiply in current base\n    base = base * base % mod;                    // square the base each step\n    exp >>= 1n;\n  }\n  return Number(result);\n}\n\n// Modular inverse via Fermat's little theorem (mod must be prime)\nfunction modInverse(a, p) {\n  return modPow(a, p - 2, p);\n}\n\n// Safe mod for negative numbers in JS\nfunction safeMod(n, m) {\n  return ((n % m) + m) % m;\n}",
+      "language": "javascript",
+      "explanation": "These are the five functions you'll copy into nearly every math-heavy CP solution. GCD/LCM handle divisibility, modPow handles large exponentiation without overflow, modInverse enables modular division, and safeMod handles JavaScript's negative remainder quirk."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Extended Euclidean Algorithm (Modular Inverse)",
+          "description": "The extended Euclidean algorithm finds integers `x, y` such that `ax + by = gcd(a, b)`. When `gcd(a, m) = 1`, this gives `ax ≡ 1 (mod m)`, making `x` the modular inverse of `a`. This works for any modulus, not just primes, unlike the Fermat's little theorem approach.",
+          "example_problem": "Count Inversions",
+          "example_slug": "count-inversions"
+        },
+        {
+          "name": "Chinese Remainder Theorem",
+          "description": "CRT solves systems of simultaneous modular equations: find `x` such that `x ≡ r1 (mod m1)`, `x ≡ r2 (mod m2)`, etc., when all moduli are coprime. It appears in problems with multiple periodic conditions. Too advanced for Level 0 but worth knowing exists.",
+          "example_problem": "Minimum Number of Operations",
+          "example_slug": "minimum-number-of-operations"
+        },
+        {
+          "name": "Segmented Sieve",
+          "description": "When you need primes in a range [L, R] where R is large (up to 10^12) but the range R - L is manageable (≤ 10^6), the segmented sieve uses the base sieve up to √R and marks composites in the target range only. Dramatically reduces memory.",
+          "example_problem": "Count Primes",
+          "example_slug": "count-primes"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(√n) trial division, O(n log log n) sieve, O(log n) GCD, O(log exp) modPow",
+      "space": "O(n) for sieve, O(log n) recursion stack for GCD",
+      "explanation": "Trial division is O(√n) because we only test factors up to the square root. The sieve is O(n log log n) because each prime p marks n/p composites, and the sum of 1/p for all primes up to n converges to log log n. GCD is O(log(min(a,b))) because the remainder shrinks by at least half every two steps - matching binary search's halving behavior."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "JS integer overflow with large products: `a * b` where both are around 10^9 silently gives a wrong float result. Use BigInt for intermediate products before taking mod, or restructure to mod earlier: `(a % mod) * (b % mod) % mod` still risks overflow for mod near 10^9 - use BigInt.",
+        "Negative modulo in JS: `(-1 % 5)` returns `-1` in JavaScript, not `4`. Whenever you subtract and take mod, use `((n % m) + m) % m` to guarantee a non-negative result. Forgetting this causes wrong answers on problems with subtraction.",
+        "Treating 1 as prime: 1 has only one divisor (itself), not two, so by definition it is not prime. Including 1 in a prime list corrupts sieve results and breaks factorization logic.",
+        "Trial division running to n instead of √n: looping `for (let i = 2; i <= n; i++)` to check primality is O(n) and will TLE for n up to 10^9. Always loop to `i * i <= n` or precompute `Math.sqrt(n)`.",
+        "Starting inner sieve loop at 2*i instead of i*i: multiples of `i` smaller than `i*i` were already marked by smaller primes. Starting at `i*i` is both correct and faster."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Count Primes",
+          "slug": "count-primes",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Direct application of the Sieve of Eratosthenes - tests whether you know the O(n log log n) algorithm versus O(n√n) naive."
+        },
+        {
+          "title": "Palindrome Number",
+          "slug": "palindrome-number",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Tests digit extraction using modulo and integer division - the most fundamental mod operations."
+        },
+        {
+          "title": "Reverse Integer",
+          "slug": "reverse-integer",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Combines digit extraction with overflow detection - tests whether you understand integer limits and safe mod arithmetic."
+        },
+        {
+          "title": "Add Digits",
+          "slug": "add-digits",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Tests recognition of digital root formula - rewards knowing the mod 9 mathematical pattern over iterative simulation."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Loops & Patterns",
+      "next_slug": "loops-patterns",
+      "why": "Loops are the mechanical tool that executes the mathematical ideas you just learned - sieve loops, modPow loops, and digit extraction loops all require fluency with loop bounds and nested iteration."
+    }
+  ]
+}

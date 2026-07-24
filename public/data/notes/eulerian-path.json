@@ -1,0 +1,127 @@
+{
+  "topic": "Eulerian Path & Circuit",
+  "level": 7,
+  "slug": "eulerian-path",
+  "estimated_read": "13 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is an Eulerian Path & Circuit?",
+      "content": "An **Eulerian path** visits every edge in a graph exactly once. An **Eulerian circuit** is an Eulerian path that starts and ends at the same vertex. These are named after Leonhard Euler, who solved the Königsberg Bridge Problem in 1736 - the first theorem of graph theory. The problem asked whether you could walk through the city crossing each of its seven bridges exactly once. Euler showed it was impossible by proving a necessary condition on vertex degrees - this single observation is the foundation of the entire topic.\n\nEulerian path and circuit problems appear in disguise on LeetCode as 'reconstruct itinerary' (directed Eulerian path), 'valid arrangement of pairs' (directed Eulerian path), and any problem asking to use every edge exactly once. Recognizing the disguise is half the battle. The moment a problem says 'use every connection/road/flight/pair exactly once,' it is an Eulerian path problem.\n\nThe algorithm to actually find the path - **Hierholzer's algorithm** - runs in O(V + E) and is a specific DFS variant. It works by greedily following edges until stuck, recording the dead-end as part of the output, then backtracking and continuing. The result is built in reverse and must be flipped at the end (or built by prepending). This seems counterintuitive but is provably correct: the point where you get stuck mid-traversal is actually the endpoint of the full path.\n\nEulerian path is categorically easier than Hamiltonian path (visit every vertex once - NP-complete). If a problem asks to use every **edge** once, it's Eulerian and efficiently solvable. If it asks to visit every **vertex** once, it may be Hamiltonian (or TSP) - an exponential problem. This distinction is one of the most important in graph theory."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use Eulerian path/circuit when the problem explicitly or implicitly requires using every edge exactly once. The disguised forms are: reconstruct an itinerary from all given tickets (directed Eulerian path), arrange pairs so consecutive pairs share an element (directed Eulerian path where each pair is an edge), generate all k-length strings over an alphabet using every transition once (de Bruijn sequence = Eulerian circuit).",
+      "signals": [
+        "use each edge exactly once",
+        "reconstruct path from all connections",
+        "Eulerian circuit",
+        "all tickets used",
+        "valid arrangement of pairs",
+        "every road traversed once"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## Existence Conditions\n\nAlways check these before running Hierholzer's - if conditions aren't met, no Eulerian path exists.\n\n**Undirected graph**:\n- Eulerian **circuit**: graph is connected (ignoring isolated vertices) AND every vertex has even degree.\n- Eulerian **path** (non-circuit): exactly 2 vertices have odd degree (those are the start and end); all others have even degree.\n\n**Directed graph**:\n- Eulerian **circuit**: graph is strongly connected AND every vertex has `in-degree === out-degree`.\n- Eulerian **path**: exactly one vertex has `out-degree - in-degree = 1` (start), exactly one has `in-degree - out-degree = 1` (end), all others have equal in/out degree.\n\nCheck conditions in O(V + E) by computing degrees before running the algorithm.\n\n## Hierholzer's Algorithm\n\nThe standard algorithm for constructing the Eulerian path or circuit:\n\n1. Find the valid start vertex (for circuit: any vertex with edges; for path: the vertex with `out - in = 1` in directed, or one of the two odd-degree vertices in undirected).\n2. Push the start onto a stack. While the stack is non-empty: peek at the top vertex. If it has unvisited outgoing edges, push the next neighbor and mark the edge used. If it has no remaining edges, pop it and append to the result.\n3. Reverse the result at the end.\n\n**Key data structure**: use a stack-based iterative DFS - never recursive, as large graphs cause stack overflow. Use an index pointer per vertex into its sorted adjacency list to track the next unvisited edge in O(1).\n\n**Why reverse?** When you reach a dead end mid-traversal, that vertex is actually the END of the Eulerian path (or start of the circuit). Appending it as you backtrack builds the path in reverse order.\n\n## Directed Eulerian Path - Reconstruct Itinerary\n\nAirports are vertices, flights are directed edges. Sort each airport's adjacency list **lexicographically** so Hierholzer's always picks the lexicographically smallest next airport. Run Hierholzer's iteratively: maintain a stack, push the start ('JFK'). Each step: if the current airport has remaining flights, push the next destination (smallest unused). If no flights remain, pop and prepend to the result. Reverse at the end for the correct forward order.\n\n## Eulerian Path vs Hamiltonian Path\n\n- **Eulerian**: every **EDGE** exactly once - solved in O(V + E) by Hierholzer's.\n- **Hamiltonian**: every **VERTEX** exactly once - NP-complete, no known polynomial algorithm.\n\nIf a problem says 'visit every connection/road once' → Eulerian. If 'visit every city once' → potentially Hamiltonian (TSP). The algorithmic difference is enormous."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "language": "javascript",
+      "code": "// Hierholzer's algorithm for directed Eulerian path\n// Handles: Reconstruct Itinerary pattern (lexicographic order)\nfunction hierholzer(graph, start) {\n  // graph: Map<string, string[]> with each adjacency list pre-sorted\n  // track index pointer per node to avoid splice (O(1) per edge)\n  const idx = new Map();\n  for (const [node] of graph) idx.set(node, 0);\n\n  const stack = [start];\n  const result = [];\n\n  while (stack.length > 0) {\n    const curr = stack[stack.length - 1]; // peek\n    const neighbors = graph.get(curr) || [];\n    const nextIdx = idx.get(curr) || 0;\n\n    if (nextIdx < neighbors.length) {\n      // still has unused edges: push next neighbor\n      idx.set(curr, nextIdx + 1);\n      stack.push(neighbors[nextIdx]);\n    } else {\n      // no edges remaining: this is the next node in reverse path\n      result.push(stack.pop());\n    }\n  }\n\n  return result.reverse(); // built backwards, reverse to get correct order\n}\n\n// Example: Reconstruct Itinerary\nfunction findItinerary(tickets) {\n  const graph = new Map();\n  for (const [from, to] of tickets) {\n    if (!graph.has(from)) graph.set(from, []);\n    graph.get(from).push(to);\n  }\n  // sort adjacency lists for lexicographic order\n  for (const [, neighbors] of graph) neighbors.sort();\n  return hierholzer(graph, 'JFK');\n}",
+      "explanation": "Iterative Hierholzer's using an index pointer per node (avoids costly splice). Peeks at the stack top: if edges remain, push next neighbor; if stuck, pop and append to result. Reverse at end."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Undirected Eulerian Circuit",
+          "description": "Same Hierholzer's algorithm, but use an adjacency list with edge-visited flags (or remove edges symmetrically). Existence condition: all vertices have even degree. Start from any vertex with edges.",
+          "example_problem": "Cracking the Safe",
+          "example_slug": "cracking-the-safe"
+        },
+        {
+          "name": "Reconstruct Itinerary (Lexicographic Directed Path)",
+          "description": "Sort each airport's adjacency list lexicographically before running Hierholzer's. The greedy DFS naturally builds the lexicographically smallest valid itinerary. Use an index pointer instead of removing elements for O(E) total edge processing.",
+          "example_problem": "Reconstruct Itinerary",
+          "example_slug": "reconstruct-itinerary"
+        },
+        {
+          "name": "Valid Arrangement of Pairs",
+          "description": "Each pair [a, b] is a directed edge a → b. Find an Eulerian path through all edges. Check degree conditions to find the start vertex (out - in = 1), then run Hierholzer's. If all in/out degrees are equal, any vertex can start (circuit).",
+          "example_problem": "Valid Arrangement of Pairs",
+          "example_slug": "valid-arrangement-of-pairs"
+        },
+        {
+          "name": "De Bruijn Sequence",
+          "description": "Generate the shortest cyclic sequence containing every k-length string over an alphabet exactly once. Model as an Eulerian circuit: nodes are (k-1)-length strings, edges are k-length strings. The Eulerian circuit on this graph directly produces the de Bruijn sequence.",
+          "example_problem": "Cracking the Safe",
+          "example_slug": "cracking-the-safe"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(V + E)",
+      "space": "O(V + E)",
+      "explanation": "Hierholzer's visits every edge exactly once (each edge is pushed/popped from the stack once) and every vertex at most once per incident edge. With an index pointer instead of removing edges, each edge access is O(1). Total: O(V + E). Space is O(V + E) for the adjacency list, the stack (depth up to E in the worst case), and the result array."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Using recursive DFS instead of iterative for Hierholzer's - for graphs with E up to 10^5 edges the recursion depth can reach E, causing a stack overflow; always use an explicit stack with iterative DFS.",
+        "Not checking existence conditions before running Hierholzer's - if no Eulerian path exists (wrong degree conditions or disconnected graph), the algorithm silently produces a partial path without throwing an error, leading to wrong answers submitted with confidence.",
+        "For directed graphs: applying undirected degree conditions - in a directed graph it's in-degree versus out-degree equality per vertex that matters, not just whether the total degree is even; using even-degree check on a directed graph gives wrong existence results.",
+        "For Reconstruct Itinerary: not sorting adjacency lists lexicographically before running Hierholzer's - without sorting, the algorithm finds a valid Eulerian path but not necessarily the lexicographically smallest one, failing test cases that check for a specific ordering.",
+        "Building the result by appending instead of prepending (or forgetting to reverse at the end) - Hierholzer's naturally builds the path in reverse order; appending gives the path backwards, which is a wrong answer for all directed path problems."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Reconstruct Itinerary",
+          "slug": "reconstruct-itinerary",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Directed Eulerian path with lexicographic ordering - tests iterative Hierholzer's with sorted adjacency lists and correct index-pointer edge tracking."
+        },
+        {
+          "title": "Valid Arrangement of Pairs",
+          "slug": "valid-arrangement-of-pairs",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Directed Eulerian path where the start vertex must be found via degree conditions (out - in = 1) before Hierholzer's can run - tests full existence-check + algorithm pipeline."
+        },
+        {
+          "title": "Cracking the Safe",
+          "slug": "cracking-the-safe",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "De Bruijn sequence via Eulerian circuit - tests creative graph construction where nodes are (k-1)-length strings and Hierholzer's on the resulting graph produces the answer."
+        },
+        {
+          "title": "De Bruijn Sequence",
+          "slug": "de-bruijn-sequence",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Pure Eulerian circuit on a de Bruijn graph - tests constructing the graph from scratch and recognizing that the Eulerian circuit directly encodes the desired sequence."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "String Pattern Matching",
+      "next_slug": "string-pattern-matching",
+      "why": "Eulerian path completes the Level 7 graph section. String pattern matching is the next Level 7 topic - both use linear-time algorithms (O(V+E) for Hierholzer's, O(n+m) for KMP) that rely on clever preprocessing to avoid redundant work."
+    }
+  ]
+}

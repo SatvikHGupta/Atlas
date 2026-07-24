@@ -1,0 +1,123 @@
+{
+  "topic": "Mo's Algorithm",
+  "level": 7,
+  "slug": "mos-algorithm",
+  "estimated_read": "11 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Mo's Algorithm?",
+      "content": "Mo's Algorithm is a technique for answering **offline range queries** efficiently by processing them in a carefully sorted order to minimize total work. 'Offline' means all queries are known upfront before you answer any - you can reorder them however you like.\n\nThe core idea: suppose you can answer query `[l, r]` and want to answer a nearby query `[l', r']`. You need to expand or shrink the current window by adding or removing elements from either end. If you process queries naively in any order, the window can jump arbitrarily far between queries, potentially doing O(n) work per query and O(nQ) total work.\n\nMo's sorts queries in a specific order based on **block decomposition** - dividing the array into blocks of size √n and sorting queries by their left block first, then by right endpoint within the same block. This sorting ensures the right pointer moves mostly forward within a block, and the left pointer does at most one O(√n) jump per query. The total window movement across all queries is O((N + Q)√N).\n\nThis is the go-to technique when: (1) you have all queries upfront, (2) adding or removing an element from the window can be done in O(1) or O(log n), and (3) the query result depends only on the current window state."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use Mo's Algorithm when you have multiple offline range queries (all given upfront) and the operation - counting distinct elements, tracking frequencies, computing XOR - supports cheap O(1) add/remove from a sliding window. It is not applicable for online queries (one at a time) or when the array has updates between queries (use Mo's with Updates for that, at higher complexity). If a query can be answered with a prefix structure like prefix sums or sparse tables, prefer those - Mo's is the fallback for problems where window contents matter in non-prefix ways.",
+      "signals": [
+        "count distinct elements in range",
+        "frequency queries offline",
+        "range queries with no updates",
+        "offline processing of multiple queries",
+        "square root decomposition",
+        "range XOR or sum offline",
+        "most frequent element in range",
+        "number of distinct values in subarray"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## Block Decomposition and Query Sorting\n\nDivide the array of size `N` into blocks of size `B = Math.floor(Math.sqrt(N))`. Assign each index to a block: `block[i] = Math.floor(i / B)`.\n\nSort queries by:\n1. Left block number (`block[l]`) - primary sort key\n2. Right endpoint (`r`) - secondary sort key within the same block (ascending for even blocks, descending for odd blocks - the 'zigzag' optimization that halves right-pointer movement)\n\nThis sorting ensures:\n- Within a block, the right pointer only moves forward (or backward with zigzag): O(N) total movement for right pointer per block, O(N * (N/B)) = O(N√N) total\n- The left pointer jumps at most O(B) = O(√N) per query when the block changes: O(Q√N) total\n- Combined: O((N + Q)√N)\n\n## Add and Remove Operations\n\nMaintain a current window `[curL, curR]` starting empty or at `[0, -1]`. For each query in sorted order:\n- Expand `curR` right: call `add(curR + 1)`, then `curR++`\n- Shrink `curR` left: call `remove(curR)`, then `curR--`\n- Expand `curL` left: call `add(curL - 1)`, then `curL--`\n- Shrink `curL` right: call `remove(curL)`, then `curL++`\n\nThe `add(i)` and `remove(i)` functions update a global `currentAnswer` based on element `arr[i]` being added to or removed from the window. After the window matches `[l, r]`, store `answers[queryIndex] = currentAnswer`.\n\n**Critical**: answers must be stored at the original query index, not in processing order. Process queries reordered; output answers in original order.\n\n## Mo's with Updates (3D Mo's)\n\nWhen elements can be updated between queries, add a time dimension. Sort queries by `(left block, right block, time block)`. Maintain a third pointer for time - when advancing or rewinding time, apply or undo updates. Complexity becomes O(N^(5/3)) instead of O(N√N).\n\n## Block Size Tuning\n\nWhile √N is theoretically optimal for uniform query distributions, `Math.floor(N / Math.sqrt(Q))` can improve performance when Q is much smaller than N. In practice, the zigzag optimization (alternating right pointer direction for even/odd blocks) is often more impactful than block size tuning."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "function mosAlgorithm(arr, queries) {\n  const n = arr.length;\n  const q = queries.length;\n  const blockSize = Math.max(1, Math.floor(Math.sqrt(n)));\n\n  // attach original index to each query for answer reconstruction\n  const indexedQueries = queries.map(([l, r], i) => [l, r, i]);\n\n  // sort: by left block, then right endpoint (zigzag for even/odd blocks)\n  indexedQueries.sort(([l1, r1], [l2, r2]) => {\n    const b1 = Math.floor(l1 / blockSize);\n    const b2 = Math.floor(l2 / blockSize);\n    if (b1 !== b2) return b1 - b2;\n    // zigzag: even blocks sort r ascending, odd blocks sort r descending\n    return b1 % 2 === 0 ? r1 - r2 : r2 - r1;\n  });\n\n  // --- problem-specific state ---\n  const freq = new Array(n).fill(0);\n  let distinct = 0; // current answer: count of distinct elements\n\n  function add(i) {\n    if (freq[arr[i]] === 0) distinct++;\n    freq[arr[i]]++;\n  }\n\n  function remove(i) {\n    freq[arr[i]]--;\n    if (freq[arr[i]] === 0) distinct--;\n  }\n  // --- end problem-specific state ---\n\n  const answers = new Array(q);\n  let curL = 0, curR = -1;\n\n  for (const [l, r, idx] of indexedQueries) {\n    // expand/shrink window to [l, r]\n    while (curR < r) add(++curR);\n    while (curL > l) add(--curL);\n    while (curR > r) remove(curR--);\n    while (curL < l) remove(curL++);\n\n    // store answer at original query index\n    answers[idx] = distinct;\n  }\n\n  return answers;\n}",
+      "language": "javascript",
+      "explanation": "Universal Mo's Algorithm template for counting distinct elements in a range. Replace the `add`, `remove`, and `distinct` logic with any window-state problem. The sorting and window-movement logic stays identical across all Mo's problems."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Mo's with Updates (3D Mo's)",
+          "description": "Extends Mo's to handle element updates between queries. Adds a time dimension to query sorting: sort by (left block, right block, time). Maintain a third pointer for time, applying or undoing updates as it moves. Complexity is O(N^(5/3)).",
+          "example_problem": "Minimum Operations to Make Array Equal II",
+          "example_slug": "minimum-operations-to-make-array-equal-ii"
+        },
+        {
+          "name": "Mo's on Trees",
+          "description": "Flatten the tree using an Euler tour (entry and exit times). Path queries between nodes become range queries on the flattened array. Apply standard Mo's on the Euler tour array. Handles subtree and path aggregate queries offline.",
+          "example_problem": "Count of Distinct Integers in Range",
+          "example_slug": "count-of-distinct-integers-in-range"
+        },
+        {
+          "name": "Mo's with Rollback",
+          "description": "For problems where removing an element is expensive but rolling back is cheap (e.g., DSU operations). Sort queries so the left pointer never moves left - queries are processed in a way that only expansion is needed, and results are rolled back to a checkpoint instead of removed.",
+          "example_problem": "Sum of Floored Pairs",
+          "example_slug": "sum-of-floored-pairs"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O((N + Q)√N)",
+      "space": "O(N + Q)",
+      "explanation": "With block size B = √N: the right pointer moves at most O(N) per block and there are O(N/B) = O(√N) blocks, giving O(N√N) total right-pointer movement. The left pointer moves at most O(B) = O(√N) per query, giving O(Q√N) total. Combined: O((N + Q)√N). With the zigzag optimization, right-pointer movement roughly halves. Space is O(N) for the frequency/state array plus O(Q) for the sorted queries and answers."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Mo's is offline only - all queries must be known before processing any. If queries arrive one at a time (online), Mo's does not apply and you need a different structure like a segment tree or persistent data structure.",
+        "Not sorting answers back to original query order - queries are processed reordered by Mo's sorting, but the final answers array must be indexed by the original query index. Forgetting to attach the original index to each query produces answers in the wrong order.",
+        "Skipping the zigzag optimization - sorting right endpoint ascending for all blocks still gives O((N+Q)√N) but roughly doubles the constant. The zigzag (even blocks ascending, odd blocks descending) nearly halves right-pointer movement with one line of code.",
+        "Wrong block size - `blockSize = 1` degrades to O(NQ), and `blockSize = N` also degrades. Use `Math.floor(Math.sqrt(N))` as the default; tune to `Math.floor(N / Math.sqrt(Q))` when Q << N.",
+        "Non-O(1) add/remove operations negating the benefit - if your add/remove is O(log n), total complexity becomes O((N+Q)√N log n). Mo's advantage shrinks. Ensure the window state update is truly O(1) or justify the log factor."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Count of Distinct Integers in Range",
+          "slug": "count-of-distinct-integers-in-range",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "The canonical Mo's problem - count distinct elements in each query range using frequency tracking in the window."
+        },
+        {
+          "title": "XOR Queries of a Subarray",
+          "slug": "xor-queries-of-a-subarray",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests applying Mo's (or prefix XOR) for range XOR queries - good for understanding the offline query framework."
+        },
+        {
+          "title": "Minimum Operations to Make Array Equal II",
+          "slug": "minimum-operations-to-make-array-equal-ii",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests range aggregation thinking that leads into Mo's - requires understanding window-based accumulation."
+        },
+        {
+          "title": "Sum of Floored Pairs",
+          "slug": "sum-of-floored-pairs",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Tests Mo's with rollback or sqrt decomposition - requires offline range processing with complex state management."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Bit Manipulation",
+      "next_slug": "bit-manipulation",
+      "why": "After Mo's Algorithm completes Level 7 Advanced, the next section is Others - starting with Bit Manipulation. The `i & (-i)` operation in Fenwick Trees is already a taste of it; this topic systematizes all bitwise patterns that appear throughout DSA."
+    }
+  ]
+}

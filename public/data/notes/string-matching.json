@@ -1,0 +1,122 @@
+{
+  "topic": "String Matching",
+  "level": 8,
+  "slug": "string-matching",
+  "estimated_read": "13 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is String Matching?",
+      "content": "String matching finds all occurrences of pattern P in text T. Brute force is O(|T| \u00d7 |P|). Three classical algorithms do better.\n\n**KMP (Knuth-Morris-Pratt)** achieves O(|T| + |P|) by precomputing a **failure function** that encodes how much of the pattern can be reused after a mismatch. When mismatch occurs at position j in P, instead of restarting from 0, KMP jumps j back to `fail[j-1]`. The text pointer never moves backward.\n\n**Z-algorithm** also O(|T| + |P|). Computes Z[i] = length of longest substring starting at i that matches a prefix of the string. To find P in T: concatenate P+'$'+T, compute Z-array, positions where Z[i] >= |P| are matches. Arguably simpler to implement than KMP.\n\n**Rabin-Karp** uses polynomial **rolling hash** to compare substrings in O(1) by sliding a window. Expected O(|T| + |P|). Main advantage: easy extension to multiple pattern search and longest common substring.\n\nIn most interviews, KMP is sufficient. Z-algorithm and Rabin-Karp appear more in competitive programming."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use string matching algorithms when brute-force O(|T|\u00d7|P|) is too slow \u2014 typically when |T| or |P| exceeds 10^4. KMP is the standard interview algorithm. Z-algorithm for 'shortest repeating unit' and palindrome problems. Rabin-Karp for multiple pattern search.",
+      "signals": [
+        "find all occurrences of pattern",
+        "string search",
+        "substring matching",
+        "periodic string",
+        "shortest repeating unit",
+        "multiple pattern matching",
+        "rolling hash"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "KMP Failure Function, Z-Algorithm, and Rabin-Karp",
+      "content": "## KMP Failure Function\n\n`fail[i]` = length of the longest **proper** prefix of P[0..i] that is also a suffix. `fail[0] = 0` always.\n\nBuilding in O(|P|):\n```\nfail[0]=0; j=0;\nfor i from 1 to |P|-1:\n  while j>0 && P[i]!==P[j]: j=fail[j-1]  // fall back\n  if P[i]===P[j]: j++\n  fail[i]=j\n```\nOn mismatch at j, jump to `fail[j-1]` not `j--`.\n\n## KMP Search\n\nTwo pointers i (T, never moves back) and j (P):\n- Match: advance both.\n- Mismatch + j>0: `j=fail[j-1]`, don't advance i.\n- Mismatch + j===0: advance i only.\n- j===|P|: match found. `j=fail[j-1]` to continue for overlapping matches.\n\n## Z-Algorithm\n\n`Z[i]` = length of longest substring at S[i] matching a prefix of S. Maintain window [L,R] (rightmost Z-box):\n- If i < R: `Z[i]=min(R-i, Z[i-L])` as starting point.\n- Extend Z[i] by direct comparison.\n- Update [L,R] if i+Z[i]-1 > R.\n\nPattern matching: S = P+'$'+T. Z[i] >= |P| in T portion \u2192 match.\n\n## Rabin-Karp\n\nPolynomial hash. Sliding window update (drop leftmost char, add rightmost):\n`newHash = (oldHash - S[0]*base^(L-1)) * base + newChar`\nO(1) per slide. Verify with string comparison on hash match to handle collisions.\n\n## Shortest Repeating Unit\n\nIf `|P| % (|P| - fail[|P|-1]) === 0`, the shortest repeating unit has length `|P| - fail[|P|-1]`."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// KMP failure function\nfunction buildFail(p) {\n  const fail=new Array(p.length).fill(0);\n  let j=0;\n  for (let i=1;i<p.length;i++) {\n    while (j>0 && p[i]!==p[j]) j=fail[j-1]; // fall back on mismatch\n    if (p[i]===p[j]) j++;\n    fail[i]=j;\n  }\n  return fail;\n}\n\n// KMP search: all match start indices\nfunction kmpSearch(text, pattern) {\n  if (!pattern.length) return [];\n  const fail=buildFail(pattern);\n  const matches=[];\n  let j=0;\n  for (let i=0;i<text.length;i++) {\n    while (j>0 && text[i]!==pattern[j]) j=fail[j-1];\n    if (text[i]===pattern[j]) j++;\n    if (j===pattern.length) {\n      matches.push(i-pattern.length+1);\n      j=fail[j-1]; // continue for overlapping matches\n    }\n  }\n  return matches;\n}\n\n// Z-algorithm\nfunction zArray(s) {\n  const n=s.length, Z=new Array(n).fill(0);\n  let L=0, R=0;\n  for (let i=1;i<n;i++) {\n    if (i<R) Z[i]=Math.min(R-i, Z[i-L]);\n    while (i+Z[i]<n && s[Z[i]]===s[i+Z[i]]) Z[i]++;\n    if (i+Z[i]>R) { L=i; R=i+Z[i]; }\n  }\n  return Z;\n}\n\n// Z-based pattern matching\nfunction zSearch(text, pattern) {\n  const s=pattern+'$'+text;\n  const Z=zArray(s);\n  const matches=[];\n  for (let i=pattern.length+1;i<s.length;i++)\n    if (Z[i]>=pattern.length) matches.push(i-pattern.length-1);\n  return matches;\n}",
+      "language": "javascript",
+      "explanation": "Full KMP (failure function + search) and Z-algorithm (Z-array + search). Both return all match indices in O(|T|+|P|). The '$' separator in zSearch prevents the Z-box from spanning the pattern-text boundary."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Shortest Palindrome via KMP",
+          "description": "Concatenate S+'#'+reverse(S) and compute the KMP failure function. The last value of fail gives the longest prefix of S that is a palindrome \u2014 characters outside must be prepended in reverse.",
+          "example_problem": "Shortest Palindrome",
+          "example_slug": "shortest-palindrome"
+        },
+        {
+          "name": "Repeated Substring Pattern",
+          "description": "A string S has a repeating unit if S.length % (S.length - fail[S.length-1]) === 0. Build the failure function on S itself \u2014 no separate text needed.",
+          "example_problem": "Repeated Substring Pattern",
+          "example_slug": "repeated-substring-pattern"
+        },
+        {
+          "name": "Longest Happy Prefix via KMP",
+          "description": "Longest happy prefix = longest string that is both prefix and suffix of S (excluding S). This is exactly fail[|S|-1] from the KMP failure function.",
+          "example_problem": "Longest Happy Prefix",
+          "example_slug": "longest-happy-prefix"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(|T|+|P|) KMP and Z-algorithm; O(|T|+|P|) expected Rabin-Karp",
+      "space": "O(|P|) for KMP failure function; O(|T|+|P|) for Z on concatenated string",
+      "explanation": "KMP failure function: j only increments |P| times total and can only decrease, bounding total iterations to O(|P|). Search is O(|T|) by same argument. Z-algorithm: each character processed at most twice \u2014 once when Z-box extends past it, once when inside a Z-box used as lookup. Rabin-Karp: O(|P|) preprocessing, O(|T|) sliding window, but hash collisions cause O(|P|) verification \u2014 expected O(|T|+|P|), worst case O(|T|\u00d7|P|)."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "KMP failure function: fail[0]=0 always. Start build loop at i=1, not i=0.",
+        "On mismatch during failure function build: use j=fail[j-1] not j--. Using j-- makes the build O(|P|^2) and computes wrong values.",
+        "KMP finds overlapping matches by default via j=fail[j-1] after a match. Resetting j=0 after a match gives non-overlapping count \u2014 correct for that use case, wrong for all-occurrences.",
+        "Rabin-Karp without collision verification: different strings can hash identically. Always verify hash matches with direct string comparison. Without it, false positives are reported.",
+        "Z-array Z[0] is the full string length by convention. Do not use Z[0] as a match indicator in the search phase \u2014 all positions i >= pattern.length+1 should be checked against |pattern|."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Find the Index of the First Occurrence in a String",
+          "slug": "find-the-index-of-the-first-occurrence-in-a-string",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "Direct KMP application \u2014 implement full KMP search and return the first match index."
+        },
+        {
+          "title": "Repeated Substring Pattern",
+          "slug": "repeated-substring-pattern",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "Failure function period detection \u2014 derive repeating unit length from |S|-fail[|S|-1] and check divisibility."
+        },
+        {
+          "title": "Shortest Palindrome",
+          "slug": "shortest-palindrome",
+          "difficulty": 8,
+          "difficulty_label": "Hard",
+          "why": "KMP on concatenated string \u2014 non-obvious application of fail on S+'#'+reverse(S) to find the longest palindromic prefix."
+        },
+        {
+          "title": "Longest Happy Prefix",
+          "slug": "longest-happy-prefix",
+          "difficulty": 8,
+          "difficulty_label": "Hard",
+          "why": "Direct failure function query \u2014 the answer is fail[|S|-1], testing deep understanding of what fail[i] encodes."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Complete Atlas Roadmap",
+      "next_slug": "roadmap",
+      "why": "You have completed all 44 Atlas DSA notes. Return to the roadmap, identify any topics that felt shaky, and build fluency through the problem set. The notes are reference material \u2014 the problems are where mastery is built."
+    }
+  ]
+}

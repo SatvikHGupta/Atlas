@@ -1,0 +1,123 @@
+{
+  "topic": "Tries",
+  "level": 4,
+  "slug": "tries",
+  "estimated_read": "10 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is a Trie?",
+      "content": "A Trie (prefix tree) is a tree where each path from root to a node spells out a prefix of some stored string. Every node has up to 26 children (for lowercase English) plus a boolean `isEndOfWord` marking whether a complete word ends there.\n\nThe power of a trie over a hash set is **prefix queries**. A hash set answers 'does apple exist' in O(1) but cannot answer 'does any stored word start with app' without scanning everything. A trie answers that in O(L) \u2014 walk down 3 nodes and check whether you landed on a valid node.\n\nThis makes tries the go-to for autocomplete, spell checkers, IP routing, and any problem where a **dictionary of words** must be queried by prefix. Word search on grids benefits from tries: instead of a separate DFS per word, build a trie from the dictionary and run one DFS that prunes branches the moment no trie path matches.\n\nMemory is the main trade-off. Each node holds up to 26 child references. But for prefix-heavy workloads tries win on both query speed and conceptual clarity.\n\nIn interviews tries appear explicitly ('implement autocomplete') or implicitly as an optimization for brute-force word search."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use a Trie when the problem involves a dictionary of words and you need to query by prefix \u2014 not just exact match. If 'words starting with', 'autocomplete', 'longest common prefix', or 'search with wildcards' appears, a Trie is the direct tool.",
+      "signals": [
+        "prefix search",
+        "autocomplete",
+        "words starting with",
+        "longest common prefix",
+        "dictionary of words",
+        "search word with wildcards",
+        "word break into dictionary words",
+        "find all words in board"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Trie Node Structure and Operations",
+      "content": "## Node Structure\n\n`children`: Map from char \u2192 TrieNode. `isEndOfWord`: boolean, true if a complete word ends here. The character is encoded on the **edge** (key in parent's children map), not inside the node.\n\n## Insert \u2014 O(L)\n\nWalk each character, create nodes as needed, set `isEndOfWord = true` after last character.\n\n## Search (Exact) \u2014 O(L)\n\nWalk characters; return false if any is missing. At end, return `node.isEndOfWord`. The flag is essential \u2014 without it, searching 'app' returns true even if only 'apple' is stored.\n\n## StartsWith (Prefix) \u2014 O(L)\n\nSame walk; return true if you successfully traverse all prefix characters without hitting a missing node. No `isEndOfWord` check.\n\n## Trie + DFS (Word Search II)\n\nBuild a Trie from the word list. DFS on each board cell; at each step check if the current character exists as a child in the current Trie node. If not, **prune immediately**. When `isEndOfWord` is reached, record the word. Dramatically faster than per-word DFS.\n\n## Deletion\n\nLazy: set `isEndOfWord = false`. Proper: recursively delete nodes with no children and `isEndOfWord = false` after removing the word."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "class TrieNode {\n  constructor() {\n    this.children = new Map(); // char -> TrieNode\n    this.isEndOfWord = false;\n  }\n}\n\nclass Trie {\n  constructor() { this.root = new TrieNode(); }\n\n  insert(word) {\n    let node = this.root;\n    for (const ch of word) {\n      if (!node.children.has(ch)) node.children.set(ch, new TrieNode());\n      node = node.children.get(ch);\n    }\n    node.isEndOfWord = true;\n  }\n\n  search(word) {\n    const node = this._walk(word);\n    return node !== null && node.isEndOfWord; // must be a complete word\n  }\n\n  startsWith(prefix) {\n    return this._walk(prefix) !== null; // prefix just needs to exist\n  }\n\n  _walk(str) {\n    let node = this.root;\n    for (const ch of str) {\n      if (!node.children.has(ch)) return null;\n      node = node.children.get(ch);\n    }\n    return node;\n  }\n}",
+      "language": "javascript",
+      "explanation": "Standard Trie with insert, exact search, and prefix search. _walk deduplicates traversal logic; the isEndOfWord check in search vs its absence in startsWith makes the distinction explicit."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Trie with Wildcard Search",
+          "description": "When '.' matches any character, branch into all children at wildcard positions via recursive DFS over the trie. TrieNode structure is unchanged.",
+          "example_problem": "Design Add and Search Words Data Structure",
+          "example_slug": "design-add-and-search-words-data-structure"
+        },
+        {
+          "name": "Trie + DFS for Board Word Search",
+          "description": "Build Trie from word list. DFS on each board cell tracking the current Trie node. Prune if next character has no matching child. Record words when isEndOfWord is reached. Far faster than per-word DFS.",
+          "example_problem": "Word Search II",
+          "example_slug": "word-search-ii"
+        },
+        {
+          "name": "Compressed Trie (Patricia Trie)",
+          "description": "Merge chains of single-child nodes into one node storing a substring. Reduces space for sparse tries where long paths have no branching. Rarely implemented from scratch in interviews.",
+          "example_problem": "Longest Word in Dictionary",
+          "example_slug": "longest-word-in-dictionary"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(L) per insert/search/startsWith where L is string length",
+      "space": "O(N \u00d7 L) where N is number of words and L is average length",
+      "explanation": "Each operation walks at most L nodes doing O(1) Map lookup at each. Space is O(N \u00d7 L) worst case when words share no prefixes. Shared prefixes reduce actual node count. Using a 26-element array instead of Map gives O(1) indexing at the cost of O(26) space per node regardless of branching."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Forgetting isEndOfWord makes it impossible to distinguish 'app' (stored) from 'app' as a prefix of 'apple' \u2014 search('app') incorrectly returns true when only 'apple' is inserted.",
+        "Using node.children[c] with a plain object without hasOwnProperty check can cause false positives on inherited properties like 'constructor'. Use Map or check explicitly.",
+        "Not handling case sensitivity \u2014 trie nodes are typically built for lowercase a-z. Mixed-case input without normalization leads to silent misses.",
+        "In Word Search II, not removing found words from the Trie after discovery causes duplicate results when the same word is reachable via multiple board paths.",
+        "Confusing which node stores a character \u2014 the character 'a' is on the edge from root to root.children['a'], not stored inside the child node itself."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Implement Trie (Prefix Tree)",
+          "slug": "implement-trie-prefix-tree",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Core implementation \u2014 forces correct handling of the isEndOfWord distinction between search and startsWith."
+        },
+        {
+          "title": "Design Add and Search Words Data Structure",
+          "slug": "design-add-and-search-words-data-structure",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Wildcard search \u2014 extends basic Trie with recursive DFS branching on '.' characters."
+        },
+        {
+          "title": "Word Search II",
+          "slug": "word-search-ii",
+          "difficulty": 8,
+          "difficulty_label": "Hard",
+          "why": "Trie + DFS combination \u2014 tests the pruning optimization where the Trie drives DFS and eliminates dead-end paths early."
+        },
+        {
+          "title": "Longest Word in Dictionary",
+          "slug": "longest-word-in-dictionary",
+          "difficulty": 4,
+          "difficulty_label": "Easy",
+          "why": "Incremental Trie construction \u2014 a word is only valid if every prefix of it is also in the Trie, requiring isEndOfWord checks at each step."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "BFS / DFS",
+      "next_slug": "bfs-dfs",
+      "why": "BFS and DFS are the foundational Level 5 graph algorithms. Tries already introduce tree traversal for string paths; BFS/DFS generalize that to arbitrary graphs. Word Search II is literally Trie + DFS on a grid \u2014 graph traversal is already in your toolkit."
+    }
+  ]
+}

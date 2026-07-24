@@ -1,0 +1,129 @@
+{
+  "topic": "1D Dynamic Programming",
+  "level": 6,
+  "slug": "1d-dp",
+  "estimated_read": "13 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is 1D Dynamic Programming?",
+      "content": "**Dynamic Programming (DP)** is the technique of breaking a problem into overlapping subproblems, solving each subproblem once, and storing its result so you never recompute it. Two conditions must hold for DP to apply: **optimal substructure** - the optimal solution to the full problem is built from optimal solutions to subproblems - and **overlapping subproblems** - the same subproblems recur multiple times during a naive recursive solution. When both hold, DP transforms an exponential-time recursion into a polynomial-time solution.\n\n1D DP means the state is a single index - `dp[i]` represents the answer to some subproblem involving the first `i` elements, or the best answer ending at index `i`. This is the simplest DP form and the one to master before tackling 2D or tree DP. The classic problems - climbing stairs, house robber, coin change, longest increasing subsequence - are all 1D DP and appear constantly in interviews.\n\nThe mental process for any DP problem is the same three-step loop: (1) **define the state** precisely - what does `dp[i]` mean? (2) **write the recurrence** - how does `dp[i]` depend on smaller `dp[j]`? (3) **identify base cases** - what are the smallest subproblems whose answers you know directly? Get these three right and the implementation follows mechanically.\n\nDP can be written **top-down** (start with the full problem, recurse, memoize with a cache) or **bottom-up** (start from base cases, fill the table iteratively). Both have the same time complexity. Bottom-up avoids recursion overhead and call stack limits, making it preferable for large inputs. The recommended workflow: write the recursive solution first to validate your recurrence, then convert to bottom-up tabulation."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Reach for 1D DP when a problem involves making a sequence of choices at each position and those choices affect future options - you can't make a greedy choice that's always correct, but you can express the optimal answer at each position in terms of optimal answers at earlier positions. 'Count ways', 'minimum cost', 'maximum value', and 'can you reach' questions on a 1D sequence are the core triggers.",
+      "signals": [
+        "count the number of ways to do X",
+        "minimum cost or steps to reach a target",
+        "maximum profit or value with choices",
+        "can you achieve X given these moves",
+        "coin change or denomination problems",
+        "house robber or skip-adjacent pattern",
+        "longest increasing subsequence",
+        "climbing stairs or frog jump variants"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## Top-Down vs Bottom-Up\n\n**Top-down (memoization)**: write the recursive solution, add a cache (`const memo = new Map()`). Check cache before computing; store result before returning. Same time complexity as bottom-up but with function call overhead and recursion stack usage.\n\n**Bottom-up (tabulation)**: allocate a `dp` array of the right size, initialize base cases, then fill the array in order from small subproblems to large. No recursion. Preferred for large inputs.\n\nWorkflow: write recursive → memoize → convert to bottom-up.\n\n## The Recurrence Relation\n\nThe heart of DP. Examples:\n- **Climbing Stairs**: `dp[i] = dp[i-1] + dp[i-2]` - reach step i from step i-1 (one step) or i-2 (two steps)\n- **House Robber**: `dp[i] = max(dp[i-1], dp[i-2] + nums[i])` - skip house i or rob it (can't rob i-1)\n- **Coin Change**: `dp[amount] = min(dp[amount - coin] + 1)` for each coin - add one coin to the solution for the smaller amount\n- **Maximum Subarray (Kadane's)**: `dp[i] = max(nums[i], dp[i-1] + nums[i])` - start fresh or extend previous subarray\n\n## State Definition Matters\n\nFor **Longest Increasing Subsequence**: `dp[i]` = length of LIS **ending at index i** (not the global longest seen). This framing makes the transition clean: `dp[i] = max(dp[j] + 1)` for all `j < i` where `nums[j] < nums[i]`. A state defined as 'global longest seen so far' has no clean recurrence.\n\n## Space Optimization\n\nWhen `dp[i]` only depends on `dp[i-1]` and `dp[i-2]`, replace the array with two variables. Climbing stairs and house robber reduce to O(1) space. LIS cannot be optimized this way because each `dp[i]` may depend on all previous values - though there's a separate O(n log n) patience sorting approach."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// Bottom-up 1D DP - House Robber pattern\nfunction houseRobber(nums) {\n  const n = nums.length;\n  if (n === 0) return 0;\n  if (n === 1) return nums[0];\n\n  // dp[i] = max money robbing houses 0..i\n  // base cases\n  let prev2 = nums[0];\n  let prev1 = Math.max(nums[0], nums[1]);\n\n  for (let i = 2; i < n; i++) {\n    const curr = Math.max(prev1, prev2 + nums[i]); // skip or rob\n    prev2 = prev1;\n    prev1 = curr;\n  }\n  return prev1;\n}\n\n// Coin Change - unbounded knapsack pattern\nfunction coinChange(coins, amount) {\n  // dp[i] = min coins to make amount i\n  const dp = new Array(amount + 1).fill(Infinity);\n  dp[0] = 0; // base case: 0 coins to make amount 0\n\n  for (let i = 1; i <= amount; i++) {\n    for (const coin of coins) {\n      if (coin <= i && dp[i - coin] !== Infinity) {\n        dp[i] = Math.min(dp[i], dp[i - coin] + 1);\n      }\n    }\n  }\n  return dp[amount] === Infinity ? -1 : dp[amount];\n}",
+      "language": "javascript",
+      "explanation": "House Robber shows the two-variable space optimization for recurrences depending only on the previous two states. Coin Change shows the general bottom-up table fill for unbounded choice problems - initialize with Infinity (unreachable), set base case dp[0]=0, then fill forward using each coin as a transition."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "DP on Strings (Palindrome Check)",
+          "description": "1D DP where the state is a string index - `dp[i]` can represent properties of the prefix or suffix ending at i. Expanding around center for palindromes is also 1D DP in spirit. Many string problems reduce to 1D DP before needing 2D.",
+          "example_problem": "Longest Palindromic Subsequence",
+          "example_slug": "longest-palindromic-subsequence"
+        },
+        {
+          "name": "DP with Multiple Previous States (LIS)",
+          "description": "When dp[i] depends on all j < i rather than just dp[i-1] and dp[i-2], the O(1) space trick doesn't apply. LIS in O(n²) iterates all previous states. The O(n log n) patience sorting solution uses a different formulation with binary search.",
+          "example_problem": "Longest Increasing Subsequence",
+          "example_slug": "longest-increasing-subsequence"
+        },
+        {
+          "name": "Prefix Sum DP",
+          "description": "Combine prefix sums with DP - store cumulative sums to answer 'how many subarrays satisfy condition X' in O(n) using a hash map of prefix counts. The subarray sum equals k problem is the canonical example.",
+          "example_problem": "Subarray Sum Equals K",
+          "example_slug": "subarray-sum-equals-k"
+        },
+        {
+          "name": "Fibonacci-Style DP",
+          "description": "Problems where dp[i] = f(dp[i-1], dp[i-2], ..., dp[i-k]) for a small constant k. Climbing stairs (k=2), Tribonacci (k=3), Frog Jump with up to k steps. These always reduce to O(k) space.",
+          "example_problem": "Climbing Stairs",
+          "example_slug": "climbing-stairs"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n) to O(n²) depending on recurrence",
+      "space": "O(n) table, reducible to O(1) when only last 1-2 states are needed",
+      "explanation": "If dp[i] depends only on a constant number of previous states (house robber, climbing stairs, coin change inner loop is O(coins)), the outer loop is O(n) - linear total. If dp[i] depends on all previous j < i (LIS), the double loop gives O(n²). Space is O(n) for the full dp array, reduced to O(1) with two-variable rolling when only dp[i-1] and dp[i-2] matter. Memoized top-down has O(n) space for the call stack plus the cache."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Wrong state definition leading to an invalid recurrence - before writing any code, write the exact English definition of what dp[i] means; 'longest sequence ending at i' and 'longest sequence seen so far' look similar but have completely different transitions.",
+        "Off-by-one in base cases - dp[0] and dp[1] often need manual initialization before the loop starts; iterating from i=2 without setting dp[0] and dp[1] correctly propagates the error through all subsequent states.",
+        "Filling the table in the wrong order for bottom-up - dp[i] must be computed after all dp[j] it depends on; for standard 1D problems this means left to right, but for some problems (like unbounded knapsack over weights) the iteration order determines whether items repeat.",
+        "Confusing longest contiguous subarray (Kadane's, O(n)) with longest subsequence (LIS, O(n²) DP) - both are 'longest' problems but require completely different approaches; 'subarray' means contiguous elements, 'subsequence' allows skipping.",
+        "Initializing dp with 0 when the identity for min should be Infinity - for minimum-cost problems, dp[i] = 0 means 'zero cost' not 'unreachable'; initialize with Infinity and set only the valid base case to 0."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Climbing Stairs",
+          "slug": "climbing-stairs",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "The entry-level 1D DP - Fibonacci recurrence dp[i] = dp[i-1] + dp[i-2] with clear base cases and space optimization."
+        },
+        {
+          "title": "House Robber",
+          "slug": "house-robber",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests the skip-or-take recurrence - dp[i] = max(dp[i-1], dp[i-2] + nums[i]) - and two-variable space optimization."
+        },
+        {
+          "title": "Coin Change",
+          "slug": "coin-change",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests unbounded knapsack pattern - filling dp[amount] using multiple coin denominations, with Infinity initialization and base case dp[0]=0."
+        },
+        {
+          "title": "Longest Increasing Subsequence",
+          "slug": "longest-increasing-subsequence",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests O(n²) DP with all-previous-states dependency - dp[i] = max(dp[j]+1) for j < i where nums[j] < nums[i]."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "2D Dynamic Programming",
+      "next_slug": "2d-dp",
+      "why": "1D DP introduces the recurrence and tabulation pattern. 2D DP extends this to two-index states - two sequences being compared (LCS, edit distance) or a grid being traversed (unique paths, minimum path sum). The same three-step process applies, just with a 2D table."
+    }
+  ]
+}

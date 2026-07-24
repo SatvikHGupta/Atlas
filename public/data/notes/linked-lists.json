@@ -1,0 +1,137 @@
+{
+  "topic": "Linked Lists",
+  "level": 2,
+  "slug": "linked-lists",
+  "estimated_read": "15 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What are Linked Lists?",
+      "content": "A **linked list** is a sequence of **nodes**, where each node contains a value and a pointer (`next`) to the next node. The last node's `next` is `null`, marking the end of the list. Unlike arrays, linked list nodes are not stored contiguously in memory - each node lives wherever the allocator placed it, and the `next` pointer is what chains them together.\n\nThis non-contiguous layout has consequences. **Random access is O(n)** - to reach node at position `k`, you must follow `k` pointers from the head. There is no shortcut equivalent to array indexing. **Insertion and deletion at a known position are O(1)** - just rewire two pointers. Contrast with arrays where insertion requires shifting O(n) elements.\n\nIn JavaScript, we represent nodes as plain objects: `{ val: 5, next: null }`. Building a list is building a chain of these objects. The variable you call 'the list' is just a reference to the first node - the **head**. If you lose the head reference, the entire list becomes unreachable.\n\nThe key skill linked lists teach is **pointer manipulation**: holding multiple references to nodes simultaneously, updating them in the correct order, and never losing access to a node you still need. This skill transfers directly to trees (where each node has `left` and `right` pointers instead of `next`) and graphs. Mastering linked list pointer work makes tree problems feel natural."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Linked list problems are usually explicitly stated - the input is a `ListNode`. The techniques, however, have specific triggers. Fast/slow pointers apply whenever you need to find the middle, detect a cycle, or find the kth node from the end. The dummy head technique applies whenever operations on the head node require special casing. Reversal applies to 'in-place reverse' problems and as a subroutine in larger problems like reversing in k-groups.",
+      "signals": [
+        "reverse a linked list (full or partial)",
+        "detect a cycle in a linked list",
+        "find the middle node",
+        "merge two sorted linked lists",
+        "find the kth node from the end",
+        "find the intersection of two lists",
+        "reorder the list in-place"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Pointer Manipulation Fundamentals",
+      "content": "## Insert at Head\n\n```javascript\nfunction insertAtHead(head, val) {\n  const newNode = { val, next: head };\n  return newNode; // new head\n}\n```\n\n## Delete a Node (Given Previous)\n\n```javascript\nprev.next = prev.next.next; // skip the node to delete\n```\n\n## Reverse a Linked List\n\nRequires three pointers: `prev`, `curr`, and `next`. Save `next` before overwriting `curr.next`, then redirect `curr.next` to `prev`, then advance all three.\n\n```javascript\nfunction reverse(head) {\n  let prev = null, curr = head;\n  while (curr !== null) {\n    const next = curr.next;  // SAVE next before overwriting\n    curr.next = prev;        // redirect pointer\n    prev = curr;             // advance prev\n    curr = next;             // advance curr\n  }\n  return prev; // new head\n}\n```\n\nThe three-pointer pattern is the foundation for all in-place linked list modification. The critical rule: **save `curr.next` to a variable BEFORE modifying `curr.next`**. If you overwrite `curr.next` first, you permanently lose access to the rest of the list."
+    },
+    {
+      "type": "concept",
+      "title": "Fast/Slow Pointers on Linked Lists",
+      "content": "Fast/slow pointers traverse a linked list at different speeds to detect structural properties.\n\n## Cycle Detection (Floyd's Algorithm)\n\n```javascript\nfunction hasCycle(head) {\n  let slow = head, fast = head;\n  while (fast && fast.next) {\n    slow = slow.next;\n    fast = fast.next.next;\n    if (slow === fast) return true;\n  }\n  return false;\n}\n```\n\nIf a cycle exists, fast will eventually 'lap' slow inside the cycle and they meet. If no cycle, fast reaches `null` first.\n\n## Finding the Middle\n\nWhen `fast` reaches the end, `slow` is at the middle. For even-length lists, slow lands on the second of the two middle nodes.\n\n```javascript\nfunction findMiddle(head) {\n  let slow = head, fast = head;\n  while (fast && fast.next) {\n    slow = slow.next;\n    fast = fast.next.next;\n  }\n  return slow;\n}\n```\n\n## Kth Node from End\n\nAdvance `fast` exactly `k` steps. Then move both at the same speed until `fast` reaches the last node. `slow` is now at the (n-k)th node - one step before the target, useful for deletion.\n\n```javascript\nlet fast = head;\nfor (let i = 0; i < k; i++) fast = fast.next;\nlet slow = head;\nwhile (fast.next) { slow = slow.next; fast = fast.next; }\n// slow is now at the node BEFORE the kth from end\n```"
+    },
+    {
+      "type": "concept",
+      "title": "Dummy Head Technique",
+      "content": "The **dummy head** (sentinel node) is a fake node inserted before the real head. Its sole purpose: eliminate special cases for operations on the list head.\n\nWithout a dummy: 'remove the nth node from end' has a special case when `n === length` (removing the head). With a dummy:\n\n```javascript\nfunction removeNthFromEnd(head, n) {\n  const dummy = { val: 0, next: head };\n  let fast = dummy, slow = dummy;\n  for (let i = 0; i <= n; i++) fast = fast.next; // advance n+1 steps\n  while (fast) { slow = slow.next; fast = fast.next; }\n  slow.next = slow.next.next; // remove the target\n  return dummy.next; // real head (may have changed if original head was removed)\n}\n```\n\nThe dummy makes `slow` start one node before the target, so `slow.next = slow.next.next` correctly removes the target in all cases - including when the target is the original head.\n\nUse a dummy head whenever: merging two lists, removing nodes, or any operation where the head might change or require special handling."
+    },
+    {
+      "type": "concept",
+      "title": "Recursive vs Iterative Linked List Solutions",
+      "content": "Many linked list problems have elegant recursive solutions. Merge two sorted lists recursively:\n\n```javascript\nfunction mergeSorted(l1, l2) {\n  if (!l1) return l2;\n  if (!l2) return l1;\n  if (l1.val <= l2.val) {\n    l1.next = mergeSorted(l1.next, l2);\n    return l1;\n  } else {\n    l2.next = mergeSorted(l2.val, l1);\n    return l2;\n  }\n}\n```\n\nThe recursive merge is clean and easy to reason about. However, it uses O(n) stack space because the recursion depth equals the list length. For a list of 10,000 nodes in JavaScript, this can stack overflow (JS limit ~10,000–15,000 frames).\n\nThe iterative version uses O(1) space - a dummy head and two pointers. For production code or large inputs, prefer iterative. In interviews, either is acceptable unless the problem constraints suggest a very long list."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// === REVERSE LINKED LIST (iterative) ===\nfunction reverseList(head) {\n  let prev = null, curr = head;\n  while (curr !== null) {\n    const next = curr.next; // save before overwriting\n    curr.next = prev;       // reverse the pointer\n    prev = curr;            // advance prev to current\n    curr = next;            // advance curr to saved next\n  }\n  return prev; // prev is the new head\n}\n\n// === FAST/SLOW POINTER (cycle + middle) ===\nfunction fastSlow(head) {\n  let slow = head, fast = head;\n  while (fast !== null && fast.next !== null) {\n    slow = slow.next;        // one step\n    fast = fast.next.next;   // two steps\n    if (slow === fast) return true; // cycle: they meet\n  }\n  // no cycle: fast reached null\n  // at this point, slow is at the middle of the list\n  return slow;\n}\n\n// === DUMMY HEAD (remove nth from end) ===\nfunction removeNthFromEnd(head, n) {\n  const dummy = { val: 0, next: head };\n  let fast = dummy, slow = dummy;\n  for (let i = 0; i <= n; i++) fast = fast.next; // fast is n+1 steps ahead\n  while (fast) { slow = slow.next; fast = fast.next; }\n  slow.next = slow.next.next; // unlink target\n  return dummy.next;\n}",
+      "language": "javascript",
+      "explanation": "Reverse: save next before redirecting, then advance both pointers - the order matters because overwriting curr.next first loses the rest of the list. Fast/slow: the while condition checks both fast and fast.next to prevent null-pointer errors when fast is at the last node and tries to jump two steps. Dummy head: both pointers start at dummy, so slow ends up one before the target, enabling deletion without head special-casing."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Doubly Linked List",
+          "description": "Each node has both `next` and `prev` pointers, enabling O(1) deletion given a reference to the node (no need to find the previous node). Used in LRU Cache implementation - doubly linked list tracks recency order, hash map provides O(1) access to any node.",
+          "example_problem": "LRU Cache",
+          "example_slug": "lru-cache"
+        },
+        {
+          "name": "Circular Linked List",
+          "description": "The tail node's `next` points back to the head instead of null. Circular lists appear in round-robin scheduling problems. Detecting circularity vs a regular cycle: Floyd's algorithm still works - if fast and slow meet, there's a cycle, and the head being the cycle entry point indicates a circular list.",
+          "example_problem": "Linked List Cycle II",
+          "example_slug": "linked-list-cycle-ii"
+        },
+        {
+          "name": "Skip List",
+          "description": "A probabilistic data structure where each node has multiple forward pointers at different levels, enabling O(log n) average search, insert, and delete. Too advanced for standard interviews but appears in database internals (Redis uses skip lists). Mentioned here for completeness.",
+          "example_problem": "Design Skiplist",
+          "example_slug": "design-skiplist"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n) for reversal, merge, fast/slow traversal",
+      "space": "O(1) for iterative solutions, O(n) for recursive solutions due to call stack",
+      "explanation": "All fundamental linked list operations (reverse, merge, cycle detection, middle finding) require visiting each node at most once - O(n). The space difference is the critical tradeoff: iterative solutions use O(1) extra space (just pointer variables), while recursive solutions use O(n) stack space equal to the recursion depth, which equals the list length."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Losing the next reference before saving it: in reversal, writing `curr.next = prev` before `const next = curr.next` permanently loses access to the rest of the list. ALWAYS save `next = curr.next` as the FIRST line in the loop body before any pointer modification.",
+        "Off-by-one in fast pointer initialization for kth-from-end: 'advance fast k steps' means k iterations of `fast = fast.next`, leaving fast pointing at the k-th node. 'Advance k+1 steps' positions fast one past the target, making slow land one before it. Determine which offset your deletion logic requires.",
+        "Null pointer error from accessing `.next` without checking: `fast.next.next` throws 'Cannot read properties of null' if `fast.next` is null. The while condition `fast !== null && fast.next !== null` guards both. Missing either check causes crashes on odd-length or single-node lists.",
+        "Confusing `node.next = null` with `node = null`: `node.next = null` terminates the list at that node (modifies the actual linked list). `node = null` just sets a local variable to null and does nothing to the list. When you want to detach the tail of a list, use `node.next = null`, not `node = null`.",
+        "Mutating the list during a pass intended for reading: if you're computing a property of the list (e.g., finding the middle) and simultaneously modifying nodes, you corrupt the structure you're reading. Separate reading passes from modification passes unless the problem explicitly requires simultaneous modification."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Reverse Linked List",
+          "slug": "reverse-linked-list",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "The single most important linked list problem - mastering the three-pointer reversal template is mandatory before any harder list problem."
+        },
+        {
+          "title": "Merge Two Sorted Lists",
+          "slug": "merge-two-sorted-lists",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Tests dummy head technique and iterative merge logic - the pattern extends directly to merging k lists and merge sort on linked lists."
+        },
+        {
+          "title": "Linked List Cycle",
+          "slug": "linked-list-cycle",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Direct application of Floyd's fast/slow cycle detection - foundational for all fast/slow pointer problems."
+        },
+        {
+          "title": "Remove Nth Node From End of List",
+          "slug": "remove-nth-node-from-end-of-list",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Combines the dummy head and offset fast/slow pointer techniques in a single problem - tests both in a non-trivial way."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Recursion Basics",
+      "next_slug": "recursion-basics",
+      "why": "Linked lists introduced pointer-following and the call stack - recursion formalizes the call stack pattern and teaches you to express problems in terms of subproblems, which is the mental model behind trees, DFS, and dynamic programming."
+    }
+  ]
+}

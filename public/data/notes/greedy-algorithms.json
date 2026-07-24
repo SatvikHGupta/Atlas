@@ -1,0 +1,129 @@
+{
+  "topic": "Greedy Algorithms",
+  "level": 3,
+  "slug": "greedy-algorithms",
+  "estimated_read": "11 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Greedy?",
+      "content": "A greedy algorithm makes the **locally optimal choice** at each step, committing to it immediately and never reconsidering. Unlike dynamic programming - which explores all subproblems and combines their optimal solutions - greedy picks one option at each decision point and moves on. This makes greedy algorithms fast (typically O(n log n) or O(n)) but they are only correct when the problem has the right structure.\n\nTwo properties must hold for greedy to produce the globally optimal answer. The **greedy choice property** says a globally optimal solution can always be extended from a locally optimal choice - you will never be forced to undo a greedy decision. **Optimal substructure** says the optimal solution to the full problem contains optimal solutions to its subproblems. These aren't just descriptions of greedy - they are the conditions you must verify before trusting any greedy algorithm.\n\nProving greedy correctness is harder than implementing it. The standard method is the **exchange argument**: assume some optimal solution does NOT make the greedy choice. Show that you can swap the non-greedy choice for the greedy choice without making the solution worse. If this swap is always valid, greedy is correct. For activity selection by end time: any optimal schedule that skips the earliest-finishing activity can be improved by swapping it in - the schedule doesn't get worse, and greedy is justified.\n\nGreedy fails spectacularly when the conditions aren't met. Coin change with arbitrary denominations (coins `[1, 3, 4]`, amount 6 - greedy gives 4+1+1=3 coins but optimal is 3+3=2 coins) is the canonical counterexample. Recognizing when NOT to apply greedy - and reaching for DP instead - is as important as knowing the greedy patterns themselves."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use greedy when the problem asks for a minimum or maximum count/value and you can identify a local choice that never needs to be undone. Interval scheduling, task ordering, jump games, and resource allocation problems are typical greedy domains. If you find yourself needing to undo a choice or track multiple states simultaneously, greedy is wrong and DP is likely the answer.",
+      "signals": [
+        "minimum number of X to cover Y",
+        "maximum activities without conflict",
+        "can you reach the end",
+        "task scheduler with cooldown",
+        "assign resources greedily",
+        "minimum platforms or rooms",
+        "earliest deadline first",
+        "locally optimal leads to global optimum"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## Greedy Choice Property and Exchange Argument\n\nThe formal justification for greedy. Suppose you have an optimal solution that doesn't use the greedy choice at some step. Show that you can **exchange** the non-greedy choice for the greedy choice without degrading the solution. If this exchange is always possible, greedy is provably correct.\n\nFor activity selection: sort by end time. The greedy choice is always pick the activity finishing earliest that doesn't conflict with the last picked. If an optimal schedule skips this activity and picks a later one instead, swapping the later activity for the earliest-finishing one doesn't reduce the total count - same or more activities fit after the swap.\n\n## Activity Selection / Interval Scheduling\n\nClassic greedy: sort activities by **end time**. Greedily pick the activity that finishes earliest and doesn't conflict with the last picked. This maximizes the number of non-overlapping activities.\n\nWhy end time and not start time? Finishing early leaves the most room for future activities. Sorting by start time is wrong - a very long activity starting early blocks everything else. This is the foundation of Non-Overlapping Intervals and meeting room scheduling.\n\n## Greedy on Arrays - Jump Game, Gas Station\n\n**Jump Game**: at each index you can jump up to `nums[i]` steps forward. Track `maxReach` = the furthest index reachable so far. At each index `i`: if `i > maxReach`, you're stuck - return false. Otherwise update `maxReach = Math.max(maxReach, i + nums[i])`. Single pass, O(n), O(1) space.\n\n**Gas Station**: the total gas minus total cost must be >= 0 (necessary condition - if total gas < total cost, no solution exists). To find the starting station: maintain a running `tank`. When `tank` goes negative, reset `start = i + 1` and `tank = 0`. The optimal start is always the station after the last point of failure. Why? Any start between the previous reset and the failure point would also fail at the same point.\n\n## Greedy on Sequences - Task Scheduler\n\n**Task Scheduler**: given tasks with frequencies and a cooldown `n` (same task can't run within n slots of its last run), find the minimum total time to finish all tasks.\n\nKey insight: the most frequent task determines the skeleton. Place the most frequent task first, space it out with cooldown gaps, fill gaps with other tasks. Formula: `(maxFreq - 1) * (n + 1) + countOfMaxFreq`. Take `Math.max` of this with the total number of tasks (if there are enough variety tasks to fill all gaps, there's no idle time).\n\n**Assign Cookies**: give each child at least their greed factor in cookie size. Sort both children (greed) and cookies (size). Use two pointers - try to satisfy the least greedy remaining child with the smallest remaining cookie that fits. Greedy: always satisfy the easiest child first with the smallest cookie that works."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// Activity Selection - maximize non-overlapping intervals (sort by end time)\nfunction maxActivities(intervals) {\n  intervals.sort((a, b) => a[1] - b[1]); // sort by END time\n  let count = 1;\n  let lastEnd = intervals[0][1];\n\n  for (let i = 1; i < intervals.length; i++) {\n    if (intervals[i][0] >= lastEnd) { // starts at or after last end\n      count++;\n      lastEnd = intervals[i][1];\n    }\n  }\n  return count;\n}\n\n// Jump Game - greedy maxReach scan\nfunction canJump(nums) {\n  let maxReach = 0;\n  for (let i = 0; i < nums.length; i++) {\n    if (i > maxReach) return false; // can't reach this index\n    maxReach = Math.max(maxReach, i + nums[i]);\n  }\n  return true;\n}\n\n// Gas Station - find valid start using running tank reset\nfunction canCompleteCircuit(gas, cost) {\n  let totalTank = 0, tank = 0, start = 0;\n  for (let i = 0; i < gas.length; i++) {\n    const net = gas[i] - cost[i];\n    totalTank += net;\n    tank += net;\n    if (tank < 0) { // failed from current start - reset\n      start = i + 1;\n      tank = 0;\n    }\n  }\n  return totalTank >= 0 ? start : -1;\n}",
+      "language": "javascript",
+      "explanation": "Three canonical greedy forms: interval selection (sort by end, pick greedily), reachability scan (track max reach forward), and circular resource allocation (reset start on failure). Each follows the same pattern: one pass, one decision per element, no backtracking."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Fractional Knapsack",
+          "description": "Maximize value in a knapsack where items can be fractionally included. Greedy by value/weight ratio - always take the highest ratio item first. Crucially, 0/1 Knapsack (no fractions allowed) is NOT solvable by greedy and requires DP.",
+          "example_problem": "Maximum Units on a Truck",
+          "example_slug": "maximum-units-on-a-truck"
+        },
+        {
+          "name": "Huffman Coding (Greedy Tree)",
+          "description": "Build an optimal prefix-free encoding by repeatedly merging the two lowest-frequency symbols into a combined node. Uses a min-heap. This greedy construction provably minimizes total encoded length - the foundation of lossless compression.",
+          "example_problem": "Minimum Cost to Connect Sticks",
+          "example_slug": "minimum-cost-to-connect-sticks"
+        },
+        {
+          "name": "Dijkstra's Algorithm (Greedy + Heap)",
+          "description": "Shortest path via greedy: always expand the unvisited node with the smallest tentative distance. The greedy choice is safe because edge weights are non-negative - a shorter path to an already-settled node cannot be found later.",
+          "example_problem": "Network Delay Time",
+          "example_slug": "network-delay-time"
+        },
+        {
+          "name": "Task Scheduler",
+          "description": "Minimize total execution time with cooldown constraints using the frequency-based formula. The most frequent task determines the idle-time skeleton; other tasks fill the gaps. Formula: `max(tasks.length, (maxFreq - 1) * (n + 1) + countOfMaxFreq)`.",
+          "example_problem": "Task Scheduler",
+          "example_slug": "task-scheduler"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n log n) typical (sort-dominated), O(n) for scan-only greedy",
+      "space": "O(1) to O(n)",
+      "explanation": "Most greedy algorithms sort first (O(n log n)) then make a single linear scan (O(n)), so sorting dominates. Pure scan greedy (Jump Game, Gas Station) is O(n) time and O(1) space - no sorting needed. Heap-based greedy (Huffman, Task Scheduler with heap) is O(n log n) due to repeated heap operations. Space is O(1) for scan greedy, O(n) when a sorted copy or frequency map is maintained."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Confusing greedy with DP - Coin Change with arbitrary denominations is NOT greedy; greedy gives wrong answers for coins `[1, 3, 4]` and amount 6 (greedy: 4+1+1=3 coins, optimal: 3+3=2 coins). Only standard coin systems (like US currency) happen to be greedy-correct.",
+        "Sorting by the wrong criterion - activity selection requires sorting by END time, not start time. Sorting by start time is intuitive but wrong: a long early-starting activity would block all others. Always derive the sort key from the exchange argument, not intuition.",
+        "Greedy never backtracks - if your solution ever needs to undo a choice or consider an alternative after committing, it is not a pure greedy. That's a signal to switch to backtracking or DP.",
+        "Not verifying the greedy choice property before trusting the result - greedy gives the right answer on all small examples for many problems where it is actually wrong on large inputs. Always test with an adversarial counterexample before claiming a greedy solution is correct.",
+        "Gas Station: not checking `totalTank >= 0` - the running reset finds the candidate start, but if total gas < total cost, no valid start exists. Returning `start` without this final check gives a wrong answer when the circuit is impossible."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Jump Game",
+          "slug": "jump-game",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Canonical array greedy - track the furthest reachable index; if current index exceeds it, return false."
+        },
+        {
+          "title": "Gas Station",
+          "slug": "gas-station",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests the tank-reset greedy - start after every failure point; valid only when total gas >= total cost."
+        },
+        {
+          "title": "Task Scheduler",
+          "slug": "task-scheduler",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests frequency-based greedy scheduling - the most frequent task determines idle time; formula encodes the greedy insight directly."
+        },
+        {
+          "title": "Non-Overlapping Intervals",
+          "slug": "non-overlapping-intervals",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests activity selection greedy - sort by end time, maximize kept intervals, minimum removals = total - kept."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "1D Dynamic Programming",
+      "next_slug": "1d-dp",
+      "why": "DP is what you reach for when greedy doesn't work. Understanding both side by side - greedy commits to one choice, DP considers all choices and memoizes them - is the most important paradigm distinction in algorithm design. Learning 1D DP directly after greedy makes the contrast concrete."
+    }
+  ]
+}

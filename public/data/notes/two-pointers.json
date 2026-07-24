@@ -1,0 +1,127 @@
+{
+  "topic": "Two Pointers",
+  "level": 1,
+  "slug": "two-pointers",
+  "estimated_read": "12 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Two Pointers?",
+      "content": "**Two pointers** is a technique where two index variables traverse a data structure - typically an array or string - simultaneously. The power of the technique is that by coordinating the movement of both pointers, you can reduce the search space from O(n²) to O(n), because each pointer only moves in one direction and never backtracks.\n\nThere are two fundamentally different configurations. **Opposite-ends pointers** start at both ends of a sorted array and move toward each other - one advances from the left, one from the right. At each step, you make a decision about which pointer to move based on how the current pair compares to your target. The sorted order guarantees that moving one pointer reliably eliminates a candidate.\n\n**Fast/slow pointers** (also called Floyd's pointers) start at the same position but advance at different speeds - typically one step per iteration for slow, two steps for fast. This configuration detects cycles in linked lists, finds the middle of a linked list, and identifies duplicate values in arrays arranged like a linked list.\n\nThe common thread in both configurations: **each pointer's movement eliminates a region of the search space** based on a known property (sortedness, or the structure of the cycle). This is what gives two pointers its O(n) efficiency - you're not just being clever about iteration, you're exploiting a structural guarantee of the input."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Two pointers on opposite ends requires a sorted array (or the ability to sort without penalty). If the array is unsorted and sorting isn't allowed, two pointers likely won't work. Fast/slow pointers work on linked lists and on array problems modeled as linked lists. The 'detect cycle', 'find middle', and 'find kth from end' patterns are direct triggers for fast/slow.",
+      "signals": [
+        "sorted array with a target sum or difference",
+        "find a pair satisfying a property",
+        "palindrome verification on a string",
+        "remove duplicates or elements in-place with O(1) space",
+        "detect cycle in a linked list",
+        "find the middle node of a linked list",
+        "squeeze from both ends toward a solution"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Opposite-Ends Two Pointers",
+      "content": "Place `left = 0` and `right = arr.length - 1`. At each step, evaluate the pair `(arr[left], arr[right])`:\n\n- If the pair satisfies the condition, record the answer and move both inward.\n- If the pair falls short (e.g., sum < target), move `left` right to increase the value.\n- If the pair overshoots (e.g., sum > target), move `right` left to decrease the value.\n\n## Why Sorted Input Is Required\n\nWhen you move `left` right, you're claiming: 'no solution exists with `arr[left]` as the left element.' This is only safe to claim if you know that every element to the right of `left` is greater or equal - i.e., the array is sorted. On an unsorted array, skipping `arr[left]` might eliminate a valid pair.\n\n## Example: Two Sum on Sorted Array\n\n```javascript\nfunction twoSumSorted(arr, target) {\n  let left = 0, right = arr.length - 1;\n  while (left < right) {\n    const sum = arr[left] + arr[right];\n    if (sum === target) return [left, right];\n    else if (sum < target) left++;   // need larger sum\n    else right--;                    // need smaller sum\n  }\n  return [];\n}\n```"
+    },
+    {
+      "type": "concept",
+      "title": "Fast/Slow Pointers",
+      "content": "**Fast/slow pointers** both start at the head (or position 0). Slow advances one step per iteration; fast advances two steps. Two key applications:\n\n## Cycle Detection (Floyd's Algorithm)\n\nIf a cycle exists, fast will eventually 'lap' slow and they will meet inside the cycle. If no cycle exists, fast will reach `null` first.\n\n```javascript\nfunction hasCycle(head) {\n  let slow = head, fast = head;\n  while (fast && fast.next) {\n    slow = slow.next;\n    fast = fast.next.next;\n    if (slow === fast) return true;\n  }\n  return false;\n}\n```\n\n## Finding the Middle\n\nWhen `fast` reaches the end of the list (or goes past it), `slow` is at the middle. For even-length lists, `slow` ends at the second-of-two middle nodes by default; check whether your problem wants the first or second middle.\n\n## Kth Node from End\n\nAdvance `fast` exactly `k` steps ahead of `slow`. Then move both at the same speed until `fast` reaches the end. `slow` is now at the kth node from the end."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// === OPPOSITE-ENDS TWO POINTERS (sorted array) ===\nfunction oppositeTwoPointers(arr, target) {\n  let left = 0, right = arr.length - 1;\n  while (left < right) {\n    const val = arr[left] + arr[right]; // or any pair evaluation\n    if (val === target) {\n      return [left, right];\n    } else if (val < target) {\n      left++;   // current left too small, move right to increase\n    } else {\n      right--;  // current right too large, move left to decrease\n    }\n  }\n  return [];\n}\n\n// === FAST/SLOW POINTERS ===\nfunction fastSlowPointers(head) {\n  let slow = head, fast = head;\n  while (fast !== null && fast.next !== null) {\n    slow = slow.next;        // one step\n    fast = fast.next.next;   // two steps\n    if (slow === fast) return true; // cycle detected\n  }\n  return false; // fast reached end: no cycle\n}",
+      "language": "javascript",
+      "explanation": "Opposite-ends: move the pointer whose current side is responsible for the mismatch - if sum is too low, left needs to increase so move left pointer right; if sum is too high, right needs to decrease so move right pointer left. Fast/slow: the fast pointer reaching null proves no cycle; fast lapping slow proves a cycle exists."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Three Pointers (3Sum)",
+          "description": "Fix one element with an outer loop index `i`, then run opposite-ends two pointers on the remaining subarray `[i+1, n-1]`. This reduces 3Sum from O(n³) brute force to O(n²). Skip duplicate values at both the outer loop and inner pointers to avoid duplicate triplets in the output.",
+          "example_problem": "3Sum",
+          "example_slug": "3sum"
+        },
+        {
+          "name": "Dutch National Flag (3-Way Partition)",
+          "description": "Three pointers: `low`, `mid`, and `high`. Elements before `low` are one color, between `low` and `mid` are another, after `high` are the third. `mid` advances and swaps elements into the right partition. This sorts an array with three distinct values in O(n) with O(1) space.",
+          "example_problem": "Sort Colors",
+          "example_slug": "sort-colors"
+        },
+        {
+          "name": "Multiple Passes with Pointers",
+          "description": "Some problems require two passes: a forward pass to gather information, then a backward pass acting on it. Remove kth node from end requires one pass with two pointers offset by k. Trapping rain water can be solved with two pointers tracking left-max and right-max.",
+          "example_problem": "Trapping Rain Water",
+          "example_slug": "trapping-rain-water"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n) for single array, O(n log n) if sorting is required first",
+      "space": "O(1) - only pointer variables",
+      "explanation": "Each pointer traverses at most n positions and never backtracks - together they cover at most 2n steps, giving O(n). If the array must first be sorted (because the problem doesn't provide a sorted input), sorting costs O(n log n), which dominates. Fast/slow pointers in cycle detection converge in O(n) steps because the gap between them decreases by 1 per iteration."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Using two pointers on an unsorted array where the technique doesn't apply: moving `left` right to 'increase the sum' is only valid if `arr[left+1] >= arr[left]`. On unsorted input, this eliminates potentially valid pairs. Sort first (adding O(n log n)) or use a hash map instead.",
+        "Moving both pointers when only one should move: the decision of which pointer to move must be logically justified by what that movement eliminates. Moving both simultaneously in response to an overshoot or undershoot skips valid candidates.",
+        "Not skipping duplicates in kSum problems: in 3Sum, after finding a valid triplet at `(i, left, right)`, advancing both pointers without skipping duplicate values generates the same triplet multiple times. Use `while (left < right && arr[left] === arr[left-1]) left++` after incrementing.",
+        "Fast/slow initialization: for 'kth from end', initializing fast at `head` and slow at `head` then advancing fast `k` steps works correctly. But if you accidentally start fast one step ahead, the offset is off by one. Be explicit about initial positions.",
+        "Assuming fast/slow works for any 'go faster' problem: fast/slow works for cycles and structural properties (middle, kth from end) because of mathematical guarantees. It does not apply to arbitrary problems just because you want one pointer to 'outrun' the other."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "3Sum",
+          "slug": "3sum",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Tests the three-pointer pattern - fix outer element, two-pointer the rest - plus duplicate skipping logic."
+        },
+        {
+          "title": "Container With Most Water",
+          "slug": "container-with-most-water",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Opposite-ends two pointers where the decision to move left or right is based on which wall is shorter - tests invariant reasoning."
+        },
+        {
+          "title": "Trapping Rain Water",
+          "slug": "trapping-rain-water",
+          "difficulty": 3,
+          "difficulty_label": "Hard",
+          "why": "Two-pointer solution tracks left-max and right-max from opposite ends - tests multi-state two-pointer reasoning."
+        },
+        {
+          "title": "Valid Palindrome",
+          "slug": "valid-palindrome",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Classic opposite-ends two-pointer on a string - first problem to practice the inward-moving pointer template."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Hashing",
+      "next_slug": "hashing",
+      "why": "Hashing solves the same 'find pairs' problems as sorted two pointers but without requiring sorted input - and it unlocks O(n) solutions for problems where sorting adds unnecessary cost."
+    }
+  ]
+}

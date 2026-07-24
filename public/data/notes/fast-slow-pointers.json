@@ -1,0 +1,129 @@
+{
+  "topic": "Fast & Slow Pointers",
+  "level": 2,
+  "slug": "fast-slow-pointers",
+  "estimated_read": "9 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What are Fast & Slow Pointers?",
+      "content": "The fast and slow pointer technique - also called **Floyd's Tortoise and Hare algorithm** - uses two pointers moving through a sequence at different speeds. The slow pointer advances one step at a time; the fast pointer advances two steps at a time. If there is a cycle anywhere in the sequence, the fast pointer will eventually lap the slow pointer and they will meet inside the cycle. If there is no cycle, the fast pointer reaches the end (`null`) first and the algorithm terminates.\n\nThis technique detects cycles in O(n) time and **O(1) space** - dramatically better than the naive approach of storing every visited node in a hash set, which costs O(n) space. Beyond cycle detection, the same speed differential is used to find the **middle of a linked list** in one pass (when fast reaches the end, slow is exactly at the middle), to find the **entry point of a cycle** (a two-phase approach using the meeting point), and to solve the **happy number** problem on mathematical sequences.\n\nThe algorithm is named after a fable: a tortoise and a hare race around a circular track. The hare is faster, laps the tortoise, and eventually meets it. The mathematical guarantee is that in a cycle of length L, the fast pointer gains exactly 1 step per iteration over slow. Since it continuously gains ground in a finite cycle, it must eventually meet slow - always within O(n) iterations.\n\nFast and slow pointers appear almost exclusively on linked list problems and circular sequence problems. The pattern is clean, requires zero extra data structures, and is one of the most space-efficient techniques in DSA."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use fast and slow pointers when the problem involves a linked list and asks about cycles, the middle node, or palindrome structure. Also applies when a mathematical or array-index sequence could loop (happy number, find the duplicate in an array with values as next-pointers). If the problem asks to detect or find something about a cycle in O(1) space, this is almost always the right tool.",
+      "signals": [
+        "cycle in linked list",
+        "detect loop in sequence",
+        "find start of cycle",
+        "middle of linked list",
+        "palindrome linked list",
+        "find duplicate number in array",
+        "tortoise and hare",
+        "circular linked list entry point"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## Phase 1 - Cycle Detection\n\nInitialize `slow = head`, `fast = head`. At each step: `slow = slow.next`, `fast = fast.next.next`. Before advancing fast, always check: `if (fast === null || fast.next === null) return false` - no cycle. If at any point `slow === fast`, a cycle exists.\n\nWhy does fast catch slow inside the cycle? Once both pointers are inside the cycle, fast gains 1 position per iteration relative to slow. The gap closes by 1 each step and must eventually reach 0 - they meet.\n\n## Phase 2 - Finding the Cycle Entry Point\n\nAfter detection (slow meets fast somewhere inside the cycle), reset one pointer to `head`. Move **both** pointers one step at a time. The point where they meet again is the **start of the cycle**.\n\nThe math: let `a` = distance from head to cycle start, `b` = distance from cycle start to meeting point, `L` = cycle length. At meeting: fast traveled `a + b + kL` steps (some number of full laps k), slow traveled `a + b` steps. Since fast = 2 × slow: `a + b + kL = 2(a + b)` → `a = kL - b = (k-1)L + (L - b)`. Moving from head by `a` steps and from meeting point by `a` steps both arrive at cycle start simultaneously. This is the key insight for **Linked List Cycle II**.\n\n## Finding the Middle of a Linked List\n\nInitialize `slow = head`, `fast = head`. Move both until fast can't advance two steps. When `fast === null` or `fast.next === null`, `slow` is at the middle.\n\nFor **odd-length** lists: `fast.next === null` when slow is at the exact middle. For **even-length** lists: `fast === null` when slow is at the second of the two middle nodes. If you need the **first** middle (for palindrome reversal), use `fast.next !== null && fast.next.next !== null` as the continue condition instead.\n\n## Happy Number and Sequence Cycles\n\nA happy number eventually reaches 1 by repeatedly summing the squares of its digits. Non-happy numbers cycle forever through other values, never reaching 1. Treat the sequence as a linked list where `next(n)` = sum of squared digits of n. Run fast and slow on this implicit sequence. If they meet at 1, it's happy. If they meet at any other value, the sequence cycles - not happy. Same algorithm, no actual linked list needed."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// Phase 1: detect cycle. Phase 2: find cycle entry point.\nfunction detectCycleStart(head) {\n  if (!head || !head.next) return null;\n\n  let slow = head;\n  let fast = head;\n\n  // phase 1 - detect if cycle exists\n  while (fast !== null && fast.next !== null) {\n    slow = slow.next;\n    fast = fast.next.next;\n    if (slow === fast) break; // met inside cycle\n  }\n\n  // no cycle - fast reached end\n  if (fast === null || fast.next === null) return null;\n\n  // phase 2 - find cycle entry point\n  // reset one pointer to head, move both at speed 1\n  slow = head;\n  while (slow !== fast) {\n    slow = slow.next;\n    fast = fast.next;\n  }\n\n  return slow; // cycle start node\n}\n\n// Find middle of linked list\nfunction findMiddle(head) {\n  let slow = head;\n  let fast = head;\n  // stop when fast can't take two steps\n  while (fast !== null && fast.next !== null) {\n    slow = slow.next;\n    fast = fast.next.next;\n  }\n  return slow; // second middle for even-length lists\n}",
+      "language": "javascript",
+      "explanation": "The two-phase Floyd's algorithm: phase 1 uses speed differential to detect a cycle, phase 2 exploits the meeting-point math to locate the exact cycle entry node. The middle-finding variant is the single-phase version with no cycle."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Find Middle of Linked List",
+          "description": "Single-phase fast/slow - no cycle detection. When fast reaches the end, slow is at the middle. Even-length lists: slow lands on the second middle node. Adjust stop condition to get first middle.",
+          "example_problem": "Middle of the Linked List",
+          "example_slug": "middle-of-the-linked-list"
+        },
+        {
+          "name": "Happy Number",
+          "description": "Apply fast/slow to the implicit sequence defined by summing squared digits. No linked list needed - just a `next(n)` function. Meeting at 1 means happy; meeting elsewhere means the sequence cycles.",
+          "example_problem": "Happy Number",
+          "example_slug": "happy-number"
+        },
+        {
+          "name": "Find the Duplicate Number",
+          "description": "Array of n+1 integers where each value is in [1, n] - treat values as next-pointers, creating an implicit linked list with a cycle (the duplicate is the cycle entry). Apply two-phase Floyd's directly on array indices.",
+          "example_problem": "Find the Duplicate Number",
+          "example_slug": "find-the-duplicate-number"
+        },
+        {
+          "name": "Palindrome Linked List",
+          "description": "Find the middle node, reverse the second half in-place, compare both halves from the outside in. Fast/slow is used in the first step (find middle) before the reversal. O(n) time, O(1) space.",
+          "example_problem": "Palindrome Linked List",
+          "example_slug": "palindrome-linked-list"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n)",
+      "space": "O(1)",
+      "explanation": "Cycle detection: fast covers at most 2n nodes before either reaching null or meeting slow inside the cycle. Phase 2 (entry point): at most n additional steps. Both phases combined are O(n). Finding middle: O(n/2) = O(n). Space is strictly O(1) - only two pointer variables, no data structures, regardless of list length."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Not checking `fast !== null && fast.next !== null` before advancing fast - `fast.next.next` throws a null pointer exception if fast is already the last node or null; both checks are required every iteration before the double advance.",
+        "Phase 2: resetting the wrong pointer to head - exactly one pointer goes to head, the other stays at the meeting point inside the cycle. Both then move at speed 1. Resetting both to head or resetting the wrong one restarts the wrong phase.",
+        "Finding middle: using the wrong stop condition for even-length lists - `fast === null` stops at the second middle, `fast.next === null` stops at the first middle. Know which variant your problem needs (palindrome check usually needs first middle for clean reversal).",
+        "Treating cycle detection and cycle entry as one phase - they are two distinct phases with different logic. Phase 1 uses speed 1/2; phase 2 uses speed 1/1. Mixing them produces wrong entry points.",
+        "Find the Duplicate Number: not recognizing the array-as-linked-list mapping - indices 0..n are nodes, values are next-pointers. Starting from index 0 (not index arr[0]) is the correct entry point for Floyd's in this problem."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Linked List Cycle",
+          "slug": "linked-list-cycle",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "Pure phase 1 - just detect whether a cycle exists using the speed differential."
+        },
+        {
+          "title": "Linked List Cycle II",
+          "slug": "linked-list-cycle-ii",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Full two-phase Floyd's - detect cycle then find its exact entry point using the mathematical guarantee."
+        },
+        {
+          "title": "Find the Duplicate Number",
+          "slug": "find-the-duplicate-number",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests applying Floyd's to an implicit linked list formed by array values - non-obvious mapping from array to cycle structure."
+        },
+        {
+          "title": "Middle of the Linked List",
+          "slug": "middle-of-the-linked-list",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "Single-phase fast/slow - find the middle node in one pass without measuring list length."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Monotonic Queue",
+      "next_slug": "monotonic-queue",
+      "why": "Fast/slow pointers use a two-pointer speed trick to maintain a position relationship in a sequence. Monotonic queue uses a deque with front/back operations to maintain an ordering relationship in a sliding window - a different structural technique for linear-time sequence processing."
+    }
+  ]
+}

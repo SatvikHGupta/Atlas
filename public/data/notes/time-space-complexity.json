@@ -1,0 +1,128 @@
+{
+  "topic": "Time & Space Complexity",
+  "level": 0,
+  "slug": "time-space-complexity",
+  "estimated_read": "15 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Time & Space Complexity?",
+      "content": "When you write an algorithm, two questions immediately follow: **how long will it take to run**, and **how much memory will it use**? The naive answer is to benchmark it - run the code and measure. But benchmarking is hardware-dependent. The same program runs in 2 seconds on your laptop and 0.2 seconds on a server. We need a **hardware-independent measure** of how an algorithm behaves - that measure is complexity analysis.\n\nThe key insight is that we don't care about the exact time. We care about **how the time grows as the input grows**. Imagine searching for a name in a phonebook. If you flip through every page from the start, a 1000-page phonebook takes 1000 steps and a 2000-page book takes 2000 steps - time grows linearly with input size. If you use binary search (open to the middle, discard half), a 1000-page book takes ~10 steps and a 2000-page book takes ~11 steps - time grows logarithmically. The difference is dramatic at scale.\n\n**Time complexity** measures how the number of operations grows as input size `n` grows. **Space complexity** measures how much extra memory is consumed as `n` grows. Both are expressed using **Big-O notation**, which captures the worst-case growth rate, ignoring constants and lower-order terms.\n\nComplexity analysis is the language interviewers use when they ask 'can you do better?' It's also the tool you use to decide between approaches before writing a single line of code. A solution that looks elegant but is O(n²) on a 10⁵ input will time-out - knowing this upfront saves hours of debugging."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Think About Complexity",
+      "content": "You should be thinking about complexity from the moment you read a problem. Check the constraint on `n` first - it tells you what complexity class your solution must fall in. An interviewer asking 'can you do better?' is a direct signal to analyze your current solution's complexity and find a more efficient approach. When your brute-force solution gets a Time Limit Exceeded (TLE) verdict on an online judge, complexity analysis tells you why and what class you need to reach.",
+      "signals": [
+        "Interviewer asks 'what is the time complexity of your solution?'",
+        "Brute force passes small test cases but TLEs on large ones",
+        "Constraint n ≤ 10^5 (hints O(n log n) or O(n) max)",
+        "Constraint n ≤ 10^3 (O(n²) acceptable)",
+        "Constraint n ≤ 20 (O(2^n) or O(n!) might be fine)",
+        "'Can you solve this in O(1) space?' or 'in-place?'",
+        "Comparing two approaches and choosing the better one",
+        "Deciding if an extra data structure is worth its memory cost"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Big-O Notation",
+      "content": "**Big-O notation** formally describes an upper bound on an algorithm's growth rate. `O(f(n))` means: for large enough `n`, the algorithm's cost is at most some constant multiple of `f(n)`. We drop constants and lower-order terms because at large scale, they're irrelevant - `O(2n)` and `O(n)` are both just `O(n)`.\n\n## Common Complexity Classes\n\n| Notation | Name | Intuition |\n|---|---|---|\n| O(1) | Constant | Same cost regardless of input size. Array index access. |\n| O(log n) | Logarithmic | Input halves at each step. Binary search. |\n| O(n) | Linear | Visit every element once. Linear scan. |\n| O(n log n) | Linearithmic | Sort the input. Merge sort, heap sort. |\n| O(n²) | Quadratic | Every pair of elements. Nested loops over same array. |\n| O(2^n) | Exponential | Every subset. Brute-force recursion on subsets. |\n| O(n!) | Factorial | Every permutation. Brute-force traveling salesman. |\n\n## Dominant Terms\n\nWhen an algorithm has cost `3n² + 5n + 100`, the dominant term is `n²`. As `n` grows, `n²` overwhelms everything else. So we write O(n²). The rules: keep only the fastest-growing term, drop constants.\n\n## Growth Rate Comparison\n\nFor `n = 1000`: O(log n) ≈ 10 ops, O(n) = 1000 ops, O(n log n) ≈ 10,000 ops, O(n²) = 1,000,000 ops, O(2^n) = astronomically large."
+    },
+    {
+      "type": "concept",
+      "title": "Deriving Complexity from Code",
+      "content": "**Reading code for complexity** is a skill you develop by practice. Here are the rules:\n\n## Loops\n\nA single loop from `0` to `n` → O(n). A loop from `0` to `n` that increments by doubling (`i *= 2`) → O(log n) because input is halved each step. Two nested loops both from `0` to `n` → O(n²). But watch out: if the inner loop runs from `i` to `n` (not `0` to `n`), it's still O(n²) asymptotically - it's `n*(n-1)/2` which is O(n²).\n\n## Recursion\n\nFor recursion, write a **recurrence relation**. Binary search calls itself on half the input and does O(1) work: `T(n) = T(n/2) + O(1)`. Solving this gives O(log n). Merge sort splits in half and does O(n) merge work: `T(n) = 2T(n/2) + O(n)`, which gives O(n log n) by the Master Theorem.\n\n## Space Complexity\n\nSpace complexity counts **auxiliary memory** you allocate. Creating an array of size `n` → O(n) space. A recursive function that calls itself `n` times deep → O(n) stack space even if no other memory is used. An in-place algorithm that only uses a few variables → O(1) space.\n\n## The Shortcut\n\nCount the nested loops that depend on `n`. One loop = O(n). Two nested = O(n²). One loop where the variable doubles/halves = O(log n). Then add recursion stack space if applicable."
+    },
+    {
+      "type": "template",
+      "title": "Complexity Cheat Sheet (Code Pattern Reference)",
+      "code": "// O(1) - no loops, no recursion scaling with n\nconst first = arr[0];\n\n// O(log n) - input space halves each iteration\nlet lo = 0, hi = n - 1;\nwhile (lo <= hi) {\n  const mid = (lo + hi) >> 1;\n  if (arr[mid] === target) return mid;\n  else if (arr[mid] < target) lo = mid + 1;\n  else hi = mid - 1;\n}\n\n// O(n) - visit each element once\nfor (let i = 0; i < n; i++) {\n  process(arr[i]);\n}\n\n// O(n log n) - sort, then linear pass\narr.sort((a, b) => a - b);\nfor (let i = 0; i < n; i++) { /* ... */ }\n\n// O(n²) - nested loops both depending on n\nfor (let i = 0; i < n; i++) {\n  for (let j = i + 1; j < n; j++) {\n    checkPair(arr[i], arr[j]);\n  }\n}\n\n// O(n²) space warning - creating n×n matrix\nconst dp = Array.from({ length: n }, () => new Array(n).fill(0));\n\n// O(log n) recursion stack space - binary search recursive\nfunction bSearch(lo, hi) {\n  if (lo > hi) return -1;\n  const mid = (lo + hi) >> 1;\n  // each call reduces problem to half\n  return arr[mid] === target ? mid\n    : arr[mid] < target ? bSearch(mid + 1, hi)\n    : bSearch(lo, mid - 1);\n}",
+      "language": "javascript",
+      "explanation": "This template maps common code patterns to their complexity class. Use it as a reference when reading code - identify which pattern a loop/recursion matches, then assign its Big-O immediately."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Amortized Analysis",
+          "description": "Some operations are expensive occasionally but cheap on average over many calls. A dynamic array's `push` is usually O(1) but triggers O(n) copy when capacity doubles. However, the copy cost is spread over all pushes - amortized O(1) per push. When interviewers say 'amortized O(1)' they mean this averaging over a sequence of operations.",
+          "example_problem": "Design Dynamic Array",
+          "example_slug": "design-dynamic-array"
+        },
+        {
+          "name": "Best / Average / Worst Case",
+          "description": "Big-O usually describes worst case, but sometimes we distinguish. QuickSort is O(n²) worst case (already-sorted input with bad pivot) but O(n log n) average case with random pivot. Interviewers sometimes ask for all three. In practice, average case matters more for randomized algorithms.",
+          "example_problem": "Sort an Array",
+          "example_slug": "sort-an-array"
+        },
+        {
+          "name": "Space-Time Tradeoff",
+          "description": "You can often trade memory for speed. Caching computed results (memoization) increases space from O(1) to O(n) but drops time from O(2^n) to O(n). Precomputing a prefix sum array costs O(n) space but reduces every range query from O(n) to O(1). Recognizing this tradeoff is a core interview skill.",
+          "example_problem": "Two Sum",
+          "example_slug": "two-sum"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(1)",
+      "space": "O(1)",
+      "explanation": "Analyzing complexity is a meta-operation - reading each line of code once costs O(1) per line. The total analysis time is proportional to the size of the code, not the size of the input `n`. You are not running the algorithm; you are reasoning about it."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Forgetting recursion stack space: a function that recurses `n` levels deep uses O(n) space even if no arrays are created. DFS on a skewed tree has O(n) stack space, not O(1).",
+        "Treating O(2n) as different from O(n): constants are always dropped in Big-O. O(2n), O(5n), and O(n) are all the same complexity class. Only the growth rate matters.",
+        "Assuming nested loops are always O(n²): if the inner loop runs from `i` to `i+k` for a fixed constant `k`, it's still O(n). If the inner loop variable is independent of the outer, examine carefully - it might be O(n * m) not O(n²).",
+        "Confusing the value of n with the size of n: in bit manipulation, the input is a number `n`, but the size of the input is `log n` bits. An algorithm that loops `n` times is O(n) in terms of the number's value but O(2^(bits)) in terms of input size - this matters in number theory problems.",
+        "Ignoring the cost of built-in operations: `array.splice(i, 1)` is O(n) not O(1) because it shifts elements. `string += char` in a loop is O(n²) total due to string immutability. Assuming all JS array methods are O(1) leads to hidden quadratic solutions."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Two Sum",
+          "slug": "two-sum",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Forces you to compare O(n²) brute force vs O(n) hash map solution - the complexity difference is the entire lesson."
+        },
+        {
+          "title": "Binary Search",
+          "slug": "binary-search",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "The canonical O(log n) algorithm - understanding why halving gives logarithmic complexity is foundational."
+        },
+        {
+          "title": "Merge K Sorted Lists",
+          "slug": "merge-k-sorted-lists",
+          "difficulty": 3,
+          "difficulty_label": "Hard",
+          "why": "Requires analyzing O(nk) naive vs O(n log k) heap solution - complexity analysis drives the algorithm choice."
+        },
+        {
+          "title": "Maximum Subarray",
+          "slug": "maximum-subarray",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Contrast O(n²) brute force (all subarrays) with O(n) Kadane's - demonstrates how algorithmic insight collapses complexity."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Basic Math for CP",
+      "next_slug": "basic-math",
+      "why": "Basic math topics like modular arithmetic and prime sieves come with their own complexity stories - O(√n) for trial division, O(n log log n) for Sieve - applying complexity analysis to concrete math algorithms reinforces the framework you just learned."
+    }
+  ]
+}

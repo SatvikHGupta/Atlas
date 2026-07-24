@@ -1,0 +1,122 @@
+{
+  "topic": "Simulation",
+  "level": 8,
+  "slug": "simulation",
+  "estimated_read": "10 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Simulation?",
+      "content": "Simulation problems ask you to implement exactly what the problem describes \u2014 step by step, no clever algorithm required. The challenge is correctness under edge cases, not finding a smarter approach.\n\nSimulation appears constantly in competitive programming and in interviews as 'design' or 'implement this game' problems. Game of Life, robot navigation, spiral traversal, and snake game are all simulation \u2014 the algorithm is the problem statement.\n\nCritical judgment call: **when is direct simulation within the time limit?** n \u2264 10\u00b3 and steps \u2264 10\u00b3 \u2192 O(10\u2076) \u2014 fine. Steps can be 10\u2079 \u2192 need a shortcut. Most common shortcut: **cycle detection**. Finite state must eventually cycle. Find cycle length L, skip full cycles, simulate only the remainder.\n\nRecognizing when to simulate vs when to optimize is a meta-skill that comes from practice."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Simulate when the problem explicitly describes a process and constraints are small enough. Estimate O(n \u00d7 steps) and compare to ~10^8 operations. Also simulate when the state space is finite and you can detect cycles to skip ahead.",
+      "signals": [
+        "simulate the process",
+        "follow the steps",
+        "robot moves",
+        "game of life",
+        "snake game",
+        "small n follow instructions",
+        "find state after k steps"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Cycle Detection, Direction Arrays, and Event-Driven Simulation",
+      "content": "## When to Simulate Directly\n\nn \u2264 10\u00b3 and steps \u2264 10\u00b3: O(10\u2076) \u2014 simulate freely. n \u2264 10\u2074 and steps \u2264 10\u2074: O(10\u2078) \u2014 borderline. Steps \u2264 10\u2079: must find a shortcut.\n\n## Cycle Detection\n\n1. Store visited states: `{ serializedState \u2192 stepIndex }`.\n2. At each step, serialize current state.\n3. If seen before: `cycleLen = currentStep - seen[state]`.\n4. Remaining steps after cycle start: `(totalSteps - cycleStart) % cycleLen`.\n5. Simulate that many more steps.\n\n## Direction Arrays\n\n```\ndirs = [[0,1],[1,0],[0,-1],[-1,0]]  // right, down, left, up\ndirIdx = 0\n```\nTurn right: `(dirIdx+1)%4`. Turn left: `(dirIdx+3)%4`. Move: `[r+dirs[dirIdx][0], c+dirs[dirIdx][1]]`.\n\n## State Mutation Hazard (Game of Life)\n\nWhen all cells update simultaneously, reading an already-updated neighbor corrupts results. Use a copy of the current state for reads, write to a separate buffer. Or encode both states in the cell value.\n\n## Event-Driven Simulation\n\nOnly process steps where something changes. Reduces O(T) to O(E) where T is total time span and E is number of events."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "const DIRS=[[0,1],[1,0],[0,-1],[-1,0]];\n\nfunction gridSimulation(grid, moves) {\n  const rows=grid.length, cols=grid[0].length;\n  let r=0,c=0,dirIdx=0;\n  for (const move of moves) {\n    if (move==='R') dirIdx=(dirIdx+1)%4;\n    else if (move==='L') dirIdx=(dirIdx+3)%4;\n    else if (move==='F') {\n      const [dr,dc]=DIRS[dirIdx];\n      const nr=r+dr, nc=c+dc;\n      if (nr>=0 && nr<rows && nc>=0 && nc<cols) { r=nr; c=nc; }\n    }\n  }\n  return [r,c,dirIdx];\n}\n\nfunction simulateWithCycle(initialState, k, stepFn, serialize) {\n  const seen=new Map();\n  let state=initialState;\n  for (let i=0;i<k;i++) {\n    const key=serialize(state);\n    if (seen.has(key)) {\n      const cycleStart=seen.get(key);\n      const cycleLen=i-cycleStart;\n      const remaining=(k-cycleStart)%cycleLen;\n      state=initialState;\n      for (let j=0;j<cycleStart+remaining;j++) state=stepFn(state);\n      return state;\n    }\n    seen.set(key,i);\n    state=stepFn(state);\n  }\n  return state;\n}",
+      "language": "javascript",
+      "explanation": "Direction array template for clean grid movement with turn support. Cycle detection template finds cycle start and length then simulates only the necessary remainder."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Parallel State Update (Game of Life)",
+          "description": "All cells update simultaneously based on current state. Must read from old state and write to new \u2014 never mix. Use a copy or encode old and new state in the same cell value using different bits.",
+          "example_problem": "Game of Life",
+          "example_slug": "game-of-life"
+        },
+        {
+          "name": "Robot Bounded in Circle",
+          "description": "After one full instruction cycle, the robot is bounded if it is back at the origin OR not facing north. Simulate one cycle and check position and final direction.",
+          "example_problem": "Robot Bounded in Circle",
+          "example_slug": "robot-bounded-in-circle"
+        },
+        {
+          "name": "Spiral Matrix Traversal",
+          "description": "Maintain four boundaries (top, bottom, left, right). Peel one layer per cycle: top row, right column, bottom row, left column. Shrink boundaries after each side. Stop when top > bottom or left > right.",
+          "example_problem": "Spiral Matrix",
+          "example_slug": "spiral-matrix"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n \u00d7 steps) direct; O(stateSpace + cycleLength) with cycle detection",
+      "space": "O(stateSpace) for cycle detection map; O(1) extra for direct grid simulation",
+      "explanation": "Direct simulation: O(steps) steps with O(n) work per step if iterating over n-element state. With cycle detection: store at most one entry per unique state, find cycle in O(stateSpace) steps, then simulate at most cycleLength additional steps. Grid traversal visits every cell once: O(rows \u00d7 cols)."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Mutating state while reading it in parallel-update problems (Game of Life): writing grid[r][c]=newVal before all neighbors are processed reads the new value for cells that should use the old. Always read from a copy.",
+        "Turn-left using dirIdx-1: gives -1 when dirIdx is 0, which wraps to wrong index. Use (dirIdx+3)%4.",
+        "Boundary check after moving instead of before: compute new position, validate it, then update. Stepping to an invalid position first causes index-out-of-bounds errors.",
+        "Cycle detection serialization: JSON.stringify works but is slow for large states. Custom hash improves performance. Ensure serialization is injective \u2014 different states must produce different strings.",
+        "Not applying cycle detection when step count is large: if k=10^9 but state space is 10^4, simulating all k steps causes TLE when the cycle is guaranteed to appear before 10^4 steps."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Game of Life",
+          "slug": "game-of-life",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Parallel state update \u2014 tests simultaneous-update pattern where old state must be preserved for all cells before any new state is written."
+        },
+        {
+          "title": "Robot Bounded in Circle",
+          "slug": "robot-bounded-in-circle",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Direction array + cycle reasoning \u2014 simulate one cycle and check position and direction to determine boundedness."
+        },
+        {
+          "title": "Spiral Matrix",
+          "slug": "spiral-matrix",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Boundary-peeling simulation \u2014 tests four shrinking boundaries and edge cases where only one row or column remains."
+        },
+        {
+          "title": "Walking Robot Simulation",
+          "slug": "walking-robot-simulation",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Direction array + obstacle hash set \u2014 combines grid movement with O(1) collision detection using a set of obstacle coordinates."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Math for CP",
+      "next_slug": "math-cp",
+      "why": "Math for CP is the natural follow-up: many simulation problems have a hidden mathematical shortcut that avoids simulating at all. Closed-form formulas, floor/ceiling arithmetic, and pigeonhole let you recognize when to skip the simulation entirely."
+    }
+  ]
+}

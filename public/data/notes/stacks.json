@@ -1,0 +1,132 @@
+{
+  "topic": "Stacks",
+  "level": 2,
+  "slug": "stacks",
+  "estimated_read": "13 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What are Stacks?",
+      "content": "A **stack** is a Last-In-First-Out (LIFO) data structure. The last element you push onto the stack is the first element you get back when you pop. The physical analogy is a stack of plates: you add to the top and remove from the top. You never access the plate at the bottom without removing everything above it first.\n\nReal-world examples of LIFO semantics are everywhere. Your browser's back button is a stack of visited URLs - the most recently visited page is the first one you go back to. Undo in a text editor is a stack of operations. The CPU's function call stack is literally named after this data structure: each function call pushes a frame, each return pops one. When a recursive function calls itself too many times, it overflows this stack.\n\nIn JavaScript, we implement stacks using arrays. `arr.push(x)` adds to the top (end) in O(1). `arr.pop()` removes from the top in O(1). `arr[arr.length - 1]` peeks at the top without removing. Never use `arr.shift()` or `arr.unshift()` for stack operations - those operate on the front and are O(n).\n\nThe key intuition for when to use a stack: whenever you need to **remember previous states to process the current element**, and the most recently stored state is the most relevant one. If you're processing an element and need to look back at 'the last thing I saw', a stack holds that last thing at its top."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "The strongest signal for a stack is any problem involving matching or nesting: brackets, HTML tags, function calls, or any structure where an opening token must be matched with the most recent unmatched closing token. The second signal is 'next greater/smaller element' - whenever you need to find, for each element, the first element to its right that is larger (or smaller), a monotonic stack gives O(n).",
+      "signals": [
+        "balanced or matching parentheses/brackets",
+        "next greater or next smaller element",
+        "previous greater or previous smaller element",
+        "evaluate an arithmetic or postfix expression",
+        "undo/redo operation",
+        "maintain order while processing: most recent unmatched",
+        "largest rectangle in histogram"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "The Call Stack and Recursion",
+      "content": "**Recursion IS a stack**. Every time a function calls itself, the current execution context (local variables, return address) is pushed onto the call stack. When the function returns, that frame is popped. The maximum stack depth equals the maximum recursion depth.\n\nThis means any recursive algorithm can be rewritten iteratively using an explicit stack. The iterative version replaces the implicit call stack with a stack data structure you manage manually. For DFS on a graph:\n\n```javascript\n// Recursive DFS:\nfunction dfs(node) {\n  if (!node) return;\n  visit(node);\n  for (const neighbor of node.neighbors) dfs(neighbor);\n}\n\n// Iterative DFS with explicit stack:\nfunction dfsIterative(start) {\n  const stack = [start];\n  while (stack.length) {\n    const node = stack.pop();\n    visit(node);\n    for (const neighbor of node.neighbors) stack.push(neighbor);\n  }\n}\n```\n\nStack overflow occurs when recursion goes too deep - typically 10,000–15,000 calls in JS. For deeply recursive problems (e.g., large trees), the iterative stack version avoids this limit."
+    },
+    {
+      "type": "concept",
+      "title": "Bracket Matching",
+      "content": "**Bracket matching** is the canonical stack problem. The rule: when you see an opening bracket, push it. When you see a closing bracket, pop and verify it matches the most recent opening bracket. At the end, the stack must be empty (no unclosed brackets).\n\n```javascript\nfunction isValid(s) {\n  const stack = [];\n  const match = { ')': '(', ']': '[', '}': '{' };\n  for (const ch of s) {\n    if ('([{'.includes(ch)) {\n      stack.push(ch);\n    } else {\n      if (stack.length === 0 || stack[stack.length - 1] !== match[ch]) return false;\n      stack.pop();\n    }\n  }\n  return stack.length === 0;\n}\n```\n\nThis template extends to all 'valid nesting' problems: HTML tag matching, function call balancing, and nested structure validation. The stack naturally handles the arbitrary nesting depth - the matching property is maintained regardless of how deep the nesting goes."
+    },
+    {
+      "type": "concept",
+      "title": "Monotonic Stack",
+      "content": "A **monotonic stack** is a stack that is maintained in sorted order (either always increasing from bottom to top, or always decreasing). For each new element, pop all elements that violate the sorted order before pushing the new element.\n\n## Next Greater Element\n\nFor each element, find the first element to its right that is greater. Use a **monotonically decreasing stack** (elements decrease from bottom to top): when a new element is greater than the top, it IS the 'next greater' for the top - pop and record.\n\n```javascript\nfunction nextGreaterElement(arr) {\n  const result = new Array(arr.length).fill(-1);\n  const stack = []; // stores indices, decreasing by arr value\n  for (let i = 0; i < arr.length; i++) {\n    // current element is the next greater for everything smaller at the top\n    while (stack.length && arr[stack[stack.length - 1]] < arr[i]) {\n      result[stack.pop()] = arr[i];\n    }\n    stack.push(i);\n  }\n  return result;\n}\n```\n\n## Why O(n)?\n\nEach element is pushed exactly once and popped at most once. Total operations ≤ 2n → O(n). This is the amortized argument: each element 'pays' for its own push and pop.\n\n## Variations\n\n- **Previous smaller**: iterate forward, use increasing stack\n- **Next smaller**: iterate forward, use increasing stack, pop when current is smaller\n- **Largest rectangle in histogram**: combination of previous-smaller-left and next-smaller-right for each bar"
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// === BRACKET MATCHING ===\nfunction isValidBrackets(s) {\n  const stack = [];\n  const pairs = { ')': '(', ']': '[', '}': '{' };\n  for (const ch of s) {\n    if ('([{'.includes(ch)) {\n      stack.push(ch);  // opening bracket: push\n    } else {\n      // closing bracket: must match top of stack\n      if (!stack.length || stack[stack.length - 1] !== pairs[ch]) return false;\n      stack.pop();\n    }\n  }\n  return stack.length === 0; // unclosed brackets remain?\n}\n\n// === MONOTONIC STACK (next greater element) ===\nfunction nextGreater(arr) {\n  const result = new Array(arr.length).fill(-1);\n  const stack = []; // indices, values decrease from bottom to top\n\n  for (let i = 0; i < arr.length; i++) {\n    // pop elements for which current element is the answer (next greater)\n    while (stack.length && arr[stack[stack.length - 1]] < arr[i]) {\n      result[stack.pop()] = arr[i];\n    }\n    stack.push(i);\n  }\n  // remaining elements in stack have no next greater: already -1\n  return result;\n}",
+      "language": "javascript",
+      "explanation": "Bracket matching: push on open, check and pop on close, empty stack at end means all brackets closed. Monotonic stack: iterate forward, pop when the current element violates the decreasing order (meaning it IS the next greater for popped elements), push index (not value) so you can record answers by position."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Monotonic Decreasing Stack",
+          "description": "For 'previous greater element' or 'next smaller element', flip the condition. Maintain an increasing stack (pop when current is smaller) for next-smaller, or iterate backward with a decreasing stack for previous-greater. The amortized O(n) argument holds for all variants.",
+          "example_problem": "Daily Temperatures",
+          "example_slug": "daily-temperatures"
+        },
+        {
+          "name": "Stack with O(1) Min/Max",
+          "description": "Augment each stack entry with the minimum (or maximum) of all elements at or below it. Store pairs `[value, currentMin]`. When you push, `currentMin = Math.min(value, stack.top.min)`. Pop discards the pair. This gives O(1) `getMin()` with O(1) push/pop.",
+          "example_problem": "Min Stack",
+          "example_slug": "min-stack"
+        },
+        {
+          "name": "Two Stacks as a Queue",
+          "description": "Use an 'inbox' stack for enqueue and an 'outbox' stack for dequeue. When the outbox is empty, pour the entire inbox into it (reversing order). Each element is moved at most once, giving amortized O(1) per operation. This is the implementation principle behind efficient FIFO queues.",
+          "example_problem": "Implement Queue Using Stacks",
+          "example_slug": "implement-queue-using-stacks"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n) for all stack-based linear scans",
+      "space": "O(n) worst case for the stack",
+      "explanation": "In bracket matching, each character is pushed at most once and popped at most once - O(n). In the monotonic stack, each element is pushed and popped at most once across the entire iteration - O(n) total, even though the inner `while` loop looks like it could be expensive. The stack holds at most n elements at any time, giving O(n) space."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Popping from an empty stack without checking: `stack.pop()` on an empty array returns `undefined` silently in JS without throwing an error. In bracket matching, if a closing bracket arrives and the stack is empty, that's an immediate `false` - check `stack.length > 0` before every pop.",
+        "Forgetting that the stack must be empty at the end of bracket matching: unclosed brackets remain in the stack after the loop. `return stack.length === 0` is the correct final check. Returning `true` after the loop exits without this check accepts `'((('` as valid.",
+        "Monotonic stack direction confusion: for 'next greater element', use a decreasing stack and pop when current element is GREATER than top. For 'next smaller element', use an increasing stack and pop when current is SMALLER. Getting the direction backwards produces next-smaller results when next-greater is needed.",
+        "Treating a stack as FIFO: stacks process in LIFO order. If you need the first-inserted element to come out first (e.g., for level-order traversal), you need a queue, not a stack. Using a stack for BFS produces DFS traversal order, which will give wrong answers on shortest-path problems.",
+        "Using `arr.shift()` for dequeue to simulate a queue with a stack: `shift` is O(n) because it shifts all elements. For queue-like behavior, use an actual queue (pointer-based dequeue) or the two-stacks-as-queue pattern."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Valid Parentheses",
+          "slug": "valid-parentheses",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "The entry-level bracket matching problem - tests the push/pop/check pattern directly."
+        },
+        {
+          "title": "Trapping Rain Water",
+          "slug": "trapping-rain-water",
+          "difficulty": 3,
+          "difficulty_label": "Hard",
+          "why": "Can be solved with a monotonic stack - tests ability to recognize when a popped element's answer depends on the new top and the current element."
+        },
+        {
+          "title": "Largest Rectangle in Histogram",
+          "slug": "largest-rectangle-in-histogram",
+          "difficulty": 3,
+          "difficulty_label": "Hard",
+          "why": "The hardest pure monotonic stack problem - uses previous-smaller and next-smaller indices to compute the maximum-area rectangle for each bar."
+        },
+        {
+          "title": "Daily Temperatures",
+          "slug": "daily-temperatures",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Direct next-greater-element problem on temperatures - tests the monotonic decreasing stack template and index-based result recording."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Queues",
+      "next_slug": "queues",
+      "why": "Queues are the FIFO counterpart to stacks - while stacks give you the most recent item, queues give you the oldest item, which is the property needed for BFS level-order traversal and shortest-path algorithms."
+    }
+  ]
+}

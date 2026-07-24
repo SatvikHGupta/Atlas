@@ -1,0 +1,122 @@
+{
+  "topic": "Shortest Paths (Dijkstra, Bellman-Ford)",
+  "level": 5,
+  "slug": "shortest-paths",
+  "estimated_read": "13 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What are Shortest Path Algorithms?",
+      "content": "Shortest path in an **unweighted** graph is BFS \u2014 each edge has cost 1. Add weights and BFS fails: a path with more hops can be shorter if those hops have tiny weights.\n\n**Dijkstra's algorithm**: O((V+E) log V) with a priority queue. Greedy \u2014 always extend the cheapest known path next. Works only with non-negative weights. Used in navigation systems, network routing, game pathfinding.\n\n**Bellman-Ford**: O(VE). Handles negative weights by relaxing all edges V-1 times. An extra pass detects negative cycles.\n\n**Floyd-Warshall**: O(V\u00b3). Computes all-pairs shortest paths. Practical only for small V (\u2264 ~500).\n\nChoose by: non-negative weights + single source \u2192 Dijkstra. Negative weights or cycle detection \u2192 Bellman-Ford. All pairs + small graph \u2192 Floyd-Warshall. Unweighted \u2192 BFS."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Dijkstra for single-source shortest path with non-negative weights. Bellman-Ford when negative weights are present or you need to detect negative cycles. Floyd-Warshall for all-pairs distances on small graphs. BFS remains correct for unweighted graphs.",
+      "signals": [
+        "shortest path in weighted graph",
+        "minimum cost path",
+        "cheapest flight",
+        "network delay",
+        "negative weights",
+        "detect negative cycle",
+        "all pairs distances"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Dijkstra, Bellman-Ford, and Floyd-Warshall",
+      "content": "## Dijkstra's Algorithm\n\nInvariant: when a node is popped from the min-heap, its distance is final. Holds because all edge weights are non-negative.\n\n1. `dist[source]=0`, `dist[others]=Infinity`.\n2. Push `(0, source)` to min-heap.\n3. Pop `(d, node)`. If `d > dist[node]`, skip \u2014 stale entry.\n4. For each neighbor: if `dist[node]+w < dist[neighbor]`, update and push.\n\nThe stale-entry check is essential because we push updated distances without removing old entries.\n\n## Why Dijkstra Fails on Negative Weights\n\nThe invariant breaks \u2014 a future negative edge might give a shorter path to an already-settled node. Results are silently wrong.\n\n## Bellman-Ford\n\nFor each of V-1 iterations, relax every edge: if `dist[u]+w < dist[v]`, set `dist[v]=dist[u]+w`. Why V-1? Shortest path visits at most V-1 edges.\n\nNegative cycle detection: run a Vth iteration. If any distance still updates, a negative cycle is reachable.\n\n## Floyd-Warshall\n\n`dp[i][j] = min(dp[i][j], dp[i][k] + dp[k][j])` for each intermediate k. Init: `dp[i][i]=0`, direct edge weights, Infinity otherwise. O(V\u00b3).\n\n## K-Constrained Paths\n\nRun exactly K iterations of Bellman-Ford for shortest paths using at most K edges. Use a snapshot of dist at the start of each iteration to prevent chaining within one pass."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// Dijkstra (requires MinHeap class)\nfunction dijkstra(graph, source, n) {\n  // graph[u] = [[v, weight], ...]\n  const dist = new Array(n).fill(Infinity);\n  dist[source]=0;\n  const heap = new MinHeap((a,b)=>a[0]-b[0]); // compare by distance\n  heap.push([0, source]);\n\n  while (heap.size()>0) {\n    const [d, node] = heap.pop();\n    if (d > dist[node]) continue; // stale entry check\n    for (const [nb, w] of graph[node]) {\n      const nd = dist[node]+w;\n      if (nd < dist[nb]) { dist[nb]=nd; heap.push([nd, nb]); }\n    }\n  }\n  return dist;\n}\n\n// Bellman-Ford\nfunction bellmanFord(n, edges, source) {\n  // edges: [[u, v, weight], ...]\n  const dist = new Array(n).fill(Infinity);\n  dist[source]=0;\n\n  for (let i=0;i<n-1;i++) {\n    let updated=false;\n    for (const [u,v,w] of edges) {\n      if (dist[u]!==Infinity && dist[u]+w < dist[v]) {\n        dist[v]=dist[u]+w; updated=true;\n      }\n    }\n    if (!updated) break; // early exit\n  }\n\n  // Vth pass: negative cycle detection\n  for (const [u,v,w] of edges) {\n    if (dist[u]!==Infinity && dist[u]+w < dist[v]) return null;\n  }\n  return dist;\n}",
+      "language": "javascript",
+      "explanation": "Dijkstra with stale-entry skip for correctness with duplicate heap entries. Bellman-Ford with early exit optimization and negative cycle detection on the Vth pass."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Dijkstra with K-Step Constraint",
+          "description": "Run K iterations of Bellman-Ford (instead of V-1) for shortest paths using at most K edges. Use a snapshot copy of dist before each iteration to prevent within-pass chaining.",
+          "example_problem": "Cheapest Flights Within K Stops",
+          "example_slug": "cheapest-flights-within-k-stops"
+        },
+        {
+          "name": "Modified Dijkstra with Custom Cost",
+          "description": "For problems where cost is max edge weight on the path rather than sum, modify what you minimize and how you update. The heap stores (costSoFar, node) with a custom cost function.",
+          "example_problem": "Path with Minimum Effort",
+          "example_slug": "path-with-minimum-effort"
+        },
+        {
+          "name": "Floyd-Warshall All-Pairs",
+          "description": "Initialize distance matrix with direct edge weights and Infinity for non-edges. Iterate over all k as intermediate nodes. Detects negative cycles if dp[i][i] < 0 after completion.",
+          "example_problem": "Find the City with Smallest Number of Neighbors at Threshold Distance",
+          "example_slug": "find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "Dijkstra: O((V+E) log V) | Bellman-Ford: O(VE) | Floyd-Warshall: O(V\u00b3)",
+      "space": "Dijkstra: O(V+E) | Bellman-Ford: O(V) | Floyd-Warshall: O(V\u00b2)",
+      "explanation": "Dijkstra: each vertex popped once (O(V log V)) and each edge triggers at most one heap push (O(E log V)). Bellman-Ford: V-1 iterations over all E edges. Floyd-Warshall: three nested loops over V nodes. Space is dominated by the data structure: adjacency list O(V+E), distance array O(V), or matrix O(V\u00b2)."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Using Dijkstra with negative weights \u2014 it gives silently wrong answers. The invariant that a popped node has its final distance breaks with negative edges.",
+        "Forgetting the stale-entry check in Dijkstra \u2014 without 'if d > dist[node] continue', stale heap entries cause nodes to be reprocessed with outdated distances.",
+        "Bellman-Ford K-step variant: not copying dist before each iteration \u2014 relaxations within one pass can chain beyond K edges. Use a snapshot of dist at iteration start.",
+        "Floyd-Warshall: initializing non-existent edges to 0 instead of Infinity \u2014 this implies free edges exist and corrupts all-pairs distances.",
+        "Not running the Vth Bellman-Ford iteration for negative cycle detection \u2014 skipping it returns wrong distances when a negative cycle is reachable from the source."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Network Delay Time",
+          "slug": "network-delay-time",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Direct Dijkstra \u2014 find shortest time for signal to reach all nodes, then take the maximum shortest path."
+        },
+        {
+          "title": "Path with Minimum Effort",
+          "slug": "path-with-minimum-effort",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Modified Dijkstra where cost is max edge weight on path \u2014 tests adapting Dijkstra to a non-sum cost function on a grid."
+        },
+        {
+          "title": "Cheapest Flights Within K Stops",
+          "slug": "cheapest-flights-within-k-stops",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "K-iteration Bellman-Ford \u2014 tests the insight that K iterations give shortest paths with at most K edges, requiring snapshot-copy of dist."
+        },
+        {
+          "title": "Find the City With the Smallest Number of Neighbors at a Threshold Distance",
+          "slug": "find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Floyd-Warshall all-pairs \u2014 compute distances between every city pair and count reachable cities within threshold."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Union Find / DSU",
+      "next_slug": "union-find-dsu",
+      "why": "Union-Find is the data structure behind Kruskal's MST \u2014 the natural complement to Dijkstra. Where Dijkstra finds shortest paths, Kruskal finds the cheapest set of edges connecting all nodes. Union-Find's near-O(1) connectivity queries are also useful standalone for dynamic connectivity problems."
+    }
+  ]
+}

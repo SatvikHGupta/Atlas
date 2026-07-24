@@ -1,0 +1,80 @@
+/* only renders on mobile */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 310;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  max-height: 88dvh;
+  display: flex;
+  flex-direction: column;
+  cursor: grab;
+  /* safe area */
+  padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
+}
+
+.sheet:active { cursor: grabbing; }
+
+.handle {
+  width: 36px;
+  height: 4px;
+  background: var(--border-strong);
+  border-radius: var(--radius-full);
+  margin: 12px auto 0;
+  flex-shrink: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px 8px;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.doneBtn {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent-light);
+  background: var(--accent-subtle);
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  border-radius: var(--radius-full);
+  padding: 5px 16px;
+  cursor: pointer;
+  font-family: inherit;
+  min-height: 36px;
+}
+
+.content {
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+  /* FilterBar in drawer mode: override width/height/sticky */
+}
+
+/* override FilterBar styles when inside drawer */
+.content aside {
+  width: 100% !important;
+  height: auto !important;
+  position: static !important;
+  border-right: none !important;
+  background: transparent !important;
+}

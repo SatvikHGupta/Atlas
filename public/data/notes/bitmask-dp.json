@@ -1,0 +1,129 @@
+{
+  "topic": "Bitmask DP",
+  "level": 6,
+  "slug": "bitmask-dp",
+  "estimated_read": "12 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Bitmask DP?",
+      "content": "**Bitmask DP** uses an integer's binary representation to encode a **set** as part of the DP state. If you have `n` elements, a bitmask of `n` bits represents any subset of those elements - bit `i` is `1` if element `i` is included, `0` otherwise. This lets you represent all `2^n` subsets compactly as integers from `0` to `2^n - 1`, and DP over them in a well-defined order (increasing mask value corresponds to adding elements).\n\nThe power of bitmask DP: when `n` is small (typically `n ≤ 20`), you can enumerate all `2^n` subsets and solve problems that are NP-hard in general but tractable for small `n`. The canonical example is the **Traveling Salesman Problem** - find the minimum cost tour visiting all `n` cities. Naively O(n!), but with bitmask DP it's O(n² × 2^n), feasible for `n ≤ 20`.\n\nBitmask DP appears in: optimal assignment problems (assign tasks to workers), path-covering problems (visit all required nodes), string combination problems (find the shortest superstring covering all given strings), and any problem that involves an exponential number of subset states that would be infeasible to enumerate without compact representation.\n\nThe technique requires fluency with **bitwise operations**: AND, OR, XOR, left shift, and bit testing. These are O(1) operations that check or modify individual bits in the mask. Mastering these operations is the prerequisite to writing bitmask DP cleanly and quickly."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use bitmask DP when n is small (≤ 20), the problem requires tracking which subset of n elements has been used or visited, and optimal substructure exists over subsets. The giveaway signals: 'visit all nodes exactly once', 'assign each task to exactly one worker', 'partition into subsets with minimum cost', or 'cover all requirements'. If you see n ≤ 15 or n ≤ 20 explicitly in constraints, and the problem feels like 'try all combinations', bitmask DP is the intended approach.",
+      "signals": [
+        "visit all nodes exactly once",
+        "assign each element to exactly one agent",
+        "n is small (constraint n ≤ 15 or n ≤ 20)",
+        "partition into subsets optimally",
+        "TSP or Hamiltonian path",
+        "cover all requirements with minimum cost",
+        "all permutations exponential but n is small",
+        "subset sum or subset selection with dependencies"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## The Five Essential Bitmask Operations\n\n- `mask | (1 << i)` - **add** element `i` to the set\n- `mask & ~(1 << i)` - **remove** element `i` from the set\n- `mask & (1 << i)` - **test** if element `i` is in the set (non-zero if yes)\n- `mask ^ (1 << i)` - **toggle** element `i` in the set\n- `mask === (1 << n) - 1` - check if **all n elements** are in the set (full mask)\n\nThese five operations cover 90% of bitmask DP problems.\n\n## TSP - The Canonical Bitmask DP\n\n`dp[mask][i]` = minimum cost to have visited **exactly** the nodes in `mask`, currently at node `i`.\n\nTransition: for each node `j` in `mask` where `j ≠ i`: `dp[mask][i] = min(dp[mask ^ (1<<i)][j] + dist[j][i])`. The mask with bit `i` removed (`mask ^ (1<<i)`) combined with position `j` is the previous state.\n\nBase: `dp[1 << 0][0] = 0` (at node 0, having visited only node 0, zero cost).\n\nAnswer: `min over all i of dp[fullMask][i] + dist[i][0]` (return to start).\n\nIterate: outer loop over `mask` from 1 to `(1<<n)-1`, inner loop over all nodes `i` set in `mask`.\n\n## Assignment DP\n\n`dp[mask]` = minimum cost to complete the tasks represented by `mask`. The key insight: bit `k = popcount(mask) - 1` tells you which 'person' (0-indexed) handles the next task. The next task to assign corresponds to the number of tasks already assigned.\n\nIterate: for each `mask`, find the lowest unset bit (next task). For each possible next task, compute the new mask and update `dp[newMask]`.\n\n## Iterating Over Subsets of a Mask\n\nTo enumerate all non-empty subsets of a given `mask`:\n```javascript\nfor (let sub = mask; sub > 0; sub = (sub - 1) & mask) {\n  // sub is a non-empty subset of mask\n}\n```\nThis visits every subset in O(2^|mask|) total across all possible masks - the **SOS (Sum Over Subsets)** trick runs in O(n × 2^n) total."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// TSP Bitmask DP - minimum cost Hamiltonian circuit\nfunction tsp(dist) {\n  const n = dist.length;\n  const fullMask = (1 << n) - 1;\n  // dp[mask][i] = min cost visiting nodes in mask, ending at i\n  const INF = Infinity;\n  const dp = Array.from({ length: 1 << n }, () => new Array(n).fill(INF));\n  dp[1][0] = 0; // start at node 0, mask = 0b...0001\n\n  for (let mask = 1; mask <= fullMask; mask++) {\n    for (let i = 0; i < n; i++) {\n      if (!(mask & (1 << i))) continue; // i must be in mask\n      if (dp[mask][i] === INF) continue; // unreachable state\n\n      for (let j = 0; j < n; j++) {\n        if (mask & (1 << j)) continue; // j already visited\n        const newMask = mask | (1 << j);\n        dp[newMask][j] = Math.min(dp[newMask][j], dp[mask][i] + dist[i][j]);\n      }\n    }\n  }\n\n  // return to start: min cost over all ending nodes\n  let ans = INF;\n  for (let i = 1; i < n; i++) {\n    if (dp[fullMask][i] !== INF) {\n      ans = Math.min(ans, dp[fullMask][i] + dist[i][0]);\n    }\n  }\n  return ans;\n}",
+      "language": "javascript",
+      "explanation": "TSP template iterates masks in increasing order (smaller subsets before larger ones, guaranteeing dp[mask ^ (1<<i)] is already computed). For each state (mask, i), tries adding each unvisited node j to get the next state (newMask, j). The full mask with minimum return cost is the answer."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "SOS DP (Sum Over Subsets)",
+          "description": "Compute for each mask the sum of f[sub] over all subsets sub of mask, in O(n × 2^n) instead of O(3^n) naive. Build iteratively: for each bit position k, dp[mask] += dp[mask ^ (1<<k)] if bit k is set in mask. Used in AND/OR convolution problems.",
+          "example_problem": "Maximum AND Sum of Array",
+          "example_slug": "maximum-and-sum-of-array"
+        },
+        {
+          "name": "Profile DP (Grid Tiling)",
+          "description": "The bitmask encodes the 'profile' of the current column or row boundary in a grid tiling problem. dp[col][profile] = number of ways to tile columns 0..col such that the boundary into col+1 matches profile. Used for domino tiling and broken profile DP.",
+          "example_problem": "Maximum Students Taking Exam",
+          "example_slug": "maximum-students-taking-exam"
+        },
+        {
+          "name": "Shortest Superstring",
+          "description": "Find the shortest string containing all given strings as substrings. Model as TSP where dist[i][j] = length of string j minus the overlap suffix of string i matching a prefix of string j. dp[mask][i] = shortest superstring covering the strings in mask, ending with string i.",
+          "example_problem": "Find the Shortest Superstring",
+          "example_slug": "find-the-shortest-superstring"
+        },
+        {
+          "name": "Stickers / Covering Problems",
+          "description": "Cover all required characters or elements using a minimum number of stickers or items. State: bitmask of which requirements are fulfilled. Transition: for each sticker, compute the new mask after applying it. dp[mask] = min stickers to achieve coverage mask.",
+          "example_problem": "Stickers to Spell Word",
+          "example_slug": "stickers-to-spell-word"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n² × 2^n) for TSP, O(n × 2^n) for assignment DP",
+      "space": "O(n × 2^n) for TSP, O(2^n) for assignment DP",
+      "explanation": "TSP has n × 2^n states. From each state (mask, i), you try n-1 transitions - giving O(n² × 2^n) total. For n=20: 20² × 1M = 400M operations - borderline feasible with fast constant factors. Space is n × 2^n integers: 20 × 1M = 20M - acceptable. For assignment DP with 2^n states and n transitions each: O(n × 2^n) time, O(2^n) space. The hard wall is n=25 where 2^25 = 33M states × n transitions often exceeds time or memory limits."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Bitmask bit indexing: bit `i` corresponds to `1 << i`, so bit 0 is the rightmost (least significant) bit; confusing the bit index with the shift amount causes the wrong elements to be added or tested.",
+        "Iterating masks without ensuring smaller masks are processed first - for bottom-up bitmask DP, mask ordering matters; iterating from 0 to 2^n naturally processes subsets before supersets (since mask ^ (1<<i) < mask), ensuring dependencies are satisfied.",
+        "Memory overflow - for n=20 with TSP: n × 2^n = 20M entries; using a 2D float64 array takes 160MB which may exceed memory limits; use int32 or keep values bounded to avoid unnecessary float precision.",
+        "Off-by-one in full mask - `fullMask = (1 << n) - 1`, not `1 << n`; using `1 << n` as the full mask means the answer state is never matched since dp[1<<n] is out of the valid range.",
+        "JS bitwise operators use 32-bit signed integers - for n > 30, `1 << n` produces incorrect negative results due to sign bit overflow; in practice n > 20 is usually infeasible for bitmask DP anyway, but be aware of this JS-specific limitation."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Minimum Number of Work Sessions to Finish the Tasks",
+          "slug": "minimum-number-of-work-sessions-to-finish-the-tasks",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Bitmask DP over task subsets - dp[mask] = minimum sessions to complete tasks in mask; tests subset enumeration and session-packing logic."
+        },
+        {
+          "title": "Find the Shortest Superstring",
+          "slug": "find-the-shortest-superstring",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "TSP formulation - precompute overlaps between all string pairs, then TSP bitmask DP minimizes total superstring length with path reconstruction."
+        },
+        {
+          "title": "Maximum Students Taking Exam",
+          "slug": "maximum-students-taking-exam",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Profile DP - bitmask encodes seating in each row; transitions check that no two students can cheat based on row masks."
+        },
+        {
+          "title": "Stickers to Spell Word",
+          "slug": "stickers-to-spell-word",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Covering bitmask DP - each sticker covers some characters; dp[mask] = min stickers to cover the characters represented by mask."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Segment Trees",
+      "next_slug": "segment-trees",
+      "why": "Bitmask DP completes the DP section. Segment trees are the entry point to Level 7 advanced data structures - they answer range queries with updates in O(log n), a fundamental capability that no DP technique provides. The shift from algorithmic paradigms to specialized data structures begins here."
+    }
+  ]
+}

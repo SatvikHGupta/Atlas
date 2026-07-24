@@ -1,0 +1,129 @@
+{
+  "topic": "Binary Search on Answer",
+  "level": 5,
+  "slug": "binary-search-on-answer",
+  "estimated_read": "10 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Binary Search on Answer?",
+      "content": "**Binary search on answer** - also called **parametric search** - applies binary search not to find an element in a sorted array, but to find the optimal value of an answer that satisfies some monotone condition. The pattern: 'find the minimum X such that `feasible(X)` is true' or 'find the maximum X such that `feasible(X)` is true.' If you can write a boolean function `feasible(mid)` that checks whether answer `mid` is achievable, and if the feasibility is **monotone** (once true, stays true for all larger or smaller values), you can binary search on `mid` over the answer range.\n\nThe answer space is typically: minimum days, minimum capacity, minimum speed, minimum largest sum, maximum minimum distance, minimum number of groups. These don't look like search problems - they look like optimization problems. The insight is that the answer itself lies on a number line where the feasibility flips from false to true (or true to false) exactly once, forming a sorted boolean sequence like `[false, false, false, true, true, true]`. Binary search finds that boundary in O(log(answerRange)) calls to `feasible`.\n\nThis pattern is one of the most commonly missed on hard LeetCode problems. Students recognize binary search on a sorted array (straightforward), but don't recognize when the answer space is implicitly sorted. The signals are: the problem asks for minimum/maximum of something, the constraint involves distributing n items across k groups, the problem involves capacity or speed or time, and a brute force would try each candidate answer linearly. When each linear check is O(n) and the answer range spans up to 10^9, binary search on answer drops the total complexity from O(n × answerRange) to O(n × log(answerRange)).\n\nThe hardest part is writing the `feasible` function correctly and proving monotonicity. Once those are done, the binary search shell is mechanical. The easiest way to verify monotonicity: if `feasible(mid)` is true, would making `mid` larger (for minimize) or smaller (for maximize) keep it true? If yes, you have monotonicity and the pattern applies."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use binary search on answer when the problem asks for the minimum or maximum of a parameter, a `feasible(mid)` check function is natural to write, and feasibility is monotone. The key test: can you write a greedy or simulation `feasible(mid)` in O(n) or O(n log n)? If yes and the answer range is large, binary search on answer is almost certainly the intended solution.",
+      "signals": [
+        "minimum speed or capacity",
+        "minimum days to finish",
+        "split array minimizing maximum",
+        "maximum minimum distance",
+        "allocate books",
+        "koko eating bananas",
+        "ship packages in D days",
+        "minimum largest sum"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## The Feasible Function and Monotonicity\n\nThe hardest part of this pattern is writing `feasible(mid)` correctly. It asks: 'if the answer were `mid`, can we satisfy all constraints?'\n\n**Koko Eating Bananas**: if Koko eats `mid` bananas/hour, can she finish all piles in `h` hours? `feasible(mid) = sum(ceil(pile / mid) for each pile) <= h`. Monotonicity: if she can finish at speed `mid`, she can definitely finish at speed `mid+1`. So feasibility is monotonically non-decreasing - binary search finds the minimum speed where it flips to true.\n\n**Ship Packages**: if ship capacity is `mid`, can all packages be shipped in `d` days? Greedily pack packages left to right, starting a new day when adding the next package would exceed `mid`. `feasible(mid)` = number of days needed <= d.\n\n## Setting the Search Boundaries\n\nThe binary search range `[lo, hi]` must cover all possible answers without missing the correct one.\n\n- **Koko Eating Bananas**: `lo = 1` (must eat at least 1), `hi = max(piles)` (eating the whole largest pile in one hour is the maximum needed speed).\n- **Ship Packages in D Days**: `lo = max(weights)` (must fit the heaviest package), `hi = sum(weights)` (carry all in one trip).\n- **Split Array Largest Sum**: `lo = max(arr)` (each part must hold at least the largest element), `hi = sum(arr)` (all in one part).\n\nSetting lo too high or hi too low means the correct answer is outside the search range - always reason about the absolute minimum and maximum plausible answer.\n\n## Minimize vs Maximize Template\n\n**Minimize** (find minimum mid where feasible is true): when `feasible(mid)` is true, record mid as a candidate and search left (`hi = mid - 1`); when false, search right (`lo = mid + 1`). Return the last recorded candidate.\n\n**Maximize** (find maximum mid where feasible is true): when `feasible(mid)` is true, record mid and search right (`lo = mid + 1`); when false, search left (`hi = mid - 1`). Return the last recorded candidate.\n\nThe difference is which direction you explore when feasibility holds.\n\n## Recognizing the Pattern\n\nPhrases that signal binary search on answer: 'minimum capacity/speed/days such that...', 'maximum minimum distance', 'split array into k parts to minimize the largest part', 'minimum number of X to accomplish Y'. The key test: does making the parameter larger monotonically make feasibility easier (or harder)? If the answer is yes to one of these, binary search on answer applies."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "language": "javascript",
+      "code": "// Generic minimize template - find minimum mid where feasible(mid) is true\n// Concrete example: Koko Eating Bananas\nfunction minEatingSpeed(piles, h) {\n  // feasible(speed): can Koko eat all piles in h hours at this speed?\n  function feasible(speed) {\n    let hours = 0;\n    for (const pile of piles) {\n      hours += Math.ceil(pile / speed);\n    }\n    return hours <= h;\n  }\n\n  // lo: minimum possible answer (eat at least 1)\n  // hi: maximum needed answer (eat largest pile in one hour)\n  let lo = 1, hi = Math.max(...piles);\n  let ans = hi; // start with worst-case answer\n\n  while (lo <= hi) {\n    const mid = lo + Math.floor((hi - lo) / 2);\n    if (feasible(mid)) {\n      ans = mid;    // mid works - record it, try smaller\n      hi = mid - 1;\n    } else {\n      lo = mid + 1; // mid doesn't work - need larger\n    }\n  }\n\n  return ans;\n}",
+      "explanation": "Binary search over the answer space [lo, hi]. When feasible(mid) is true, record mid and shrink right (try smaller); when false, expand left (need larger). Returns the minimum feasible value."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Maximize Minimum Distance",
+          "description": "Find the maximum distance such that you can place k elements with at least that distance apart. feasible(mid) checks greedily whether k elements fit with minimum gap = mid. Search direction is reversed: search right when feasible (maximize).",
+          "example_problem": "Magnetic Force Between Two Balls",
+          "example_slug": "magnetic-force-between-two-balls"
+        },
+        {
+          "name": "Split Array Largest Sum",
+          "description": "Split array into k subarrays minimizing the largest subarray sum. feasible(mid) greedily checks whether the array can be split into at most k parts each with sum <= mid. lo = max(arr), hi = sum(arr).",
+          "example_problem": "Split Array Largest Sum",
+          "example_slug": "split-array-largest-sum"
+        },
+        {
+          "name": "Koko Eating Bananas",
+          "description": "Minimize eating speed such that all piles can be finished in h hours. feasible(mid) sums ceil(pile/mid) for each pile and checks if the total hours <= h. Classic minimize-template example.",
+          "example_problem": "Koko Eating Bananas",
+          "example_slug": "koko-eating-bananas"
+        },
+        {
+          "name": "Minimize Maximum of Array",
+          "description": "Binary search on the maximum value achievable after applying allowed operations to the array. feasible(mid) checks whether all elements can be reduced to <= mid under the operation constraints using a greedy left-to-right pass.",
+          "example_problem": "Minimize Maximum of Array",
+          "example_slug": "minimize-maximum-of-array"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n log(answerRange))",
+      "space": "O(1) excluding input",
+      "explanation": "Binary search runs O(log(answerRange)) iterations - for typical problems with answer range up to 10^9, that's at most 30 iterations. Each iteration runs feasible(mid) which is O(n) for a greedy scan. Total: O(n log(answerRange)). Space is O(1) beyond the input - no auxiliary structures needed for the binary search shell itself."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Wrong lo/hi bounds - if lo is above the correct answer or hi is below it, the answer is never found and the binary search converges to an incorrect boundary; always reason through what makes the absolute minimum plausible answer (lo) and absolute maximum (hi) before coding.",
+        "Feasible function not actually monotone - binary search on answer only works when feasibility flips exactly once across the answer range; if feasible(mid) can be true, then false, then true again, binary search converges on the wrong boundary; always verify monotonicity before applying.",
+        "Minimize vs maximize confusion - for minimize problems explore left when feasible (set hi = mid - 1); for maximize problems explore right when feasible (set lo = mid + 1); mixing these causes the binary search to converge on the opposite boundary, returning the worst feasible value instead of the optimal one.",
+        "Integer overflow in mid calculation - `mid = Math.floor((lo + hi) / 2)` is safe in JavaScript but overflows 32-bit integers in other languages for large bounds; prefer `lo + Math.floor((hi - lo) / 2)` as a portable habit.",
+        "Off-by-one in feasible function for greedy packing - in 'ship packages in D days', the greedy packing must count the final partial group after the loop ends; counting days only when a new day starts (capacity exceeded) and forgetting to add 1 for the last group makes feasible return true when it should return false, converging on a value one step too small."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Koko Eating Bananas",
+          "slug": "koko-eating-bananas",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "The canonical minimize-template problem - tests writing feasible(speed) as a sum of ceil(pile/speed) and correctly setting lo/hi bounds."
+        },
+        {
+          "title": "Split Array Largest Sum",
+          "slug": "split-array-largest-sum",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Tests the greedy feasible check (can we split into k parts each <= mid?) and recognizing that lo = max(arr) is required because a single element can't be split further."
+        },
+        {
+          "title": "Magnetic Force Between Two Balls",
+          "slug": "magnetic-force-between-two-balls",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests the maximize variant - search right when feasible, record ans and try larger - and the greedy feasibility check for minimum-gap placement."
+        },
+        {
+          "title": "Minimize Maximum of Array",
+          "slug": "minimize-maximum-of-array",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests identifying that the answer space is monotone and writing a greedy feasible check that verifies whether all elements can be reduced to <= mid under the given constraints."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "LCA & Binary Lifting",
+      "next_slug": "lca-binary-lifting",
+      "why": "Binary search on answer searches a linear answer space using halving. Binary lifting for LCA applies the same power-of-2 halving idea to trees - building a table of 2^j-th ancestors and using binary decomposition to answer ancestor and LCA queries in O(log n)."
+    }
+  ]
+}

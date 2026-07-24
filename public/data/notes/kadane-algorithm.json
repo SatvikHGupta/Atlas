@@ -1,0 +1,128 @@
+{
+  "topic": "Kadane's Algorithm",
+  "level": 2,
+  "slug": "kadane-algorithm",
+  "estimated_read": "9 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Kadane's Algorithm?",
+      "content": "**Kadane's Algorithm** solves the Maximum Subarray problem: given an array of integers (which can be negative), find the contiguous subarray with the largest sum. The brute force is O(n²) - try every possible start and end. Kadane's does it in O(n) with a single pass and O(1) space by making one key observation: at each position, the maximum subarray ending here is either just the current element alone, or the current element extended from the maximum subarray ending at the previous position - whichever is larger.\n\nThis is essentially a 1D DP recurrence - `maxEndingHere = max(arr[i], maxEndingHere + arr[i])` - but because each state only depends on the immediately previous state, you don't need a full DP table. One variable suffices. Kadane's is the prototypical example of space-optimized DP, and understanding why the recurrence is correct (and why you reset to `arr[i]` alone when the running sum goes negative) builds the intuition for 1D DP problems in general.\n\nThe algorithm was proposed by Joseph B. Kadane in 1984 as part of a class exercise. Its simplicity is deceptive - the initialization matters (start from `arr[0]`, not 0), and the same core idea extends to much harder problems. Beyond maximum subarray sum, the pattern extends to: maximum product subarray (tracking both max and min running products due to sign flips), maximum sum circular subarray (total sum minus minimum subarray), and maximum sum rectangle in a 2D matrix (Kadane's applied row by row).\n\nRecognizing Kadane's is important because many problems are disguised versions of it. 'Best time to buy and sell stock' is maximum subarray on a price-difference array. Any problem asking for the best contiguous window under an additive objective often reduces to Kadane's or a close variant. The algorithm is short enough to memorize completely but rich enough to anchor an entire category of array optimization problems."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use Kadane's algorithm when the problem asks for the maximum (or minimum) sum of a contiguous subarray, or when it can be reduced to that: price differences for max profit, differences of consecutive elements, running totals. The key constraint is contiguity - if elements don't need to be adjacent, just sum all positives instead.",
+      "signals": [
+        "maximum subarray sum",
+        "contiguous subarray with largest sum",
+        "maximum product subarray",
+        "circular subarray max",
+        "subarray with maximum sum",
+        "best time to buy stock variant",
+        "maximum sum rectangle in matrix"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## The Recurrence and Reset Logic\n\nTwo variables: `maxEndingHere` (best sum of subarray ending at current index) and `maxSoFar` (best sum seen across the whole scan).\n\nAt each index `i`: `maxEndingHere = Math.max(arr[i], maxEndingHere + arr[i])`. If `maxEndingHere + arr[i]` is less than `arr[i]` alone, the running sum has become a liability - drop it and start fresh from `arr[i]`. Then `maxSoFar = Math.max(maxSoFar, maxEndingHere)`.\n\n**Initialize**: `maxEndingHere = arr[0]`, `maxSoFar = arr[0]`. Do NOT initialize to 0 - if all elements are negative, the answer is the largest (least negative) element, not 0.\n\n## Tracking Subarray Indices\n\nTo return the actual subarray (not just the sum), track `start`, `end`, and a temporary `tempStart`. When you reset (`arr[i] > maxEndingHere + arr[i]`), update `tempStart = i`. When `maxEndingHere > maxSoFar`, update `start = tempStart` and `end = i`. At the end, `arr[start..end]` is the maximum subarray. This adds no asymptotic cost - still O(n) time, O(1) space.\n\n## Maximum Product Subarray\n\nNegative numbers flip signs, so the minimum product can suddenly become the maximum when multiplied by a negative. Track both `maxProd` and `minProd` at each step.\n\nAt each index: `newMax = Math.max(arr[i], maxProd * arr[i], minProd * arr[i])`, `newMin = Math.min(arr[i], maxProd * arr[i], minProd * arr[i])`. **Critical**: compute new max and min using the OLD values of both - use temp variables to hold them before overwriting, otherwise the updated maxProd contaminates the minProd calculation in the same iteration.\n\n## Maximum Sum Circular Subarray\n\nA circular subarray can wrap around the end. Two cases: (1) the maximum subarray does NOT wrap - standard Kadane's gives the answer; (2) it DOES wrap - the wrapped portion equals `totalSum - minSubarray` (everything NOT in the subarray, computed by running Kadane's for minimum). Answer = `Math.max(maxKadane, totalSum - minKadane)`.\n\n**Edge case**: if all elements are negative, `minKadane === totalSum`, so `totalSum - minKadane = 0` - an invalid empty subarray result. In this case, return `maxKadane` directly."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "language": "javascript",
+      "code": "// Standard Kadane's with index tracking\nfunction maxSubarray(arr) {\n  let maxEndingHere = arr[0];\n  let maxSoFar = arr[0];\n\n  let start = 0, end = 0, tempStart = 0;\n\n  for (let i = 1; i < arr.length; i++) {\n    if (arr[i] > maxEndingHere + arr[i]) {\n      // start a fresh subarray at i\n      maxEndingHere = arr[i];\n      tempStart = i;\n    } else {\n      // extend the existing subarray\n      maxEndingHere += arr[i];\n    }\n\n    if (maxEndingHere > maxSoFar) {\n      maxSoFar = maxEndingHere;\n      start = tempStart;\n      end = i;\n    }\n  }\n\n  return { sum: maxSoFar, subarray: arr.slice(start, end + 1) };\n}",
+      "explanation": "Single pass tracking maxEndingHere (best sum ending at current index) and maxSoFar (best overall). Resets to the current element when the running sum becomes a liability. Records start/end indices on each new maximum."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Maximum Product Subarray",
+          "description": "Track both `maxProd` and `minProd` at each step because a negative × negative flips to maximum. Always compute new max and min from the old values of both (use temp variables) to avoid using an already-updated value in the same iteration.",
+          "example_problem": "Maximum Product Subarray",
+          "example_slug": "maximum-product-subarray"
+        },
+        {
+          "name": "Maximum Sum Circular Subarray",
+          "description": "Two cases: non-wrapping (standard Kadane's) and wrapping (totalSum minus minimum subarray via min-Kadane). Answer is the max of both. Handle all-negative edge case by returning maxKadane when totalSum - minKadane = 0.",
+          "example_problem": "Maximum Sum Circular Subarray",
+          "example_slug": "maximum-sum-circular-subarray"
+        },
+        {
+          "name": "Maximum Sum Rectangle in 2D Matrix",
+          "description": "Fix left and right column boundaries, compute row-prefix sums between those columns into a 1D array, then run Kadane's on that array. Repeat for all O(n²) column-pair boundaries to find the maximum-sum rectangle. Total: O(n² × m).",
+          "example_problem": "Max Sum of Rectangle No Larger Than K",
+          "example_slug": "max-sum-of-rectangle-no-larger-than-k"
+        },
+        {
+          "name": "Best Time to Buy and Sell Stock (Kadane Reduction)",
+          "description": "Convert daily prices to a differences array (`diff[i] = prices[i] - prices[i-1]`), then run Kadane's for maximum subarray sum on the differences. The result equals the maximum profit from a single buy-sell transaction.",
+          "example_problem": "Best Time to Buy and Sell Stock",
+          "example_slug": "best-time-to-buy-and-sell-stock"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n)",
+      "space": "O(1)",
+      "explanation": "A single left-to-right pass over the array with two scalar variables - O(n) time, O(1) space. No auxiliary array needed because each state depends only on the immediately previous state. The maximum product variant is also O(n) time and O(1) space for the same reason: two scalar trackers (maxProd, minProd) are maintained per step."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Initializing `maxSoFar = 0` instead of `arr[0]` - when all elements are negative, the correct answer is the largest (least negative) element; zero initialization returns 0, which is wrong because no empty subarray is allowed by the problem.",
+        "Using `maxEndingHere = Math.max(0, maxEndingHere + arr[i])` - the zero-floor version only works when the problem allows the empty subarray (sum = 0); for problems requiring at least one element, this returns 0 for all-negative inputs instead of the correct least-negative element.",
+        "Maximum product variant: updating `maxProd` before computing `minProd` in the same iteration - always store old values in temp variables first; using the already-updated `maxProd` to compute the new `minProd` corrupts the minimum tracking and produces wrong answers when negative numbers are present.",
+        "Confusing Kadane's (contiguous subarray) with maximum non-contiguous subset sum - Kadane's strictly handles contiguous subarrays; for non-contiguous maximum sum (pick any subset), just sum all positive elements, which is an entirely different algorithm.",
+        "Circular variant: not handling the all-negative edge case - when all elements are negative, `minKadane === totalSum`, so `totalSum - minKadane = 0`, which is larger than any actual negative subarray sum but represents an invalid empty subarray; always return `maxKadane` directly when this occurs."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Maximum Subarray",
+          "slug": "maximum-subarray",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "The canonical Kadane's problem - tests the recurrence, the reset-to-current-element logic, and correct initialization to arr[0] not 0."
+        },
+        {
+          "title": "Maximum Product Subarray",
+          "slug": "maximum-product-subarray",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests the dual-tracker variant (maxProd and minProd) and the critical requirement to update both from old values simultaneously using temp variables."
+        },
+        {
+          "title": "Maximum Sum Circular Subarray",
+          "slug": "maximum-sum-circular-subarray",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests running two separate Kadane passes (max and min) and combining them with the totalSum formula, plus recognizing and handling the all-negative edge case."
+        },
+        {
+          "title": "Best Time to Buy and Sell Stock",
+          "slug": "best-time-to-buy-and-sell-stock",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "Tests recognizing that max profit equals max subarray sum on the price-differences array - a Kadane's reduction that is not obvious from the problem statement."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Interval DP",
+      "next_slug": "interval-dp",
+      "why": "Kadane's is the simplest DP-on-a-sequence pattern - one endpoint varies, O(n) states. Interval DP generalizes this to two-endpoint subproblems `dp[i][j]`, filled by interval length, with a split-point inner loop - the hardest standard DP category."
+    }
+  ]
+}

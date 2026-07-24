@@ -1,0 +1,107 @@
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--navbar-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-6);
+  background: rgba(10, 10, 15, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  gap: var(--space-4);
+}
+
+.left { display: flex; align-items: center; }
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.logoIcon { color: var(--accent); font-size: 1.1rem; }
+
+.links { display: flex; align-items: center; gap: var(--space-1); }
+
+.link {
+  position: relative;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color var(--transition-fast);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.link:hover { color: var(--text-primary); }
+.link[data-active='true'] { color: var(--text-primary); }
+
+.navIndicator {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-md);
+  z-index: -1;
+}
+
+.right { display: flex; align-items: center; gap: var(--space-3); margin-left: auto; }
+
+.userArea { display: flex; align-items: center; gap: var(--space-3); }
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+}
+
+.signInBtn {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 500;
+  background: var(--accent);
+  color: white;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+  white-space: nowrap;
+}
+
+.signInBtn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+
+.signOutBtn {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  transition: color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.signOutBtn:hover { color: var(--diff-expert); }
+
+/* ── MOBILE ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  .nav {
+    padding: 0 var(--mobile-padding);
+  }
+
+  /* hide desktop nav links - bottom nav handles navigation */
+  .links {
+    display: none;
+  }
+
+  .logoText { font-size: 1.1rem; }
+
+  .signOutBtn { display: none; }
+
+  /* on mobile, avatar alone is enough - tap to sign out via bottom nav "More" */
+  .userArea { gap: var(--space-2); }
+}

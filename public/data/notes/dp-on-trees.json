@@ -1,0 +1,129 @@
+{
+  "topic": "DP on Trees",
+  "level": 6,
+  "slug": "dp-on-trees",
+  "estimated_read": "12 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is DP on Trees?",
+      "content": "**DP on trees** means defining a state for each node that depends on the states of its children, then computing those states bottom-up via post-order DFS. Leaves compute their state directly from their own value. Internal nodes combine children's states to produce their own. The root's state gives (or is used to derive) the final answer. This is just post-order DFS with DP state carried at each node.\n\nEvery tree problem that asks for something 'optimal over the whole tree' - diameter, maximum path sum, maximum independent set - is tree DP. The key design insight: the state at each node must capture **everything the parent needs**, nothing more. Overly rich state wastes time; too sparse state forces the parent to redo computation the child already did.\n\nTwo patterns dominate. The **single-value state** pattern: each node returns one value (e.g., its subtree height or its maximum downward path sum), and the global answer is tracked separately as the DFS traverses. The **two-state pattern**: each node returns two values - typically `(dp_not_selected, dp_selected)` - because the choice at a node conflicts with the choices at its children. The house robber on a tree and maximum independent set problems use this pattern.\n\nTree DP is where the recursive DFS model truly shines. The call stack naturally handles the bottom-up computation - you don't need to write an explicit topological sort or fill a table in a specific order. The recursion itself ensures children are computed before parents, which is exactly the post-order property."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use tree DP when the problem asks for an optimal value over a binary or n-ary tree where the answer at each node depends on its subtree. Key signals: 'path between two nodes', 'diameter', 'maximum path sum', 'select non-adjacent nodes', 'sum of distances'. If the problem requires combining values from left and right subtrees at each node to find a global optimum, it's tree DP.",
+      "signals": [
+        "diameter of a binary tree",
+        "maximum path sum in tree",
+        "house robber on a tree",
+        "select non-adjacent nodes from tree",
+        "maximum independent set on tree",
+        "sum of distances to all nodes",
+        "subtree queries with optimal answer",
+        "tree path maximum or minimum"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## Post-Order DFS as Bottom-Up DP\n\nIn post-order traversal: process left subtree → process right subtree → process current node. This guarantees that when computing `dp[node]`, both `dp[leftChild]` and `dp[rightChild]` are already computed. This is the natural execution order for tree DP.\n\nThe DFS function returns the state value for each subtree. The current node combines children's returned values to compute its own state, then returns that to its parent.\n\n## State Design - Single Value\n\n**Tree Diameter** (longest path between any two nodes):\n- `dp[node]` = height of the subtree rooted at node (length of longest downward path)\n- Diameter **through** this node = `leftHeight + rightHeight`\n- Global answer = max diameter seen across all nodes (tracked in a variable outside the recursion)\n- Note: the answer (`leftHeight + rightHeight`) is NOT what gets returned to the parent - the parent receives only the height (`max(leftHeight, rightHeight) + 1`)\n\n**Maximum Path Sum** (path can go through any node, not necessarily root):\n- `dp[node]` = max path sum starting at this node going downward (one direction)\n- Path **through** this node = `leftMax + node.val + rightMax` (but only include child paths if positive)\n- Return to parent: `node.val + max(0, leftMax, rightMax)` - don't include both branches, parent can only continue in one direction\n\n## State Design - Two States\n\n**Maximum Independent Set / House Robber on Tree**:\n- `dp[node][0]` = max sum if this node is **not** selected\n- `dp[node][1]` = max sum if this node **is** selected\n- Transitions:\n  - `dp[node][0] = sum over children of max(dp[child][0], dp[child][1])` (child can be either)\n  - `dp[node][1] = node.val + sum over children of dp[child][0]` (children must NOT be selected)\n- Answer: `max(dp[root][0], dp[root][1])`\n\n## Rerooting Technique\n\nWhen the answer depends on the full tree context (not just a subtree), use two DFS passes. First pass: compute subtree DP values bottom-up. Second pass: propagate 'complement' information top-down - the contribution of everything **outside** the subtree. Used for 'sum of distances from each node to all others'."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// Generic Tree DP - two-state (selected / not selected)\n// Returns [notSelected, selected] from each subtree\nfunction treeDP(root) {\n  let answer = 0;\n\n  function dfs(node) {\n    if (!node) return [0, 0]; // base: null node contributes nothing\n\n    const [leftNo, leftYes] = dfs(node.left);\n    const [rightNo, rightYes] = dfs(node.right);\n\n    // if node NOT selected: children can be either\n    const notSelected = Math.max(leftNo, leftYes) + Math.max(rightNo, rightYes);\n\n    // if node IS selected: children must NOT be selected\n    const selected = node.val + leftNo + rightNo;\n\n    return [notSelected, selected];\n  }\n\n  const [no, yes] = dfs(root);\n  return Math.max(no, yes);\n}\n\n// Tree Diameter - single-value state, global answer tracked externally\nfunction diameterOfBinaryTree(root) {\n  let maxDiameter = 0;\n\n  function height(node) {\n    if (!node) return 0;\n    const leftH = height(node.left);\n    const rightH = height(node.right);\n    // diameter through this node: left path + right path\n    maxDiameter = Math.max(maxDiameter, leftH + rightH);\n    // return height of this subtree to parent\n    return Math.max(leftH, rightH) + 1;\n  }\n\n  height(root);\n  return maxDiameter;\n}",
+      "language": "javascript",
+      "explanation": "Two-state template handles any conflict between parent and child choices - return both states from each call, let the parent decide which combination maximizes the result. Diameter template shows the critical pattern: the answer (leftH + rightH) is computed at each node but only the height (max + 1) is returned to the parent."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "DP on N-ary Trees",
+          "description": "When nodes have multiple children, replace the binary left/right combination with a loop over all children: sum or take max over all children's dp values. The two-state pattern extends directly - sum dp[child][0] for all children when the node is selected.",
+          "example_problem": "Maximum Product of Splitted Binary Tree",
+          "example_slug": "maximum-product-of-splitted-binary-tree"
+        },
+        {
+          "name": "Rerooting (Two-Pass) DP",
+          "description": "When the answer at each node depends on the entire tree (not just its subtree), compute a second DFS pass propagating downward. The first pass gives each node its subtree answer; the second pass combines it with the 'rest of the tree' answer passed from the parent.",
+          "example_problem": "Sum of Distances in Tree",
+          "example_slug": "sum-of-distances-in-tree"
+        },
+        {
+          "name": "Maximum Path Through Any Two Nodes",
+          "description": "The maximum path sum can go through any two nodes without requiring the path to pass through the root. Track a global maximum at each node combining left and right downward paths. Only return the single best direction to the parent.",
+          "example_problem": "Binary Tree Maximum Path Sum",
+          "example_slug": "binary-tree-maximum-path-sum"
+        },
+        {
+          "name": "Tree DP on DAG with Memoization",
+          "description": "When the tree structure is a DAG (multiple paths to same node), use memoization on node identity rather than pure recursion. Cache the dp value for each node after computing it to avoid exponential recomputation on diamond-shaped DAGs.",
+          "example_problem": "House Robber III",
+          "example_slug": "house-robber-iii"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n) where n is number of nodes",
+      "space": "O(h) call stack where h is tree height, O(n) worst case for skewed tree",
+      "explanation": "Post-order DFS visits each node exactly once - O(n). At each node, the computation is O(1) for binary trees (combining two children's values) or O(degree) for n-ary trees (summing over all children), but the total across all nodes is still O(n) since the sum of degrees equals the number of edges. Space is O(h) for the recursion call stack. For balanced trees h = O(log n); for skewed trees (linked-list shape) h = O(n), risking stack overflow on very large inputs."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Using pre-order instead of post-order - in pre-order, the current node is processed before its children, so children's dp values aren't computed yet when you need them; always recurse into children first and combine their results afterward.",
+        "Returning the global answer instead of the subtree state - for diameter and max path sum, the answer computed at each node (e.g., leftH + rightH) is NOT what gets returned to the parent; the parent receives the height (max(leftH, rightH) + 1), not the diameter; mixing these corrupts the parent's computation.",
+        "Off-by-one in height convention - null node height should be 0 (no path) consistently; leaf node height is then 1; using -1 for null and 0 for leaf is also valid but pick one convention and stick with it across the entire solution.",
+        "Forgetting the null base case - `if (!node) return [0, 0]` or `if (!node) return 0` must be the first line; accessing node.left or node.val on null crashes with 'Cannot read properties of null'.",
+        "Two-state pattern: forgetting that selected forces children to be not-selected - dp[node][1] = node.val + leftNo + rightNo (using leftNo and rightNo); accidentally using leftYes or max(leftNo, leftYes) breaks the independence constraint."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Diameter of Binary Tree",
+          "slug": "diameter-of-binary-tree",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "Entry-level tree DP - height returned to parent, diameter tracked globally; the split between 'answer at node' and 'value returned to parent' is the core lesson."
+        },
+        {
+          "title": "Binary Tree Maximum Path Sum",
+          "slug": "binary-tree-maximum-path-sum",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Tests max downward path DP - must only include positive child contributions and return the single best direction to parent while tracking the full path sum globally."
+        },
+        {
+          "title": "House Robber III",
+          "slug": "house-robber-iii",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Direct application of the two-state tree DP - selected forces children not-selected; tests returning both states from each subtree."
+        },
+        {
+          "title": "Maximum Product of Splitted Binary Tree",
+          "slug": "maximum-product-of-splitted-binary-tree",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests subtree sum DP - compute subtree sums first, then find the split that maximizes product of (subtreeSum) × (totalSum - subtreeSum)."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "DP on Graphs",
+      "next_slug": "dp-on-graphs",
+      "why": "Tree DP is DP on a special graph (acyclic, connected). Graph DP generalizes to DAGs - directed graphs with no cycles - where the natural computation order is topological sort rather than post-order DFS. The state space and transitions grow more complex."
+    }
+  ]
+}

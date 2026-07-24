@@ -1,0 +1,192 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  max-width: 860px;
+  margin: 0 auto;
+  width: 100%;
+  padding: var(--space-6) var(--space-8);
+}
+
+.header { display: flex; flex-direction: column; gap: var(--space-4); }
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 6px 12px;
+  margin-bottom: var(--space-2);
+  transition: border-color 0.15s, color 0.15s;
+}
+.backBtn:hover { border-color: var(--border-strong); color: var(--text-secondary); }
+
+.titleRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.title {
+  font-size: 1.7rem;
+  font-weight: 700;
+  flex: 1;
+  line-height: 1.25;
+}
+
+.bookmarkBtn {
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  transition: color var(--transition-fast), transform var(--transition-fast);
+  flex-shrink: 0;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.bookmarkBtn:hover { color: var(--accent); transform: scale(1.15); }
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.topicTag {
+  font-size: 0.78rem;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+.patternTag {
+  font-size: 0.78rem;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  background: var(--accent-subtle);
+  color: var(--accent);
+  border: 1px solid rgba(108, 99, 255, 0.2);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  /* never wrap- Solve button must always stay visible */
+  flex-wrap: nowrap;
+}
+
+.solvedBtn, .attemptedBtn {
+  /* flex:1 so they share space equally, Solve button stays at natural width */
+  flex: 1;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  transition: all var(--transition-fast);
+  font-family: inherit;
+  min-height: 40px;
+  cursor: pointer;
+  background: transparent;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.solvedBtn:hover {
+  background: var(--solved-bg);
+  border-color: var(--solved);
+  color: var(--solved);
+}
+
+/* active = already marked- solid fill so clearly visible */
+.solvedBtn[data-active='true'] {
+  background: var(--solved);
+  border-color: var(--solved);
+  color: #0a0a0f;
+  font-weight: 600;
+}
+
+.attemptedBtn:hover {
+  background: var(--attempted-bg);
+  border-color: var(--attempted);
+  color: var(--attempted);
+}
+
+.attemptedBtn[data-active='true'] {
+  background: var(--attempted);
+  border-color: var(--attempted);
+  color: #0a0a0f;
+  font-weight: 600;
+}
+
+/* always-visible Solve button- 3rd in the actions row */
+.solveBtn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  text-decoration: none;
+  min-height: 40px;
+  white-space: nowrap;
+  transition: background var(--transition-fast), opacity var(--transition-fast);
+}
+.solveBtn:hover { background: #6d28d9; opacity: 0.92; }
+
+.section { display: flex; flex-direction: column; gap: var(--space-4); }
+.sectionTitle { font-size: 1rem; font-weight: 600; color: var(--text-primary); }
+.notFound { color: var(--text-muted); text-align: center; padding: var(--space-16); }
+
+/* ---- mobile ---- */
+@media (max-width: 768px) {
+  .wrapper {
+    padding: var(--space-3) var(--space-3);
+    padding-bottom: calc(var(--bottom-nav-height, 60px) + env(safe-area-inset-bottom) + 16px);
+    gap: var(--space-4);
+  }
+  .title { font-size: 1.15rem; }
+  .backBtn { font-size: 0.78rem; padding: 5px 10px; }
+  .metaRow {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .metaRow::-webkit-scrollbar { display: none; }
+  .topicTag, .patternTag { flex-shrink: 0; white-space: nowrap; }
+  /* 3 buttons always in one row on mobile- nowrap keeps Solve visible */
+  .actions { gap: var(--space-2); }
+  .solvedBtn, .attemptedBtn {
+    flex: 1;
+    padding: var(--space-2) var(--space-2);
+    font-size: 0.78rem;
+    min-height: 38px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title { font-size: 1rem; }
+  .wrapper { padding: var(--space-3) var(--space-2); }
+}

@@ -1,0 +1,123 @@
+{
+  "topic": "Bit Manipulation",
+  "level": 8,
+  "slug": "bit-manipulation",
+  "estimated_read": "10 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Bit Manipulation?",
+      "content": "Bit manipulation is working directly with the binary representation of integers using the CPU's native bitwise instructions. Modern CPUs perform bitwise operations in a single clock cycle, making them the fastest possible arithmetic operations - faster than division, modulo, or even multiplication.\n\nIn DSA, bit manipulation solves problems that would otherwise require extra space or multiple passes. **XOR** is the standout operator: it is its own inverse. `a ^ a = 0` and `a ^ 0 = a`. This lets you find missing elements, detect the unique element in an array where all others appear twice, and swap values without a temporary variable - all in O(1) space.\n\n**Bitmasks** represent subsets of a small set (up to 30 elements) as integers. This is what makes bitmask DP viable: exponential state space (2^n subsets) stored in polynomial memory (n integers). Checking membership, adding elements, and removing elements from a subset are all single bitwise operations.\n\nBit manipulation appears across every DSA category - not as a standalone algorithm but as a constant-factor optimization or an O(1) trick that replaces a naive O(n) or O(log n) operation. Missing it means missing clean solutions to problems that look unrelated to binary representation on the surface."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use bit manipulation when you need to find a unique element among duplicates, check if a number is a power of 2, count set bits efficiently, represent a subset of a small set, toggle or test individual flags in a state, or compute XOR across a range. It is also the foundation for bitmask DP (covered separately). Bit tricks are not a replacement for algorithmic thinking - they are a tool to reduce constant factors and space after the algorithm is correct.",
+      "signals": [
+        "find element appearing once",
+        "single number among duplicates",
+        "power of 2 check",
+        "count set bits or popcount",
+        "XOR of a range",
+        "subset representation",
+        "flip or toggle bits",
+        "missing number in array"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## The Six Operators\n\n- `&` (AND) - both bits must be 1: `5 & 3 = 1` (`101 & 011 = 001`). Used to test or clear bits.\n- `|` (OR) - either bit is 1: `5 | 3 = 7` (`101 | 011 = 111`). Used to set bits.\n- `^` (XOR) - exactly one bit is 1: `5 ^ 3 = 6` (`101 ^ 011 = 110`). Used to toggle, find unique elements.\n- `~` (NOT) - flip all bits. In two's complement: `~n = -(n + 1)`, so `~0 = -1`, `~5 = -6`.\n- `<<` (left shift) - multiply by 2: `1 << k = 2^k`. Used to create bit masks.\n- `>>` (right shift) - divide by 2 (arithmetic, preserves sign). `>>>` is unsigned right shift in JS.\n\n**Key patterns**:\n- `n & (n - 1)` - removes the lowest set bit from `n`. Repeating this counts all set bits.\n- `n & (-n)` - isolates the lowest set bit of `n`. The core of Fenwick Tree indexing.\n- `n >> k & 1` - tests whether bit `k` of `n` is set (returns 0 or 1).\n\n## XOR Tricks\n\nXOR properties: `a ^ a = 0`, `a ^ 0 = a`, commutative and associative. These make XOR powerful for finding hidden elements:\n\n- **Single non-duplicate**: XOR all elements. Pairs cancel out (`a ^ a = 0`), leaving the unique element.\n- **Two non-duplicates**: XOR all elements gives `x ^ y` where x and y are the two unique elements. Find any set bit in `x ^ y` (they differ there). Split all elements into two groups by that bit. XOR each group separately gives x and y.\n- **XOR of range [1..n]**: follows a pattern cycling every 4: `n%4 === 0 → n`, `1 → 1`, `2 → n+1`, `3 → 0`.\n\n## Bit Counting and Powers of 2\n\n`n & (n - 1) === 0` means n is a power of 2 - exactly one bit is set (or n is 0; add `n > 0` check). **Brian Kernighan's algorithm** for popcount: `while (n) { count++; n &= n - 1; }` - each iteration removes one set bit, running in O(number of set bits) rather than O(bit length).\n\n## Bitmask as Set\n\nFor a universe of `n` elements (n ≤ 30), an integer represents a subset:\n- `1 << i` - set containing only element i\n- `mask | (1 << i)` - add element i to mask\n- `mask & ~(1 << i)` - remove element i from mask\n- `mask & (1 << i)` - test if element i is in mask (non-zero if yes)\n- `(1 << n) - 1` - full set of all n elements\n\nThis representation is what powers bitmask DP over subsets."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// --- Bit trick reference block ---\n\n// Power of 2 check\nfunction isPowerOfTwo(n) {\n  return n > 0 && (n & (n - 1)) === 0;\n}\n\n// Isolate lowest set bit (used in Fenwick Trees)\nfunction lowestSetBit(n) {\n  return n & (-n);\n}\n\n// Remove lowest set bit\nfunction removeLowestSetBit(n) {\n  return n & (n - 1);\n}\n\n// Count set bits (Brian Kernighan)\nfunction popcount(n) {\n  let count = 0;\n  while (n) {\n    count++;\n    n &= n - 1; // drop the lowest set bit each time\n  }\n  return count;\n}\n\n// Find single non-duplicate (all others appear twice)\nfunction singleNumber(nums) {\n  let xor = 0;\n  for (const n of nums) xor ^= n; // pairs cancel out\n  return xor;\n}\n\n// Test bit k (0-indexed from right)\nfunction testBit(n, k) {\n  return (n >> k) & 1;\n}\n\n// Set bit k\nfunction setBit(n, k) {\n  return n | (1 << k);\n}\n\n// Clear bit k\nfunction clearBit(n, k) {\n  return n & ~(1 << k);\n}\n\n// Toggle bit k\nfunction toggleBit(n, k) {\n  return n ^ (1 << k);\n}",
+      "language": "javascript",
+      "explanation": "A reference block of the most common bit manipulation patterns used across DSA problems. These are building blocks - recognizing which one applies is the skill, not memorizing the syntax."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Gray Code",
+          "description": "A sequence where consecutive integers differ by exactly one bit. The nth Gray code is `n ^ (n >> 1)`. Converting between binary and Gray code uses XOR. Appears in problems about minimal-change sequences and circular arrangements.",
+          "example_problem": "Gray Code",
+          "example_slug": "gray-code"
+        },
+        {
+          "name": "Bitwise Addition Without +",
+          "description": "Add two integers using only XOR and AND: `sum = a ^ b` gives bits without carry, `carry = (a & b) << 1` gives the carry. Repeat until carry is 0. This is how hardware adders work and appears in 'Sum of Two Integers' type problems.",
+          "example_problem": "Sum of Two Integers",
+          "example_slug": "sum-of-two-integers"
+        },
+        {
+          "name": "Integer Square Root via Bit Shifts",
+          "description": "Estimate square roots and bit lengths using right shifts. `Math.floor(Math.log2(n)) = 31 - Math.clz32(n)` in JS. Bit-length tricks appear in problems about representing numbers in binary and in segment tree height calculations.",
+          "example_problem": "Reverse Bits",
+          "example_slug": "reverse-bits"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(1) per operation, O(log n) for popcount in worst case",
+      "space": "O(1)",
+      "explanation": "All single bitwise operations (AND, OR, XOR, shift, NOT) are O(1) - single CPU instructions. Brian Kernighan's popcount runs in O(k) where k is the number of set bits, which is at most O(log n) for a value n. Using XOR to find a single number in an array of n elements is O(n) total (one pass), O(1) space. Bitmask operations on a 32-bit integer representing a subset of up to 30 elements are all O(1)."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "JS bitwise operators coerce operands to 32-bit SIGNED integers - numbers larger than 2^31 - 1 are truncated. For n > 2^30, use `>>> 0` (unsigned right shift by 0) to treat the result as unsigned, or use `BigInt` for very large values.",
+        "`~n = -(n + 1)` in two's complement - `~0 = -1`, not `0`. Using `~` expecting a boolean-style NOT flip is a common bug; for toggling a bit, use `^ (1 << k)` instead.",
+        "Left shift overflow: `1 << 31` produces a negative number in JS (the sign bit is set). For bitmasks over 30+ elements, use `1n << BigInt(k)` with BigInt, or restructure to avoid needing more than 30 bits.",
+        "`n & (-n)` gives the lowest set bit, not the highest. Confusing these two produces wrong Fenwick Tree traversal direction (isolating highest vs lowest set bit are completely different operations).",
+        "Operator precedence: bitwise operators have lower precedence than comparison operators in JS. `n & 1 === 0` is parsed as `n & (1 === 0)` = `n & false` = 0, always. Always wrap: `(n & 1) === 0`."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Single Number",
+          "slug": "single-number",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "The canonical XOR trick - XOR all elements; pairs cancel to 0, leaving the unique element."
+        },
+        {
+          "title": "Number of 1 Bits",
+          "slug": "number-of-1-bits",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "Tests Brian Kernighan's algorithm - repeatedly strip the lowest set bit to count set bits in O(k)."
+        },
+        {
+          "title": "Reverse Bits",
+          "slug": "reverse-bits",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "Tests extracting and placing individual bits using shift and OR - fundamental bit-level manipulation."
+        },
+        {
+          "title": "Sum of Two Integers",
+          "slug": "sum-of-two-integers",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests bitwise addition using XOR (sum without carry) and AND+shift (carry) - requires understanding two's complement for negative numbers."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Prefix Sum",
+      "next_slug": "prefix-sum",
+      "why": "Prefix Sum is the next Others topic - a simple array technique that, like bit manipulation, is a constant companion across problems. It introduces the prefix XOR variant which directly uses bit manipulation, bridging the two topics."
+    }
+  ]
+}

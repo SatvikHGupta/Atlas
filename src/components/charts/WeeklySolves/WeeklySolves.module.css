@@ -1,0 +1,9 @@
+.wrapper {
+  height: 160px;
+  position: relative;
+}
+
+.wrapper canvas {
+  width: 100% !important;
+  height: 100% !important;
+}

@@ -1,0 +1,120 @@
+.card {
+  display: block;
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  transition: border-color var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
+  overflow: hidden;
+}
+
+.card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-accent);
+}
+
+.statusDot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+.statusDot[data-status='solved']    { background: var(--solved); }
+.statusDot[data-status='attempted'] { background: var(--attempted); }
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.4;
+  flex: 1;
+}
+
+.bookmarkBtn {
+  position: relative;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  transition: color var(--transition-fast), transform var(--transition-fast);
+  flex-shrink: 0;
+  line-height: 1;
+  min-width: 36px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* invisible 44x44 tap target (WCAG 2.5.5) without growing the visible icon */
+.bookmarkBtn::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+}
+.bookmarkBtn:hover { color: var(--accent); transform: scale(1.2); }
+
+.meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.tag {
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+.diffScore {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  border: 1px solid;
+  margin-left: auto;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .title {
+    font-size: 0.88rem;
+  }
+
+  /* tags: horizontal scroll on mobile */
+  .meta {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .meta::-webkit-scrollbar { display: none; }
+
+  .tag, .diffScore {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .diffScore {
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "topic": "Topological Sort",
+  "level": 5,
+  "slug": "topological-sort",
+  "estimated_read": "11 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Topological Sort?",
+      "content": "Topological sort takes a **Directed Acyclic Graph (DAG)** and produces a linear ordering of its nodes such that for every directed edge u\u2192v, node u appears before v. Dependencies must come first.\n\nReal-world examples: course prerequisites, npm package install order, Makefile compilation order. All are topological sort on a dependency DAG.\n\nCritical constraint: **topological sort only exists for DAGs**. A cycle means no valid linear ordering exists \u2014 A depends on B, B depends on A, neither can go first. This is why topological sort algorithms double as cycle detectors: if the output doesn't contain all nodes, a cycle exists.\n\nTwo standard implementations: **Kahn's algorithm** (BFS-based, repeatedly remove in-degree-0 nodes \u2014 intuitive and easy to explain) and **DFS post-order** (push nodes after all descendants are processed). Both O(V+E). Kahn's is generally preferred in interviews."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use topological sort when a problem involves ordering items with dependencies. Keywords: 'course prerequisites', 'build order', 'find a valid ordering', 'task dependencies'. Also for cycle detection in directed graphs \u2014 if sort can't include all nodes, a cycle exists.",
+      "signals": [
+        "course prerequisites",
+        "task dependencies",
+        "build order",
+        "find order to complete",
+        "detect cycle in directed graph",
+        "dependency resolution",
+        "project scheduling"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Kahn's Algorithm and DFS-Based Sort",
+      "content": "## Kahn's Algorithm (BFS-Based)\n\n1. Compute `inDegree[v]` for all nodes.\n2. Enqueue all nodes with `inDegree = 0`.\n3. While queue not empty: dequeue node, add to result, decrement `inDegree[neighbor]` for each neighbor. If `inDegree[neighbor]` reaches 0, enqueue it.\n4. If `result.length < n`, a cycle exists.\n\n## DFS-Based Topological Sort\n\nRun DFS. When a node is **fully processed** (all descendants done), push to stack. Read stack top-to-bottom for topological order. Post-order reversal gives dependency-first ordering.\n\n## Edge Direction\n\n'Course A is prerequisite for B' \u2192 edge A\u2192B. Build `graph[A].push(B)` and `inDegree[B]++`. Reversed edges give a backwards topological order.\n\n## Cycle Detection Summary\n\nKahn's: `result.length < n` \u2192 cycle. DFS: encountering a gray node \u2192 cycle. Both detect the same condition; Kahn's detection is more explicit.\n\n## Multiple Valid Orderings\n\nTopological sort is not unique. For lexicographically smallest, use a min-heap instead of a queue in Kahn's."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "function topologicalSort(numNodes, edges) {\n  const graph = Array.from({length:numNodes},()=>[]);\n  const inDegree = new Array(numNodes).fill(0);\n\n  for (const [u,v] of edges) {\n    graph[u].push(v); // u must come before v\n    inDegree[v]++;\n  }\n\n  const queue = [];\n  for (let i=0;i<numNodes;i++) if (inDegree[i]===0) queue.push(i);\n\n  const result = [];\n  let head=0;\n  while (head < queue.length) {\n    const node = queue[head++];\n    result.push(node);\n    for (const nb of graph[node]) {\n      inDegree[nb]--;\n      if (inDegree[nb]===0) queue.push(nb); // dependency satisfied\n    }\n  }\n\n  if (result.length !== numNodes) return []; // cycle detected\n  return result;\n}\n\nfunction canFinish(numCourses, prerequisites) {\n  return topologicalSort(numCourses, prerequisites).length === numCourses;\n}",
+      "language": "javascript",
+      "explanation": "Kahn's algorithm with in-degree array and BFS queue. Cycle detection is built-in: incomplete result means some nodes had in-degree that never reached 0."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "DFS-Based Topological Sort",
+          "description": "Post-order DFS pushes each node to a stack after all descendants are processed. Reverse the stack for topological order. Useful when already doing DFS for cycle detection with color states.",
+          "example_problem": "Course Schedule II",
+          "example_slug": "course-schedule-ii"
+        },
+        {
+          "name": "Lexicographic Topological Sort",
+          "description": "Replace the queue in Kahn's with a min-heap. When multiple nodes have in-degree 0, always process the smallest first. Produces the lexicographically smallest valid ordering.",
+          "example_problem": "Alien Dictionary",
+          "example_slug": "alien-dictionary"
+        },
+        {
+          "name": "Find Safe Nodes (Reverse Topological)",
+          "description": "Reverse all edges and run Kahn's. Nodes appearing in the topological order of the reversed graph are safe (don't lead to cycles) in the original graph.",
+          "example_problem": "Find Eventual Safe States",
+          "example_slug": "find-eventual-safe-states"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(V + E)",
+      "space": "O(V + E)",
+      "explanation": "Kahn's processes each node once on dequeue (O(V)) and each edge once when decrementing in-degrees (O(E)). Space is O(V+E) for the adjacency list, O(V) for in-degree array and queue."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Building edges in the wrong direction \u2014 'A is prerequisite for B' means A\u2192B. Reversed edges produce a backwards topological order.",
+        "Not checking result.length === numNodes after Kahn's \u2014 a cycle silently produces an incomplete result. Always check.",
+        "Applying topological sort to undirected graphs \u2014 undefined for undirected edges which don't encode ordering.",
+        "Assuming topological sort gives a unique result \u2014 multiple valid orderings exist; don't test for a specific one unless the problem asks for lexicographically smallest.",
+        "In alien dictionary: comparing 'abc' and 'ab' where the shorter word comes after the longer prefix is an invalid dictionary (implies a cycle), not derivable ordering."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Course Schedule",
+          "slug": "course-schedule",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Pure cycle detection via topological sort \u2014 model prerequisites as a directed graph and detect impossibility via incomplete Kahn's output."
+        },
+        {
+          "title": "Course Schedule II",
+          "slug": "course-schedule-ii",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Returns the actual topological ordering \u2014 extends Course Schedule by outputting the valid course order."
+        },
+        {
+          "title": "Alien Dictionary",
+          "slug": "alien-dictionary",
+          "difficulty": 8,
+          "difficulty_label": "Hard",
+          "why": "Graph construction from scratch + topological sort \u2014 derive ordering constraints by comparing adjacent words then run Kahn's."
+        },
+        {
+          "title": "Find Eventual Safe States",
+          "slug": "find-eventual-safe-states",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Reverse graph + Kahn's variant \u2014 safe nodes appear in topological order after reversing edges."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Shortest Paths",
+      "next_slug": "shortest-paths",
+      "why": "Shortest paths extend BFS to weighted graphs. Dijkstra combines the priority queue from heaps with BFS-style expansion. Topological sort also enables O(V+E) shortest/longest path in DAGs."
+    }
+  ]
+}

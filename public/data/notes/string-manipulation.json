@@ -1,0 +1,137 @@
+{
+  "topic": "String Manipulation",
+  "level": 1,
+  "slug": "string-manipulation",
+  "estimated_read": "13 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is String Manipulation?",
+      "content": "**Strings** are sequences of characters - and in DSA terms, they are essentially arrays of characters. Every array technique applies: traversal, two pointers, prefix tricks, sliding windows. But strings have two critical differences from arrays that change how you code with them.\n\nFirst, **strings in JavaScript are immutable**. You cannot change a character at position `i` the way you can with `arr[i] = x`. Every operation that appears to modify a string - concatenation, slice, replace - creates a **new string**. This means repeated `str += char` in a loop allocates a new string each iteration: O(1) + O(2) + O(3) + ... + O(n) = O(n²) total. The fix: push characters into an array and join at the end.\n\nSecond, strings have **semantic structure** that pure arrays don't. Characters have frequencies. Words have palindrome symmetry. Two strings can be anagrams. Recognizing these properties and choosing the right data structure to exploit them - typically a frequency map - is the core skill of string problems.\n\nThe most important string problem archetypes are: **anagram detection** (frequency map), **palindrome problems** (two pointers), **substring problems** (sliding window), and **string parsing** (traversal with state). Each has a canonical template that you should be able to write from memory."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "String techniques apply to any problem where the input is text and the answer depends on the content or structure of that text. Frequency maps are the right tool when 'rearrangement' or 'anagram' appears. Two pointers are right for palindrome verification. Sliding window is right for 'longest or shortest substring with a property'. Whenever the problem says 'contiguous characters meeting a condition', sliding window is likely optimal.",
+      "signals": [
+        "find a substring with a given property",
+        "check if two strings are anagrams",
+        "longest/shortest substring without/with a condition",
+        "palindrome check or longest palindromic substring",
+        "rearrange characters to meet a condition",
+        "count occurrences of a character or pattern",
+        "minimum window containing all required characters"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Character Frequency Maps",
+      "content": "A **frequency map** counts how many times each character appears in a string. In JavaScript, use a `Map` or a plain object for this. For lowercase English letters, an array of 26 counters (`new Array(26).fill(0)`) indexed by `char.charCodeAt(0) - 97` is the fastest option.\n\n## Anagram Detection\n\nTwo strings are anagrams if and only if their frequency maps are identical. Implementation: build the frequency map for `s1`, then for each character in `s2`, decrement its count. If all counts are zero at the end, they're anagrams.\n\n```javascript\nfunction isAnagram(s, t) {\n  if (s.length !== t.length) return false;\n  const freq = new Array(26).fill(0);\n  for (let i = 0; i < s.length; i++) {\n    freq[s.charCodeAt(i) - 97]++;\n    freq[t.charCodeAt(i) - 97]--;\n  }\n  return freq.every(x => x === 0);\n}\n```\n\n## Grouping Anagrams\n\nTo group strings by anagram equivalence, sort each string's characters to get a canonical key. Strings with the same sorted key are anagrams of each other. Use the sorted string as a hash map key."
+    },
+    {
+      "type": "concept",
+      "title": "Two Pointers on Strings",
+      "content": "**Two pointers** on strings work identically to two pointers on arrays - strings are indexable.\n\n## Palindrome Check\n\nPlace one pointer at the start (`lo = 0`) and one at the end (`hi = s.length - 1`). If `s[lo] === s[hi]`, both pointers move inward. If they ever differ, it's not a palindrome. If the pointers meet without mismatch, it is.\n\n```javascript\nfunction isPalindrome(s) {\n  let lo = 0, hi = s.length - 1;\n  while (lo < hi) {\n    if (s[lo] !== s[hi]) return false;\n    lo++; hi--;\n  }\n  return true;\n}\n```\n\n## Reversing a String\n\nIn-place reversal: convert to array (strings are immutable), swap `arr[lo]` with `arr[hi]` using two pointers until they meet, then join.\n\n`str.split('').reverse().join('')` is the concise version - correct for ASCII, but fails for multi-byte Unicode characters (emoji, certain CJK characters) where `split('')` splits surrogate pairs."
+    },
+    {
+      "type": "concept",
+      "title": "Substring Problems and Sliding Window",
+      "content": "The **brute force** for substring problems: try all O(n²) substrings, check each in O(n) → O(n³) total. Even with O(1) check, O(n²) substrings is too slow for large inputs.\n\n**Sliding window** reduces this to O(n) by maintaining a window of characters and updating its state incrementally as the window moves. The window has two pointers: `left` and `right`. `right` always advances by 1 each outer step. `left` advances only when the window violates the constraint.\n\nFor 'longest substring without repeating characters': maintain a frequency map of window contents. When a character's frequency exceeds 1, shrink from the left until it doesn't.\n\n## Window State Tracking\n\nSimple windows track a sum or a count. Complex windows track:\n- A frequency map of characters in the window\n- A count of 'satisfied' character requirements (for minimum window substring)\n- The number of distinct characters currently in the window\n\nThe shrink step must always mirror the expand step: if expanding increments a counter, shrinking must decrement it."
+    },
+    {
+      "type": "concept",
+      "title": "Efficient String Building",
+      "content": "**The cost of `str += char` in a loop** is O(n²) total due to JavaScript string immutability. Each concatenation allocates a new string of length 1, 2, 3, ..., n - summing to O(n²).\n\n**The fix**: use an array as a buffer, push characters into it, and call `.join('')` once at the end.\n\n```javascript\n// SLOW: O(n²) total allocations\nlet result = '';\nfor (const char of chars) result += char;\n\n// FAST: O(n) total\nconst buf = [];\nfor (const char of chars) buf.push(char);\nconst result = buf.join('');\n```\n\nFor most interview problems with n ≤ 10⁴, the difference is unnoticeable. But for n ≥ 10⁵ string building problems, this distinction can be the difference between passing and TLEing."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// === CHARACTER FREQUENCY MAP ===\nfunction buildFreqMap(s) {\n  const freq = new Map();\n  for (const ch of s) {\n    freq.set(ch, (freq.get(ch) || 0) + 1);\n  }\n  return freq;\n}\n\n// === SLIDING WINDOW FOR SUBSTRING ===\n// Template: longest substring with at most k distinct characters\nfunction slidingWindow(s, k) {\n  const freq = new Map();\n  let left = 0, best = 0;\n\n  for (let right = 0; right < s.length; right++) {\n    // expand: add s[right] to window\n    freq.set(s[right], (freq.get(s[right]) || 0) + 1);\n\n    // shrink from left when constraint violated\n    while (freq.size > k) {\n      const lc = s[left++];\n      freq.set(lc, freq.get(lc) - 1);\n      if (freq.get(lc) === 0) freq.delete(lc);\n    }\n\n    best = Math.max(best, right - left + 1);\n  }\n  return best;\n}",
+      "language": "javascript",
+      "explanation": "The frequency map template handles any character-counting task. The sliding window template shows the expand-right / shrink-left pattern: right advances every iteration, left advances only when the constraint (here: distinct characters > k) is violated. Adapt the constraint and the window state to any substring problem."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Multiline String Processing",
+          "description": "Splitting by newline (`s.split('\\n')`), processing each line, then joining is the pattern for multiline inputs. Each line is a separate string; treat it as an independent substring problem. Common in text editor and log-parsing problems.",
+          "example_problem": "Text Justification",
+          "example_slug": "text-justification"
+        },
+        {
+          "name": "String Compression (Run-Length Encoding)",
+          "description": "Scan the string with a pointer, count consecutive identical characters, output the character followed by its count. Two-pointer variant: read pointer `i` advances through repeats, write pointer `w` writes compressed output back into the same array.",
+          "example_problem": "String Compression",
+          "example_slug": "string-compression"
+        },
+        {
+          "name": "Pattern Matching",
+          "description": "Finding a pattern string inside a text. Brute force is O(n*m). KMP algorithm reduces to O(n+m) using a prefix-suffix table. For interview purposes, JavaScript's `text.indexOf(pattern)` is fine, but knowing KMP conceptually shows depth.",
+          "example_problem": "Find the Index of the First Occurrence in a String",
+          "example_slug": "find-the-index-of-the-first-occurrence-in-a-string"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n) for frequency maps and sliding window, O(n²) brute force substring",
+      "space": "O(k) for sliding window where k is alphabet size or distinct character count",
+      "explanation": "A frequency map is built in one pass - O(n). Sliding window's right pointer advances n times and left pointer advances at most n times total (not per right step) - O(n) overall despite the nested while loop. Space is O(k) for the frequency map where k is the number of distinct characters in the window, bounded by the alphabet size (26 for lowercase English)."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Using `==` for string comparison where case sensitivity matters: `'A' == 'a'` is `false`, but easy to forget when transforming strings. Always clarify case sensitivity, and use `.toLowerCase()` if case-insensitive comparison is needed before storing in a frequency map.",
+        "`str.split('').reverse().join('')` silently corrupts strings with Unicode surrogate pairs: emoji like '😀' are encoded as two UTF-16 code units, and `split('')` splits them apart. For ASCII-only strings this is fine, but mention the limitation if the problem discusses Unicode.",
+        "Confusing `substring`, `slice`, and `substr`: `str.substr(start, length)` is deprecated. `str.substring(start, end)` treats negative indices as 0 and swaps start/end if start > end. `str.slice(start, end)` handles negatives correctly (counts from end). Always use `slice`.",
+        "Case sensitivity gotcha in frequency map keys: storing 'A' and 'a' as separate keys when the problem is case-insensitive doubles the map size and makes anagram checks wrong. Normalize to lowercase before building the frequency map.",
+        "Forgetting to delete from Map when frequency reaches zero: in a sliding window with a `Map`, a key with value 0 still exists in the map and is counted in `map.size`. Call `map.delete(key)` when its count drops to 0, or `map.size` will overcount distinct elements."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Longest Substring Without Repeating Characters",
+          "slug": "longest-substring-without-repeating-characters",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "The canonical variable-size sliding window problem - tests the expand-right / shrink-left pattern with a frequency map."
+        },
+        {
+          "title": "Longest Palindromic Substring",
+          "slug": "longest-palindromic-substring",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Tests expand-around-center technique - for each position, expand outward while characters match, tracking the longest found."
+        },
+        {
+          "title": "Valid Anagram",
+          "slug": "valid-anagram",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Direct application of character frequency map - the simplest and most foundational string problem."
+        },
+        {
+          "title": "Minimum Window Substring",
+          "slug": "minimum-window-substring",
+          "difficulty": 3,
+          "difficulty_label": "Hard",
+          "why": "The most complex sliding window variant - requires tracking how many required characters are fully satisfied, not just present."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Sliding Window",
+      "next_slug": "sliding-window",
+      "why": "Sliding window is the formalization of the technique you've been using for substring problems - learning it as a standalone pattern lets you apply it to array problems, not just strings, and introduces the fixed-size window variant."
+    }
+  ]
+}

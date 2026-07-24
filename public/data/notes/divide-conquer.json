@@ -1,0 +1,123 @@
+{
+  "topic": "Divide and Conquer",
+  "level": 8,
+  "slug": "divide-conquer",
+  "estimated_read": "14 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Divide and Conquer?",
+      "content": "Divide and conquer breaks a problem into smaller subproblems of the same type, solves them recursively, then combines the results. The three steps are: **Divide** (split the problem into parts), **Conquer** (solve each part recursively), **Combine** (merge the partial results into the final answer). The classic examples are merge sort and binary search, but the paradigm extends to closest pair of points, Strassen's matrix multiplication, Karatsuba integer multiplication, and the Fast Fourier Transform.\n\nThe key efficiency insight: dividing into halves and combining in O(n) per level gives T(n) = 2T(n/2) + O(n) = O(n log n) by the Master Theorem. The depth of recursion is O(log n), and each level does O(n) total work.\n\nThe distinguishing feature of divide and conquer versus dynamic programming is **subproblem independence**. In D&C, the subproblems do not overlap - solving the left half of merge sort says nothing about the right half. In DP, subproblems overlap - Fibonacci(5) and Fibonacci(4) both need Fibonacci(3). If you apply D&C to a problem with overlapping subproblems without memoization, you get exponential time. If you add memoization to avoid recomputing overlapping subproblems, you have essentially arrived at DP.\n\nIn interviews, divide and conquer appears explicitly in problems like 'find median of two sorted arrays' and 'count inversions', and implicitly whenever you recognize that a problem can be split at a midpoint and the cross-midpoint case can be handled efficiently in the combine step. The hardest part is always the combine step: proving that you can merge two subproblem solutions in O(n) or O(n log n) time."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use divide and conquer when the problem can be split into independent halves of the same type, and the results can be merged in less than O(n^2) time. The strongest signals are: problems that ask you to count pairs across two halves (count inversions, count of smaller numbers after self), problems on sorted arrays that can be split and merged (median of two sorted arrays), and problems with geometric structure that benefits from spatial splitting (closest pair of points). If the subproblems overlap, use DP instead.",
+      "signals": [
+        "count inversions",
+        "closest pair",
+        "find median of two sorted arrays",
+        "divide sorted array",
+        "split and conquer",
+        "independent subproblems",
+        "merge step",
+        "pairs across two halves"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Master Theorem, Count Inversions, and D&C vs DP",
+      "content": "## The Master Theorem\n\nFor recurrences of the form T(n) = aT(n/b) + f(n), compare f(n) with n^(log_b(a)):\n\n- If f(n) is polynomially smaller: **T(n) = O(n^(log_b(a)))**. The recursion dominates.\n- If f(n) is equal: **T(n) = O(n^(log_b(a)) * log n)**. Both terms are equal.\n- If f(n) is polynomially larger: **T(n) = O(f(n))**. The combine step dominates.\n\nExamples:\n- Merge sort: T(n) = 2T(n/2) + O(n). log_2(2) = 1, compare O(n) with n^1. Equal → **O(n log n)**.\n- Binary search: T(n) = T(n/2) + O(1). log_2(1) = 0, compare O(1) with n^0 = 1. Equal → **O(log n)**.\n\n## Count Inversions\n\nAn inversion is a pair (i, j) where i < j but arr[i] > arr[j]. Brute force: O(n^2). D&C: piggyback onto merge sort's merge step.\n\nDuring merge, when you pick an element from the **right half** instead of the left half, all **remaining elements in the left half** form inversions with that right-half element. Count them as `leftRemaining`. Adding up these counts across all merge steps gives the total inversion count in O(n log n).\n\n## Closest Pair of Points\n\nSort n points by x-coordinate. Split in half by x. Recurse on each half. Let delta = min(leftClosest, rightClosest). Check for cross-midline pairs: only consider points within delta of the midline. Key insight: within the delta-strip, each point needs to be compared to at most 7 other points (geometric argument). This gives O(n) for the combine step, yielding O(n log n) total.\n\n## D&C vs DP\n\n**Subproblems independent?** → D&C. The left-half sort result is completely independent of the right-half sort result.\n\n**Subproblems overlapping?** → DP (or memoized recursion). Draw the recursion tree. If the same subproblem appears at multiple nodes, D&C without memoization is exponential. Adding a cache makes it DP."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// Generic D&C template\nfunction divideAndConquer(arr, lo, hi) {\n  if (lo >= hi) return baseSolution(arr, lo, hi); // base case\n\n  const mid = lo + Math.floor((hi - lo) / 2);\n\n  const leftResult = divideAndConquer(arr, lo, mid);\n  const rightResult = divideAndConquer(arr, mid + 1, hi);\n\n  return combine(leftResult, rightResult, arr, lo, mid, hi);\n}\n\n// Merge sort with inversion count\nfunction countInversions(arr) {\n  let inversions = 0;\n\n  function mergeSort(arr) {\n    if (arr.length <= 1) return arr;\n    const mid = Math.floor(arr.length / 2);\n    const left = mergeSort(arr.slice(0, mid));\n    const right = mergeSort(arr.slice(mid));\n    return mergAndCount(left, right);\n  }\n\n  function mergAndCount(left, right) {\n    const result = [];\n    let i = 0, j = 0;\n    while (i < left.length && j < right.length) {\n      if (left[i] <= right[j]) {\n        result.push(left[i++]);\n      } else {\n        // left[i..end] are all inversions with right[j]\n        inversions += left.length - i;\n        result.push(right[j++]);\n      }\n    }\n    return result.concat(left.slice(i)).concat(right.slice(j));\n  }\n\n  mergeSort(arr);\n  return inversions;\n}",
+      "language": "javascript",
+      "explanation": "The generic template shows the three-step structure: base case, two recursive calls, combine. The inversion count implementation demonstrates the most important D&C technique beyond basic sorting: accumulating a global answer during the merge step by exploiting the sorted order of the two halves."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Quickselect (D&C Kth Smallest)",
+          "description": "Run one partition step and recurse only on the half containing the kth element. Expected O(n) time - unlike full quicksort which recurses on both halves. Worst case O(n^2) with bad pivots; O(n) guaranteed with median-of-medians pivot selection.",
+          "example_problem": "Median of Two Sorted Arrays",
+          "example_slug": "median-of-two-sorted-arrays"
+        },
+        {
+          "name": "Karatsuba Multiplication",
+          "description": "Multiply two n-digit integers in O(n^1.585) instead of O(n^2) by splitting each number in half and reducing four multiplications to three using an algebraic identity. A classic example of D&C reducing a multiply problem's complexity class.",
+          "example_problem": "Count of Smaller Numbers After Self",
+          "example_slug": "count-of-smaller-numbers-after-self"
+        },
+        {
+          "name": "Strassen Matrix Multiplication (Conceptual)",
+          "description": "Multiplies n x n matrices in O(n^2.807) instead of O(n^3) by reducing 8 multiplications in naive block matrix multiply to 7 using algebraic identities. Important conceptually as proof that D&C can improve matrix operation complexity.",
+          "example_problem": "Sort List",
+          "example_slug": "sort-list"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n log n) for most D&C with O(n) combine step (merge sort, inversion count, closest pair)",
+      "space": "O(log n) call stack + O(n) for merge buffers in merge sort; O(log n) stack for in-place variants",
+      "explanation": "The Master Theorem explains the O(n log n): splitting into halves creates O(log n) recursion levels, and if the combine step does O(n) work, total work is O(n) per level times O(log n) levels = O(n log n). The recursion stack uses O(log n) space for call frames. Merge sort additionally requires O(n) extra space for temporary arrays during merge."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Confusing D&C with DP: applying divide and conquer to a problem with overlapping subproblems gives exponential time without memoization. Draw the recursion tree first - if the same subproblem appears at multiple nodes, use DP.",
+        "Missing base cases before dividing: not handling single-element arrays (`lo === hi`), empty arrays, or two-element arrays before recursing causes index-out-of-bounds errors or infinite recursion.",
+        "Losing elements in the merge step: the merge function must process ALL elements from both halves. Forgetting to append remaining elements from the non-exhausted half silently drops elements from the sorted result.",
+        "D&C on linked lists requires slow/fast pointer for midpoint: unlike arrays, you cannot compute mid = (lo + hi) / 2. Finding the middle of a linked list requires the slow/fast pointer technique, adding O(n) per level but still O(n log n) total.",
+        "Stack overflow on very large inputs: deep recursion can exhaust the call stack for large n. For very large n, merge sort can be implemented bottom-up iteratively starting with subproblems of size 1 and doubling."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Sort List",
+          "slug": "sort-list",
+          "difficulty": 6,
+          "difficulty_label": "Medium",
+          "why": "Merge sort on a linked list. Forces the slow/fast pointer midpoint technique instead of index arithmetic. The combine (merge) step is identical to array merge sort but operates on node pointers."
+        },
+        {
+          "title": "Find Median from Data Stream",
+          "slug": "find-median-from-data-stream",
+          "difficulty": 6,
+          "difficulty_label": "Hard",
+          "why": "Tests divide-and-conquer thinking applied to a dynamic sorted structure: maintaining two halves (max-heap for lower half, min-heap for upper half) and balancing them to find the median efficiently."
+        },
+        {
+          "title": "Count of Smaller Numbers After Self",
+          "slug": "count-of-smaller-numbers-after-self",
+          "difficulty": 6,
+          "difficulty_label": "Hard",
+          "why": "Inversion count generalized: for each element, count how many elements to its right are smaller. Solved by augmenting merge sort's merge step to count cross-half pairs."
+        },
+        {
+          "title": "Median of Two Sorted Arrays",
+          "slug": "median-of-two-sorted-arrays",
+          "difficulty": 6,
+          "difficulty_label": "Hard",
+          "why": "Binary search applied to partition two sorted arrays correctly. The D&C insight: binary search on the partition point of the smaller array using the sorted property to verify correctness in O(1) at each step. O(log(min(m,n)))."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Number Theory",
+      "next_slug": "number-theory",
+      "why": "Number theory provides the mathematical toolkit for problems involving primes, GCD, modular arithmetic, and combinatorics under mod. Many D&C problems require modular arithmetic to handle large answers, making number theory the natural next mathematical foundation to build."
+    }
+  ]
+}

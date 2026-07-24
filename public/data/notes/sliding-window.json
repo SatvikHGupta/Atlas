@@ -1,0 +1,131 @@
+{
+  "topic": "Sliding Window",
+  "level": 1,
+  "slug": "sliding-window",
+  "estimated_read": "13 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Sliding Window?",
+      "content": "**Sliding window** is a technique for efficiently processing contiguous subarrays or substrings. The naive approach to most 'find the best subarray' problems is O(n²): for every possible start position, scan to every possible end position. Sliding window avoids this by recognizing that **moving the window one step forward changes only two elements** - one leaves at the left, one enters at the right. Instead of recomputing the window's property from scratch, we update it incrementally.\n\nThe mental model: imagine a physical window sliding across an array. The window has a left edge and a right edge. The 'state' of the window (its sum, its character frequencies, its distinct element count) changes only at the edges when they move. This incremental update is what turns O(n²) into O(n).\n\nThere are two fundamental flavors. In a **fixed-size window**, the window size `k` never changes: both edges move forward one step every iteration. In a **variable-size window**, the right edge advances every iteration but the left edge only advances when the window violates a constraint. The constraint - when is the window 'bad'? - defines the entire algorithm.\n\nSliding window is one of the most pattern-matched techniques in technical interviews. The moment you see 'contiguous subarray', 'substring', 'window of size k', or 'longest/shortest subsequence with property X', sliding window should be your first instinct."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Sliding window applies whenever you are looking for an optimal contiguous subarray or substring and the window's property can be updated in O(1) as elements enter or leave. It does not apply to non-contiguous subsequences (use DP) or when adding/removing an element requires re-scanning the window (use a different structure like a monotonic deque).",
+      "signals": [
+        "contiguous subarray or substring",
+        "window of size k",
+        "longest subarray/substring with a property",
+        "shortest subarray/substring satisfying a condition",
+        "at most k distinct elements",
+        "maximum/minimum sum subarray of fixed size",
+        "find all anagrams in a string"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Fixed-Size Window",
+      "content": "In a **fixed-size window** of size `k`, the window moves one step right every iteration. The left pointer is always `right - k`. The state update is: add `arr[right]`, remove `arr[right - k]`.\n\n## Example: Maximum Sum Subarray of Size k\n\n```javascript\nfunction maxSumFixed(arr, k) {\n  let windowSum = 0;\n  for (let i = 0; i < k; i++) windowSum += arr[i]; // initial window\n  let best = windowSum;\n  for (let right = k; right < arr.length; right++) {\n    windowSum += arr[right] - arr[right - k]; // add right element, remove leftmost\n    best = Math.max(best, windowSum);\n  }\n  return best;\n}\n```\n\nThe key line is `windowSum += arr[right] - arr[right - k]`. Instead of summing `k` elements each time (O(k) per step → O(nk) total), we make one addition and one subtraction - O(1) per step → O(n) total.\n\n## When to Use Fixed Window\n\nWhenever the problem specifies 'exactly size k' or 'subarray of length k'. Also used in string problems: 'find all anagrams of p in s' uses a fixed window of size `p.length`."
+    },
+    {
+      "type": "concept",
+      "title": "Variable-Size Window",
+      "content": "In a **variable-size window**, the right edge advances every outer loop iteration. The left edge advances only when the window becomes invalid (violates the constraint). The window size can grow and shrink.\n\n## The Template Reasoning\n\nRight advances unconditionally - it expands the window to include the new element. Then we check: is the window valid? If not, advance left (and update state to reflect the removal) until it is valid again. After the shrink step, the window is guaranteed to be the largest valid window ending at `right`.\n\n## Example: Longest Substring with At Most 2 Distinct Characters\n\n```javascript\nfunction atMost2Distinct(s) {\n  const freq = new Map();\n  let left = 0, best = 0;\n  for (let right = 0; right < s.length; right++) {\n    freq.set(s[right], (freq.get(s[right]) || 0) + 1);  // expand\n    while (freq.size > 2) {                               // constraint violated\n      const lc = s[left++];\n      freq.set(lc, freq.get(lc) - 1);\n      if (freq.get(lc) === 0) freq.delete(lc);           // shrink until valid\n    }\n    best = Math.max(best, right - left + 1);\n  }\n  return best;\n}\n```\n\n## Why Left Doesn't Go Back\n\nA key property: once `left` advances, it never retreats. This is what guarantees O(n) - `left` and `right` each traverse the array at most once."
+    },
+    {
+      "type": "concept",
+      "title": "Window State Tracking",
+      "content": "The 'state' of the window is what you maintain to check validity and compute the result. Choose the state based on what the constraint cares about:\n\n## Simple State: Running Sum or Count\nFor 'max sum subarray' or 'count of even numbers in window', maintain a single variable. Add when expanding, subtract when shrinking.\n\n## Frequency Map State\nFor 'at most k distinct characters' or 'find anagrams', maintain a `Map` of character counts. Increment on expand, decrement on shrink, delete when count reaches 0. Track `map.size` for distinct count.\n\n## Satisfied Requirements State\nFor 'minimum window containing all characters of t': maintain a `required` count (how many characters of `t` are not yet fully covered). When adding a character satisfies a requirement (its count in window matches its count in `t`), decrement `required`. The window is valid when `required === 0`. This avoids scanning the entire frequency map each iteration - just track one integer."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// === FIXED-SIZE WINDOW ===\nfunction fixedWindow(arr, k) {\n  let state = 0;\n  // build initial window\n  for (let i = 0; i < k; i++) state += arr[i];\n  let best = state;\n  for (let right = k; right < arr.length; right++) {\n    state += arr[right] - arr[right - k]; // slide: add new, remove old\n    best = Math.max(best, state);\n  }\n  return best;\n}\n\n// === VARIABLE-SIZE WINDOW ===\nfunction variableWindow(s) {\n  const freq = new Map();\n  let left = 0, best = 0;\n\n  for (let right = 0; right < s.length; right++) {\n    // expand: add s[right] into window state\n    freq.set(s[right], (freq.get(s[right]) || 0) + 1);\n\n    // shrink: move left until window is valid again\n    while (/* window invalid condition */ freq.size > 2) {\n      const lc = s[left++];\n      freq.set(lc, freq.get(lc) - 1);\n      if (freq.get(lc) === 0) freq.delete(lc);\n    }\n\n    // window [left..right] is now the largest valid window ending at right\n    best = Math.max(best, right - left + 1);\n  }\n  return best;\n}",
+      "language": "javascript",
+      "explanation": "Fixed window: slide one step at a time by adding the new right element and subtracting the outgoing left element. Variable window: right expands unconditionally, left shrinks in a while loop until the constraint is satisfied - the inner while loop runs at most n times total across the entire outer loop, giving O(n) overall."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Minimum Window (Shrink to Smallest)",
+          "description": "Instead of maximizing window size, minimize it. After every point where the window becomes valid, try shrinking from the left as far as possible while staying valid, recording the window length at each valid state. Used in 'Minimum Window Substring'.",
+          "example_problem": "Minimum Window Substring",
+          "example_slug": "minimum-window-substring"
+        },
+        {
+          "name": "Fixed Window for Anagram Detection",
+          "description": "Build a frequency map for the pattern, then slide a fixed-size window over the text. After each slide, compare the window's frequency map to the pattern's. For efficiency, track a 'matches' counter that increments/decrements as individual character counts align or misalign.",
+          "example_problem": "Find All Anagrams in a String",
+          "example_slug": "find-all-anagrams-in-a-string"
+        },
+        {
+          "name": "Sliding Window Maximum (Monotonic Deque)",
+          "description": "Finding the maximum in a sliding window can't be done with simple state update because removing the maximum from the left edge requires knowing the new maximum. A monotonic deque (covered in Queues) maintains the maximum in O(1) per operation.",
+          "example_problem": "Sliding Window Maximum",
+          "example_slug": "sliding-window-maximum"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n)",
+      "space": "O(k) where k is window size or alphabet size",
+      "explanation": "The right pointer advances exactly n times (one per outer iteration). The left pointer also advances at most n times total across all iterations of the inner while loop - it never resets. Each element is added to the window once and removed at most once, so each element causes O(1) state update work. Total: O(n). Space is O(k) for the frequency map where k is bounded by the alphabet or the window constraint."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Using `while` vs `if` in the shrink step incorrectly: for variable windows, shrink must be a `while` loop (shrink until valid), not an `if` (shrink by one). Using `if` means the window might still be invalid after one shrink step, producing wrong results on inputs where multiple shrinks are needed.",
+        "Forgetting to delete map entries when count reaches 0: after decrementing a character count in the shrink step, if the count is 0, the key must be deleted. If it remains in the map with value 0, `map.size` overcounts distinct characters and the validity check fails.",
+        "Computing window length as `right - left` instead of `right - left + 1`: a window from index 2 to index 4 contains 3 elements (2, 3, 4), not 2. The length is always `right - left + 1`. Forgetting the `+1` causes the answer to be off by one.",
+        "Applying variable sliding window to problems that need exact size: 'subarray of exactly sum k' is not directly solvable with sliding window if the array contains negative numbers, because shrinking from the left doesn't reliably reduce the sum. Sliding window works for 'at most k' conditions on non-negative arrays; exact conditions often need prefix sums + hash maps instead."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Longest Substring Without Repeating Characters",
+          "slug": "longest-substring-without-repeating-characters",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "The cleanest variable-size window problem - constraint is 'no duplicate characters', state is a frequency map."
+        },
+        {
+          "title": "Minimum Size Subarray Sum",
+          "slug": "minimum-size-subarray-sum",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Variable window minimization - shrink as far left as possible while sum remains above target, tracking the minimum valid window."
+        },
+        {
+          "title": "Maximum Average Subarray I",
+          "slug": "maximum-average-subarray-i",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Pure fixed-size window - slide k-length window tracking the sum, update by subtracting the outgoing element."
+        },
+        {
+          "title": "Permutation in String",
+          "slug": "permutation-in-string",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Fixed-size window anagram detection - tests the 'matches counter' optimization for comparing frequency maps incrementally."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Two Pointers",
+      "next_slug": "two-pointers",
+      "why": "Two pointers is the generalization of the left/right pointer idea from sliding window - you've already used the pattern, now you learn it for sorted arrays, palindromes, and cycle detection where the pointers move at different speeds or from different directions."
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "topic": "Monotonic Queue",
+  "level": 8,
+  "slug": "monotonic-queue",
+  "estimated_read": "10 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is a Monotonic Queue?",
+      "content": "A monotonic queue is a **double-ended queue (deque)** that maintains its elements in either strictly increasing or strictly decreasing order of their values. Unlike a regular queue, elements can be removed from both ends. This structure answers **range min/max queries over a sliding window** in O(1) per query, with O(n) total work across all queries.\n\nThe key distinction from a monotonic stack is what the data structure is tracking: a monotonic **stack** processes a sequence once and answers \"what is the next/previous greater or smaller element?\" - a neighbor relationship. A monotonic **queue** maintains a window sliding over the sequence and answers \"what is the maximum or minimum in the current window?\" - a range relationship over time.\n\nThe deque stores **indices**, not values. This is essential: indices let you check whether the front element has fallen outside the current window (expired) and evict it. When a new element arrives, dominated elements - those at the back that are smaller than the new element for a max-queue - are removed because they can never be the window maximum while the new element is still in the window. Each index is added once and removed at most once, giving **O(n) total** work regardless of window size.\n\nBeyond the canonical Sliding Window Maximum problem, the monotonic queue appears as a DP optimization. When a recurrence is `dp[i] = max(dp[j]) + cost` for j in some sliding range of i, a monotonic queue maintains that max efficiently, reducing O(n²) DP to O(n). This appears in Jump Game VI, Constrained Subset Sum, and Shortest Subarray with Sum at Least K."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use a monotonic queue when you need the minimum or maximum value in a fixed-size or bounded sliding window, and you cannot afford O(k) to scan the window each time. Also use it when a DP recurrence requires the max or min of a range of previous dp values - the queue maintains that range optimally. If queries are static (no sliding), use a sparse table instead.",
+      "signals": [
+        "sliding window maximum",
+        "sliding window minimum",
+        "maximum of every window of size k",
+        "DP with max or min over sliding range of states",
+        "shortest subarray with sum at least k",
+        "constrained window min or max",
+        "fixed size window range query",
+        "jump game with window constraint"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## Deque Invariant and Two Eviction Types\n\nThe deque stores indices. For a **max-queue** (sliding window maximum), the invariant is: elements in the deque are in **decreasing** order of their values. For a **min-queue**, they are in increasing order.\n\nTwo types of eviction happen at different ends:\n\n1. **Expiry eviction (front)** - check if `deque[front] <= i - k` (the front index has slid out of the window). Pop from the front. This keeps the window boundary correct.\n\n2. **Dominance eviction (back)** - before pushing the new index `i`, pop from the back while `arr[deque[back]] <= arr[i]` (for max-queue). These back elements are dominated by `arr[i]` - as long as `arr[i]` is in the window, they can never be the maximum.\n\nAfter both evictions, push `i` to the back. The front of the deque is always the index of the current window's maximum.\n\n## Sliding Window Maximum Algorithm\n\nFor an array of size n and window size k:\n1. For each index `i` from 0 to n-1:\n   - Pop from **front** while `deque[front] <= i - k` (expired)\n   - Pop from **back** while `arr[deque[back]] <= arr[i]` (dominated)\n   - Push `i` to back\n   - If `i >= k - 1`, record `arr[deque[0]]` as the current window max\n2. Result has `n - k + 1` elements\n\nTotal: O(n) - each index is pushed and popped at most once across the entire traversal.\n\n## Monotonic Queue as DP Optimization\n\nWhen dp[i] depends on the max of dp[j] for j in [i-k, i-1], maintain a decreasing monotonic queue of dp values. As i advances, the valid range [i-k, i-1] slides forward - evict dp values falling outside the left boundary from the front, evict dominated dp values from the back when a new dp[i] is computed.\n\nExample - Jump Game VI: `dp[i] = max(dp[i-k], ..., dp[i-1]) + nums[i]`. Naive: O(n*k). With monotonic queue: O(n).\n\n## Monotonic Queue vs Monotonic Stack\n\n| | Monotonic Stack | Monotonic Queue |\n|---|---|---|\n| Structure | Single-end stack | Double-end deque |\n| Query | Next/prev greater/smaller | Window min/max |\n| Eviction | One type (dominance from top) | Two types (expiry from front, dominance from back) |\n| Use case | Neighbor relationships | Sliding window relationships |"
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// Sliding Window Maximum - O(n) using monotonic deque\nfunction maxSlidingWindow(nums, k) {\n  const n = nums.length;\n  const result = [];\n  const deque = []; // stores indices, front = max\n\n  for (let i = 0; i < n; i++) {\n    // evict expired elements from the front\n    while (deque.length > 0 && deque[0] <= i - k) {\n      deque.shift();\n    }\n\n    // evict dominated elements from the back\n    // (elements smaller than nums[i] can never be max while i is in window)\n    while (deque.length > 0 && nums[deque[deque.length - 1]] <= nums[i]) {\n      deque.pop();\n    }\n\n    deque.push(i);\n\n    // record answer once the first full window is formed\n    if (i >= k - 1) {\n      result.push(nums[deque[0]]);\n    }\n  }\n\n  return result;\n}\n\n// DP + Monotonic Queue - Jump Game VI style\n// dp[i] = max(dp[i-k..i-1]) + nums[i]\nfunction dpWithMonotonicQueue(nums, k) {\n  const n = nums.length;\n  const dp = new Array(n).fill(0);\n  dp[0] = nums[0];\n  const deque = [0]; // stores indices of dp values, front = max dp\n\n  for (let i = 1; i < n; i++) {\n    // evict dp values outside the window [i-k, i-1]\n    while (deque.length > 0 && deque[0] < i - k) {\n      deque.shift();\n    }\n    dp[i] = dp[deque[0]] + nums[i];\n\n    // evict dominated dp values from back before pushing dp[i]\n    while (deque.length > 0 && dp[deque[deque.length - 1]] <= dp[i]) {\n      deque.pop();\n    }\n    deque.push(i);\n  }\n\n  return dp[n - 1];\n}",
+      "language": "javascript",
+      "explanation": "The first function is the canonical sliding window maximum using a decreasing deque of indices. The second shows the DP optimization pattern - maintaining a window of past dp values using the same deque structure."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Sliding Window Minimum",
+          "description": "Identical structure to sliding window maximum - flip the dominance eviction direction. Pop from the back while `arr[deque[back]] >= arr[i]` instead of `<=`. The front is now the index of the current window minimum.",
+          "example_problem": "Sliding Window Minimum",
+          "example_slug": "sliding-window-minimum"
+        },
+        {
+          "name": "Shortest Subarray with Sum at Least K",
+          "description": "Apply a monotonic deque to the prefix sum array. Maintain an increasing deque of prefix sum indices. For each new prefix sum, pop from the front while `prefixSum[i] - prefixSum[deque[front]] >= k` and track the shortest valid subarray. O(n).",
+          "example_problem": "Shortest Subarray with Sum at Least K",
+          "example_slug": "shortest-subarray-with-sum-at-least-k"
+        },
+        {
+          "name": "Jump Game VI",
+          "description": "DP recurrence `dp[i] = max(dp[i-k..i-1]) + nums[i]`. The max over a sliding window of dp values is exactly the monotonic queue problem. Reduces from O(n*k) naive DP to O(n).",
+          "example_problem": "Jump Game VI",
+          "example_slug": "jump-game-vi"
+        },
+        {
+          "name": "Constrained Subsequence Sum",
+          "description": "Find maximum sum of a subsequence where adjacent picked elements are at most k apart. DP with monotonic queue: `dp[i] = max(dp[max(0,i-k)..i-1]) + nums[i]` (only take positive contributions). Same sliding window DP optimization.",
+          "example_problem": "Constrained Subsequence Sum",
+          "example_slug": "constrained-subsequence-sum"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n) total",
+      "space": "O(k)",
+      "explanation": "Each of the n elements is pushed into the deque exactly once and popped at most once (either via expiry or dominance eviction). So the total number of push+pop operations across all n iterations is at most 2n - O(n) overall regardless of window size k. The deque holds at most k elements at any time (one full window), so space is O(k). This is a major improvement over the O(n*k) naive approach of scanning each window."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Storing values instead of indices in the deque - values alone cannot check expiry (`deque[front] <= i - k` requires the index, not the value); always store indices and use `arr[deque[front]]` to read the corresponding value.",
+        "Evicting expired elements from the back instead of the front - expiry (window boundary) check must happen at the front; dominance eviction happens at the back. Mixing these two directions corrupts the deque invariant entirely.",
+        "Off-by-one in expiry condition - the window of size k centered ending at `i` covers indices `[i-k+1, i]`, so index `i-k` is just outside the left boundary. Evict when `deque[front] <= i - k` (strictly expired), not `< i - k`.",
+        "Recording the answer before the first full window - start recording results only when `i >= k - 1`. Recording from `i = 0` adds partial-window maximums that are meaningless and shifts the result array.",
+        "Confusing monotonic queue with monotonic stack - a stack cannot evict expired elements (it has no front access); using a stack for sliding window max means old elements that left the window still influence the 'maximum', producing wrong answers."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Sliding Window Maximum",
+          "slug": "sliding-window-maximum",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "The canonical monotonic queue problem - directly applies the decreasing deque with front expiry and back dominance eviction."
+        },
+        {
+          "title": "Shortest Subarray with Sum at Least K",
+          "slug": "shortest-subarray-with-sum-at-least-k",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Tests applying monotonic queue to a prefix sum array - non-obvious mapping where the deque tracks increasing prefix sums to find shortest valid subarray."
+        },
+        {
+          "title": "Jump Game VI",
+          "slug": "jump-game-vi",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Tests the DP + monotonic queue optimization pattern - max over a sliding range of previous dp values."
+        },
+        {
+          "title": "Constrained Subsequence Sum",
+          "slug": "constrained-subsequence-sum",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Tests monotonic queue DP with a variable window constraint - combines the greedy of only taking positive dp values with the sliding window max."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Sparse Table",
+      "next_slug": "sparse-table",
+      "why": "Monotonic queue gives O(1) amortized range min/max for a sliding window on a dynamic stream. Sparse table gives O(1) worst-case range min/max for static arrays with no updates. Learning sparse table completes the picture of range query techniques across different data conditions."
+    }
+  ]
+}

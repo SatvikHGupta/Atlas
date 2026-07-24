@@ -1,0 +1,129 @@
+{
+  "topic": "Binary Search",
+  "level": 3,
+  "slug": "binary-search",
+  "estimated_read": "14 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Binary Search?",
+      "content": "Binary search finds a target in a sorted space in O(log n) by eliminating half the search space each step. The classic version is finding a value in a sorted array - straightforward and useful. But the real power of binary search is the generalization: **any time you can define a condition that is false for all values below some threshold X and true for all values above X (or vice versa), binary search finds X.**\n\nThis generalization - binary search on the answer space - unlocks a large class of optimization problems. \"What is the minimum number of days to ship all packages given daily capacity C?\" Nothing is literally sorted here. But if C is large enough, shipping is possible; if C is too small, it is not. The feasibility function is monotonic. Binary search on C directly, running the feasibility check as the inner loop.\n\nThe key insight is that you are not searching for a value in an array - you are searching for the **boundary** between the region where a condition is false and the region where it is true. The condition just needs to be monotonic (once true, always true going in one direction). Binary search finds that boundary in O(log(answer range)) iterations.\n\nBinary search requires careful implementation. The off-by-one errors are notorious - `left <= right` vs `left < right`, `right = mid` vs `right = mid - 1`, `left = mid` vs `left = mid + 1`. These are not arbitrary choices: they flow from whether you are doing exact search, left-bound search, or right-bound search. Understand the reasoning behind each variant rather than memorizing them.\n\nBinary search also applies to sorted matrices, rotated sorted arrays, and problems involving finding the minimum in a structure with some sorted property. The common thread in all of these is: at each step, you can determine with certainty which half of the remaining search space the answer lies in, and discard the other half."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use binary search when the input is sorted and you need to find a value or boundary, or when you can binary search on the answer space. The answer-space pattern applies when: the problem asks for a minimum or maximum value satisfying some condition, and that condition has a monotonic property (once satisfied, all larger/smaller values also satisfy it). Sorted array problems, rotated sorted array problems, and any problem asking for the first/last occurrence of a condition are also binary search. If brute force would be O(n * something) and the something is O(log n) feasible, binary search on the outer loop is likely the approach.",
+      "signals": [
+        "sorted array",
+        "find minimum X such that",
+        "binary search on answer",
+        "search in O(log n)",
+        "first or last occurrence",
+        "rotated sorted array",
+        "capacity or speed or threshold problems",
+        "kth smallest in sorted structure"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Three Templates: Exact Search, Left Bound, and Answer Space",
+      "content": "## Template 1: Exact Value Search\n\nFind a specific target in a sorted array. Return its index or -1.\n\n```\nleft = 0, right = n - 1\nwhile left <= right:\n  mid = left + floor((right - left) / 2)\n  if arr[mid] == target: return mid\n  if arr[mid] < target: left = mid + 1\n  else: right = mid - 1\nreturn -1\n```\n\nWhy `(right - left) / 2` not `(left + right) / 2`? When left and right are both large, `left + right` can overflow a 32-bit integer in languages like Java/C++. In JS numbers do not overflow in the same way, but the pattern is good practice.\n\n## Template 2: Left Bound Search\n\nFind the **first index** where a condition becomes true. This is the most general binary search template.\n\n```\nleft = 0, right = n  (note: right = n, not n-1)\nwhile left < right:  (note: strict less than)\n  mid = left + floor((right - left) / 2)\n  if condition(mid):  right = mid    (mid could be answer; keep it)\n  else: left = mid + 1               (mid is definitely not answer)\nreturn left  (loop exits with left == right, both pointing to answer)\n```\n\nWhy `right = mid` instead of `mid - 1`? Because when the condition is true at `mid`, `mid` itself might be the answer - we cannot discard it. But we also do not need to go further right. Setting `right = mid` keeps `mid` in range while shrinking the window.\n\nWhy `left < right` instead of `left <= right`? With `right = mid` (not `mid - 1`), the loop would not terminate if `left == right` (mid would equal left which equals right, nothing changes). Using `left < right` breaks the loop when they converge.\n\n## Template 3: Binary Search on Answer Space\n\nWhen the problem asks \"find minimum X such that condition(X) is true\" and condition is monotonic:\n\n```\nleft = minimum_possible_answer\nright = maximum_possible_answer\nwhile left < right:\n  mid = left + floor((right - left) / 2)\n  if canAchieve(mid): right = mid  (mid works; try smaller)\n  else: left = mid + 1             (mid too small; need larger)\nreturn left\n```\n\nThe condition function `canAchieve(mid)` runs an O(n) or O(n log n) check. The binary search runs O(log(range)) iterations. Total: O(n log(range)).\n\n## Rotated Sorted Array\n\nA rotated sorted array has two sorted halves joined at a rotation point. At any `mid`, **one of the two halves is always fully sorted**. Check which half is sorted (compare `arr[left]` vs `arr[mid]`). If the target lies within the sorted half, search there. Otherwise search the other half. This halves the search space each step: O(log n)."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// Left-bound binary search: finds first index where condition is true\n// Most general form - works for 'first occurrence', 'search insert position', answer space\nfunction leftBound(arr, target) {\n  let left = 0;\n  let right = arr.length; // note: n, not n-1\n\n  while (left < right) { // note: strict less than\n    const mid = left + Math.floor((right - left) / 2);\n    if (arr[mid] >= target) {\n      right = mid;         // mid could be the answer; keep it in range\n    } else {\n      left = mid + 1;      // mid is too small; advance left past it\n    }\n  }\n  return left; // left === right when loop exits; this is the first valid index\n}\n\n// Binary search on answer space\n// Example: minimum capacity to ship packages in D days\nfunction shipWithinDays(weights, days) {\n  // Binary search bounds: min capacity = heaviest package, max = sum of all\n  let left = Math.max(...weights);\n  let right = weights.reduce((a, b) => a + b, 0);\n\n  while (left < right) {\n    const mid = left + Math.floor((right - left) / 2);\n    if (canShip(weights, days, mid)) {\n      right = mid;   // mid capacity works; try smaller\n    } else {\n      left = mid + 1; // mid too small; need more capacity\n    }\n  }\n  return left;\n}\n\nfunction canShip(weights, days, capacity) {\n  let daysNeeded = 1;\n  let current = 0;\n  for (const w of weights) {\n    if (current + w > capacity) { daysNeeded++; current = 0; }\n    current += w;\n  }\n  return daysNeeded <= days;\n}",
+      "language": "javascript",
+      "explanation": "The left-bound template is the most versatile: it handles exact search, first occurrence, and search insert position. The answer-space example shows how to structure the feasibility check as a separate function, keeping the binary search logic clean."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Right Bound Search",
+          "description": "Find the last index where a condition is true. Mirror of left bound: when condition is true, set `left = mid + 1` (we found one valid answer but want to go further right). When false, set `right = mid`. Result is `left - 1` after the loop.",
+          "example_problem": "Binary Search",
+          "example_slug": "binary-search"
+        },
+        {
+          "name": "Binary Search on Floats",
+          "description": "When the answer is a real number, run for a fixed number of iterations (100 is enough for any practical precision) or terminate when `right - left < 1e-9`. No need to worry about integer overflow or off-by-one.",
+          "example_problem": "Koko Eating Bananas",
+          "example_slug": "koko-eating-bananas"
+        },
+        {
+          "name": "Binary Search in Rotated Sorted Array",
+          "description": "At each mid, one of the two halves is fully sorted. Compare arr[left] and arr[mid] to identify which half. If target is within the sorted half's range, search there; otherwise search the unsorted half.",
+          "example_problem": "Search in Rotated Sorted Array",
+          "example_slug": "search-in-rotated-sorted-array"
+        },
+        {
+          "name": "Binary Search on 2D Matrix",
+          "description": "A sorted matrix can be treated as a flat sorted array. Map a 1D index i to 2D coordinates: row = floor(i / cols), col = i % cols. Run standard binary search on indices 0 to rows*cols - 1.",
+          "example_problem": "Find Minimum in Rotated Sorted Array",
+          "example_slug": "find-minimum-in-rotated-sorted-array"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(log n) for search in array; O(n log(range)) for answer-space binary search with O(n) feasibility check",
+      "space": "O(1) - binary search is iterative with only left/right/mid variables",
+      "explanation": "Each iteration eliminates exactly half the remaining search space. Starting with n candidates, after k iterations we have n / 2^k candidates. We stop when there is 1 candidate: k = log2(n) iterations. For answer-space binary search, the outer binary search runs O(log(max - min)) times, and each iteration calls an O(n) feasibility function, giving O(n log(range)) total."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Off-by-one in boundary: using `right = mid - 1` instead of `right = mid` in left-bound search discards `mid` as a candidate even when it satisfies the condition, causing the function to return the wrong boundary.",
+        "Infinite loop from `left = mid` without `+1`: mid is computed as floor((left + right) / 2), which rounds down. If `left = mid` and right = left + 1, mid equals left forever. Always write `left = mid + 1` when advancing left.",
+        "Using `left <= right` for boundary search: the left-bound template requires `left < right`. With `left <= right`, the loop does not terminate correctly when `right = mid` causes left and right to converge to the same value.",
+        "Forgetting that the answer to answer-space binary search is `left` after the loop: the loop exits when `left == right`, and both point to the minimum value satisfying the condition. A common mistake is returning `mid` (undefined after the loop) or `left - 1` (the last failing value).",
+        "Setting wrong bounds for answer-space binary search: the lower bound must be the minimum possible answer and the upper bound must be the maximum possible answer. An off bound causes the correct answer to be outside the search range."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Binary Search",
+          "slug": "binary-search",
+          "difficulty": 3,
+          "difficulty_label": "Easy",
+          "why": "Baseline exact-search implementation. Solidify the `left <= right`, `left = mid + 1`, `right = mid - 1` template before moving to boundary variants."
+        },
+        {
+          "title": "Search in Rotated Sorted Array",
+          "slug": "search-in-rotated-sorted-array",
+          "difficulty": 3,
+          "difficulty_label": "Medium",
+          "why": "Tests the insight that one half of a rotated array is always fully sorted, allowing you to eliminate a half each step. Requires careful case analysis on which half to search."
+        },
+        {
+          "title": "Find Minimum in Rotated Sorted Array",
+          "slug": "find-minimum-in-rotated-sorted-array",
+          "difficulty": 3,
+          "difficulty_label": "Medium",
+          "why": "Binary search without a target value - you are finding the rotation point. Uses the left-bound template pattern."
+        },
+        {
+          "title": "Koko Eating Bananas",
+          "slug": "koko-eating-bananas",
+          "difficulty": 3,
+          "difficulty_label": "Medium",
+          "why": "Answer-space binary search. Nothing in the input is sorted; the search space is the range of possible eating speeds. Teaches how to identify the monotonic condition and set binary search bounds."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Binary Trees",
+      "next_slug": "binary-trees",
+      "why": "Binary trees are the most important recursive data structure. Every tree operation is built on the same recursive thinking developed in the recursion basics topic, but applied to a concrete pointer-based structure."
+    }
+  ]
+}

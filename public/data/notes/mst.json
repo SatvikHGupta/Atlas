@@ -1,0 +1,129 @@
+{
+  "topic": "MST - Minimum Spanning Tree",
+  "level": 5,
+  "slug": "mst",
+  "estimated_read": "11 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is a Minimum Spanning Tree?",
+      "content": "A **Minimum Spanning Tree (MST)** of a weighted undirected graph is a subset of edges that connects all vertices with the minimum possible total edge weight, containing no cycles. A spanning tree of a graph with V vertices always has exactly V-1 edges - enough to connect everything without creating any loops. The MST is the cheapest such tree. Think of it as the cheapest way to lay cable connecting all cities, or build roads connecting all towns with the least total construction cost.\n\nTwo classic algorithms solve this problem. **Kruskal's algorithm** sorts all edges by weight and greedily adds the cheapest edge that doesn't create a cycle, using a Disjoint Set Union structure to detect cycles efficiently. **Prim's algorithm** grows a tree from a single starting node by repeatedly adding the cheapest edge that connects a node inside the current tree to a node outside it, using a priority queue to find that cheapest edge efficiently. Both algorithms are provably correct and produce the same MST (or one of the valid MSTs when edge weights are not all distinct).\n\nThe correctness of both algorithms rests on the **Cut Property**: for any partition of vertices into two non-empty sets, the minimum weight edge crossing the partition must be in the MST. Kruskal's exploits this by sorting edges globally. Prim's exploits it locally at each step - the current tree and remaining nodes form a cut, and the cheapest crossing edge must be in the MST.\n\nMST appears in network design problems (connecting nodes at minimum cost), clustering (where you remove the k-1 most expensive edges to form k clusters), and as a subroutine in approximation algorithms. On LeetCode, problems phrased as 'minimum cost to connect all points' or 'cheapest way to link all cities' almost always call for an MST algorithm."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use MST algorithms when you need to connect all nodes in a weighted undirected graph with the minimum total edge weight. The key signals are: all nodes must be reachable, edges have costs, and you want the cheapest connected structure. If the problem asks to connect a subset of nodes or has directed edges, MST likely doesn't apply directly.",
+      "signals": [
+        "connect all nodes with minimum cost",
+        "minimum total edge weight spanning all vertices",
+        "cheapest way to connect all points",
+        "minimum cost network design",
+        "clustering by distance",
+        "spanning tree of minimum weight",
+        "minimum cost to make graph connected",
+        "build roads or cables connecting all cities"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Core Concepts",
+      "content": "## Kruskal's Algorithm\n\nSort all edges by weight ascending. Use DSU (Disjoint Set Union). Iterate edges in sorted order - for each edge `(u, v, w)`: if `find(u) !== find(v)` (adding this edge won't create a cycle), add it to the MST and call `union(u, v)`. Stop when the MST has V-1 edges. Total complexity is O(E log E) dominated by sorting.\n\nWhy DSU for cycle detection? When you add edge `(u, v)`, it creates a cycle if and only if `u` and `v` are already in the same connected component. DSU tracks connected components in near-O(1) per operation with path compression and union by rank.\n\n## Prim's Algorithm\n\nMaintain a set of nodes already in the MST. Start with any node (typically node 0). Use a min-heap of `(weight, node)` pairs. Repeatedly extract the minimum-weight edge from the heap. If the destination node is not yet in the MST, add it and push all its edges to unvisited neighbors into the heap. Continue until all nodes are in the MST.\n\nComplexity: O((V + E) log V) with a binary heap. Better for dense graphs where E is close to V², because you don't need to sort all edges upfront.\n\n## MST Properties\n\n- An MST has **exactly V-1 edges** for a connected graph with V vertices.\n- If all edge weights are **distinct**, the MST is **unique**.\n- The **Cut Property** guarantees both algorithms are correct: the minimum weight edge crossing any cut of the graph is always part of the MST.\n- **Maximum Spanning Tree**: negate all edge weights and run Kruskal's or Prim's, or reverse the comparisons in the greedy step.\n\n## Kruskal's vs Prim's Choice\n\nKruskal's is simpler to implement and faster for **sparse graphs** (small E). Prim's with adjacency matrix is better for **dense graphs**. In interviews, Kruskal's with DSU is the more commonly expected approach because DSU is a reusable component."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// Kruskal's MST using DSU\n// edges: array of [weight, u, v]\n// n: number of nodes (0-indexed)\nfunction kruskalMST(n, edges) {\n  // DSU\n  const parent = Array.from({ length: n }, (_, i) => i);\n  const rank = new Array(n).fill(0);\n\n  function find(x) {\n    if (parent[x] !== x) parent[x] = find(parent[x]); // path compression\n    return parent[x];\n  }\n\n  function union(x, y) {\n    const px = find(x), py = find(y);\n    if (px === py) return false; // already connected - would create cycle\n    if (rank[px] < rank[py]) parent[px] = py;\n    else if (rank[px] > rank[py]) parent[py] = px;\n    else { parent[py] = px; rank[px]++; }\n    return true;\n  }\n\n  // sort edges by weight ascending\n  edges.sort((a, b) => a[0] - b[0]);\n\n  let totalCost = 0;\n  let edgesUsed = 0;\n\n  for (const [w, u, v] of edges) {\n    if (union(u, v)) { // no cycle - add to MST\n      totalCost += w;\n      edgesUsed++;\n      if (edgesUsed === n - 1) break; // MST complete\n    }\n  }\n\n  // if edgesUsed < n-1, graph was disconnected (no MST)\n  return edgesUsed === n - 1 ? totalCost : -1;\n}",
+      "language": "javascript",
+      "explanation": "Kruskal's with DSU: sort edges by weight, then greedily add each edge that doesn't create a cycle (detected by find()). Stops as soon as V-1 edges are added. Returns -1 if the graph is disconnected and a full spanning tree is impossible."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Prim's with Priority Queue",
+          "description": "Start from any node and greedily expand the MST using a min-heap of (cost, node) pairs. Better for dense graphs where E ≈ V². Avoids sorting all edges upfront - instead lazily discovers edges via the heap as nodes are added to the tree.",
+          "example_problem": "Min Cost to Connect All Points",
+          "example_slug": "min-cost-to-connect-all-points"
+        },
+        {
+          "name": "Maximum Spanning Tree",
+          "description": "Find the spanning tree with maximum total edge weight. Negate all edge weights and run Kruskal's, or simply reverse the sort order (sort descending by weight) and run the same greedy logic. The Cut Property holds in the maximum direction too.",
+          "example_problem": "Optimize Water Distribution in a Village",
+          "example_slug": "optimize-water-distribution-in-a-village"
+        },
+        {
+          "name": "Minimum Spanning Forest",
+          "description": "When the graph is not fully connected, there is no single spanning tree. Run Kruskal's or Prim's normally - the result will be a spanning forest, one MST per connected component. Detect this case by counting edges added: fewer than V-1 means multiple components.",
+          "example_problem": "Connecting Cities With Minimum Cost",
+          "example_slug": "connecting-cities-with-minimum-cost"
+        },
+        {
+          "name": "Critical and Pseudo-Critical Edges",
+          "description": "A critical edge must appear in every MST. A pseudo-critical edge appears in some but not all MSTs. To classify: force-include the edge and check if MST cost changes; force-exclude it and check if MST cost increases. O(E²) with Kruskal's.",
+          "example_problem": "Find Critical and Pseudo-Critical Edges in Minimum Spanning Tree",
+          "example_slug": "find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(E log E) Kruskal's, O((V+E) log V) Prim's",
+      "space": "O(V + E)",
+      "explanation": "Kruskal's: sorting E edges dominates at O(E log E). DSU operations are nearly O(1) each with path compression and union by rank, totaling O(E α(V)) ≈ O(E). Prim's: each of the V nodes is extracted from the heap once (O(V log V)) and each of the E edges is pushed at most once (O(E log V)), giving O((V+E) log V). Space is O(V) for DSU parent/rank arrays plus O(E) for the edge list."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Forgetting to sort edges before Kruskal's - without sorting, you don't process edges in weight order and the greedy choice (cheapest non-cycle edge) is violated, producing a spanning tree that may not be minimum.",
+        "Using a direct parent array for cycle detection instead of DSU find() - checking `parent[u] !== parent[v]` only works for immediate parents, not multi-hop paths; only the DSU find() with path compression correctly identifies connected components.",
+        "Stopping when no cycle is detected rather than when V-1 edges are collected - you might add fewer than V-1 edges and return early with an incomplete spanning tree, especially on graphs with many components.",
+        "Applying MST to a directed graph - Kruskal's and Prim's require undirected edges. Directed MST (minimum spanning arborescence) requires Edmonds' algorithm, which is much more complex.",
+        "Not handling disconnected graphs - if fewer than V-1 edges are added after processing all edges, the graph is disconnected and no spanning tree exists; return -1 or infinity rather than the partial cost."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Min Cost to Connect All Points",
+          "slug": "min-cost-to-connect-all-points",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Classic MST on a complete graph where edge weight is Manhattan distance - tests Kruskal's or Prim's directly with edge generation."
+        },
+        {
+          "title": "Connecting Cities With Minimum Cost",
+          "slug": "connecting-cities-with-minimum-cost",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Direct MST application on an explicit edge list - tests Kruskal's with DSU cycle detection and disconnected graph handling."
+        },
+        {
+          "title": "Optimize Water Distribution in a Village",
+          "slug": "optimize-water-distribution-in-a-village",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "MST with a virtual node - adding a well in each village is modeled as a virtual node 0 with edges of cost equal to well cost, converting the problem into a standard MST."
+        },
+        {
+          "title": "Find Critical and Pseudo-Critical Edges in Minimum Spanning Tree",
+          "slug": "find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Tests deep MST understanding - classifying edges requires running MST multiple times with forced inclusions and exclusions."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "1D Dynamic Programming",
+      "next_slug": "1d-dp",
+      "why": "MST completes the graph algorithms section. Dynamic programming is the next major paradigm - starting with 1D DP builds the core recurrence-relation thinking that underpins all of DP, from simple climbing stairs to 2D knapsack and tree DP."
+    }
+  ]
+}

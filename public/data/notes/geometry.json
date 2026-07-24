@@ -1,0 +1,123 @@
+{
+  "topic": "Geometry Basics",
+  "level": 8,
+  "slug": "geometry",
+  "estimated_read": "13 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Computational Geometry?",
+      "content": "Computational geometry deals with geometric objects - points, lines, polygons - using algorithms. In competitive programming, geometry problems appear less frequently than graph or DP problems, but when they do, they require a specific toolkit. Without it, the problems seem inapproachable. With it, many reduce to a handful of cross product comparisons.\n\nThe **fundamental operation** in 2D computational geometry is the cross product of two vectors. The cross product of vectors u and v is a scalar in 2D: `u x v = ux*vy - uy*vx`. The sign tells you the orientation of v relative to u: positive means v is to the left of u (counterclockwise turn), negative means to the right (clockwise), zero means collinear. Almost every geometry algorithm - convex hull, line segment intersection, point-in-polygon - reduces to repeated cross product sign checks.\n\nConvex hull is the most commonly asked geometry algorithm in competitive programming: find the smallest convex polygon containing all given points. The two standard O(n log n) algorithms are Graham scan (sort by polar angle, then iterate with cross product orientation checks) and Andrew's monotone chain (sort by x then y, build lower and upper hulls separately). Both rely entirely on the cross product for the orientation test.\n\nFloating point precision is the hidden enemy of geometry code. Coordinates stored as floats accumulate rounding errors, causing orientation tests to return wrong signs. Use integer coordinates when possible. When floats are unavoidable, replace `===` comparisons with epsilon checks: `Math.abs(a - b) < 1e-9`."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use computational geometry techniques when the problem involves 2D points and asks about spatial relationships: are these points collinear, do these line segments intersect, what is the convex hull of these points, what is the area of this polygon, is this point inside this polygon? The most common interview geometry problems are max points on a line (cross product collinearity check), convex hull, minimum area rectangle from a set of points, and erect the fence (convex hull variant). Grid-based path problems are not computational geometry - they are graph/DP problems on a grid.",
+      "signals": [
+        "convex hull",
+        "outermost points",
+        "line intersection",
+        "point in polygon",
+        "area enclosed",
+        "minimum enclosing circle",
+        "robot path on grid",
+        "collinear points"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Cross Product, Orientation, Convex Hull, and Line Intersection",
+      "content": "## Points and Vectors\n\nRepresent a point as `{x, y}`. A vector from A to B is `{x: B.x - A.x, y: B.y - A.y}`.\n\n**Dot product**: `u . v = ux*vx + uy*vy`. Positive = acute angle, zero = perpendicular, negative = obtuse.\n\n**Cross product (2D scalar)**: `u x v = ux*vy - uy*vx`. Gives a signed area of the parallelogram formed by u and v.\n\n## Cross Product for Orientation\n\nGiven three points P, Q, R: compute the cross product of vectors (Q - P) and (R - P):\n\n`cross = (Q.x - P.x) * (R.y - P.y) - (Q.y - P.y) * (R.x - P.x)`\n\n- `cross > 0`: R is to the left of line PQ (counterclockwise turn)\n- `cross < 0`: R is to the right of line PQ (clockwise turn)\n- `cross = 0`: P, Q, R are collinear\n\n## Convex Hull: Andrew's Monotone Chain\n\n1. Sort all points by x-coordinate, breaking ties by y-coordinate.\n2. Build the **lower hull**: iterate points left to right. While the last two points in the hull and the current point make a clockwise turn (cross product <= 0), pop the last hull point. Push the current point.\n3. Build the **upper hull**: iterate points right to left. Same clockwise-pop rule.\n4. Concatenate lower and upper hull (remove duplicate endpoints).\n\nTime: O(n log n) for sorting, O(n) for hull construction.\n\n## Line Segment Intersection\n\nSegments AB and CD intersect if:\n1. `orientation(A, B, C)` and `orientation(A, B, D)` have opposite signs, AND\n2. `orientation(C, D, A)` and `orientation(C, D, B)` have opposite signs.\n\nHandle the collinear special case separately: if orientation is 0, check whether the point lies within the bounding box of the segment.\n\n## Polygon Area (Shoelace Formula)\n\nFor a polygon with vertices (x1,y1), ..., (xn,yn) in order:\n`Area = |sum(xi * y(i+1) - x(i+1) * yi)| / 2`"
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// Cross product of vectors (P->Q) and (P->R)\n// Positive: CCW turn. Negative: CW turn. Zero: collinear.\nfunction cross(P, Q, R) {\n  return (Q.x - P.x) * (R.y - P.y) - (Q.y - P.y) * (R.x - P.x);\n}\n\n// Andrew's Monotone Chain - convex hull\nfunction convexHull(points) {\n  points.sort((a, b) => a.x !== b.x ? a.x - b.x : a.y - b.y);\n  const n = points.length;\n  if (n < 3) return points;\n\n  const hull = [];\n\n  // Lower hull: left to right\n  for (const p of points) {\n    while (hull.length >= 2 && cross(hull[hull.length - 2], hull[hull.length - 1], p) <= 0) {\n      hull.pop();\n    }\n    hull.push(p);\n  }\n\n  // Upper hull: right to left\n  const lowerSize = hull.length;\n  for (let i = n - 2; i >= 0; i--) {\n    while (hull.length > lowerSize && cross(hull[hull.length - 2], hull[hull.length - 1], points[i]) <= 0) {\n      hull.pop();\n    }\n    hull.push(points[i]);\n  }\n\n  hull.pop(); // remove duplicate of first point\n  return hull;\n}\n\nfunction collinear(P, Q, R) {\n  return cross(P, Q, R) === 0;\n}",
+      "language": "javascript",
+      "explanation": "The cross function is the primitive all geometry algorithms build on. The convex hull uses the cross product to detect clockwise turns and pop points that would create a concavity. The `<= 0` threshold excludes collinear points from the hull interior; change to `< 0` to include collinear boundary points."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Graham Scan Convex Hull",
+          "description": "Sort points by polar angle from the lowest-leftmost point, then iterate with the cross product orientation test. Slightly more complex to implement than monotone chain due to the polar angle sort, but produces the same result. More common in textbook treatments.",
+          "example_problem": "Convex Hull",
+          "example_slug": "convex-hull"
+        },
+        {
+          "name": "Rotating Calipers",
+          "description": "A technique for finding the diameter of a convex hull (farthest pair of points) in O(n) after the hull is computed. Two pointers on opposite hull vertices rotate around the hull together. Combined with convex hull construction, total time is O(n log n).",
+          "example_problem": "Minimum Area Rectangle",
+          "example_slug": "minimum-area-rectangle"
+        },
+        {
+          "name": "3D Geometry",
+          "description": "In 3D, the cross product of two vectors u and v produces a vector perpendicular to both, with magnitude equal to the area of the parallelogram. Used for surface normals, plane equations, and 3D convex hull. Rarely appears in standard interviews but common in graphics and robotics problems.",
+          "example_problem": "Erect the Fence",
+          "example_slug": "erect-the-fence"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n log n) for convex hull (dominated by sorting). O(1) for cross product and orientation tests. O(n) for polygon area via shoelace.",
+      "space": "O(n) for the convex hull output and the hull array during construction. O(1) extra for individual cross product computations.",
+      "explanation": "Sorting n points takes O(n log n). The hull construction phase iterates over all n points, and each point is pushed and popped at most once, giving O(n) for the construction. The total is therefore O(n log n). The cross product function itself is four multiplications and two subtractions: O(1)."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Floating point precision: comparing floats with `===` for orientation tests fails due to rounding error. Use integer coordinates when possible. For unavoidable floats, use epsilon comparison `Math.abs(cross) < 1e-9` as the collinearity threshold.",
+        "Coordinate system orientation: screen coordinates have y increasing downward, which flips the handedness of the cross product. A positive cross product means clockwise in screen coordinates, not counterclockwise. Always confirm which convention the problem uses.",
+        "Degenerate cases in convex hull: all points collinear (hull is a line segment), duplicate points, or only 1-2 distinct points. Handle these before running the general algorithm or add guards inside the loop.",
+        "Integer overflow in cross product: for large integer coordinates (up to 10^9), the product `(Q.x - P.x) * (R.y - P.y)` can reach 4 x 10^18, exceeding Number.MAX_SAFE_INTEGER. Use BigInt arithmetic for the cross product when coordinates are large.",
+        "Collinear points on convex hull boundary: the `<= 0` vs `< 0` threshold in the monotone chain controls whether collinear points on the hull boundary are included. Including them (`< 0` to pop only strictly clockwise turns) matters for problems like Erect the Fence that want all boundary points."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Max Points on a Line",
+          "slug": "max-points-on-a-line",
+          "difficulty": 6,
+          "difficulty_label": "Hard",
+          "why": "Collinearity check for every triple of points. Tests the cross product orientation primitive directly: three points are collinear when cross(P, Q, R) = 0. Also requires careful handling of duplicate points."
+        },
+        {
+          "title": "Minimum Area Rectangle",
+          "slug": "minimum-area-rectangle",
+          "difficulty": 6,
+          "difficulty_label": "Medium",
+          "why": "Axis-aligned rectangle detection from a point set. Uses a hash set for O(1) point lookup to check if completing corners exist, and multiplication of side lengths for area."
+        },
+        {
+          "title": "Convex Hull",
+          "slug": "convex-hull",
+          "difficulty": 6,
+          "difficulty_label": "Hard",
+          "why": "Direct implementation of Andrew's monotone chain or Graham scan. Tests sorting by coordinate, cross product orientation checks, and careful boundary handling."
+        },
+        {
+          "title": "Erect the Fence",
+          "slug": "erect-the-fence",
+          "difficulty": 6,
+          "difficulty_label": "Hard",
+          "why": "Convex hull variant that includes collinear points on the boundary. Requires changing the orientation threshold from `<= 0` to `< 0` in the monotone chain and deduplicating the result."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Combinatorics",
+      "next_slug": "combinatorics",
+      "why": "Combinatorics is the next mathematical domain: counting arrangements, combinations, and paths. The modular arithmetic tools from number theory are directly needed for computing nCr under mod, connecting the two topics. Combinatorics also underpins probability problems and many DP state-count problems."
+    }
+  ]
+}

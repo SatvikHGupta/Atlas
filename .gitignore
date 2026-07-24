@@ -1,0 +1,29 @@
+# dependencies
+node_modules/
+**/node_modules/
+
+# builds
+dist/
+**/dist/
+
+# env files
+.env
+**/.env
+
+# data pipeline artifacts - sirf explained chahiye, baki nahi
+data/raw/
+data/merged/
+data/checkpoints/
+data/failed/
+data/logs/
+data/leetcode-problems-dataset/
+
+# os
+.DS_Store
+Thumbs.db
+
+*.zip
+
+/pipeline/
+
+*.zip

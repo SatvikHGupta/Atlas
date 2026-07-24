@@ -1,0 +1,137 @@
+{
+  "topic": "Hashing",
+  "level": 2,
+  "slug": "hashing",
+  "estimated_read": "14 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Hashing?",
+      "content": "A **hash map** is a data structure that maps keys to values and supports O(1) average-time insertion, deletion, and lookup. The magic behind this is a **hash function**: a formula that converts a key into an array index. The hash map internally maintains a large array; to find a value, compute the hash of the key, jump directly to that index. No scanning required.\n\nThe transformative consequence for algorithm design: any time you find yourself writing 'for each element, search the rest of the array for X', you can replace the inner scan with a hash map lookup. This converts O(n²) into O(n). Hashing is the single most commonly applicable optimization in interview problems - not because it's clever, but because 'have I seen this value before?' and 'what did I see at position X?' are questions that appear constantly.\n\nJavaScript provides three hash-based structures. `Map` is the recommended general-purpose hash map: it preserves insertion order, handles any key type (objects, numbers, strings), and provides `.get()`, `.set()`, `.has()`, and `.delete()` operations. Plain `{}` objects work as string key maps but coerce numeric keys to strings silently. `Set` is a hash set: it stores only keys (no values) and supports O(1) `.has()`, `.add()`, and `.delete()` - use it when you only need to check existence, not associate a value.\n\nUnderstanding when to use each structure is as important as knowing how to use them."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Reach for hashing when you need to eliminate a nested loop by replacing 'scan the array for X' with 'look up X in a map'. The two-sum pattern - 'for each element, check if its complement exists' - is the canonical case. When a problem asks for grouping by a property, a frequency count, or existence checking, hashing is the first tool.",
+      "signals": [
+        "check if element was seen before",
+        "count frequency of each element",
+        "group elements by a property",
+        "find two elements that sum/combine to X",
+        "detect duplicates in O(n)",
+        "subarray with sum equal to k",
+        "O(1) lookup needed to avoid nested loop"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "The Store-and-Lookup Pattern",
+      "content": "The most fundamental hash map pattern is **store and lookup**: as you iterate through the array, store what you've seen in a map. For each new element, ask the map: 'is there something already stored that, combined with this element, gives me my answer?'\n\n## Two Sum - The Canonical Example\n\nFor each element `arr[i]`, ask: 'have I already seen `target - arr[i]`?' If yes, return the stored index and `i`. If no, store `arr[i] → i`.\n\n```javascript\nfunction twoSum(arr, target) {\n  const seen = new Map(); // value → index\n  for (let i = 0; i < arr.length; i++) {\n    const complement = target - arr[i];\n    if (seen.has(complement)) return [seen.get(complement), i];\n    seen.set(arr[i], i);\n  }\n  return [];\n}\n```\n\nThis pattern generalizes broadly. 'Find two elements with minimum difference' → store elements in a sorted structure. 'Find a pair with product k' → store elements and look up `k / arr[i]`. The shape is always: iterate, look up complement, store current."
+    },
+    {
+      "type": "concept",
+      "title": "Frequency Maps",
+      "content": "A **frequency map** counts how many times each element appears. Build it with a single pass:\n\n```javascript\nconst freq = new Map();\nfor (const x of arr) freq.set(x, (freq.get(x) || 0) + 1);\n```\n\n## Anagram Detection\n\nTwo strings are anagrams iff their frequency maps are identical. Efficient version: build one frequency map for `s`, then decrement for each character in `t`. If all values are 0 at the end, they're anagrams.\n\n## Grouping Anagrams\n\nFor a list of strings, group anagrams together. Map key: the sorted version of each string (a canonical form all anagrams share). Build a `Map<sortedString, string[]>` and push each string into its group.\n\n## Majority Element\n\nWith a frequency map, finding the element with count > n/2 is O(n) time and O(n) space. Boyer-Moore voting reduces space to O(1) but the frequency map approach is intuitive and always correct."
+    },
+    {
+      "type": "concept",
+      "title": "Hash Sets for O(1) Existence Checks",
+      "content": "A **hash set** stores only keys - no values - and answers 'does X exist?' in O(1). Use `Set` in JS.\n\n## Deduplication\n\n`new Set(arr)` is an instant deduplication. `[...new Set(arr)]` converts back to an array. O(n) time and space.\n\n## Cycle Detection in Arrays\n\nIf an array of integers in range [0, n-1] can be read as a function (each element is the 'next' index), you can detect a cycle using fast/slow pointers. Hash set approach: visit each node and check if already in set - O(n) time, O(n) space.\n\n## Consecutive Sequences\n\nFor 'longest consecutive sequence': build a set of all numbers. For each number `x`, only start counting if `x-1` is NOT in the set (it's the start of a sequence). Count forward while `x+1`, `x+2`, ... exist in the set. O(n) total because each number is visited at most twice."
+    },
+    {
+      "type": "concept",
+      "title": "Prefix Sum + Hash Map",
+      "content": "One of the most powerful combinations in array problems: **prefix sum stored in a hash map** enables 'find subarray with sum equal to k' in O(n).\n\n## The Key Insight\n\n`prefixSum[j] - prefixSum[i] = k` means the subarray `arr[i+1..j]` has sum `k`. Rearranging: `prefixSum[i] = prefixSum[j] - k`. So for each position `j`, we want to know: 'how many times has `currentPrefix - k` appeared as a prefix sum before?'\n\n```javascript\nfunction subarraySumEqualsK(arr, k) {\n  const prefixCount = new Map([[0, 1]]); // prefix 0 seen once (empty prefix)\n  let count = 0, prefix = 0;\n  for (const x of arr) {\n    prefix += x;\n    count += prefixCount.get(prefix - k) || 0; // how many valid starting points\n    prefixCount.set(prefix, (prefixCount.get(prefix) || 0) + 1);\n  }\n  return count;\n}\n```\n\nThe `Map([[0, 1]])` initialization handles subarrays starting at index 0. This pattern extends to 'number of subarrays with sum divisible by k' (store `prefix % k`) and 'longest subarray with equal 0s and 1s' (convert 0→-1, store first occurrence of each prefix sum)."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "// === STORE-AND-LOOKUP (Two Sum pattern) ===\nfunction storeAndLookup(arr, target) {\n  const seen = new Map(); // stores value → index (or value → true for existence)\n  for (let i = 0; i < arr.length; i++) {\n    const complement = target - arr[i];\n    if (seen.has(complement)) return [seen.get(complement), i];\n    seen.set(arr[i], i); // store AFTER checking to avoid using same element twice\n  }\n  return [];\n}\n\n// === PREFIX SUM + HASHMAP (subarray sum = k) ===\nfunction subarraySum(arr, k) {\n  const prefixCount = new Map([[0, 1]]); // empty prefix has sum 0, seen once\n  let count = 0, prefix = 0;\n  for (const x of arr) {\n    prefix += x;\n    // look up: how many prefixes equal (current - k)?\n    count += prefixCount.get(prefix - k) || 0;\n    // store current prefix\n    prefixCount.set(prefix, (prefixCount.get(prefix) || 0) + 1);\n  }\n  return count;\n}",
+      "language": "javascript",
+      "explanation": "Store-and-lookup: store AFTER checking to ensure the same element isn't used twice as both numbers in a pair. The prefix sum + hashmap template: the Map is initialized with {0: 1} to count subarrays starting from index 0, then each prefix sum is stored for future lookups."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Multimap (Key → List of Values)",
+          "description": "When multiple values map to the same key, use `Map<key, value[]>`. Add to the array with `map.get(key).push(value)` after ensuring the key exists. Used in 'Group Anagrams': key is the sorted string, value is the list of anagram strings.",
+          "example_problem": "Group Anagrams",
+          "example_slug": "group-anagrams"
+        },
+        {
+          "name": "Bidirectional Map",
+          "description": "When you need to look up both 'what is the value for this key?' and 'what is the key for this value?', maintain two maps simultaneously. Used in problems like 'Is this mapping isomorphic?' where both forward and backward mappings must be unique.",
+          "example_problem": "Isomorphic Strings",
+          "example_slug": "isomorphic-strings"
+        },
+        {
+          "name": "Rolling Hash",
+          "description": "A hash of a substring that can be updated in O(1) as the window slides - subtract the outgoing character's contribution and add the new character's. Used in Rabin-Karp string matching and fixed-size window problems where string comparison would be O(k) per slide.",
+          "example_problem": "Longest Duplicate Substring",
+          "example_slug": "longest-duplicate-substring"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(n) average for all hash map operations over n elements",
+      "space": "O(n) for the hash map",
+      "explanation": "Each element is inserted into and looked up from the hash map exactly once. Each operation is O(1) average (O(n) worst case if all keys hash to the same bucket, but this is extremely rare with JS's built-in Map). Total time is O(n). Space is O(n) because in the worst case all n elements are stored in the map - the fundamental space-time tradeoff of hashing."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Using plain `{}` object with numeric keys: JavaScript object keys are always strings. `obj[1]` and `obj['1']` access the same slot. If your keys are numbers and you want numeric identity, use `Map` - it preserves key type and `map.get(1)` and `map.get('1')` are distinct.",
+        "Using `Array.includes()` instead of `Set.has()`: `array.includes(x)` is O(n) because it scans linearly. If you're repeatedly checking existence, building a `Set` first costs O(n) but each subsequent check is O(1). Using includes() inside a loop produces O(n²) hidden complexity.",
+        "Storing current element before checking for complement: in two-sum, `seen.set(arr[i], i)` must happen AFTER `seen.has(target - arr[i])`. If stored first, a single element could be paired with itself when `arr[i] * 2 === target`.",
+        "Forgetting the `Map([[0, 1]])` initialization in prefix sum problems: without the initial {0: 1}, subarrays that start from index 0 are never counted because the prefix sum `k` is never found in the map (we'd need to see prefix 0 stored before seeing prefix k).",
+        "Hash collision assumptions in contest code: JS `Map` handles collisions internally, but if you build a custom hash (e.g., encoding a 2D coordinate as `row * 1000 + col`), ensure your encoding is collision-free for the given constraints. `row * 1000 + col` collides if `col` can exceed 1000."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Two Sum",
+          "slug": "two-sum",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "The canonical store-and-lookup problem - every other hash map pattern is a variation of this one."
+        },
+        {
+          "title": "Group Anagrams",
+          "slug": "group-anagrams",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Tests multimap pattern - grouping strings by canonical key (sorted characters)."
+        },
+        {
+          "title": "Longest Consecutive Sequence",
+          "slug": "longest-consecutive-sequence",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Tests Set-based existence checking - the O(n) solution only visits each sequence start, requiring careful reasoning about when to begin counting."
+        },
+        {
+          "title": "Subarray Sum Equals K",
+          "slug": "subarray-sum-equals-k",
+          "difficulty": 2,
+          "difficulty_label": "Medium",
+          "why": "Direct application of prefix sum + hash map - the most important hash map template for array problems."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Stacks",
+      "next_slug": "stacks",
+      "why": "Stacks are the next O(1) data structure to internalize - while hash maps answer 'what did I see before?', stacks answer 'what was the most recent unmatched/unprocessed element?', enabling a different class of problems like bracket matching and the monotonic stack pattern."
+    }
+  ]
+}

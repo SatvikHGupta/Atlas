@@ -1,0 +1,123 @@
+{
+  "topic": "Union Find / DSU",
+  "level": 5,
+  "slug": "union-find-dsu",
+  "estimated_read": "11 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Union-Find (DSU)?",
+      "content": "Union-Find (Disjoint Set Union, DSU) tracks which elements belong to the same connected component and can merge two components. Two operations: `find(x)` returns the root representative of x's component; `union(x, y)` merges the components of x and y.\n\nThis powers Kruskal's MST, undirected cycle detection, dynamic connectivity (BFS/DFS can't efficiently handle graphs where edges are added incrementally), and equivalence class problems like 'accounts merge'.\n\nNaive implementation (follow parent pointers to root) degrades to O(n) per operation. Two optimizations bring this to effectively O(1) amortized:\n\n**Path compression**: during `find(x)`, set every node on the path directly to the root. Future finds skip to root in O(1).\n\n**Union by rank/size**: attach the smaller tree under the larger one. Prevents chains from forming.\n\nWith both optimizations, operations run in O(\u03b1(n)) where \u03b1 is the inverse Ackermann function \u2014 effectively O(1) for all practical n. The implementation is ~20 lines."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Use Union-Find for dynamic connectivity \u2014 edges added incrementally and you need fast 'are these two nodes connected' queries. Also for undirected cycle detection and Kruskal's MST. If the graph is static and you only need components once, BFS/DFS is simpler.",
+      "signals": [
+        "connected components",
+        "is there a path between X and Y",
+        "detect cycle undirected",
+        "merge groups",
+        "number of distinct groups",
+        "friends of friends",
+        "Kruskal MST",
+        "equivalence classes"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Path Compression, Union by Rank, and Cycle Detection",
+      "content": "## Core Structure\n\n```\nparent[i] = i  // each node starts as its own root\nrank[i] = 0    // approximate tree height\n```\n\n## find(x) \u2014 Path Compression\n\n```\nfind(x):\n  if parent[x] !== x:\n    parent[x] = find(parent[x])  // flatten to root\n  return parent[x]\n```\n\nAfter compression, future finds on any node in this path go directly to root.\n\n## union(x, y) \u2014 Union by Rank\n\nFind roots rx and ry. If same root, already connected (adding edge = cycle). Otherwise attach smaller rank under larger:\n```\nif rank[rx] < rank[ry]: parent[rx]=ry\nelse if rank[rx] > rank[ry]: parent[ry]=rx\nelse: parent[ry]=rx; rank[rx]++  // only increment on equal-rank merge\n```\n\n## Cycle Detection \u2014 Undirected\n\nProcess edges one by one. Before adding (u,v): if `find(u) === find(v)`, they're already connected \u2014 adding this edge creates a cycle. Otherwise `union(u, v)`.\n\n## Connected Components Count\n\nInitialize `components = n`. Each successful union decrements by 1. At any point, `components` gives the current count.\n\n## Equivalence Classes\n\nIn accounts merge: union accounts sharing an email. After all unions, group accounts by root representative."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "code": "class DSU {\n  constructor(n) {\n    this.parent = Array.from({length:n},(_,i)=>i);\n    this.rank = new Array(n).fill(0);\n    this.components = n;\n  }\n\n  find(x) {\n    if (this.parent[x]!==x)\n      this.parent[x]=this.find(this.parent[x]); // path compression\n    return this.parent[x];\n  }\n\n  union(x, y) {\n    const rx=this.find(x), ry=this.find(y);\n    if (rx===ry) return false; // already connected = would create cycle\n    if (this.rank[rx]<this.rank[ry]) this.parent[rx]=ry;\n    else if (this.rank[rx]>this.rank[ry]) this.parent[ry]=rx;\n    else { this.parent[ry]=rx; this.rank[rx]++; }\n    this.components--;\n    return true;\n  }\n\n  connected(x, y) { return this.find(x)===this.find(y); }\n}\n\n// Cycle detection in undirected graph\nfunction hasCycle(n, edges) {\n  const dsu=new DSU(n);\n  for (const [u,v] of edges)\n    if (!dsu.union(u,v)) return true; // union false = already connected = cycle\n  return false;\n}",
+      "language": "javascript",
+      "explanation": "DSU with path compression and union by rank. components count maintained automatically. union returning false directly signals a cycle for undirected graphs."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Weighted DSU",
+          "description": "Augment each node with a weight relative to its parent. During path compression accumulate weights. Used when tracking 'distance' or 'ratio' between connected nodes, not just connectivity.",
+          "example_problem": "Most Stones Removed with Same Row or Column",
+          "example_slug": "most-stones-removed-with-same-row-or-column"
+        },
+        {
+          "name": "Virtual Nodes in DSU",
+          "description": "For entities of different types (rows and columns, email accounts), create virtual nodes for groups. Union real nodes with their virtual group node instead of directly with each other.",
+          "example_problem": "Accounts Merge",
+          "example_slug": "accounts-merge"
+        },
+        {
+          "name": "Redundant Edge Detection",
+          "description": "Add edges one by one. The first edge where union returns false (both endpoints already share a root) is the redundant edge creating a cycle.",
+          "example_problem": "Redundant Connection",
+          "example_slug": "redundant-connection"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(\u03b1(n)) per find/union \u2014 effectively O(1)",
+      "space": "O(n)",
+      "explanation": "With path compression and union by rank, each operation runs in O(\u03b1(n)) amortized where \u03b1 is the inverse Ackermann function \u2014 at most 5 for any realistic n. Without path compression: O(log n) with union by rank, O(n) without either. Space is O(n) for parent and rank arrays."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Checking parent[x]===parent[y] instead of find(x)===find(y) for connectivity \u2014 two nodes can be in the same component with different immediate parents. Always use find which follows to the root.",
+        "Forgetting path compression makes parent[x] not necessarily the root \u2014 always call find(x) recursively, never read parent[x] directly as the representative.",
+        "Incrementing rank on every union instead of only on equal-rank merges \u2014 overstates tree height and degrades the union-by-rank guarantee.",
+        "Using DSU for directed graphs \u2014 DSU tracks undirected connectivity only. 'A can reach B but B cannot reach A' is not captured by DSU.",
+        "In accounts merge style problems: attempting to union by email string directly \u2014 DSU operates on integer indices. Map email \u2192 account index first."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Number of Provinces",
+          "slug": "number-of-provinces",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Direct connected components count \u2014 dsu.components after all unions gives the answer."
+        },
+        {
+          "title": "Redundant Connection",
+          "slug": "redundant-connection",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Cycle detection \u2014 return the first edge where union returns false."
+        },
+        {
+          "title": "Accounts Merge",
+          "slug": "accounts-merge",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Equivalence class grouping \u2014 union accounts sharing emails then reconstruct groups by root representative."
+        },
+        {
+          "title": "Most Stones Removed with Same Row or Column",
+          "slug": "most-stones-removed-with-same-row-or-column",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Virtual node DSU \u2014 union stones via virtual row/column nodes, testing non-obvious graph modeling."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "1D Dynamic Programming",
+      "next_slug": "1d-dp",
+      "why": "You have completed Level 5 Graphs. Level 6 begins with Dynamic Programming \u2014 breaking problems into overlapping subproblems and caching results. It is the steepest mental shift in the roadmap, starting with the simplest 1D DP patterns."
+    }
+  ]
+}
