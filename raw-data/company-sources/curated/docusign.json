@@ -1,0 +1,55 @@
+{
+ "id": "docusign",
+ "name": "DocuSign",
+ "tier": null,
+ "roles": [
+  "Software Engineer (India, campus)"
+ ],
+ "roleGuidance": {
+  "Software Engineer (India, campus)": {
+   "dsaDepth": "Moderate — OA combining DSA and SQL, then 2 technical rounds of pure DSA",
+   "rounds": [
+    "Resume shortlisting",
+    "Online assessment: DSA problem-solving questions plus SQL/database-management questions",
+    "Technical interview round 1: 2 DSA questions testing problem-solving and coding",
+    "Technical interview round 2: 2 further DSA questions"
+   ],
+   "extraTopics": [
+    "SQL alongside DSA in the OA — a combination not every company tests at this stage",
+    "Consistent problem-solving performance across two back-to-back DSA-only technical rounds"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "SDE / SE",
+   "title": "Software Engineer",
+   "experience": "Entry level (campus, incl. India)"
+  },
+  {
+   "level": "Senior",
+   "title": "Senior Software Engineer",
+   "experience": "Mid–senior",
+   "notes": "Not covered in depth by the cited sources"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (e-signature / agreement platform)"
+ ],
+ "sources": [
+  {
+   "title": "Glassdoor: DocuSign Software Engineer interview report, Bengaluru (campus)",
+   "url": "https://www.glassdoor.com.ar/Entrevista/Docusign-Entrevista-E307604-RVW95398716.htm",
+   "used": [
+    "India campus loop: OA (DSA+SQL) then 2 rounds of DSA-only technical interviews"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "low",
+ "rolesNotes": "Only one detailed report was reviewed for this entry, and it covers entry-level campus hiring only — Senior/Staff-level process is not documented in the source reviewed.",
+ "indiaNote": "The only detailed report reviewed is from a Bengaluru campus drive."
+}

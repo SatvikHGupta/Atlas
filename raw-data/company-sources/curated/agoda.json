@@ -1,0 +1,85 @@
+{
+ "id": "agoda",
+ "name": "Agoda",
+ "tier": null,
+ "roles": [
+  "Senior Software Engineer",
+  "Principal Software Engineer"
+ ],
+ "roleGuidance": {
+  "Senior Software Engineer": {
+   "dsaDepth": "Moderate — an OA/coding round then a design-heavy in-person stage, with real variance in stack (backend vs frontend/JavaScript) between what candidates expect and what gets asked",
+   "rounds": [
+    "Recruiter/HR call",
+    "Online coding round (HackerRank): 2-3 easy-medium algorithm problems (examples reported: counting planes shot down, pivot element in an unsorted array, minimum-sum pairs)",
+    "In-person/virtual rounds (3-4): system design, past-project discussion, sometimes a stack mismatch — candidates report being pulled into frontend/JavaScript topics despite expecting a backend-focused conversation"
+   ],
+   "extraTopics": [
+    "Clarifying the expected stack/scope early — a recurring make-or-break factor, more so than raw question difficulty",
+    "Staying flexible through a notably long process (often 2+ months with long gaps between rounds)"
+   ],
+   "focusPatterns": null
+  },
+  "Principal Software Engineer": {
+   "dsaDepth": "Heavy — coding, LLD, HLD and a system round, with the whole process reported as unusually lengthy (up to 8-9 rounds) and inconsistent",
+   "rounds": [
+    "Coding round",
+    "Low-level design round",
+    "High-level design round",
+    "System round",
+    "Code review round for some pipelines"
+   ],
+   "extraTopics": [
+    "Persisting through a long, sometimes disorganized process — multiple candidates report being rejected late (after many positive rounds) for reasons like years-of-experience mismatch rather than skill"
+   ],
+   "focusPatterns": null,
+   "notes": "Selection is explicitly described by one candidate as \"completely dependent upon the hiring manager\" — consistency across interviewers/teams appears low."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Senior SE",
+   "title": "Senior Software Engineer",
+   "experience": "Mid–senior"
+  },
+  {
+   "level": "Principal SE",
+   "title": "Principal Software Engineer",
+   "experience": "Senior",
+   "notes": "Multiple reports at this level in the sources reviewed"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (travel/booking platform)",
+  "Backend / Frontend Engineer (stack varies by team)"
+ ],
+ "sources": [
+  {
+   "title": "Agoda Software Engineer interview guide (Interview Query)",
+   "url": "https://www.interviewquery.com/guides/agoda-software-engineer",
+   "used": [
+    "HR call + HackerRank coding + platform interview structure, stack-mismatch risk, comp data ($61K base/$70K total avg)"
+   ]
+  },
+  {
+   "title": "Glassdoor: Agoda Principal Software Engineer interview reports, Gurgaon/Bangkok (multiple)",
+   "url": "https://www.glassdoor.com.mx/Entrevista/Agoda-Entrevista-E461386-RVW97681171.htm",
+   "used": [
+    "coding+LLD+HLD+system round sequence, 8-9 round process, hiring-manager-dependent selection"
+   ]
+  },
+  {
+   "title": "Glassdoor: Agoda Senior Software Engineer interview report, Gurgaon",
+   "url": "https://www.glassdoor.es/Entrevista/Agoda-Entrevista-E461386-RVW51655822.htm",
+   "used": [
+    "minimum-sum-pairs coding question, smooth process at this level"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "Multiple independent reports agree the process is long (often 2+ months) and inconsistent between teams/hiring managers — that variability is itself the most consistent finding across sources.",
+ "indiaNote": "Several detailed reports are from Agoda’s Gurgaon office."
+}

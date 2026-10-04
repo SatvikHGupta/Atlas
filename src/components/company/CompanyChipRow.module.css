@@ -1,0 +1,49 @@
+/* position:relative lives on the ROW (not the +N pill) so the hover list can open BELOW the whole row, aligned to its left
+   edge and never wider than it - it can no longer run off the top or the right edge of the screen. */
+.row { position: relative; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--bg-elevated);
+  border-radius: 999px;
+  padding: 3px 10px 3px 3px;
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.chip:hover { color: var(--text-primary); background: var(--bg-card-hover); }
+
+.more {
+  position: static;
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--bg-elevated);
+  cursor: default;
+}
+
+.tooltip {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  white-space: normal;
+  width: max-content;
+  max-width: min(440px, 100%);
+  z-index: 20;
+}
+.more:hover .tooltip,
+.more:focus-visible .tooltip { display: block; }
+.more:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

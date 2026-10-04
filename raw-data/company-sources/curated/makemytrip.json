@@ -1,0 +1,77 @@
+{
+ "id": "makemytrip",
+ "name": "MakeMyTrip",
+ "tier": null,
+ "roles": [
+  "SDE-1"
+ ],
+ "roleGuidance": {
+  "SDE-1": {
+   "dsaDepth": "Moderate — OA (HackerEarth: 2 coding + 20 CS-fundamentals MCQs) then a DSA round and an OOD/system-design round",
+   "rounds": [
+    "Online assessment (HackerEarth, ~90 min): 2 coding questions (easy–moderate: DP, graph, binary search) plus 20 MCQs on DBMS/OS/CN/SQL/OOPs",
+    "Round 1 — DSA (1 hr): 2 problems, often backtracking/recursion variants (e.g. a constrained combination-sum, sort-an-array-using-only-recursion)",
+    "Round 2 — Design/OOSD (1 hr): resume and internship deep-dive, then an OOP design problem (e.g. elevator-management system with an ER diagram) and OOP fundamentals (polymorphism, abstract classes)",
+    "Round 3 — Managerial: project discussion, sometimes one more DSA question"
+   ],
+   "extraTopics": [
+    "OOP design fundamentals — several reports describe candidates being rejected specifically for weak OOD, even with correct DSA",
+    "Being able to design AND reason about a system on the spot, not just recite definitions"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "SDE-1",
+   "title": "Software Development Engineer 1",
+   "experience": "Entry level (campus and 0–2 yrs)"
+  },
+  {
+   "level": "SDE-2 and above",
+   "title": "SDE-2, Senior and beyond",
+   "notes": "Not covered in depth by the cited sources"
+  }
+ ],
+ "roleFamilies": [
+  "Backend",
+  "Full-stack",
+  "Frontend"
+ ],
+ "sources": [
+  {
+   "title": "MakeMyTrip | SDE1 | India | May 2022 [Reject] (LeetCode discuss)",
+   "url": "https://leetcode.com/discuss/interview-experience/2099267/makemytrip-sde1-india-may-2022-reject-bad-luck",
+   "used": [
+    "OA + DSA round + OOD/design round, rejected specifically on the design round"
+   ]
+  },
+  {
+   "title": "MakeMyTrip | SDE1 - Backend | Bengaluru | July 2022 | Selected (LeetCode discuss)",
+   "url": "https://leetcode.com/discuss/interview-experience/2299182/",
+   "used": [
+    "OA breakdown: HackerEarth, 22 questions (2 coding + 20 MCQ)"
+   ]
+  },
+  {
+   "title": "MakeMyTrip Interview Experience For Software Engineer 1, On-Campus (GeeksforGeeks)",
+   "url": "https://www.geeksforgeeks.org/?p=1083608",
+   "used": [
+    "on-campus 3-round loop: OA, technical, managerial"
+   ]
+  },
+  {
+   "title": "Full Stack Engineer at MakeMyTrip (Code360 library)",
+   "url": "https://www.naukri.com/code360/library/full-stack-engineer-at-makemytrip",
+   "used": [
+    "career path: Full Stack Engineer (2-8 yrs) -> Senior Software Engineer"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "SDE-1 loop is consistently documented across several independent reports (OA structure, DSA round content, OOD emphasis). SDE-2+ is not covered by the sources reviewed.",
+ "indiaNote": "Bengaluru and Gurgaon are the main hiring locations across all reports."
+}

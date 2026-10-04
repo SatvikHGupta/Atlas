@@ -1,0 +1,121 @@
+.wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 3.5rem) var(--space-6) var(--space-12);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.header h1 {
+  font-size: 1.7rem;
+  margin: 0 0 6px;
+}
+
+.header p {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 100px 0;
+}
+
+.empty {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text-muted);
+}
+
+.empty p { margin: 0 0 6px; }
+
+.emptySub {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-4);
+}
+
+/* ---- appended (handoff 3): DSA/CP badge, CP card, unresolved note, error ---- */
+.cell { position: relative; }
+
+.kindBadge {
+  position: absolute;
+  top: -8px;
+  left: 12px;
+  z-index: 1;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+.kindBadge[data-kind='cp'] { color: var(--accent); border-color: var(--accent); }
+
+.cpCard {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-2);
+  height: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+.cpLink {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  text-decoration: none;
+  color: var(--text-primary);
+}
+.cpLink:hover .cpTitle { color: var(--accent); }
+.cpTitle { font-size: 0.95rem; font-weight: 600; overflow-wrap: anywhere; }
+.cpMeta { display: flex; align-items: center; gap: var(--space-2); color: var(--text-muted); font-size: 0.8rem; }
+.cpCode { font-family: var(--font-mono); font-size: 0.72rem; }
+.cpBookmarkBtn {
+  align-self: flex-start;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.unresolved { margin-top: 6px; font-size: 0.85rem; }
+
+.errorBox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+}
+.errorBox p { margin: 0; }
+.retryBtn {
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+.retryBtn:hover { border-color: var(--accent); color: var(--accent); }

@@ -1,0 +1,114 @@
+{
+ "id": "airbnb",
+ "name": "Airbnb",
+ "tier": null,
+ "roles": [
+  "Software Engineer (entry–mid)",
+  "Senior Software Engineer",
+  "Staff Software Engineer"
+ ],
+ "roleGuidance": {
+  "Software Engineer (entry–mid)": {
+   "dsaDepth": "Heavy — 2 back-to-back LeetCode medium–hard coding rounds, little to no system design at this level",
+   "rounds": [
+    "Recruiter screen",
+    "Online coding assessment (CodeSignal) for some pipelines",
+    "Two 45-minute technical coding interviews (CoderPad/Zoom): data structures, algorithms, edge cases, complexity — no heavy system design at junior/mid level",
+    "Cross-team \"values\" interview (~45 min): collaboration, ownership, communication, product sense"
+   ],
+   "extraTopics": [
+    "Airbnb’s well-known \"11 Core Values\" culture round",
+    "Correctness and edge-case handling under time pressure"
+   ],
+   "focusPatterns": null
+  },
+  "Senior Software Engineer": {
+   "dsaDepth": "Heavy — coding remains, system design and pull-request review are added",
+   "rounds": [
+    "Recruiter screen",
+    "Technical screening (coding, medium–hard)",
+    "Onsite/virtual loop (~5 rounds): coding, system design (e.g. designing a booking system), a technical-experience deep dive, core-values interview, and a pull-request-review exercise"
+   ],
+   "extraTopics": [
+    "System design at Airbnb’s marketplace scale (search, booking, trust & safety)",
+    "Reviewing a colleague’s pull request — a distinctive round format"
+   ],
+   "focusPatterns": null
+  },
+  "Staff Software Engineer": {
+   "dsaDepth": "Moderate — architecture, scope and technical leadership dominate",
+   "rounds": [
+    "Deeper system-design and architecture rounds, technical strategy discussion, staff-level values interview"
+   ],
+   "extraTopics": [
+    "Cross-team technical strategy"
+   ],
+   "focusPatterns": null,
+   "notes": "Thinner public detail at this level."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Entry",
+   "title": "Software Engineer",
+   "experience": "0–2 yrs",
+   "notes": "Fewer entry-level hires than most big tech"
+  },
+  {
+   "level": "Mid",
+   "title": "Software Engineer",
+   "experience": "2–5 yrs"
+  },
+  {
+   "level": "Senior",
+   "title": "Senior Software Engineer",
+   "experience": "5–8 yrs"
+  },
+  {
+   "level": "Staff",
+   "title": "Staff Software Engineer",
+   "experience": "8+ yrs"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (backend / full-stack)",
+  "Data Engineering / Data Science",
+  "Machine Learning (search & ranking)"
+ ],
+ "sources": [
+  {
+   "title": "Airbnb Software Engineer Interview Guide (Interview Query)",
+   "url": "https://interviewquery.com/interview-guides/airbnb-software-engineer",
+   "used": [
+    "4-5 stage process: application, recruiter screen, OA, engineering loop, hiring committee"
+   ]
+  },
+  {
+   "title": "Airbnb Software Engineer interview guide, round mix (Interview Query)",
+   "url": "https://www.interviewquery.com/guides/airbnb-software-engineer?exp_page=1",
+   "used": [
+    "coding, system design, pull-request review, core-values rounds; comp data"
+   ]
+  },
+  {
+   "title": "Glassdoor: Airbnb Software Engineer(Internship) interview report",
+   "url": "https://fr.glassdoor.ca/Entretien/Airbnb-Entretien-E391850-RVW25745521.htm",
+   "used": [
+    "2 coding rounds + cross-team values interview, no heavy system design at this level"
+   ]
+  },
+  {
+   "title": "Airbnb Software Engineer Interview Process (Interview Kickstart)",
+   "url": "https://www.interviewkickstart.com/companies/airbnb-software-engineer-interview-process",
+   "used": [
+    "core DS&A emphasis, scalable-design questions for senior roles"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "Junior/mid-level loop (2 coding + values interview) and the senior-level pull-request-review round are both corroborated by multiple sources. Staff-level detail is thin.",
+ "indiaNote": null
+}

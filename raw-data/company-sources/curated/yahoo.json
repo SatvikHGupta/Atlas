@@ -1,0 +1,76 @@
+{
+ "id": "yahoo",
+ "name": "Yahoo",
+ "tier": null,
+ "roles": [
+  "Software Engineer"
+ ],
+ "roleGuidance": {
+  "Software Engineer": {
+   "dsaDepth": "Light–Moderate — process length and depth vary enormously by report, from a lightweight 2-round loop to a full 4-round onsite with system design, database design and two algorithm problems",
+   "rounds": [
+    "Simpler pipelines (some 2025-26 reports): an online coding round on your core tech stack, then a single hiring-manager interview covering technical depth and project discussion",
+    "Fuller pipelines (older/some current reports): phone screen, then a 4-round onsite (4-5 hours) covering 1 system design question, 1 database-design question, and 2 algorithm problems (e.g. binary tree search, a Twitter-style newsfeed schema design, Two Sum)",
+    "Campus pipelines: a single onsite session with 2 problems in 45 minutes (OOP design plus a coding problem) and a brief Q&A"
+   ],
+   "extraTopics": [
+    "Explaining your approach and depth of understanding of the underlying system/website architecture, not just producing a correct answer — interviewers are reported to actively guide candidates toward the right direction",
+    "Adapting to a genuinely wide range of process lengths and depths — treat any single report as one data point, not the process"
+   ],
+   "focusPatterns": null,
+   "notes": "Multiple recent reports mention scheduling issues (a hiring manager not showing up) and reduced structure compared to the fuller historical loop — the process appears to have become less consistent in recent years."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Entry",
+   "title": "Software Engineer",
+   "experience": "0–3 yrs (incl. campus)"
+  },
+  {
+   "level": "Mid–Senior",
+   "title": "Senior Software Engineer",
+   "experience": "3+ yrs"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (search / media platform)",
+  "Data Engineering"
+ ],
+ "sources": [
+  {
+   "title": "Glassdoor: Yahoo Software Engineer interview report, San Francisco (full 4-round onsite)",
+   "url": "https://www.glassdoor.com.ar/Entrevista/Yahoo-Entrevista-E5807-RVW12809501.htm",
+   "used": [
+    "system design, database design, 2 algorithm problems over a 5-hour onsite"
+   ]
+  },
+  {
+   "title": "Glassdoor: Yahoo Software Engineer interview report (2-round simplified process, 2025)",
+   "url": "https://www.glassdoor.com.ar/Entrevista/Yahoo-Entrevista-E5807-RVW3247210.htm",
+   "used": [
+    "online coding round then hiring-manager interview only"
+   ]
+  },
+  {
+   "title": "Glassdoor: Yahoo Software Engineer interview report, Seattle campus",
+   "url": "https://www.glassdoor.com.ar/Entrevista/Yahoo-Entrevista-E5807-RVW9448422.htm",
+   "used": [
+    "campus onsite: 45 minutes, 2 problems (OOD + binary tree)"
+   ]
+  },
+  {
+   "title": "Glassdoor: Yahoo Software Engineer interview report (take-home + proctored test)",
+   "url": "https://www.glassdoor.com.br/Entrevista/Yahoo-Entrevista-E5807-RVW55492057.htm",
+   "used": [
+    "1 take-home test + 1 proctored test + technical interview + brief managerial round"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "low",
+ "rolesNotes": "The wide variance in process length and depth across independent reports is itself the most consistent finding — Yahoo’s process appears to lack the standardization seen at most other companies in this batch, and several recent reports mention scheduling/organizational issues.",
+ "indiaNote": null
+}

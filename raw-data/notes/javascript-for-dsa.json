@@ -1,0 +1,396 @@
+{
+  "topic": "JavaScript for DSA",
+  "level": 9,
+  "slug": "javascript-for-dsa",
+  "estimated_read": "16 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is JavaScript for DSA?",
+      "content": "This track is different from every other note in the roadmap. Every other topic tests **algorithmic thinking** - a language-agnostic technique that happens to be implemented in JavaScript. This track tests **JavaScript itself** - whether you understand the language's own runtime mechanisms well enough to build with them directly. These problems mirror LeetCode's \"30 Days of JavaScript\" set: no LeetCode topic tags exist for them because they aren't algorithm problems in the traditional sense - there's no graph, no DP table, no sliding window. Instead you're asked to implement things like `debounce`, `memoize`, a custom `EventEmitter`, or a Fibonacci generator using nothing but core JS - closures, `Promise`/`async`/`await`, `function*`/`yield`, and higher-order functions (functions that take or return other functions). If you can already write React hooks or middleware chains comfortably, you already understand most of this intuitively - this note makes that intuition explicit and interview-ready."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Reach for these patterns whenever a problem asks you to *build a function/class*, not *solve a data problem*. The giveaway is almost always in the phrasing: \"implement a function that returns a function...\", \"the returned function should remember...\", \"cancel/limit/delay the following...\", \"do not use built-in `Array.prototype.X`... implement it yourself\", or \"your iterator should support...\". These problems test whether you understand *how* JS features work under the hood, not just that you can call them.",
+      "signals": [
+        "a function should remember state between calls",
+        "implement debounce / throttle / cache-with-expiry",
+        "re-implement map / filter / reduce / groupBy from scratch",
+        "cancel a scheduled or in-flight async operation",
+        "resolve/reject a Promise with a time limit",
+        "build a custom iterator or generator",
+        "compose multiple functions into one",
+        "run several async functions in parallel or in sequence",
+        "a class needs private, encapsulated state with no other way to reach it"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Closures - Functions That Remember",
+      "content": "A **closure** is formed when an inner function is defined inside an outer function and continues to reference the outer function's variables after the outer function has returned. JavaScript doesn't garbage-collect a variable as long as some live function still references it - so the inner function effectively gets its own persistent, private slice of memory that nothing outside can touch directly. This is the *only* way to get true private state in vanilla JS (no `#private` fields required): `function makeCounter() { let count = 0; return () => ++count; }` - `count` is invisible and untouchable from outside `makeCounter`, but the returned function can read and mutate it forever. Every \"remember state between calls\", \"private counter\", \"run only once\" problem is this exact shape: outer function declares state, inner function(s) close over it and get returned."
+    },
+    {
+      "type": "concept",
+      "title": "Async / Timers - Controlling Time and Order",
+      "content": "JS is single-threaded with an event loop: `setTimeout(fn, ms)` doesn't pause execution, it schedules `fn` to run later while everything else keeps going. A `Promise` represents a value that isn't ready yet, with three states (pending / fulfilled / rejected) that can only move forward, never backward. `async`/`await` is sugar over Promises: an `async` function always returns a Promise, and `await` pauses *that function only* until the awaited Promise settles - it does not block the rest of the program. The recurring problem shape here is **racing and cancellation**: use `Promise.race([realPromise, timeoutPromise])` to enforce a time limit, and always keep a handle (the id `setTimeout`/`setInterval` returns) so a later call can `clearTimeout`/`clearInterval` it - forgetting to store that id is the single most common bug in this whole category, because the timer keeps firing (or the test keeps hanging) after it should have stopped."
+    },
+    {
+      "type": "concept",
+      "title": "Higher-Order Functions - Functions as Values",
+      "content": "A function is a **higher-order function** if it takes another function as an argument, returns a function, or both. `Array.prototype.map/filter/reduce` are the canonical built-in examples; \"re-implement these from scratch\" problems just want you to manually loop and call the passed-in callback at the right point with the right arguments (`element, index, array`). **Function composition** (`compose(f, g)(x) === f(g(x))`) and **currying** are the other big sub-pattern: a function that returns a new, more specialized function by partially filling in some arguments. The core skill being tested is comfort treating functions as ordinary values - storing them in variables/arrays, passing them around, and calling them later - not any new syntax."
+    },
+    {
+      "type": "concept",
+      "title": "Generators - Lazy, Pausable Iteration",
+      "content": "A generator function (`function* name() { ... }`) doesn't run to completion when called - calling it returns a **generator object** (an iterator) without executing any code. Each call to `.next()` runs the function body until it hits a `yield` expression, returns `{ value, done: false }`, and *pauses* - the entire local state (variables, loop position) is frozen in place until `.next()` is called again, which resumes exactly where it left off. This makes generators the natural tool for **lazy sequences** (an infinite Fibonacci generator that only computes the next value when asked) and for **resumable/cancellable state machines**, since the function's execution position IS the state - no manual state variable needed. `yield*` delegates to another iterable, which is how \"flatten and iterate a nested structure\" problems get solved without building an intermediate array first."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "language": "javascript",
+      "code": "// 1. Closure: private state a returned function can read/mutate, nothing else can\nfunction makeCounter() {\n  let count = 0;               // captured by reference, not by value\n  return function () {\n    return ++count;\n  };\n}\n\n// 2. Debounce: closure + timer id, reset the timer on every call\nfunction debounce(fn, delay) {\n  let timeoutId = null;        // must be stored, or you can never cancel it\n  return function (...args) {\n    clearTimeout(timeoutId);   // cancel the pending call, if any\n    timeoutId = setTimeout(() => fn.apply(this, args), delay);\n  };\n}\n\n// 3. Memoize: closure over a cache, keyed by serialized arguments\nfunction memoize(fn) {\n  const cache = new Map();\n  return function (...args) {\n    const key = JSON.stringify(args);\n    if (cache.has(key)) return cache.get(key);\n    const result = fn.apply(this, args);\n    cache.set(key, result);\n    return result;\n  };\n}\n\n// 4. Promise time limit: race the real work against a timeout\nfunction timeLimit(fn, t) {\n  return async function (...args) {\n    const timeout = new Promise((_, reject) =>\n      setTimeout(() => reject('Time Limit Exceeded'), t)\n    );\n    return Promise.race([fn(...args), timeout]);\n  };\n}\n\n// 5. Generator: lazy, pausable sequence\nfunction* fibonacci() {\n  let [a, b] = [0, 1];\n  while (true) {\n    yield a;\n    [a, b] = [b, a + b];      // execution pauses here between .next() calls\n  }\n}",
+      "explanation": "These five shapes cover almost every problem in this track. Notice the common thread: 1, 2, and 3 are all \"outer function declares state, inner function closes over it\" - only the state and what triggers its mutation changes. 4 shows that async control is really just Promise composition (`race`), not new async syntax. 5 shows that a generator's paused state replaces what would otherwise need to be manually tracked instance variables."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "State-Capturing Closures",
+          "description": "A factory function returns one or more inner functions that share access to the same private variable(s) - counters, toggles, one-shot guards, and any 'private field' simulation.",
+          "example_problem": "Counter II",
+          "example_slug": "counter-ii"
+        },
+        {
+          "name": "Debounce / Throttle / Cache-With-Expiry",
+          "description": "Closure state is a timer id or a timestamped cache entry instead of a plain counter - the same closure pattern, but paired with `setTimeout`/`Date.now()` to gate how often the wrapped function actually runs.",
+          "example_problem": "Cache With Time Limit",
+          "example_slug": "cache-with-time-limit"
+        },
+        {
+          "name": "Promise Racing & Cancellation",
+          "description": "Wrap real async work in `Promise.race` against a timeout Promise, or return a cancel handle (often itself a closure) that calls `clearTimeout`/rejects a stored Promise to stop pending work early.",
+          "example_problem": "Promise Time Limit",
+          "example_slug": "promise-time-limit"
+        },
+        {
+          "name": "Array Method Re-implementation",
+          "description": "Manually loop over an array and invoke a passed-in callback with `(element, index, array)` at the right point - the exercise is in matching the exact built-in contract, not the looping itself.",
+          "example_problem": "Array Reduce Transformation",
+          "example_slug": "array-reduce-transformation"
+        },
+        {
+          "name": "Function Composition / Currying",
+          "description": "Combine an array of functions into a single function via `reduce`, applying each in sequence (or reverse sequence) to the previous result.",
+          "example_problem": "Function Composition",
+          "example_slug": "function-composition"
+        },
+        {
+          "name": "Custom Iterators & Generators",
+          "description": "Use `function*`/`yield` (or manually implement `Symbol.iterator`) to produce values lazily one at a time, including recursive delegation with `yield*` for nested structures.",
+          "example_problem": "Nested Array Generator",
+          "example_slug": "nested-array-generator"
+        },
+        {
+          "name": "Design / Class-Based State",
+          "description": "Problems phrased as 'implement a class' rather than 'implement a function' - the same closure and HOF ideas apply, just held in instance fields (`this.x`) instead of a closed-over variable.",
+          "example_problem": "Event Emitter",
+          "example_slug": "event-emitter"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "Almost always O(1) or O(n) per call - the point of these problems is correctness of the mechanism (does state persist correctly, does the timer get cancelled, does the generator pause/resume correctly), not asymptotic optimization.",
+      "space": "O(n) where n is the amount of state a closure or cache retains across calls - e.g. `memoize`'s cache grows with the number of distinct argument combinations seen. A closure keeps its entire captured scope alive for as long as any reference to the inner function exists, so unbounded caches are the main space risk, not stack depth or auxiliary arrays.",
+      "explanation": "Grading yourself on Big-O is usually the wrong lens here - grade yourself on whether the state management is actually correct (no leaked timers, no stale closures, generator resumes from the right point)."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Forgetting to store the id `setTimeout`/`setInterval` returns, so it can never be cancelled - the classic cause of a test that hangs or a debounce that never resets.",
+        "Losing `this` inside a plain (non-arrow) callback passed to `setTimeout`/array methods - use an arrow function or `.bind(this)` when the callback needs the outer `this`.",
+        "Reading a `let`/`var` loop variable inside a closure created in that loop without capturing it per-iteration (classic with `var i` in a loop building callbacks - each callback sees the *final* value of `i`, not the value at creation time; `let` fixes this because it's block-scoped per iteration).",
+        "Writing `function* () { return arr.map(...) }` when the problem wants lazy, one-at-a-time production - `.map()` eagerly computes the entire array first, defeating the purpose of a generator.",
+        "Mutating a closure's shared state from multiple returned functions in a way that breaks encapsulation (e.g. exposing the raw variable through a getter that returns a mutable reference instead of a value).",
+        "In `Promise.race` timeout patterns, forgetting to also clear the timeout on the winning path - the losing timer still fires later and can throw an unhandled rejection if not cleaned up.",
+        "Serializing arguments for a memoize cache with something naive like string concatenation instead of `JSON.stringify`, which breaks on object/array arguments or on arguments that stringify to colliding keys."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Counter",
+          "slug": "counter",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "The simplest possible closure - one private variable, one function that mutates it. Start here."
+        },
+        {
+          "title": "Counter II",
+          "slug": "counter-ii",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Same closure idea, extended to a small class-like object with multiple methods sharing one private variable."
+        },
+        {
+          "title": "To Be Or Not To Be",
+          "slug": "to-be-or-not-to-be",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "A closure that captures a value and returns functions that assert equality against it - tests basic closure capture, not mutation."
+        },
+        {
+          "title": "Sleep",
+          "slug": "sleep",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "The minimal Promise + setTimeout pairing - resolve a Promise after a delay. Foundation for every other async problem here."
+        },
+        {
+          "title": "Array Prototype Last",
+          "slug": "array-prototype-last",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Extending a built-in prototype - tests understanding that `Array.prototype` methods are just functions attached to a shared object."
+        },
+        {
+          "title": "Array Reduce Transformation",
+          "slug": "array-reduce-transformation",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Hand-roll `.reduce()`'s accumulator loop - the base HOF pattern every other array re-implementation problem builds on."
+        },
+        {
+          "title": "Function Composition",
+          "slug": "function-composition",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Combine an array of functions right-to-left into one via reduceRight - the canonical composition pattern."
+        },
+        {
+          "title": "Filter Elements from Array",
+          "slug": "filter-elements-from-array",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Hand-roll `.filter()` - same loop-and-callback shape as reduce, with a boolean predicate instead of an accumulator."
+        },
+        {
+          "title": "Apply Transform Over Each Element in Array",
+          "slug": "apply-transform-over-each-element-in-array",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Hand-roll `.map()` - completes the map/filter/reduce trio of from-scratch re-implementations."
+        },
+        {
+          "title": "Create Hello World Function",
+          "slug": "create-hello-world-function",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "A function that returns a function ignoring its own arguments - the minimal 'function returning function' shape with no state at all."
+        },
+        {
+          "title": "Allow One Function Call",
+          "slug": "allow-one-function-call",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Closure + a boolean flag to make a function callable only once - the 'run-once guard' variant of the counter pattern."
+        },
+        {
+          "title": "Chunk Array",
+          "slug": "chunk-array",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Not really closure/async - a plain array-manipulation problem included in the JS set because it comes from the same 30-day source."
+        },
+        {
+          "title": "Generate Fibonacci Sequence",
+          "slug": "generate-fibonacci-sequence",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "The canonical infinite generator - `yield` one value at a time forever, exactly the template's pattern 5."
+        },
+        {
+          "title": "Return Length of Arguments Passed",
+          "slug": "return-length-of-arguments-passed",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Tests comfort with JS's variadic `...args` rest syntax rather than a fixed parameter list."
+        },
+        {
+          "title": "Is Object Empty",
+          "slug": "is-object-empty",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Tests knowing `Object.keys()`/array vs. object emptiness checks - a language-quirk problem, not an algorithm one."
+        },
+        {
+          "title": "Interval Cancellation",
+          "slug": "interval-cancellation",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Store the id from `setInterval` and return a function that calls `clearInterval` on it - the timer-cancellation half of the debounce pattern in isolation."
+        },
+        {
+          "title": "Add Two Promises",
+          "slug": "add-two-promises",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "`await` two Promises and add their resolved values - the minimal multi-Promise await problem."
+        },
+        {
+          "title": "Calculator with Method Chaining",
+          "slug": "calculator-with-method-chaining",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Each method returns `this` to enable chaining - tests understanding of `this` inside a class's own methods."
+        },
+        {
+          "title": "Array Wrapper",
+          "slug": "array-wrapper",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Overriding `valueOf`/`toString` on a custom class - tests knowledge of JS's implicit type-coercion hooks."
+        },
+        {
+          "title": "Sort By",
+          "slug": "sort-by",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Pass a key-extractor function into a custom sort - a small HOF wrapping the built-in `.sort()` comparator."
+        },
+        {
+          "title": "Call Function with Custom Context",
+          "slug": "call-function-with-custom-context",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "Re-implement `Function.prototype.call` - forces you to understand exactly how `this`-binding works under the hood."
+        },
+        {
+          "title": "Cache With Time Limit",
+          "slug": "cache-with-time-limit",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "Closure-based cache where each entry expires after a delay - combines the memoize and timer patterns."
+        },
+        {
+          "title": "Memoize",
+          "slug": "memoize",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "The canonical memoize-via-closure-and-Map problem, template pattern 3 directly."
+        },
+        {
+          "title": "Snail Traversal",
+          "slug": "snail-traversal",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "Reshape a 1D array into a 2D matrix filled in spiral order - included in the JS set as a pure simulation problem."
+        },
+        {
+          "title": "Debounce",
+          "slug": "debounce",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "The canonical debounce problem - template pattern 2 directly, and the single most-asked pattern in this whole cluster."
+        },
+        {
+          "title": "Flatten Deeply Nested Array",
+          "slug": "flatten-deeply-nested-array",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "Recursively flatten to a given depth - tests recursion with an explicit depth parameter, adjacent to the generator delegation idea."
+        },
+        {
+          "title": "Group By",
+          "slug": "group-by",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "Re-implement `Object.groupBy` using a callback and a hash map accumulator - HOF plus hashing."
+        },
+        {
+          "title": "Promise Time Limit",
+          "slug": "promise-time-limit",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "`Promise.race` against a timeout - template pattern 4 directly."
+        },
+        {
+          "title": "Nested Array Generator",
+          "slug": "nested-array-generator",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "Use `yield*` to recursively flatten and lazily yield a nested array - tests generator delegation specifically."
+        },
+        {
+          "title": "Compact Object",
+          "slug": "compact-object",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "Recursively strip falsy values from a nested object/array structure - recursion over a mixed structure, not a flat array."
+        },
+        {
+          "title": "Event Emitter",
+          "slug": "event-emitter",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "Build a `subscribe`/`emit` class backed by a hash map of event name to listener list - the design-pattern variant of closures."
+        },
+        {
+          "title": "Timeout Cancellation",
+          "slug": "timeout-cancellation",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "`setTimeout` + a returned cancel function - the single-timer version of Interval Cancellation."
+        },
+        {
+          "title": "Execute Asynchronous Functions in Parallel",
+          "slug": "execute-asynchronous-functions-in-parallel",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "`Promise.all` over an array of async functions, collecting results in original order - tests parallel await without losing ordering."
+        },
+        {
+          "title": "Join Two Arrays by ID",
+          "slug": "join-two-arrays-by-id",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Merge two arrays of objects sharing an id field - a hash-map join problem included in the JS set."
+        },
+        {
+          "title": "Check if Object Instance of Class",
+          "slug": "check-if-object-instance-of-class",
+          "difficulty": 6,
+          "difficulty_label": "Medium",
+          "why": "Re-implement `instanceof` by manually walking the prototype chain - tests real understanding of JS's prototype-based inheritance."
+        },
+        {
+          "title": "Design Cancellable Function",
+          "slug": "design-cancellable-function",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "A generator whose execution can be cancelled mid-flight via a returned control function - combines generators with async cancellation, the hardest problem in this set."
+        },
+        {
+          "title": "Memoize II",
+          "slug": "memoize-ii",
+          "difficulty": 8,
+          "difficulty_label": "Hard",
+          "why": "Memoize a function whose arguments can include `NaN`/objects/functions that plain `JSON.stringify` keys would mishandle - forces a more careful cache-key strategy than the basic Memoize problem."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": null,
+      "next_slug": null,
+      "why": "This is the final topic in the roadmap - by this point every core technique, data structure, and CP-adjacent extra in Atlas has been covered."
+    }
+  ]
+}

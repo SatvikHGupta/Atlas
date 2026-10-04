@@ -1,0 +1,181 @@
+.row {
+  /* three fixed lanes: [difficulty + rating + title] [topic tags] [actions]. Every row lines up with the one above it. */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 200px auto;
+  align-items: center;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  transition: all 0.12s;
+  gap: 0.75rem;
+}
+.row:hover { background: var(--bg-card); border-color: var(--border); }
+.row[data-status='solved']    { border-left: 2px solid var(--solved); }
+.row[data-status='attempted'] { border-left: 2px solid var(--attempted); }
+
+.rowMain {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-width: 0;
+  cursor: pointer;
+}
+
+/* difficulty + rating in fixed-width cells, so the titles start at the same x on every row */
+.badges {
+  display: grid;
+  grid-template-columns: 84px 66px;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.rowTitle {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.problemCode {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.solveCount {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.variants {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-subtle);
+  border-radius: var(--radius-sm);
+  padding: 1px 4px;
+  flex-shrink: 0;
+}
+
+.rowTags {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.4rem;
+  min-width: 0;
+  /* no overflow:hidden here - the "+N" mappings popover opens from this lane and must not be clipped */
+}
+.rowTags .topicTag { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+
+.rowActions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+.rowActions .cfLink { min-width: 34px; text-align: right; }
+
+.topicTag {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+}
+
+.cfLink {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--accent);
+  opacity: 0.75;
+}
+
+.markBtn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.12s;
+  flex-shrink: 0;
+  font-family: inherit;
+  touch-action: manipulation;
+}
+.markBtn[data-type='solved'][data-active='true']    { background: var(--solved-bg); border-color: var(--solved); color: var(--solved); }
+.markBtn[data-type='attempted'][data-active='true'] { background: var(--attempted-bg); border-color: var(--attempted); color: var(--attempted); }
+.markBtn:hover:not([data-active='true'])            { border-color: var(--border-strong); color: var(--text-secondary); }
+
+@media (max-width: 768px) {
+  /* narrow screens: title line on top, buttons underneath; tags are dropped (they are on the problem anyway) */
+  .row { grid-template-columns: minmax(0, 1fr) auto; row-gap: 0.4rem; }
+  .rowTags { display: none; }
+  .rowTitle { font-size: 0.82rem; }
+  .badges { grid-template-columns: 76px 58px; }
+  .markBtn  { width: 36px; height: 36px; }
+}
+
+/* ---- appended (handoff 3): real anchor row + "+N" mappings popover ---- */
+.rowLink {
+  text-decoration: none;
+  color: inherit;
+  border-radius: var(--radius-sm);
+}
+.rowLink:focus-visible,
+.variantsSummary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.variantsWrap { position: relative; flex-shrink: 0; }
+
+.variantsSummary {
+  list-style: none;
+  cursor: pointer;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-subtle);
+  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+  min-height: 20px;
+  display: inline-flex;
+  align-items: center;
+}
+.variantsSummary::-webkit-details-marker { display: none; }
+
+.variantsList {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 20;
+  margin: 0;
+  padding: var(--space-2);
+  list-style: none;
+  min-width: 170px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+}
+
+.variantsItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--text-primary);
+}
+.variantsItem:hover { background: var(--bg-elevated); }

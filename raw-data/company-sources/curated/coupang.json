@@ -1,0 +1,57 @@
+{
+ "id": "coupang",
+ "name": "Coupang",
+ "tier": null,
+ "roles": [
+  "Software Engineer"
+ ],
+ "roleGuidance": {
+  "Software Engineer": {
+   "dsaDepth": "Heavy — 2 DSA rounds, then a design round and a \"focus\" round, with a Bar Raiser gate similar to Amazon’s model",
+   "rounds": [
+    "Recruiter screen",
+    "DSA round 1: algorithmic coding problem",
+    "DSA round 2: a second algorithmic coding problem (candidates can be eliminated after these two rounds)",
+    "Design round: system design, scalability and trade-offs",
+    "Focus round: role/domain-specific deep-dive",
+    "Bar Raiser round: a final gate after the 4 main rounds, similar in spirit to Amazon’s Bar Raiser"
+   ],
+   "extraTopics": [
+    "Passing 2 back-to-back pure-DSA rounds before design is even discussed",
+    "A distinct \"focus round\" format not common at most companies — expect deep, role-specific questioning beyond generic DSA/design"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Entry–Mid",
+   "title": "Software Engineer",
+   "experience": "0–5 yrs"
+  },
+  {
+   "level": "Senior",
+   "title": "Senior Software Engineer",
+   "experience": "5+ yrs"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (e-commerce / logistics platform)",
+  "Backend / Infrastructure Engineer"
+ ],
+ "sources": [
+  {
+   "title": "Glassdoor: Coupang Software Engineer interview reports (San Francisco and remote)",
+   "url": "https://www.glassdoor.com.ar/Entrevista/Coupang-Entrevista-E914956-RVW84454645.htm",
+   "used": [
+    "4-round structure (2 DSA, 1 design, 1 focus) plus a Bar Raiser gate after round 4"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "low",
+ "rolesNotes": "Only one source page was reviewed (aggregating a few independent reports). The Bar Raiser and \"focus round\" terminology mirror Amazon’s model closely, which may reflect hiring practices imported by ex-Amazon leadership at Coupang — worth confirming independently.",
+ "indiaNote": null
+}

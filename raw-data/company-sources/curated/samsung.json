@@ -1,0 +1,81 @@
+{
+ "id": "samsung",
+ "name": "Samsung",
+ "tier": null,
+ "roles": [
+  "SDE-1 (Samsung R&D India)"
+ ],
+ "roleGuidance": {
+  "SDE-1 (Samsung R&D India)": {
+   "dsaDepth": "Heavy — a single long coding question (3 hrs, 40-50 hidden test cases, standard-library and autocomplete banned) is the hardest filter, then a resume/DSA technical round and HR",
+   "rounds": [
+    "Round 1 — Online exam on Samsung’s own \"Samsung SWC\" / \"Samsung Advanced Test\" platform: 1 large coding question in 3 hours, must pass ~40-50 hidden test cases, standard library functions and IDE autocomplete are disabled",
+    "Round 2 — Technical interview (~1-1.5 hrs): deep dive into resume/projects and the language used (Java OOP, garbage collection, string pool are commonly asked), then DSA/algorithms questions",
+    "Round 3 — HR/Managerial round: aptitude, puzzles, background"
+   ],
+   "extraTopics": [
+    "Writing correct code WITHOUT standard-library helpers or IDE autocomplete under a proctored 3-hour window — a distinctive constraint",
+    "Deep language-internals knowledge (e.g. Java garbage collection, memory model) alongside DSA"
+   ],
+   "focusPatterns": null,
+   "notes": "Some pipelines run only 2 rounds (OA + one short technical call); others run the full 3-4 round loop — varies by campus vs off-campus and by specific R&D center (Bangalore, Noida)."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "SDE-1 / Software Engineer",
+   "title": "Software Development Engineer 1",
+   "experience": "Entry level (campus and 0–2 yrs)"
+  },
+  {
+   "level": "SDE-2",
+   "title": "Software Development Engineer 2",
+   "experience": "Mid level"
+  },
+  {
+   "level": "Senior",
+   "title": "Senior Software Engineer",
+   "notes": "Not covered in depth by the cited sources"
+  }
+ ],
+ "roleFamilies": [
+  "Software Development Engineer (Samsung R&D India — mobile/DX division)",
+  "Systems / Firmware Engineer"
+ ],
+ "sources": [
+  {
+   "title": "Samsung R&D India | Offer | SDE - 1 (LeetCode discuss)",
+   "url": "https://leetcode.com/discuss/interview-experience/1345996",
+   "used": [
+    "full 3-round loop, distinctive no-standard-library/no-autocomplete OA constraint"
+   ]
+  },
+  {
+   "title": "Samsung R&D Institute interview experience (Code360, Aug 2022)",
+   "url": "https://www.naukri.com/code360/interview-experiences/samsung-r-d-institute/interview-experience-off-campus-aug-2022-2-5247",
+   "used": [
+    "multi-round loop, proctoring details (webcam room-scan before the OA)"
+   ]
+  },
+  {
+   "title": "Glassdoor: Samsung R&D Institute India - Noida interview reports",
+   "url": "https://fr.glassdoor.ch/Entretien/Samsung-R-and-D-Institute-India-Noida-Entretien-E520008-RVW17787981.htm",
+   "used": [
+    "3-round loop: coding, technical (C/DSA), HR with puzzles"
+   ]
+  },
+  {
+   "title": "Glassdoor: Samsung R&D Institute India - Bangalore interview reports",
+   "url": "https://static.glassdoor.co.nz/Interview/Samsung-R-and-D-Institute-India-Bangalore-Interview-E520007-RVW102006123.htm",
+   "used": [
+    "varying round counts (1 to 3), OA + technical + HR pattern"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "The distinctive no-library/no-autocomplete 3-hour OA is corroborated across multiple independent reports. Round count above SDE-1 (SDE-2, Senior) is not covered by the sources reviewed.",
+ "indiaNote": "All reports reviewed are from Samsung R&D Institute India centers (Bangalore, Noida) — this is India-specific hiring, not global Samsung Electronics."
+}

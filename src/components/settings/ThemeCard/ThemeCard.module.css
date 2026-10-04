@@ -1,0 +1,77 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 12px;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  font-family: inherit;
+}
+.card:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+.card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.active { border-color: var(--accent); box-shadow: var(--shadow-accent); }
+
+/* ---- preview: a tiny app painted with the theme's own palette ---- */
+.preview {
+  display: flex;
+  flex-direction: column;
+  height: 112px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--p-bg);
+  /* border derived from the preview's own text colour so it shows on white AND on near-black */
+  border: 1px solid color-mix(in srgb, var(--p-text) 16%, transparent);
+}
+.preview i { display: block; border-radius: 99px; }
+
+.pNav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 22px;
+  padding: 0 8px;
+  background: var(--p-card);
+  border-bottom: 1px solid color-mix(in srgb, var(--p-text) 12%, transparent);
+}
+.pLogo { width: 9px; height: 9px; border-radius: 3px !important; background: linear-gradient(135deg, var(--p-accent), var(--p-accent2)); margin-right: 4px; }
+.pPill { width: 22px; height: 5px; background: var(--p-muted); opacity: 0.55; }
+.pPillActive { background: var(--p-text); opacity: 0.9; }
+
+.pBody { flex: 1; display: flex; padding: 8px; }
+.pCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+  border-radius: 6px;
+  background: var(--p-card);
+  border: 1px solid color-mix(in srgb, var(--p-text) 12%, transparent);
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--p-text) 10%, transparent);
+}
+.pTitle { width: 52%; height: 6px; background: var(--p-text); }
+.pLine { width: 88%; height: 4px; background: var(--p-muted); opacity: 0.7; }
+.pLineShort { width: 62%; }
+.pBar { width: 74%; height: 4px; background: linear-gradient(90deg, var(--p-accent), var(--p-accent2)); }
+.pCode { width: 100%; height: 7px; border-radius: 3px !important; background: var(--p-code); border: 1px solid color-mix(in srgb, var(--p-text) 12%, transparent); }
+.pRow { display: flex; align-items: center; gap: 5px; margin-top: auto; }
+.pChip { width: 18px; height: 7px; }
+.pChipSolved { background: var(--p-solved); }
+.pChipAccent { background: var(--p-accent2); }
+.pBtn { width: 26px; height: 9px; margin-left: auto; border-radius: 4px !important; background: var(--p-accent); }
+
+/* ---- text ---- */
+.info { display: flex; flex-direction: column; gap: 4px; }
+.nameRow { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.name { font-weight: 650; font-size: 0.98rem; color: var(--text-primary); }
+.accentDots { display: inline-flex; gap: 4px; margin-right: 22px; }
+.accentDots i { width: 10px; height: 10px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--text-primary) 18%, transparent); }
+
+.description { margin: 0; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4; }
+
+.check { position: absolute; top: 20px; right: 20px; width: 20px; height: 20px; filter: drop-shadow(0 1px 2px var(--overlay)); }

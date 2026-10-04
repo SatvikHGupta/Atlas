@@ -1,0 +1,37 @@
+[
+  {
+    "canonical_id": "e0cf5451-3b37-4446-a693-459e524aa31c",
+    "title": "Round Trip",
+    "reason": "Bad source mapping. Previously hidden in the browser (dataClient.js), now dropped by the build."
+  },
+  {
+    "canonical_id": "46952aaf-1000-40be-89cc-da9c4471f08d",
+    "title": "Best Time to Buy and Sell Stock",
+    "reason": "Bad source mapping. Previously hidden in the browser (dataClient.js), now dropped by the build."
+  },
+  {
+    "canonical_id": "9f5e0ffb-92b1-4cb7-80d6-961a4b04b45d",
+    "title": "Labyrinth",
+    "reason": "Bad source mapping. Previously hidden in the browser (dataClient.js), now dropped by the build."
+  },
+  {
+    "canonical_id": "49110f86-e125-4989-997c-b89c1dc5ab5f",
+    "title": "Permutations",
+    "reason": "Bad source mapping. Previously hidden in the browser (dataClient.js), now dropped by the build."
+  },
+  {
+    "canonical_id": "03e0c74d-6de1-4aee-9be9-768cee7ee6cf",
+    "title": "Subordinates",
+    "reason": "Bad source mapping. Previously hidden in the browser (dataClient.js), now dropped by the build."
+  },
+  {
+    "canonical_id": "29626166-b076-4e2e-ae13-d14748f285a5",
+    "title": "Longest Increasing Subsequence",
+    "reason": "Bad source mapping. Previously hidden in the browser (dataClient.js), now dropped by the build."
+  },
+  {
+    "canonical_id": "0a091ed0-bea5-428b-ac88-fbfdebe8af40",
+    "title": "Fibonacci Number",
+    "reason": "Bad source mapping. Previously hidden in the browser (dataClient.js), now dropped by the build."
+  }
+]

@@ -1,0 +1,63 @@
+{
+ "id": "wix",
+ "name": "Wix",
+ "tier": null,
+ "roles": [
+  "Software Engineer"
+ ],
+ "roleGuidance": {
+  "Software Engineer": {
+   "dsaDepth": "Very Heavy — an on-site, multi-hour LeetCode marathon (often 5 problems spanning easy to hard, 2-3 hours, on a Codility-like platform) is the primary filter, followed by a 90-minute system-design-and-implementation interview",
+   "rounds": [
+    "Application, sometimes via referral",
+    "Online/Zoom informational event for some pipelines (introducing company groups and the process)",
+    "On-site coding exam: 5 LeetCode-style problems (one easy, two medium, two hard reported in one loop) in about 2-3 hours on a proctored platform",
+    "A 90-minute technical interview with 2 engineers: a multi-part system-design-and-implementation question (e.g. building functions for URL routing rules: perfect match, prefix match, best-route finding)"
+   ],
+   "extraTopics": [
+    "Sustained performance across a genuinely long, hard on-site coding exam — 5 problems including 2 hard ones in one sitting is a heavier bar than most companies in this batch",
+    "Multi-part system design that blends design AND actual implementation, not just a whiteboard discussion"
+   ],
+   "focusPatterns": null,
+   "notes": "The full process is reported as notably long and slow, with 6-9 day waits between phases and an overall timeline that can exceed a month."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Student / Junior",
+   "title": "Student Software Engineer, Junior Software Engineer",
+   "experience": "Entry level (incl. Tel Aviv)"
+  },
+  {
+   "level": "Software Engineer",
+   "title": "Software Engineer",
+   "experience": "Mid–senior"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (website-builder platform)",
+  "Backend / Infrastructure Engineer"
+ ],
+ "sources": [
+  {
+   "title": "Glassdoor: Wix Student Software Engineer interview report, Tel Aviv (5 LeetCode problems)",
+   "url": "https://fr.glassdoor.ca/Entretien/Wix-Entretien-E391615-RVW101167445.htm",
+   "used": [
+    "2-hour on-site coding test (1 easy, 2 medium, 2 hard) then a system-design Zoom interview"
+   ]
+  },
+  {
+   "title": "Glassdoor: Wix interview report, Tel Aviv (7-week process)",
+   "url": "https://www.glassdoor.fr/Entretien/Wix-Entretien-E391615-RVW104480169.htm",
+   "used": [
+    "5 LeetCode problems in 3 hours, then a 90-minute URL-routing system design + implementation interview"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "low",
+ "rolesNotes": "Only two detailed reports were reviewed, both from Wix’s Tel Aviv office, but they independently agree on the distinctive long, hard on-site coding exam — a genuinely unusual format worth flagging even with limited sourcing.",
+ "indiaNote": null
+}

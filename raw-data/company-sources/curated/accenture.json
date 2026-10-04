@@ -1,0 +1,78 @@
+{
+ "id": "accenture",
+ "name": "Accenture",
+ "tier": 3,
+ "roles": [
+  "ASE / Advanced ASE"
+ ],
+ "roleGuidance": {
+  "ASE / Advanced ASE": {
+   "dsaDepth": "Light–Moderate — cognitive test plus a coding round; coding difficulty is lower than product-company bars, communication is weighted heavily",
+   "rounds": [
+    "Communication Assessment (English ability: sentence correction, reading comprehension, error-spotting)",
+    "Cognitive and Technical Assessment (about 90 min: verbal, logical reasoning, numerical ability, plus a technical section on pseudo-code/flowcharts/networking/MS Office for technical streams)",
+    "Coding round (basic-to-moderate problems)",
+    "Technical interview",
+    "HR interview"
+   ],
+   "extraTopics": [
+    "Verbal and written communication (a whole stage is dedicated to it)",
+    "Basic logical reasoning and numerical aptitude",
+    "Pseudo-code / flowchart reading for the technical assessment"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "ASE",
+   "title": "Associate Software Engineer",
+   "experience": "Fresher",
+   "notes": "Standard fresher track"
+  },
+  {
+   "level": "Advanced ASE",
+   "title": "Advanced Associate Software Engineer",
+   "experience": "Fresher, higher band",
+   "notes": "Requires stronger cognitive/coding scores than ASE"
+  },
+  {
+   "level": "Experienced",
+   "title": "Senior Associate, Team Lead and above",
+   "notes": "Lateral hiring is role-specific"
+  }
+ ],
+ "roleFamilies": [
+  "Associate Software Engineer (delivery/consulting)",
+  "Advanced ASE (technical specialist track)"
+ ],
+ "sources": [
+  {
+   "title": "Accenture Selection Process 2026: Full 6-Stage Guide (FACEPrep)",
+   "url": "https://faceprep.in/blog/16/",
+   "used": [
+    "6-stage pipeline: Communication, Cognitive+Technical, Coding, Technical interview, HR"
+   ]
+  },
+  {
+   "title": "Accenture Test Pattern, Eligibility and Syllabus 2026 (FACEPrep)",
+   "url": "https://www.faceprep.in/article/accenture-test-pattern-online-eligibility-criteria-and-syllabus-2019/",
+   "used": [
+    "4-stage test structure, ASE vs Advanced ASE"
+   ]
+  },
+  {
+   "title": "Accenture Hiring Process for Freshers (PlacementPreparation.io)",
+   "url": "https://www.placementpreparation.io/blog/?p=17742",
+   "used": [
+    "Cognitive and Technical Assessment breakdown"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "low",
+ "rolesNotes": "Sources agree on the multi-stage structure but give limited detail on the coding round’s actual difficulty; treat as lighter than product-company DSA bars.",
+ "indiaNote": "India-wide campus and off-campus hiring under the ASE / Advanced ASE tracks."
+}

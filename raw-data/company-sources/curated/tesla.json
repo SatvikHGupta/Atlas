@@ -1,0 +1,81 @@
+{
+ "id": "tesla",
+ "name": "Tesla",
+ "tier": null,
+ "roles": [
+  "Software Engineer"
+ ],
+ "roleGuidance": {
+  "Software Engineer": {
+   "dsaDepth": "Heavy — a genuinely unusual order (hiring-manager call BEFORE any technical evaluation), first-principles depth-probing on fundamentals, and for final rounds a written \"Evidence of Excellence\" submission",
+   "rounds": [
+    "Recruiter screen (20-30 min)",
+    "Hiring-manager call (30-45 min) — distinctively comes BEFORE any technical round, assessing team fit and technical depth at a conversational level",
+    "Online assessment (85-90 min, Codility/HackerRank, ~3 problems, easy-medium, under time pressure)",
+    "Technical screen (~60 min live coding): practical problem solving, explicitly including catching your own bugs, not just reaching a working answer",
+    "Panel rounds (3-5 rounds, 45-60 min each): coding (LeetCode-medium, strings/arrays common), system design, first-principles depth (language internals, memory, architecture, and for some teams physics-adjacent reasoning), and behavioral, sometimes closing with a senior-leadership round",
+    "Evidence of Excellence (final rounds, increasingly common): a 1-2 page WRITTEN submission describing your single most significant technical achievement, evaluated for impact, ownership and complexity"
+   ],
+   "extraTopics": [
+    "First-principles depth-probing — interviewers push into how things actually work (memory, architecture, sometimes physics-adjacent reasoning for hardware-adjacent teams), not just correctness",
+    "Writing, not just talking, about your best work for the Evidence of Excellence submission",
+    "Team variance is large — Autopilot, vehicle firmware, energy, manufacturing systems and internal-tools teams run meaningfully different loops"
+   ],
+   "focusPatterns": null,
+   "notes": "Overall difficulty is rated 3.9/5 on Glassdoor — comparable to Google/Meta but with a different texture (less exotic algorithms, more depth-probing and pressure tolerance). Total process length is reported around 34 days on average, though individual reports range from 2 weeks to 3 months."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Entry",
+   "title": "Software Engineer",
+   "experience": "0–3 yrs"
+  },
+  {
+   "level": "Mid–Senior",
+   "title": "Senior Software Engineer",
+   "experience": "3+ yrs"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (Autopilot / vehicle firmware)",
+  "Software Engineer (energy / manufacturing systems)",
+  "Software Engineer (internal tools / applications)"
+ ],
+ "sources": [
+  {
+   "title": "What Is the Tesla Interview Process Like? (Round by Round) (DesignGurus)",
+   "url": "https://www.designgurus.io/answers/detail/what-is-the-tesla-interview-process-like-round-by-round",
+   "used": [
+    "full 6-stage breakdown, hiring-manager-before-technical ordering, Evidence of Excellence detail, difficulty rating"
+   ]
+  },
+  {
+   "title": "Tesla Software Engineer Interview Process (Interview Kickstart)",
+   "url": "https://interviewkickstart.com/blogs/interview-questions/tesla-software-engineer-interview-process",
+   "used": [
+    "role/level overview, comp context ($126K average)"
+   ]
+  },
+  {
+   "title": "Glassdoor: Tesla Software Engineer interview reports (multiple, virtual 3x45min loops)",
+   "url": "https://fr.glassdoor.ch/Entretien/Tesla-Entretien-E43129-RVW85351304.htm",
+   "used": [
+    "JSON Merge API design question, island-bridge coding problem, presentation-based technical round variant"
+   ]
+  },
+  {
+   "title": "Glassdoor: Tesla Software Engineer interview report (2-month process, \"why Tesla\" letter)",
+   "url": "https://fr.glassdoor.ch/Entretien/Tesla-Entretien-E43129-RVW85351304.htm",
+   "used": [
+    "6-round loop culminating in a written fit letter, binary trees/linked lists/stacks-and-queues coding topics"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "The distinctive hiring-manager-before-technical ordering and the \"Evidence of Excellence\" written submission are corroborated across independent sources and are genuinely unusual practices worth flagging.",
+ "indiaNote": null
+}

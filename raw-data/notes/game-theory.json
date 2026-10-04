@@ -1,0 +1,167 @@
+{
+  "topic": "Game Theory",
+  "level": 9,
+  "slug": "game-theory",
+  "estimated_read": "13 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Game Theory (for DSA)?",
+      "content": "These problems model a two-player game where both players play *optimally* - not randomly, not greedily, but always picking the move that's best for them assuming the opponent will also always play their best response. Because both players are optimal, you can't simulate 'a' game and see who wins - you have to reason about *every* game, which is exactly what recursion/DP is for: `canWin(state)` is true if there exists at least one move leading to a state where the opponent's `canWin` is false. This is why almost every problem in this note is really a DP or recursion problem wearing a 'two players take turns' costume - the game framing tells you the recurrence (whoever moves picks the best of `-result of every possible next state`), not a new technique."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Reach for game-theory framing whenever a problem describes two players alternating turns, both trying to win/maximize, and asks only for the *outcome* (who wins, or the optimal score difference) - not a full move-by-move solution.",
+      "signals": [
+        "two players take turns",
+        "both players play optimally",
+        "determine if the first/second player can win",
+        "player 1 tries to maximize, player 2 tries to minimize (or also maximize their own score)",
+        "removing stones/items from piles, last player to move wins or loses",
+        "game ends when no moves remain"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Minimax: The General Recurrence",
+      "content": "Minimax formalizes 'both players play optimally' as a recurrence: at a state where it's your turn, your best outcome is the maximum, over all legal moves, of the outcome *your opponent* will face next - except from their perspective they're also maximizing, so from your perspective their gain is your loss. In score-difference games this becomes `best(state) = max over moves of (scoreOfMove - best(nextState))` - subtracting the recursive call because the next call computes the *opponent's* best advantage, which comes out of your total. This single recurrence, memoized on `state` (often just an index range `[i, j]` into an array), solves the entire 'Stone Game' family: whoever's turn it is picks an end of the remaining array, and the recurrence handles the rest."
+    },
+    {
+      "type": "concept",
+      "title": "Nim and the Sprague-Grundy Theorem",
+      "content": "**Nim** is the foundational impartial game (both players have the same moves available, unlike chess): several piles of stones, each turn a player removes any positive number of stones from exactly one pile, and whoever takes the last stone wins. The entire game has a one-line solution: the first player wins if and only if the XOR of all pile sizes is nonzero. This isn't a coincidence specific to Nim - the **Sprague-Grundy theorem** says *every* impartial game under the 'normal play' convention (last player to move wins) is equivalent to a single Nim pile of some size, called its **Grundy number** (or nimber). The Grundy number of a position is `mex` (minimum excludant - the smallest non-negative integer *not* in the set) of the Grundy numbers of all positions reachable in one move; a position is losing for the player to move exactly when its Grundy number is 0. For games made of independent sub-games (several piles, or several disconnected components of a larger game), the whole game's Grundy number is just the XOR of each sub-game's Grundy number - which is why Nim's XOR rule is really a special case of a much more general tool."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "language": "javascript",
+      "code": "// Minimax with memoization on the array range - Stone Game family\nfunction stoneGame(piles) {\n  const n = piles.length;\n  const memo = new Map();\n\n  function best(i, j) {\n    if (i > j) return 0;\n    const key = i * n + j;\n    if (memo.has(key)) return memo.get(key);\n\n    // Whoever's turn it is picks the end that maximizes (this move's gain - opponent's best response)\n    const takeLeft = piles[i] - best(i + 1, j);\n    const takeRight = piles[j] - best(i, j - 1);\n    const result = Math.max(takeLeft, takeRight);\n\n    memo.set(key, result);\n    return result;\n  }\n\n  return best(0, n - 1) > 0;   // first player wins if their net score advantage is positive\n}\n\n// Nim / Sprague-Grundy: compute Grundy number for a single-pile subtraction game\nfunction grundy(pile, moves, memo = new Map()) {\n  if (memo.has(pile)) return memo.get(pile);\n  const reachable = new Set();\n  for (const m of moves) {\n    if (m <= pile) reachable.add(grundy(pile - m, moves, memo));\n  }\n  let mex = 0;\n  while (reachable.has(mex)) mex++;   // smallest non-negative integer not reachable\n  memo.set(pile, mex);\n  return mex;\n}\n\n// Combine independent piles/sub-games: first player wins iff XOR of Grundy numbers != 0\nfunction firstPlayerWins(piles, moves) {\n  return piles.reduce((xor, p) => xor ^ grundy(p, moves), 0) !== 0;\n}",
+      "explanation": "`stoneGame`'s `best(i, j)` only depends on the remaining range, so memoizing on `(i, j)` turns an exponential game tree into an O(n^2) DP - this is the shape of nearly every 'Stone Game N' problem. `grundy` generalizes Nim beyond the plain 'remove any number of stones' rule to any fixed set of legal move sizes; plain Nim is the special case where `moves` is 'remove any amount from 1 to the pile size', which makes every `grundy(pile)` just equal `pile` itself, collapsing `firstPlayerWins` to a plain XOR of pile sizes."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Range/Interval Minimax",
+          "description": "Both players repeatedly take from either end of a shrinking array - state is the remaining `[i, j]` range, solved with the subtract-the-opponent's-best recurrence.",
+          "example_problem": "Predict the Winner",
+          "example_slug": "predict-the-winner"
+        },
+        {
+          "name": "Pure Nim / XOR Parity",
+          "description": "Multiple independent piles, remove any positive amount from one pile per turn - decided instantly by XOR of pile sizes, no DP needed at all.",
+          "example_problem": "Nim Game",
+          "example_slug": "nim-game"
+        },
+        {
+          "name": "Restricted-Move Impartial Games",
+          "description": "A single-pile or single-number game where the legal moves are restricted (e.g. only remove a perfect-square number of stones, or only divide by a proper divisor) - requires computing Grundy numbers rather than using the plain Nim XOR shortcut directly.",
+          "example_problem": "Divisor Game",
+          "example_slug": "divisor-game"
+        },
+        {
+          "name": "Adversarial Search on a Board/Graph",
+          "description": "Two players move pieces on a shared board/graph rather than removing items from piles - state includes both players' positions, usually solved with memoized minimax/BFS over the joint state space rather than a Grundy-number shortcut.",
+          "example_problem": "Cat and Mouse",
+          "example_slug": "cat-and-mouse"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(states x transitions) once memoized - for range-minimax over an array of length n, O(n^2) states each doing O(1) work; for Grundy-number games, O(pile size x moves) per pile to build the memo table.",
+      "space": "O(states) for the memo table - O(n^2) for range problems, O(max pile size) for single-pile Grundy computations.",
+      "explanation": "Without memoization, minimax over a range is a full binary game tree - O(2^n). The entire value of recognizing 'this is a game theory problem' is realizing the state space is small and overlapping, same as any other DP."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Simulating the game with a greedy 'always take the bigger pile end' heuristic instead of true minimax - greedy is provably wrong on this problem family (it ignores what the choice leaves for the opponent to exploit next).",
+        "Getting the sign wrong in the score-difference recurrence - it's `thisMove - best(remainingState)`, not `thisMove + best(remainingState)`, because the recursive call returns the *opponent's* best net advantage, which subtracts from yours.",
+        "Applying the plain Nim XOR rule to a game with restricted move sizes - the XOR shortcut only holds for unrestricted 'take any positive amount' Nim; anything else needs the general Grundy/mex computation.",
+        "Forgetting the base case `mex` starts the search at 0, not 1 - the minimum excludant is the smallest non-negative integer missing from the reachable set.",
+        "Treating a game with *simultaneous* or non-alternating structure as a standard turn-based minimax problem - misidentifying the turn structure invalidates the whole recurrence."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Nim Game",
+          "slug": "nim-game",
+          "difficulty": 2,
+          "difficulty_label": "Easy",
+          "why": "The foundational impartial game - first player loses iff the pile size is a multiple of 4 (the 3-move-per-turn special case of the XOR rule)."
+        },
+        {
+          "title": "Divisor Game",
+          "slug": "divisor-game",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "A restricted-move impartial game (subtract any proper divisor) - the parity of n alone decides the winner, a clean intro to reasoning about Grundy-style games without heavy machinery."
+        },
+        {
+          "title": "Stone Game",
+          "slug": "stone-game",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "The canonical range-minimax problem - take from either end of the pile array, maximize your total."
+        },
+        {
+          "title": "Predict the Winner",
+          "slug": "predict-the-winner",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Identical recurrence to Stone Game, phrased as 'can player 1's score be >= player 2's' - same template, different question asked of the result."
+        },
+        {
+          "title": "Stone Game II",
+          "slug": "stone-game-ii",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "Extends the range template with a variable move size (take 1 to 2M piles from the front) - state becomes `(i, M)` instead of just a range."
+        },
+        {
+          "title": "Stone Game III",
+          "slug": "stone-game-iii",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Take from the front only (1 to 3 piles), with a three-way win/lose/tie outcome instead of a binary winner - tests generalizing minimax beyond win/lose."
+        },
+        {
+          "title": "Guess Number Higher or Lower II",
+          "slug": "guess-number-higher-or-lower-ii",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "A minimax over guess ranges rather than array ends - minimize your worst-case cost against an adversarial answer, same recurrence shape with a different objective."
+        },
+        {
+          "title": "Cat and Mouse",
+          "slug": "cat-and-mouse",
+          "difficulty": 9,
+          "difficulty_label": "Hard",
+          "why": "Both players move on a shared graph rather than removing items - state is `(mouse position, cat position, whose turn)`, solved via memoized search over the joint state space (a form of retrograde/BFS minimax)."
+        },
+        {
+          "title": "Chalkboard XOR Game",
+          "slug": "chalkboard-xor-game",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "A parity/XOR-invariant argument replaces brute-force minimax entirely - tests recognizing when a game has a closed-form winner condition instead of needing DP."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Design Problems",
+      "next_slug": "design-problems",
+      "why": "Design Problems is the next topic at this level - a natural sibling to Game Theory, reinforcing the same tier of difficulty before moving up."
+    }
+  ]
+}

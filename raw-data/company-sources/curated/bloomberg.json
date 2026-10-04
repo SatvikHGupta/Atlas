@@ -1,0 +1,101 @@
+{
+ "id": "bloomberg",
+ "name": "Bloomberg",
+ "tier": null,
+ "roles": [
+  "Software Engineer",
+  "Senior Software Engineer"
+ ],
+ "roleGuidance": {
+  "Software Engineer": {
+   "dsaDepth": "Heavy — 2–3 coding rounds (LeetCode medium–hard: graphs, trees, intervals) drawn heavily from Bloomberg’s own tagged question pool",
+   "rounds": [
+    "Recruiter screen (~30 min, motivation and background, no technical questions)",
+    "Technical phone screen (~45 min, 1 coding problem from Bloomberg’s well-known tagged list)",
+    "Superday: 2–3 coding rounds (medium–hard: BFS/graph variants, topological sort, intervals), a system/low-level design round (e.g. portfolio management service, URL shortener, key-value store), and a resume deep-dive",
+    "Engineering manager round: project discussion, team fit",
+    "Recruiter wrap-up call"
+   ],
+   "extraTopics": [
+    "Sustained follow-up pressure after a working solution — defending trade-offs matters as much as reaching an answer",
+    "Genuine interest in Bloomberg/fintech (\"why Bloomberg\" is asked repeatedly across rounds)"
+   ],
+   "focusPatterns": null
+  },
+  "Senior Software Engineer": {
+   "dsaDepth": "Heavy — same coding bar, system design round widely reported as the hardest part of the loop",
+   "rounds": [
+    "Similar structure to entry-level, with system design weighted more heavily and deeper resume/leadership discussion"
+   ],
+   "extraTopics": [
+    "System design depth",
+    "Leading design discussions and justifying architecture choices"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Entry",
+   "title": "Software Engineer",
+   "experience": "0–2 yrs",
+   "notes": "No public numbered-level scheme found; titles are Software Engineer -> Senior -> Lead"
+  },
+  {
+   "level": "Mid",
+   "title": "Software Engineer",
+   "experience": "2–6 yrs"
+  },
+  {
+   "level": "Senior",
+   "title": "Senior Software Engineer",
+   "experience": "6+ yrs"
+  },
+  {
+   "level": "Lead / Director",
+   "title": "Team Lead, Engineering Manager, Director",
+   "notes": "Management track"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (backend / infrastructure)",
+  "Financial Software Developer (domain-specific, Bloomberg Terminal-facing)",
+  "Data Engineering"
+ ],
+ "sources": [
+  {
+   "title": "What Is the Bloomberg Interview Process Like? (DesignGurus)",
+   "url": "https://www.designgurus.io/answers/detail/what-is-the-bloomberg-interview-process-like-round-by-round",
+   "used": [
+    "4-5 round structure, system design as hardest round, Bloomberg-tagged question pool"
+   ]
+  },
+  {
+   "title": "Bloomberg Software Engineer Interview Guide (Exponent)",
+   "url": "https://www.tryexponent.com/guides/bloomberg-software-engineer-interview",
+   "used": [
+    "DSA rounds escalating to system design and language trade-off questions in the final round"
+   ]
+  },
+  {
+   "title": "Bloomberg LP Software Engineer interview guide (Interview Query)",
+   "url": "https://www.interviewquery.com/guides/bloomberg-lp-software-engineer?exp_page=1",
+   "used": [
+    "follow-up pressure after working solutions, resume deep-dive, comp data"
+   ]
+  },
+  {
+   "title": "Interview Experience - Bloomberg SDE-2 (Roundz)",
+   "url": "https://roundz.substack.com/p/interview-experience-155-bloomberg-sde2",
+   "used": [
+    "multi-round loop example including engineering-manager and recruiter rounds"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "low",
+ "rolesNotes": "Bloomberg does not publish numbered levels the way Google/Amazon/Meta do; the ladder here is inferred from title progression in candidate reports, not a confirmed official scheme. The interview-loop detail itself is well corroborated across multiple independent sources.",
+ "indiaNote": null
+}

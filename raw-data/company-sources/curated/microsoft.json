@@ -1,0 +1,130 @@
+{
+ "id": "microsoft",
+ "name": "Microsoft",
+ "tier": 1,
+ "roles": [
+  "SDE (59–60)",
+  "SDE II (61–62)",
+  "Senior SDE (63–64)"
+ ],
+ "roleGuidance": {
+  "SDE (59–60)": {
+   "dsaDepth": "Heavy — coding rounds (Medium)",
+   "rounds": [
+    "Recruiter screen",
+    "Online assessment or phone screen (DSA)",
+    "Loop of coding rounds with a hiring-manager conversation"
+   ],
+   "extraTopics": [
+    "Resume / project discussion",
+    "Basic object-oriented design"
+   ],
+   "focusPatterns": null
+  },
+  "SDE II (61–62)": {
+   "dsaDepth": "Heavy — 1 Medium + 1 Hard style coding, plus design",
+   "rounds": [
+    "Recruiter screen",
+    "Online assessment or hiring-manager screen",
+    "Loop of about 4 one-hour rounds: coding, object-oriented / low-level design, sometimes high-level design, hiring-manager round"
+   ],
+   "extraTopics": [
+    "Low-level design (OOD)",
+    "Some loops include high-level design; some SDE II loops have none",
+    "Behavioral and resume depth"
+   ],
+   "focusPatterns": null,
+   "notes": "Reports differ by team: some SDE II loops are 2 coding + 2 OOD with no system design."
+  },
+  "Senior SDE (63–64)": {
+   "dsaDepth": "Moderate–Heavy — coding plus full system design",
+   "rounds": [
+    "Recruiter screen",
+    "Online coding assessment or phone screen",
+    "Onsite/virtual loop of 4–5 interviews over 4–5 hours (Teams): coding and system design"
+   ],
+   "extraTopics": [
+    "Full system design and architecture (not just OOD)",
+    "Technical leadership examples"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "59–60",
+   "title": "Software Engineer (SDE)",
+   "experience": "0–3 yrs",
+   "notes": "Entry level / new grad"
+  },
+  {
+   "level": "61–62",
+   "title": "Software Engineer II (SDE II)",
+   "experience": "3–6 yrs"
+  },
+  {
+   "level": "63–64",
+   "title": "Senior Software Engineer",
+   "experience": "6+ yrs"
+  },
+  {
+   "level": "65–67",
+   "title": "Principal Software Engineer",
+   "notes": "Not covered by the cited sources"
+  },
+  {
+   "level": "68+",
+   "title": "Partner / Distinguished",
+   "notes": "Not covered by the cited sources"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer",
+  "Software Engineer (Backend / Full-stack)",
+  "Data / Applied Science",
+  "Program Manager (non-engineering)"
+ ],
+ "sources": [
+  {
+   "title": "Microsoft Software Engineer Interview Handbook (DesignGurus)",
+   "url": "https://www.designgurus.io/company-guides/microsoft_interview_guide",
+   "used": [
+    "level bands 59–64, interview stages"
+   ]
+  },
+  {
+   "title": "Fishbowl: what does Software Engineer II mean at Microsoft",
+   "url": "https://www.fishbowlapp.com/post/hi-microsoft-peeps-what-does-software-engineer-ii-signifies-in-microsoft-is-it-l59-l60-l61-or-l62-they-are-requiring-3-to-4",
+   "used": [
+    "level mapping (SDE 59–60, SDE II 61–62)"
+   ]
+  },
+  {
+   "title": "Glassdoor: Microsoft SDE2 interview report (Jan 2026)",
+   "url": "https://www.glassdoor.ca/Interview/Microsoft-Interview-E1651-RVW102633585.htm",
+   "used": [
+    "SDE II loop composition"
+   ]
+  },
+  {
+   "title": "Glassdoor: Microsoft interview report (Sept 2025)",
+   "url": "https://www.glassdoor.com.au/Interview/Microsoft-Interview-E1651-RVW101409585.htm",
+   "used": [
+    "OA, phone screen, 4-round loop"
+   ]
+  },
+  {
+   "title": "Microsoft Senior (L63-L64) Interview Guide (Hello Interview)",
+   "url": "https://www.hellointerview.com/guides/microsoft/senior",
+   "used": [
+    "senior loop"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "Level bands 59–64 come from the cited sources. Principal/Partner rows and role families are general knowledge. Loop composition varies noticeably by team, so treat rounds as typical, not guaranteed.",
+ "indiaNote": null
+}

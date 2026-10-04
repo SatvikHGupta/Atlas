@@ -1,0 +1,91 @@
+{
+ "id": "atlassian",
+ "name": "Atlassian",
+ "tier": null,
+ "roles": [
+  "P3 / P4 Senior"
+ ],
+ "roleGuidance": {
+  "P3 / P4 Senior": {
+   "dsaDepth": "Heavy — a bank of publicly-discoverable coding questions, own choice of language/IDE, plus system design and two \"values\" interviews",
+   "rounds": [
+    "Recruiter call (~30 min)",
+    "Technical phone screen (~1 hr, sometimes run by an external vendor like Karat)",
+    "Onsite/virtual loop (centralized — team matching happens AFTER the loop): 2 coding rounds (candidate’s own language and IDE), 1 system design round, 2 \"soft-skills\"/values interviews (\"tell me about a time...\")"
+   ],
+   "extraTopics": [
+    "Atlassian’s well-known \"values\" interviews — candidates report these can outweigh technical performance in the final decision",
+    "A full performance review only happens after every round is complete, so early strong feedback is not a reliable signal"
+   ],
+   "focusPatterns": null,
+   "notes": "Some loops add a distinct LLD-then-HLD-then-behavioral-then-manager sequence instead — composition varies by team/region."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "P2",
+   "title": "Associate Software Engineer",
+   "experience": "Entry level"
+  },
+  {
+   "level": "P3",
+   "title": "Software Engineer",
+   "experience": "Early–mid career"
+  },
+  {
+   "level": "P4",
+   "title": "Senior Software Engineer",
+   "experience": "Mid–senior — the level most reports reference"
+  },
+  {
+   "level": "P5",
+   "title": "Staff Software Engineer",
+   "experience": "Senior"
+  },
+  {
+   "level": "P6+",
+   "title": "Principal Software Engineer and above",
+   "notes": "Not covered in depth by the cited sources"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (Jira / Confluence / product platform)",
+  "Frontend / Full-stack Engineer"
+ ],
+ "sources": [
+  {
+   "title": "Atlassian's Interview Process & Questions (interviewing.io)",
+   "url": "https://interviewing.io/atlassian-interview-questions",
+   "used": [
+    "3-step centralized process, discoverable question bank, own-language/IDE policy"
+   ]
+  },
+  {
+   "title": "Glassdoor: Atlassian Senior Software Engineer interview report, Sydney",
+   "url": "https://www.glassdoor.com.ar/Entrevista/Atlassian-Entrevista-E115699-RVW61732980.htm",
+   "used": [
+    "P4 confirmed as senior title, 5-part loop: 3 technical + 2 non-technical"
+   ]
+  },
+  {
+   "title": "Glassdoor: Atlassian Senior Software Engineer interview report",
+   "url": "https://www.glassdoor.com.mx/Entrevista/Atlassian-Entrevista-E115699-RVW96053745.htm",
+   "used": [
+    "Karat round then DSA/LLD/HLD/behavioral/manager sequence"
+   ]
+  },
+  {
+   "title": "Glassdoor: Atlassian Senior Software Engineer interview report (2025)",
+   "url": "https://www.glassdoor.fr/Entretien/Atlassian-Entretien-E115699-RVW96053745.htm",
+   "used": [
+    "5-round loop: 2 coding, 1 system design, 2 soft-skills; full review only after final round"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "P2-P6 level naming and the centralized loop structure (team matching after, not before, the loop) are corroborated across sources. Multiple candidates describe the \"values\" rounds as inconsistently applied — worth flagging as a known pain point, not just a formality.",
+ "indiaNote": null
+}

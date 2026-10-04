@@ -1,0 +1,110 @@
+{
+  "topic": "Sqrt Decomposition",
+  "level": 9,
+  "slug": "sqrt-decomposition",
+  "estimated_read": "9 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is Sqrt Decomposition?",
+      "content": "Sqrt decomposition splits an array of size N into blocks of size roughly sqrt(N), precomputes an aggregate (sum, min, count, etc.) for each block, and answers range queries by combining full blocks in O(1) each with at most two partial blocks scanned element-by-element - giving O(sqrt(N)) per query and per update, a middle ground between a plain array (O(1) update, O(N) query) and a segment tree/Fenwick tree (O(log N) both). This is the exact technique Mo's Algorithm is built on top of for offline range queries - if you've already worked through Mo's Algorithm, the block-sizing and indexing here will look familiar; this note isolates the technique on its own for the (less common but real) problems that need it standalone, without Mo's offline-reordering layer on top."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Reach for sqrt decomposition when you need both range queries and point/range updates online (query order matters, unlike Mo's), and a segment tree feels like overkill - or specifically when the aggregate you need isn't easily combinable in a segment tree (e.g. tracking the count of a specific value, or a majority element, where block-level rebuilding is simpler to reason about than a merge function).",
+      "signals": [
+        "online range query with updates (can't reorder/batch queries offline)",
+        "range sum/min/max query - mutable",
+        "find the majority element in a given range",
+        "problem explicitly allows O(sqrt(n)) per operation but not O(n)"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Block Structure and Query Answering",
+      "content": "Choose block size B = sqrt(N) (this minimizes the worst case of block-count + block-size, both O(sqrt(N))). Precompute one aggregate value per block by scanning the array once, O(N) total. For a range query `[l, r]`: if `l` and `r` fall in the same block, scan the range directly - O(B). Otherwise, scan the partial first block up to its boundary, the partial last block from its boundary, and add the precomputed aggregate for every full block strictly between them - O(B) for the two partial scans, O(N/B) for the full-block sum, which is O(sqrt(N)) total when B = sqrt(N). A point update recomputes just the one affected block's aggregate, O(B) = O(sqrt(N))."
+    },
+    {
+      "type": "concept",
+      "title": "Choosing Block Size in Practice",
+      "content": "The theoretical optimum, block size = sqrt(N), minimizes the WORST-CASE bound across both query types (O(sqrt(N)) partial-block scan, O(N/blockSize) full-block pass) - but real problems often have asymmetric costs between updates and queries, and the optimal block size shifts accordingly. If updates are far more frequent than queries, a LARGER block size reduces the O(N/blockSize) update-touching-a-block cost at the expense of slower per-query full-block summation. If queries dominate, a SMALLER block size speeds up the full-block pass per query at the cost of more expensive per-update block rebuilding.\n\nIn competitive programming, this is sometimes tuned empirically (try `sqrt(N)`, then adjust by a small constant factor like `1.5x` or `0.7x` and benchmark) rather than derived exactly, because the true optimum depends on the actual ratio of update-count to query-count in the specific input, which the theoretical O(sqrt(N)) bound doesn't capture. For interview purposes, plain `sqrt(N)` is always a safe, defensible default - the tuning discussion above is a 'nice to mention if asked about further optimization' detail, not something expected unprompted."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "language": "javascript",
+      "code": "class SqrtDecomposition {\n  constructor(arr) {\n    this.arr = arr.slice();\n    this.n = arr.length;\n    this.blockSize = Math.max(1, Math.floor(Math.sqrt(this.n)));\n    this.blockCount = Math.ceil(this.n / this.blockSize);\n    this.blockSum = new Array(this.blockCount).fill(0);\n    for (let i = 0; i < this.n; i++) {\n      this.blockSum[Math.floor(i / this.blockSize)] += arr[i];\n    }\n  }\n\n  update(i, value) {\n    const block = Math.floor(i / this.blockSize);\n    this.blockSum[block] += value - this.arr[i];\n    this.arr[i] = value;\n  }\n\n  queryRangeSum(l, r) {\n    let sum = 0;\n    let i = l;\n    while (i <= r) {\n      const block = Math.floor(i / this.blockSize);\n      const blockStart = block * this.blockSize;\n      const blockEnd = Math.min(blockStart + this.blockSize - 1, this.n - 1);\n\n      if (blockStart === i && blockEnd <= r) {\n        sum += this.blockSum[block];   // whole block fits inside [l, r] - O(1)\n        i = blockEnd + 1;\n      } else {\n        sum += this.arr[i];            // partial block - scan element by element\n        i++;\n      }\n    }\n    return sum;\n  }\n}",
+      "explanation": "The `if (blockStart === i && blockEnd <= r)` check is the whole optimization: it only takes the O(1) precomputed shortcut when the *entire* current block lies inside `[l, r]`, and falls back to element-by-element scanning otherwise. Because at most the first and last blocks touched can be partial, the element-by-element fallback triggers at most 2 x blockSize times per query, regardless of the range's total length."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Range Sum with Point Updates",
+          "description": "The template above directly - block sums rebuilt in O(sqrt(N)) per update instead of O(N) for a naive prefix-sum-array approach.",
+          "example_problem": "Range Sum Query - Mutable",
+          "example_slug": "range-sum-query-mutable"
+        },
+        {
+          "name": "Block-Level Frequency/Majority Tracking",
+          "description": "Each block stores a frequency map (or a candidate majority element) instead of a single sum, rebuilt on update - useful when the aggregate isn't a simple associative combine.",
+          "example_problem": "Online Majority Element In Subarray",
+          "example_slug": "online-majority-element-in-subarray"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "O(sqrt(N)) per query and per update, O(N) to build.",
+      "space": "O(N) for the original array plus O(sqrt(N)) for the block aggregates.",
+      "explanation": "O(sqrt(N)) is worse than a segment tree's O(log N) asymptotically, but the constant factor and implementation simplicity are both lower - for N up to ~10^6, sqrt(N) (~1000) is still fast enough, and the block structure is easier to adapt to non-associative aggregates than a segment tree's merge function."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Picking a block size that isn't close to sqrt(N) - too small means too many blocks (query cost dominated by the full-block pass), too large means each partial-block scan is expensive; both destroy the balanced O(sqrt(N)) bound.",
+        "Forgetting to update the block aggregate on a point update, or updating it with the wrong delta (must be `newValue - oldValue`, not just adding `newValue`).",
+        "Off-by-one when computing `blockStart`/`blockEnd` for the last block, which can be shorter than `blockSize` if N isn't a perfect multiple of it.",
+        "Reaching for sqrt decomposition on a problem where queries are all known in advance (offline) - Mo's Algorithm on the same block structure is usually both simpler to get right and faster in practice for that case."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Range Sum Query - Mutable",
+          "slug": "range-sum-query-mutable",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "The canonical sqrt-decomposition problem - online range sum with point updates, the template applied directly."
+        },
+        {
+          "title": "Queries on a Permutation With Key",
+          "slug": "queries-on-a-permutation-with-key",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "Each query both reads and mutates the underlying array (move-to-front), forcing an online (not offline/Mo's) block-based approach."
+        },
+        {
+          "title": "Online Majority Element In Subarray",
+          "slug": "online-majority-element-in-subarray",
+          "difficulty": 8,
+          "difficulty_label": "Hard",
+          "why": "Needs a non-sum aggregate (a majority-vote candidate) per block plus a verification pass - the block-level-frequency variant, and the hardest problem in this cluster."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "String Algorithms Part 2",
+      "next_slug": "string-algorithms-part-2",
+      "why": "String Algorithms Part 2 is the next topic at this level - a natural sibling to Sqrt Decomposition, reinforcing the same tier of difficulty before moving up."
+    }
+  ]
+}

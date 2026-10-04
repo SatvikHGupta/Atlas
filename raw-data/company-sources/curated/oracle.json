@@ -1,0 +1,122 @@
+{
+ "id": "oracle",
+ "name": "Oracle",
+ "tier": null,
+ "roles": [
+  "IC2",
+  "IC3",
+  "IC4 (OCI / Principal)"
+ ],
+ "roleGuidance": {
+  "IC2": {
+   "dsaDepth": "Moderate — a 3-hour technical interview is reported, with less-standardized loop structure than Google/Amazon",
+   "rounds": [
+    "Recruiter/phone screen",
+    "Hiring-manager round (culture fit, resume)",
+    "Technical interview(s), reportedly a single long session (~3 hrs) for some IC2 loops"
+   ],
+   "extraTopics": [
+    "Team-dependent depth (OCI/cloud teams lean distributed systems; enterprise teams lean Java/C++ and SQL)"
+   ],
+   "focusPatterns": null
+  },
+  "IC3": {
+   "dsaDepth": "Moderate–Heavy — 2 one-hour technical sessions with principal-level engineers, resume-driven",
+   "rounds": [
+    "Phone screen",
+    "Hiring-manager round",
+    "Two separate 1-hour technical interviews with principal-level engineers, close to day-to-day work rather than abstract algorithms",
+    "Offer/rejection"
+   ],
+   "extraTopics": [
+    "Practical, job-like problems rather than pure LeetCode",
+    "Resume defense — reports describe every bullet point becoming fair game"
+   ],
+   "focusPatterns": null
+  },
+  "IC4 (OCI / Principal)": {
+   "dsaDepth": "Moderate–Heavy — distributed-systems and cloud-architecture design questions",
+   "rounds": [
+    "Phone screen and technical screens",
+    "System design round (e.g. a live block-storage migration with no clean textbook answer for OCI-focused teams)"
+   ],
+   "extraTopics": [
+    "Multi-tenant cloud architecture, network virtualization, distributed storage trade-offs"
+   ],
+   "focusPatterns": null,
+   "notes": "Loop composition is markedly team-dependent — OCI/cloud teams differ a lot from enterprise/campus tracks."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "IC0",
+   "title": "Software Engineer",
+   "experience": "Fresher / campus"
+  },
+  {
+   "level": "IC1",
+   "title": "Applications Engineer / Software Engineer",
+   "notes": "Some regions use IC0-IC1 interchangeably for entry level"
+  },
+  {
+   "level": "IC2",
+   "title": "Software Engineer",
+   "experience": "Early career"
+  },
+  {
+   "level": "IC3",
+   "title": "Senior Software Engineer",
+   "experience": "Mid level, most-reported level in candidate loops"
+  },
+  {
+   "level": "IC4",
+   "title": "Principal Software Engineer"
+  },
+  {
+   "level": "IC5",
+   "title": "Senior Principal Software Engineer",
+   "notes": "Top of the individual-contributor ladder in the sources reviewed"
+  }
+ ],
+ "roleFamilies": [
+  "Applications Engineer (Java/enterprise)",
+  "Cloud Infrastructure Engineer (OCI)",
+  "Database Engineer"
+ ],
+ "sources": [
+  {
+   "title": "What Is the Oracle Interview Process Like? (DesignGurus)",
+   "url": "https://www.designgurus.io/answers/detail/what-is-the-oracle-interview-process-like-round-by-round",
+   "used": [
+    "breadth of loop, OCI vs enterprise team variance"
+   ]
+  },
+  {
+   "title": "Oracle Software Engineer interview guide (Interview Query)",
+   "url": "https://www.interviewquery.com/guides/oracle-software-engineer?exp_page=2",
+   "used": [
+    "team-dependent structure, resume-driven interviews, OCI storage-migration example"
+   ]
+  },
+  {
+   "title": "levels.fyi community thread: Oracle IC3 interview process",
+   "url": "https://www.levels.fyi/community/thread/W2B5Gi/oracle-interview-process--ic3-role",
+   "used": [
+    "phone screen, hiring manager, two 1-hour technical rounds"
+   ]
+  },
+  {
+   "title": "LeetCode discuss: Oracle IC2 Software Engineer",
+   "url": "https://leetcode.com/discuss/general-discussion/938435/oracle-ic2-software-engineer",
+   "used": [
+    "IC2 loop, 3-hour technical interview report"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "IC0-IC5 level naming and the loop shape are confirmed across several sources, but Oracle’s process is unusually team-dependent — treat round detail as one common pattern, not a fixed script.",
+ "indiaNote": "Multiple reports come from Bengaluru and Chennai Oracle offices."
+}

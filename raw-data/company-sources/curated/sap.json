@@ -1,0 +1,82 @@
+{
+ "id": "sap",
+ "name": "SAP",
+ "tier": null,
+ "roles": [
+  "Software Engineer (India)"
+ ],
+ "roleGuidance": {
+  "Software Engineer (India)": {
+   "dsaDepth": "Moderate — an OA with role-based MCQs and coding, then 2 technical rounds and an HR round",
+   "rounds": [
+    "Online assessment: role-based MCQs plus coding questions",
+    "Technical Round 1: core CS fundamentals (data structures, algorithms), sometimes live coding or a system-design question depending on experience",
+    "Technical Round 2: deeper project/experience discussion, advanced problem-solving, role-specific tech stack, often with senior engineers/team leads",
+    "HR round: cultural fit and offer discussion"
+   ],
+   "extraTopics": [
+    "OOP fundamentals and their practical implementation",
+    "SQL and ER-diagram design for some pipelines"
+   ],
+   "focusPatterns": null,
+   "notes": "Some India (Bengaluru) reports describe a shorter 3-4 round same-day process; a few older/other-location reports describe 5 rounds (written, 2 technical, managerial, HR). Difficulty is generally rated easy-to-moderate."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Associate",
+   "title": "Associate Developer / Software Engineer",
+   "experience": "Entry level (campus)"
+  },
+  {
+   "level": "Developer",
+   "title": "Developer, Software Engineer",
+   "experience": "Mid level"
+  },
+  {
+   "level": "Senior",
+   "title": "Senior Developer, Senior Software Engineer",
+   "experience": "Senior"
+  }
+ ],
+ "roleFamilies": [
+  "Software Developer (ERP / cloud platform)",
+  "Data Engineering"
+ ],
+ "sources": [
+  {
+   "title": "Glassdoor: SAP Software Engineer interview reports, Bengaluru",
+   "url": "https://fr.glassdoor.ca/Entretien/SAP-Entretien-E10471-RVW51024084.htm",
+   "used": [
+    "OOP-focused technical round, friendly/moderate difficulty"
+   ]
+  },
+  {
+   "title": "Glassdoor: SAP Developer/Software Engineer interview reports (recent, 2026)",
+   "url": "https://fr.glassdoor.ca/Entretien/SAP-Entretien-E10471-RVW103414222.htm",
+   "used": [
+    "OA with role-based MCQs + coding, 2 technical rounds, HR round"
+   ]
+  },
+  {
+   "title": "Glassdoor: SAP Software Engineer interview report, Bengaluru (same-day loop)",
+   "url": "https://fr.glassdoor.ca/Entretien/SAP-Entretien-E10471-RVW88661859.htm",
+   "used": [
+    "3-4 rounds completed same day on the Bangalore campus"
+   ]
+  },
+  {
+   "title": "Glassdoor: SAP Software Engineer interview report (5-round loop)",
+   "url": "https://fr.glassdoor.ch/Entretien/SAP-Entretien-E10471-RVW6174229.htm",
+   "used": [
+    "older 5-round loop: written, 2 technical, managerial, HR, with SQL/ER-diagram questions"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "Loop shape (OA -> 2 technical rounds -> HR) is corroborated across several independent Bengaluru-based reports, though exact round count varies (3 to 5) between reports.",
+ "indiaNote": "Multiple reports are from SAP Labs India (Bengaluru)."
+}

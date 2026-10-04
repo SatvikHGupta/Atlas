@@ -1,0 +1,139 @@
+{
+ "id": "adobe",
+ "name": "Adobe",
+ "tier": 1,
+ "roles": [
+  "MTS-1",
+  "MTS-2"
+ ],
+ "roleGuidance": {
+  "MTS-1": {
+   "dsaDepth": "Moderate–Heavy — DSA plus CS fundamentals, often easier than other big-tech loops",
+   "rounds": [
+    "HR phone screen (job profile and experience)",
+    "Online coding test (in campus and many off-campus drives)",
+    "Technical rounds 1–2: DSA and core CS (OS, threads, OOP), puzzles",
+    "Managerial round: technical deep-dive and project discussion",
+    "Director round: technical questions and motivation",
+    "HR confirmation call"
+   ],
+   "extraTopics": [
+    "Operating-system concepts (threads, processes, deadlock, mutex, semaphores)",
+    "Puzzles",
+    "Project discussion",
+    "REST/API basics, multithreading, low-level design of everyday systems (e.g. elevator)"
+   ],
+   "focusPatterns": null,
+   "notes": "Reports describe 4–5 interviews over 1–2 days for MTS-1; older campus loops were one coding round plus three technical interviews."
+  },
+  "MTS-2": {
+   "dsaDepth": "Heavy — 2 DSA problems per round, several technical rounds before a director round",
+   "rounds": [
+    "Technical rounds focused on DSA (trie, tree traversal, sorted-array problems) and project depth",
+    "Managerial round",
+    "Director round (coding, e.g. KMP / Kadane implementation)"
+   ],
+   "extraTopics": [
+    "Project deep dives",
+    "Multithreading, async programming, system design of a small system",
+    "Team-specific tooling questions (e.g. DevOps / Kubernetes for some teams)"
+   ],
+   "focusPatterns": null,
+   "notes": "Each round is elimination; reports mention both laptop and paper coding."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [
+  {
+   "title": "Search a 2D Matrix II",
+   "atlasProblemId": "7b734ec4-a555-4608-8dc3-94f809d1e7ec",
+   "leetcodeId": null,
+   "leetcodeSlug": "search-a-2d-matrix-ii",
+   "difficulty": "Medium",
+   "frequency": null,
+   "patterns": [
+    "Array",
+    "Binary Search",
+    "Divide and Conquer",
+    "Matrix"
+   ],
+   "role": "SDE",
+   "confidenceTier": "B",
+   "source": "code360",
+   "sourceUrl": "https://www.naukri.com/code360/interview-experiences/adobe",
+   "topicSourceUrl": null,
+   "lastSeen": "2020-11",
+   "atlasSlug": "search-a-2d-matrix-ii"
+  }
+ ],
+ "ladder": [
+  {
+   "level": "MTS-1",
+   "title": "Member of Technical Staff 1",
+   "experience": "Entry level / new grad",
+   "notes": "Entry-level engineering title seen in candidate reports"
+  },
+  {
+   "level": "MTS-2",
+   "title": "Member of Technical Staff 2",
+   "experience": "Mid level"
+  },
+  {
+   "level": "Computer Scientist",
+   "title": "Computer Scientist / Senior Engineer",
+   "experience": "Senior",
+   "notes": "Title listed by candidates; exact level numbers not in the cited sources"
+  },
+  {
+   "level": "Senior+",
+   "title": "Senior Computer Scientist and above",
+   "notes": "Not covered by the cited sources"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineering (MTS)",
+  "Computer Scientist (senior / research-leaning)",
+  "Data / ML"
+ ],
+ "sources": [
+  {
+   "title": "Glassdoor: Adobe MTS-1 interview report, Noida (Mar 2025)",
+   "url": "https://www.glassdoor.sg/Interview/Adobe-Interview-E1090-RVW60780063.htm",
+   "used": [
+    "MTS-1 round structure"
+   ]
+  },
+  {
+   "title": "Glassdoor: Adobe MTS-1 interview report (Round 1 and 4 details)",
+   "url": "https://www.glassdoor.ca/Interview/Adobe-Interview-E1090-RVW66129755.htm",
+   "used": [
+    "topics asked per round"
+   ]
+  },
+  {
+   "title": "Glassdoor: Adobe MTS-1 interview report, Noida (2021)",
+   "url": "https://www.glassdoor.sg/Interview/Adobe-Interview-E1090-RVW84671284.htm",
+   "used": [
+    "coding test then DS rounds, HM, HR"
+   ]
+  },
+  {
+   "title": "Glassdoor: Adobe MTS2 interview report",
+   "url": "https://www.glassdoor.co.in/Interview/Adobe-Interview-E1090-RVW28151557.htm",
+   "used": [
+    "MTS2 rounds"
+   ]
+  },
+  {
+   "title": "LeetCode discuss: Adobe India MTS-2 experience",
+   "url": "https://leetcode.com/discuss/interview-experience/1510246/adivce-needed-various-offers-and-worst-interview-exp-with-adobe-india",
+   "used": [
+    "MTS-2 director and manager rounds"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "low",
+ "rolesNotes": "Adobe does not publish its ladder; MTS-1/MTS-2/Computer Scientist titles come from candidate reports and Glassdoor role lists, so treat levels and years as indicative.",
+ "indiaNote": "Candidate reports come from Noida, Bengaluru and Delhi/NCR interviews for MTS-1 and MTS-2."
+}

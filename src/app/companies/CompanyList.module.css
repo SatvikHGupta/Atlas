@@ -1,0 +1,224 @@
+/* Companies page module - hue-tinted cards with a gradient-ring monogram badge and a cursor-follow spotlight. */
+
+.page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 3.5rem) var(--space-6) var(--space-12);
+  position: relative;
+}
+
+.headerGlow {
+  position: absolute;
+  top: -60px;
+  left: -10%;
+  width: 70%;
+  height: 340px;
+  /* THEME-SAFETY FIX: was a hardcoded purple rgba(124,58,237,...) that stayed purple under every theme, incl. the
+     orange/blue/emerald ones. --accent-glow is already an rgba tied to the active theme's accent, so this now
+     re-tints itself automatically when the theme swaps - no code change needed on either side. */
+  background: radial-gradient(ellipse at center top, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.header {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 32px;
+}
+
+.header h1 {
+  font-size: clamp(1.9rem, 3.4vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 0 0 10px;
+  background: linear-gradient(120deg, var(--text-primary) 40%, var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 0.97rem;
+  max-width: 62ch;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ─── controls ─── */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.search {
+  flex: 1 1 240px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 14px;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+.search:focus-visible { border-color: var(--accent); }
+
+.tierChips {
+  display: flex;
+  gap: 8px;
+}
+
+.chip {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+.chip:hover { color: var(--text-primary); border-color: var(--border-strong); }
+/* THEME-SAFETY FIX: was a hardcoded #fff - fine today because every accent is mid-tone-or-darker, but not derived
+   from the theme. var(--bg-primary) reads as near-black on dark themes and near-white on light ones, which is
+   exactly the contrast an accent-colored chip needs regardless of which of the 6 themes is active. */
+.chipActive { color: var(--accent-fg); background: var(--accent); border-color: var(--accent); }
+
+.regionChips { display: flex; gap: 8px; }
+
+.sortSelect {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  outline: none;
+}
+.sortSelect:focus-visible { border-color: var(--accent); }
+
+.resultCount {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin: -14px 0 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.emptyState {
+  color: var(--text-secondary);
+  padding: 32px 4px;
+  font-size: 0.92rem;
+}
+
+/* ─── card grid ─── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  text-decoration: none;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* THEME-SAFETY FIX: was a hardcoded white glow (rgba(255,255,255,0.08)) meant to lighten a dark card on hover.
+     On a light theme the card is already white/near-white, so a white-on-white glow is invisible - hover feedback
+     would silently disappear the moment a light theme (Frost/Cream/Mono) goes live. --accent-subtle is already an
+     alpha-blended accent tint that reads correctly against both dark and light --bg-card values. */
+  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), var(--accent-subtle), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.card:hover::before { opacity: 1; }
+.card > * { position: relative; z-index: 1; }
+
+.card:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+.cardTier1 { border-top: 2px solid var(--card-hue-strong, var(--accent)); }
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cardName {
+  font-weight: 650;
+  font-size: 1.02rem;
+  letter-spacing: -0.01em;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tierBadge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+.tierBadge1 { background: var(--accent-subtle); color: var(--accent-light); }
+
+.cardStat {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.cardStatValue { font-size: 1.7rem; font-weight: 800; line-height: 1; }
+.cardStatLabel { font-size: 0.78rem; color: var(--text-muted); }
+
+.roleChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: auto;
+}
+.roleChip {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+  border-radius: 999px;
+  padding: 3px 9px;
+  white-space: nowrap;
+}
+.roleChipMore { color: var(--text-muted); }
+
+@media (max-width: 560px) {
+  .page { padding: 32px 14px 70px; }
+}

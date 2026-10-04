@@ -1,0 +1,85 @@
+/* Mobile-only bottom navigation. Height comes from --bottom-nav-height (theme.css), the same token every page already
+   reserves as bottom padding, so nothing is covered. Hidden on desktop where the Navbar link row is shown. */
+.wrap { display: none; }
+
+@media (max-width: 768px) {
+  .wrap { display: block; }
+
+  .bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    height: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    background: rgba(var(--bg-primary-rgb), 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid var(--border);
+  }
+
+  .item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    padding: 0 4px;
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: none;
+    border: 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: color var(--transition-fast);
+  }
+  .item[data-active='true'] { color: var(--accent); font-weight: 600; }
+  /* active marker sits on the top edge so it is not confused with the page content above */
+  .item[data-active='true']::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 28%;
+    right: 28%;
+    height: 2px;
+    border-radius: 0 0 2px 2px;
+    background: var(--accent);
+  }
+  .item:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
+
+  .sheet {
+    position: fixed;
+    right: var(--space-3);
+    bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom) + var(--space-2));
+    z-index: 101;
+    min-width: 200px;
+    max-width: calc(100vw - 2 * var(--space-3));
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-2);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+  }
+  .sheetLink {
+    display: block;
+    width: 100%;
+    padding: 12px var(--space-3); /* 44px+ tap target */
+    text-align: left;
+    font: inherit;
+    font-size: 0.92rem;
+    color: var(--text-primary);
+    background: none;
+    border: 0;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+  }
+  .sheetLink:hover, .sheetLink:focus-visible { background: var(--surface-hover); outline: none; }
+  .sheetLink[data-active='true'] { color: var(--accent); font-weight: 600; }
+}

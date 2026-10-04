@@ -1,0 +1,252 @@
+{
+  "topic": "Design Problems",
+  "level": 9,
+  "slug": "design-problems",
+  "estimated_read": "15 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What are Design Problems?",
+      "content": "A **design problem** doesn't ask you to compute a single answer - it asks you to build a class that satisfies a spec: a fixed set of methods, each with its own required time complexity, that must all stay correct as they're called in any order, repeatedly, against shared internal state. This is the single largest tagged category in the whole problem set (104 problems) precisely because it isn't one algorithm - it's a *style* of problem that recombines data structures you already know (hash map + doubly linked list, two stacks, hash map + heap, hash map + TreeMap-style ordering) to hit a combination of operations no single built-in structure provides on its own. `LRU Cache` (covered in the Linked Lists note) is the classic first example of this shape: `get`/`put` both need O(1), which a hash map alone can't give you `evict-the-oldest` for, and a linked list alone can't give you O(1) lookup for - so you combine them. Every problem in this note is a variation on that same move: identify which operations are being asked for, identify which single structure is fast at which one, and combine.",
+      "signals": []
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "The giveaway is almost always the phrase \"Design a...\" or \"Implement a... class\" followed by a list of required methods with individual complexity constraints (e.g. \"insert, remove, and getRandom should all be O(1)\"). Read the method list *before* you start coding - it tells you exactly which structures you need, because each method is a hint about which structure is good at it.",
+      "signals": [
+        "design a class with the following methods",
+        "each operation must run in O(1) / O(log n)",
+        "implement your own version of X data structure",
+        "support insert, delete, and getRandom",
+        "cache with eviction policy (LRU, LFU)",
+        "track the k most recent / most frequent items",
+        "support range queries that also allow point updates",
+        "system needs to handle a stream of events over time"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "The Core Move: Map Each Method to a Structure",
+      "content": "Every design problem reduces to a table: one row per required method, one column for \"what's the fastest structure for this operation alone.\" Hash map → O(1) lookup/insert/delete by key, but no ordering. Doubly linked list → O(1) insert/delete at any known position, and maintains order, but no O(1) lookup by value. Heap → O(log n) access to the min/max, but O(n) to find/remove an arbitrary element. Two stacks → turn a stack's O(1) push/pop into a queue's FIFO behavior (or vice versa) at the cost of amortized, not worst-case, O(1). Balanced BST / sorted structure → O(log n) insert/delete *and* O(log n) 'find the nearest value', which nothing else on this list gives you. Once you've matched each required method to a structure, the actual design problem is just keeping the two (or three) structures in sync on every mutation - e.g. in LRU Cache, every `get` must also move that node to the front of the linked list, not just read the hash map."
+    },
+    {
+      "type": "concept",
+      "title": "Cache Eviction: LRU vs. LFU",
+      "content": "LRU (Least Recently Used) evicts whatever wasn't touched longest ago - a doubly linked list ordered by recency plus a hash map from key to node gives O(1) `get` (move node to front) and O(1) `put` (insert at front, evict from back if over capacity). LFU (Least Frequently Used) is the harder version: evict whatever has the lowest access *count*, breaking ties by least-recently-used among equally-frequent items. The trick that makes LFU O(1) instead of O(log n) is a hash map from frequency count to *its own* doubly linked list of keys at that frequency (each itself LRU-ordered), plus tracking the current minimum frequency - so 'find the least-frequent, then least-recent among those' becomes 'look up minFreq's list, take its tail' with no scanning at all."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "language": "javascript",
+      "code": "// LRU Cache: hash map (key -> node) + doubly linked list (recency order)\nclass Node {\n  constructor(key, val) {\n    this.key = key; this.val = val;\n    this.prev = null; this.next = null;\n  }\n}\n\nclass LRUCache {\n  constructor(capacity) {\n    this.capacity = capacity;\n    this.map = new Map();          // key -> Node, O(1) lookup\n    this.head = new Node(0, 0);    // dummy head = most recently used side\n    this.tail = new Node(0, 0);    // dummy tail = least recently used side\n    this.head.next = this.tail;\n    this.tail.prev = this.head;\n  }\n\n  _remove(node) {\n    node.prev.next = node.next;\n    node.next.prev = node.prev;\n  }\n\n  _insertAtFront(node) {\n    node.next = this.head.next;\n    node.prev = this.head;\n    this.head.next.prev = node;\n    this.head.next = node;\n  }\n\n  get(key) {\n    if (!this.map.has(key)) return -1;\n    const node = this.map.get(key);\n    this._remove(node);\n    this._insertAtFront(node);      // touched -> becomes most recently used\n    return node.val;\n  }\n\n  put(key, value) {\n    if (this.map.has(key)) this._remove(this.map.get(key));\n    const node = new Node(key, value);\n    this.map.set(key, node);\n    this._insertAtFront(node);\n    if (this.map.size > this.capacity) {\n      const lru = this.tail.prev;   // least recently used = right before dummy tail\n      this._remove(lru);\n      this.map.delete(lru.key);\n    }\n  }\n}",
+      "explanation": "The dummy head/tail nodes remove every edge-case check for 'is this the first/last real node' - `_remove` and `_insertAtFront` work identically whether the list has 0, 1, or many real nodes. This same two-structure skeleton (map for lookup, linked structure for order/eviction) is the backbone of most cache and stream-tracking design problems - only what the auxiliary structure tracks (recency, frequency, insertion order, timestamps) changes."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Cache with Eviction (LRU / LFU)",
+          "description": "Hash map for O(1) lookup, plus an ordering structure (doubly linked list for LRU, or a map-of-linked-lists keyed by frequency for LFU) to know what to evict.",
+          "example_problem": "LFU Cache",
+          "example_slug": "lfu-cache"
+        },
+        {
+          "name": "Stream / Time-Series Tracking",
+          "description": "Append-only data arriving over time, queried by time range or recency - usually a sorted structure (sorted array with binary search, or a map) keyed by timestamp.",
+          "example_problem": "Time Based Key-Value Store",
+          "example_slug": "time-based-key-value-store"
+        },
+        {
+          "name": "Randomized O(1) Structures",
+          "description": "Support insert/delete/getRandom all in O(1) by pairing a hash map (key to array index) with a dynamic array (for O(1) random access) - delete swaps the removed element with the last one before popping, to avoid an O(n) shift.",
+          "example_problem": "Insert Delete GetRandom O(1)",
+          "example_slug": "insert-delete-getrandom-o1"
+        },
+        {
+          "name": "Interval Booking / Calendar",
+          "description": "Insert a new interval only if it doesn't overlap any existing one - usually a sorted map (TreeMap-style, or a sorted array with binary search) keyed by interval start, so overlap checks only need to look at the neighbors of the insertion point.",
+          "example_problem": "My Calendar I",
+          "example_slug": "my-calendar-i"
+        },
+        {
+          "name": "Stack/Queue Reimplemented from the Other",
+          "description": "Build a queue from two stacks (or vice versa) - one stack takes new pushes, the other serves pops; when the serving stack empties, dump the whole input stack into it, reversing order once instead of per-operation.",
+          "example_problem": "Implement Queue using Stacks",
+          "example_slug": "implement-queue-using-stacks"
+        },
+        {
+          "name": "Streaming Statistics (Running Median / Kth Largest)",
+          "description": "Maintain a running statistic over a growing stream using one or two heaps, so every insert stays O(log n) instead of re-sorting the whole stream each time.",
+          "example_problem": "Find Median from Data Stream",
+          "example_slug": "find-median-from-data-stream"
+        },
+        {
+          "name": "Serialize / Deserialize",
+          "description": "Convert a structure (usually a tree) to a string and back losslessly - a traversal (often preorder with explicit null markers) for serialize, and the inverse traversal reading tokens off a queue for deserialize.",
+          "example_problem": "Serialize and Deserialize Binary Tree",
+          "example_slug": "serialize-and-deserialize-binary-tree"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "Defined by the problem spec, not derived - the whole point of a design problem is hitting the stated per-operation bound (commonly O(1) or O(log n)) for every method, not just the average case.",
+      "space": "O(n) in the number of elements the structure holds, plus O(1) extra for a handful of pointers/counters (e.g. LFU's minFreq tracker) - watch for solutions that accidentally duplicate data across both structures instead of sharing references.",
+      "explanation": "Always re-check the complexity *per method*, not just overall - a solution that's O(1) for `get` but silently O(n) for `put` (e.g. because eviction scans for the minimum) fails the spec even if it 'works'."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Updating only one of the two paired structures on a mutation (e.g. removing from the hash map but forgetting to unlink the corresponding linked-list node) - the two must always be mutated together, atomically, in every method.",
+        "In LRU/LFU, forgetting that a `get` on an existing key is itself a mutation (it must update recency/frequency), not just a read.",
+        "For O(1) delete-by-swap (Insert Delete GetRandom O(1)), forgetting to update the swapped element's new index in the hash map after moving it to the deleted slot's position.",
+        "Off-by-one in interval/calendar problems when checking overlap - `newStart < existingEnd && existingStart < newEnd` is the correct strict-overlap check; using `<=` incorrectly rejects adjacent, non-overlapping intervals.",
+        "In LFU, forgetting to increment `minFreq` when the frequency-1 bucket becomes empty after an eviction, or forgetting to reset `minFreq` to 1 whenever a brand-new key is inserted.",
+        "Building the queue-from-two-stacks pattern but transferring elements between the stacks on every single operation instead of only when the 'output' stack is empty - this silently turns an amortized O(1) solution into a real O(n) one."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Design HashMap",
+          "slug": "design-hashmap",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "Build a hash map from scratch with an array of buckets - the entry point for understanding what a 'built-in' structure actually does underneath."
+        },
+        {
+          "title": "Implement Stack using Queues",
+          "slug": "implement-stack-using-queues",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "The minimal 'reimplement one structure using another' problem - rotate the queue on every push to keep the newest element at the front."
+        },
+        {
+          "title": "Implement Queue using Stacks",
+          "slug": "implement-queue-using-stacks",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "The two-stack amortized-O(1) pattern directly - transfer lazily, only when the output stack is empty."
+        },
+        {
+          "title": "Kth Largest Element in a Stream",
+          "slug": "kth-largest-element-in-a-stream",
+          "difficulty": 1,
+          "difficulty_label": "Easy",
+          "why": "A fixed-size min-heap that only ever needs to hold the top k elements seen so far - the simplest streaming-statistics variant."
+        },
+        {
+          "title": "Min Stack",
+          "slug": "min-stack",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "O(1) getMin alongside push/pop by keeping a parallel stack of running minimums - tests tracking an aggregate alongside a structure without recomputing it."
+        },
+        {
+          "title": "Design Circular Queue",
+          "slug": "design-circular-queue",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Fixed-size array with wraparound head/tail pointers - tests modular index arithmetic under a capacity constraint."
+        },
+        {
+          "title": "Design Circular Deque",
+          "slug": "design-circular-deque",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "Same circular-array idea as Circular Queue, extended to insert/remove from both ends."
+        },
+        {
+          "title": "Insert Delete GetRandom O(1)",
+          "slug": "insert-delete-getrandom-o1",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Hash map (value to index) + dynamic array, with swap-then-pop delete - the canonical randomized O(1) design pattern."
+        },
+        {
+          "title": "Design Twitter",
+          "slug": "design-twitter",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Merge each followed user's tweet list using a heap to get the k most recent across many sources - a design problem wrapping a k-way merge."
+        },
+        {
+          "title": "Time Based Key-Value Store",
+          "slug": "time-based-key-value-store",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Hash map of key to a list of (timestamp, value) pairs, binary-searched for the largest timestamp <= the query - the time-series lookup pattern."
+        },
+        {
+          "title": "My Calendar I",
+          "slug": "my-calendar-i",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "The canonical interval-booking design problem - check the new interval against existing ones for overlap before inserting."
+        },
+        {
+          "title": "Design Underground System",
+          "slug": "design-underground-system",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "Two hash maps: one tracking in-progress checkins per traveler, one accumulating (total time, count) per station pair for averaging."
+        },
+        {
+          "title": "Design Browser History",
+          "slug": "design-browser-history",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "A dynamic array acting as a stack with a movable current-position pointer, instead of two separate back/forward stacks."
+        },
+        {
+          "title": "Snapshot Array",
+          "slug": "snapshot-array",
+          "difficulty": 6,
+          "difficulty_label": "Medium",
+          "why": "Each index stores a list of (snap_id, value) pairs instead of one value - binary search for the right historical value on `get`, a light persistent-array idea."
+        },
+        {
+          "title": "Find Median from Data Stream",
+          "slug": "find-median-from-data-stream",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Two heaps (max-heap for the lower half, min-heap for the upper half), kept balanced in size, so the median is always at one or both heap tops."
+        },
+        {
+          "title": "Serialize and Deserialize Binary Tree",
+          "slug": "serialize-and-deserialize-binary-tree",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Preorder traversal with explicit null markers for serialize; the same traversal order consumed off a queue for deserialize."
+        },
+        {
+          "title": "Design a Text Editor",
+          "slug": "design-a-text-editor",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Two stacks representing text before/after the cursor - moving the cursor pops from one stack and pushes to the other."
+        },
+        {
+          "title": "LFU Cache",
+          "slug": "lfu-cache",
+          "difficulty": 8,
+          "difficulty_label": "Hard",
+          "why": "The hardest cache-eviction problem in this set - hash map of frequency to its own LRU-ordered list, plus a tracked minFreq, for true O(1) eviction."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "JavaScript for DSA",
+      "next_slug": "javascript-for-dsa",
+      "why": "JavaScript for DSA is the next topic at this level - a natural sibling to Design Problems, reinforcing the same tier of difficulty before moving up."
+    }
+  ]
+}

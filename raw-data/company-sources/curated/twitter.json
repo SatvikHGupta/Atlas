@@ -1,0 +1,70 @@
+{
+ "id": "twitter",
+ "name": "X (Twitter)",
+ "tier": null,
+ "roles": [
+  "Software Engineer"
+ ],
+ "roleGuidance": {
+  "Software Engineer": {
+   "dsaDepth": "Moderate–Heavy — a phone screen then 4-5 onsite rounds mixing coding, system design and behavioral, with interviewers reported to care as much about process and communication as the final answer",
+   "rounds": [
+    "Phone screen (technical, standard DSA-style question)",
+    "Onsite/virtual loop (4-5 rounds): 2 coding rounds (LeetCode easy-medium, data structures and algorithms), 1 system design round, 1 behavioral/hiring-manager round",
+    "STAR-method behavioral preparation is explicitly recommended by multiple candidates"
+   ],
+   "extraTopics": [
+    "How you work through a problem and communicate your reasoning — several candidates note Twitter/X evaluates process and collaboration more than most companies, not just whether you reach the right answer",
+    "Being ready for both \"tell me about yourself\" and \"why Twitter/X\" in the same behavioral round"
+   ],
+   "focusPatterns": null,
+   "notes": "Post-acquisition (X) reports show broadly the same structure as pre-2023 Twitter reports, suggesting the loop has stayed fairly stable through the ownership change."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Entry",
+   "title": "Software Engineer",
+   "experience": "0–3 yrs"
+  },
+  {
+   "level": "Mid–Senior",
+   "title": "Senior Software Engineer",
+   "experience": "3+ yrs"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (platform / backend)",
+  "Machine Learning (ranking & recommendations)",
+  "Trust & Safety Engineering"
+ ],
+ "sources": [
+  {
+   "title": "Glassdoor: X Software Engineer interview report (5-round loop: phone + 2 coding + design + HM)",
+   "url": "https://www.glassdoor.com.ar/Entrevista/X-Entrevista-E100569-RVW11451074.htm",
+   "used": [
+    "phone screen, 2 coding rounds, 1 system design, 1 HM/behavioral round; STAR-method advice"
+   ]
+  },
+  {
+   "title": "Glassdoor: X Software Engineer interview report (OA + 2 onsite loops + behavioral)",
+   "url": "https://fr.glassdoor.ca/Entretien/X-Entretien-E100569-RVW48593076.htm",
+   "used": [
+    "OA (easy-medium LC), 2 virtual onsite technical loops, 1 behavioral round"
+   ]
+  },
+  {
+   "title": "Glassdoor: X Entry Level Software Engineer interview report (4 technical + 1 behavioral onsite)",
+   "url": "https://fr.glassdoor.ca/Entretien/X-Entretien-E100569-RVW9439188.htm",
+   "used": [
+    "pre-acquisition Twitter loop: phone screen then 5-round onsite (4 technical, 1 behavioral)"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "Loop structure (phone screen + 4-5 round onsite mixing coding/design/behavioral) is corroborated across multiple independent reports spanning both the pre- and post-acquisition (X) eras.",
+ "indiaNote": null
+}

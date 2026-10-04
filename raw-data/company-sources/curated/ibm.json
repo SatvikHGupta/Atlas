@@ -1,0 +1,101 @@
+{
+ "id": "ibm",
+ "name": "IBM",
+ "tier": null,
+ "roles": [
+  "Software Engineer (fresher/entry)",
+  "Software Engineer (experienced)"
+ ],
+ "roleGuidance": {
+  "Software Engineer (fresher/entry)": {
+   "dsaDepth": "Moderate — DSA-and-MCQ online test, then technical and HR/PDM rounds",
+   "rounds": [
+    "Online assessment (HackerRank: coding questions plus CS-fundamentals MCQs, e.g. 4 coding + 15 MCQs in one campus report)",
+    "Technical interview: resume/GitHub project deep-dive, DSA and OOP fundamentals",
+    "PDM (People/HR) interview: role fit, background"
+   ],
+   "extraTopics": [
+    "DSA fundamentals for the OA",
+    "Being able to explain your own GitHub/project code in depth"
+   ],
+   "focusPatterns": null
+  },
+  "Software Engineer (experienced)": {
+   "dsaDepth": "Moderate–Heavy — DSA plus system design and database optimization for senior loops",
+   "rounds": [
+    "Online assessment focused on DSA",
+    "Technical video interview(s): system design (e.g. a scalable URL shortener), live coding, database optimization, deep-dives into past projects",
+    "Hiring-manager/tech-expert round",
+    "HR round"
+   ],
+   "extraTopics": [
+    "System design for senior candidates",
+    "Database and cloud/hybrid-cloud domain questions (a recurring IBM focus area)"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Entry",
+   "title": "Software Engineer / Associate Software Developer",
+   "experience": "Fresher / campus"
+  },
+  {
+   "level": "Mid",
+   "title": "Software Engineer",
+   "experience": "Early–mid career"
+  },
+  {
+   "level": "Senior",
+   "title": "Senior Software Engineer",
+   "experience": "Mid–senior"
+  },
+  {
+   "level": "Advisory / Senior Technical Staff",
+   "title": "Advisory Software Engineer, Senior Technical Staff Member",
+   "notes": "Higher IC titles reported in India; not detailed in the cited sources"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (product / hybrid cloud)",
+  "Consultant (delivery-facing, less DSA-heavy)",
+  "Data / AI Engineer"
+ ],
+ "sources": [
+  {
+   "title": "Glassdoor: IBM Software Engineer interview report, Bangalore Rural (May 2026)",
+   "url": "https://www.glassdoor.fr/Entretien/IBM-Entretien-E354-RVW87718110.htm",
+   "used": [
+    "DSA/coding rounds then hiring-manager/tech-expert and HR rounds"
+   ]
+  },
+  {
+   "title": "Glassdoor: IBM Software Developer interview report (May 2026)",
+   "url": "https://www.glassdoor.fr/Entretien/IBM-Entretien-E354-RVW100043432.htm",
+   "used": [
+    "OA plus two technical video interviews with system design and DB optimization"
+   ]
+  },
+  {
+   "title": "Glassdoor: IBM Software Engineer interview report, Kottayam",
+   "url": "https://www.glassdoor.com.mx/Entrevista/IBM-Entrevista-E354-RVW72521646.htm",
+   "used": [
+    "3-round intern/fresher loop: coding+MCQ, technical, PDM"
+   ]
+  },
+  {
+   "title": "Glassdoor: IBM Software Engineer interview process overview",
+   "url": "https://www.glassdoor.com.mx/Entrevista/IBM-Entrevista-E354-RVW100028486.htm",
+   "used": [
+    "general process description across levels, hybrid-cloud/AI focus areas"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "IBM’s numbered-level scheme (if any) is not disclosed publicly in the sources reviewed; the ladder here is inferred from title progression only. Loop content is well corroborated across several India-based reports.",
+ "indiaNote": "Multiple reports come from Bengaluru, Kottayam and Noida — IBM has a very large India engineering presence."
+}

@@ -1,0 +1,79 @@
+{
+ "id": "urban-company",
+ "name": "Urban Company",
+ "tier": 2,
+ "roles": [
+  "SDE-1"
+ ],
+ "roleGuidance": {
+  "SDE-1": {
+   "dsaDepth": "Heavy — 2 to 3 Medium–Hard DSA problems in the OA, then LLD-focused interviews",
+   "rounds": [
+    "Pre-placement talk (campus drives), then an offline/online coding test: 2–3 medium–hard DSA problems in 90 minutes",
+    "Interview 1 (LLD): e.g. a task manager or LRU-cache-style design, taken by an SDE-2",
+    "Interview 2 (LLD or DP): a second design round or a DP-focused coding round, sometimes taken by an engineering manager",
+    "Technical HR round"
+   ],
+   "extraTopics": [
+    "Low-level design (OOP, appropriate data structures) over pure algorithms",
+    "Dynamic programming",
+    "Clear communication of thought process"
+   ],
+   "focusPatterns": null,
+   "notes": "Some loops run only 2 rounds (1 DSA-heavy OA + 1 LLD); others run 4."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "SDE-1",
+   "title": "Software Development Engineer 1 (Formerly UrbanClap)",
+   "experience": "Entry level (campus and 0–2 yrs)"
+  },
+  {
+   "level": "SDE-2 and above",
+   "title": "SDE-2, Engineering Manager and beyond",
+   "notes": "SDE-2s and Engineering Managers appear as interviewers in reports"
+  }
+ ],
+ "roleFamilies": [
+  "Backend",
+  "Frontend / mobile",
+  "Data / Analytics"
+ ],
+ "sources": [
+  {
+   "title": "Urban Company (Formerly UrbanClap) Interview Experience for SDE 1, On-Campus (GeeksforGeeks)",
+   "url": "https://geeksforgeeks.org/urban-company-formerly-urbanclap-interview-experience-for-sde-1-on-campus",
+   "used": [
+    "4-round on-campus loop with 2 LLD rounds"
+   ]
+  },
+  {
+   "title": "Urban Company Interview Experience for SDE, On-Campus (GeeksforGeeks)",
+   "url": "https://www.geeksforgeeks.org/?p=728571",
+   "used": [
+    "OA, DP round, LLD round, HR"
+   ]
+  },
+  {
+   "title": "Urban Company | SDE-1 | Interview experience (LeetCode discuss, Mar 2026)",
+   "url": "https://leetcode.com/discuss/post/7617185/urban-company-sde-1-interview-experience-6q0a/",
+   "used": [
+    "2-round loop: DSA then LLD/DB design"
+   ]
+  },
+  {
+   "title": "Glassdoor: Urban Company SDE interview reports",
+   "url": "https://static.glassdoor.co.in/Interview/Urban-Company-Interview-E1066580-RVW78898867.htm",
+   "used": [
+    "round mix: OA, DSA, LLD, system design, HR"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "low",
+ "rolesNotes": "SDE-1 is the only level documented in the cited sources; details above SDE-1 are not available.",
+ "indiaNote": "Gurgaon and Delhi/NCR hiring dominate the reports; some loops are on-campus, others off-campus/referral."
+}

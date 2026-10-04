@@ -1,0 +1,158 @@
+{
+  "topic": "String Algorithms Part 2",
+  "level": 9,
+  "slug": "string-algorithms-part-2",
+  "estimated_read": "14 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What is String Algorithms Part 2?",
+      "content": "String Pattern Matching covers finding one pattern inside one text efficiently (KMP, Z-Algorithm, Rabin-Karp). This note picks up exactly where that leaves off, for three problem shapes it doesn't cover: finding structure *within a single string* that repeats or is palindromic (suffix structures, Manacher's), and matching *many* patterns against one text simultaneously (Aho-Corasick). All three build directly on the prefix-function/hashing ideas from Part 1 - they're not a different family of ideas, just applied to harder questions."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Reach for these when the question is about a string's *internal* structure (repeats, palindromes, all-substrings-at-once) rather than 'does pattern P appear in text T'.",
+      "signals": [
+        "longest palindromic substring, in O(n) instead of O(n^2)",
+        "longest repeated / duplicate substring",
+        "count distinct substrings",
+        "longest common substring between two (or more) strings",
+        "search for many patterns in one text simultaneously (a dictionary of words)",
+        "lexicographic ordering of all suffixes"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Manacher's Algorithm: O(n) Palindromes",
+      "content": "The brute-force way to find the longest palindromic substring expands outward from every center (2n-1 possible centers, counting between-character centers for even-length palindromes) in O(n) each, giving O(n^2) total. Manacher's algorithm gets this to O(n) by reusing previously-computed palindrome radii: it maintains the rightmost palindrome found so far (with center C and right edge R), and when computing the radius at a new position i inside that palindrome's range, it can mirror i across C to a position i' that's already been computed - by the palindrome's own symmetry, i's radius is *at least* as large as `min(R - i, radius[i'])`, so the expansion at i only needs to start checking from there instead of from scratch. To sidestep handling even- and odd-length palindromes as two separate cases, the string is first transformed by inserting a separator (e.g. `#`) between every character and at both ends - every palindrome in the transformed string is odd-length, so one uniform algorithm handles both cases."
+    },
+    {
+      "type": "concept",
+      "title": "Suffix Arrays and Automatons",
+      "content": "A **suffix array** is every suffix of a string, sorted lexicographically, stored as an array of starting indices (not the substrings themselves, which would waste O(n^2) space). Built efficiently (O(n log n) with radix-sort-based doubling), it turns 'does substring X appear' into a binary search, and pairing it with the **LCP array** (longest common prefix between each pair of lexicographically adjacent suffixes) unlocks longest-repeated-substring and longest-common-substring queries in O(n) after the O(n log n) build. A **suffix automaton** takes a different approach: it's the smallest possible DFA (deterministic finite automaton) that accepts exactly the set of all substrings of a string, built incrementally in O(n) - every distinct substring corresponds to exactly one path from the start state, which makes 'count distinct substrings' and 'is X a substring' both fast and direct, without needing a separate sorted array or binary search at all. In practice: reach for a suffix array when you need suffixes in sorted order (e.g. for building a suffix tree or for LCP-based queries); reach for a suffix automaton when you only care about the substring-membership structure itself."
+    },
+    {
+      "type": "concept",
+      "title": "Aho-Corasick: Many Patterns, One Pass",
+      "content": "Searching for k patterns in a text by running KMP k separate times costs O(k x n). Aho-Corasick instead builds all k patterns into a single **trie**, then adds **failure links** on top of it - direct generalization of KMP's failure function from one pattern to many: each trie node's failure link points to the longest proper suffix of that node's path which is also a prefix of *some* pattern in the trie. Scanning the text once, following trie edges when possible and failure links when not (exactly like KMP falls back on a mismatch), finds every occurrence of every pattern in a single O(n + total pattern length) pass, regardless of how many patterns there are."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "language": "javascript",
+      "code": "// Manacher's algorithm - O(n) longest palindromic substring\nfunction longestPalindrome(s) {\n  const t = '#' + s.split('').join('#') + '#';   // unify even/odd length palindromes\n  const n = t.length;\n  const radius = new Array(n).fill(0);\n  let center = 0, right = 0, best = 0, bestCenter = 0;\n\n  for (let i = 0; i < n; i++) {\n    if (i < right) {\n      const mirror = 2 * center - i;\n      radius[i] = Math.min(right - i, radius[mirror]);   // reuse mirrored radius\n    }\n    // try to expand past whatever was reused\n    while (i - radius[i] - 1 >= 0 && i + radius[i] + 1 < n &&\n           t[i - radius[i] - 1] === t[i + radius[i] + 1]) {\n      radius[i]++;\n    }\n    if (i + radius[i] > right) {       // new rightmost palindrome found, update center/right\n      center = i; right = i + radius[i];\n    }\n    if (radius[i] > best) { best = radius[i]; bestCenter = i; }\n  }\n\n  const start = (bestCenter - best) / 2;   // map back from transformed to original indices\n  return s.substring(start, start + best);\n}",
+      "explanation": "The `if (i < right)` branch is the entire speedup: without it, this degrades to the O(n^2) expand-around-every-center approach. `right - i` caps the mirrored radius so it never overruns the currently-known palindrome boundary, guaranteeing the subsequent expansion loop only ever does useful work, never redundant work already covered by symmetry."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Manacher's for Palindrome Queries",
+          "description": "O(n) longest palindromic substring, or O(n) total to compute the palindrome radius at every position (which answers 'is s[i..j] a palindrome' in O(1) after preprocessing).",
+          "example_problem": "Shortest Palindrome",
+          "example_slug": "shortest-palindrome"
+        },
+        {
+          "name": "Suffix Array + LCP",
+          "description": "Sort all suffixes, then use adjacent LCP values to answer longest-repeated-substring and related structural queries.",
+          "example_problem": "Longest Duplicate Substring",
+          "example_slug": "longest-duplicate-substring"
+        },
+        {
+          "name": "Suffix Automaton for Substring Counting/Membership",
+          "description": "Build the minimal DFA of all substrings once, then answer distinct-substring-count or substring-membership queries by walking it, without a separate sorted structure.",
+          "example_problem": "Distinct Echo Substrings",
+          "example_slug": "distinct-echo-substrings"
+        },
+        {
+          "name": "Multi-Pattern Matching (Aho-Corasick)",
+          "description": "Build a trie of all patterns plus failure links, then scan the text once to find every occurrence of every pattern - used when patterns can also be added dynamically between queries.",
+          "example_problem": "Stream of Characters",
+          "example_slug": "stream-of-characters"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "Manacher's: O(n). Suffix array build: O(n log n) with doubling + radix sort (O(n log^2 n) with a simpler comparison sort). Suffix automaton build: O(n). Aho-Corasick: O(total pattern length) to build, O(n + matches) to scan the text.",
+      "space": "O(n) for Manacher's radius array. O(n) for a suffix array/LCP array. O(n) states for a suffix automaton (at most 2n-1). O(total pattern length x alphabet size) for the Aho-Corasick trie's transition table.",
+      "explanation": "All four techniques trade preprocessing time for query speed - the build cost is paid once, and every subsequent query (palindrome check, substring lookup, pattern match) becomes fast, which is the entire point of choosing these over brute force when there are many queries against the same string(s)."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "In Manacher's, forgetting to map the transformed-string index back to the original string's index/length when extracting the final answer - the `#`-padded string is exactly twice-plus-one the original length, and off-by-one errors here are extremely common.",
+        "Using a plain O(n log^2 n) or worse suffix array construction when the problem's constraints actually require the O(n log n) doubling-with-radix-sort version - naive comparison-based suffix sorting is too slow for large inputs.",
+        "Building a suffix automaton but forgetting that multiple substrings can map to the same automaton state (states represent *equivalence classes* of substrings, not individual substrings) - counting states directly instead of accounting for each state's span undercounts distinct substrings.",
+        "In Aho-Corasick, building the trie correctly but forgetting to also follow 'dictionary suffix links' (output links) when a matched pattern is itself a suffix of another matched pattern - missing this silently drops valid matches.",
+        "Reaching for these techniques on a problem KMP/Z-Algorithm/Rabin-Karp from Part 1 already solves - these are meaningfully more complex to implement correctly, so confirm the problem genuinely needs internal-structure or multi-pattern matching before reaching for them."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Longest Palindromic Substring",
+          "slug": "longest-palindromic-substring",
+          "difficulty": 6,
+          "difficulty_label": "Medium",
+          "why": "The canonical Manacher's problem - solvable in O(n^2) with expand-around-center, but the intended optimal is O(n) via Manacher's."
+        },
+        {
+          "title": "Shortest Palindrome",
+          "slug": "shortest-palindrome",
+          "difficulty": 8,
+          "difficulty_label": "Hard",
+          "why": "Needs the longest palindromic *prefix* specifically, found via Manacher's radius array or a KMP-style failure function on s + '#' + reverse(s)."
+        },
+        {
+          "title": "Maximum Product of the Length of Two Palindromic Substrings",
+          "slug": "maximum-product-of-the-length-of-two-palindromic-substrings",
+          "difficulty": 9,
+          "difficulty_label": "Hard",
+          "why": "Needs palindrome-radius information at every position simultaneously (not just the single longest) - the full Manacher's radius array, not just its maximum."
+        },
+        {
+          "title": "Longest Duplicate Substring",
+          "slug": "longest-duplicate-substring",
+          "difficulty": 9,
+          "difficulty_label": "Hard",
+          "why": "The canonical suffix-array + LCP problem - the answer is the maximum value in the LCP array, with the substring itself read off the corresponding suffix."
+        },
+        {
+          "title": "Distinct Echo Substrings",
+          "slug": "distinct-echo-substrings",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Requires detecting substrings of the form X+X, naturally solved with hashing/suffix-structure tools to avoid rechecking equal substrings redundantly."
+        },
+        {
+          "title": "Longest Common Subpath",
+          "slug": "longest-common-subpath",
+          "difficulty": 9,
+          "difficulty_label": "Hard",
+          "why": "Binary search on the answer length, paired with rolling-hash/suffix-structure membership checks across multiple arrays at once - a multi-string generalization of longest common substring."
+        },
+        {
+          "title": "Stream of Characters",
+          "slug": "stream-of-characters",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "The canonical Aho-Corasick problem - characters arrive one at a time and every query must check if any dictionary word now ends at the current position."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Misc Advanced Techniques",
+      "next_slug": "misc-advanced-techniques",
+      "why": "Misc Advanced Techniques is the next topic at this level - a natural sibling to String Algorithms Part 2, reinforcing the same tier of difficulty before moving up."
+    }
+  ]
+}

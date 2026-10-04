@@ -1,0 +1,168 @@
+.card {
+  display: block;
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  transition: border-color var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
+  overflow: hidden;
+}
+
+.card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-accent);
+}
+
+.statusDot {
+  display: inline-flex;
+  width: 15px;
+  height: 15px;
+  margin-right: 6px;
+  vertical-align: -3px;
+  flex-shrink: 0;
+}
+.statusDot svg {
+  width: 100%;
+  height: 100%;
+}
+.statusDot[data-status='solved']    { color: var(--solved); }
+.statusDot[data-status='attempted'] { color: var(--attempted); }
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.4;
+  flex: 1;
+}
+
+.bookmarkBtn {
+  position: relative;
+  color: var(--text-muted);
+  transition: color var(--transition-fast), transform var(--transition-fast);
+  flex-shrink: 0;
+  line-height: 1;
+  min-width: 36px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bookmarkBtn svg {
+  width: 15px;
+  height: 15px;
+}
+/* invisible 44x44 tap target (WCAG 2.5.5) without growing the visible icon */
+.bookmarkBtn::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+}
+.bookmarkBtn:hover { color: var(--accent); transform: scale(1.2); }
+.bookmarkBtn[data-active='true'] { color: var(--accent-light); }
+
+.meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.tag {
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+.diffScore {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  border: 1px solid;
+  margin-left: auto;
+  letter-spacing: 0.02em;
+}
+
+.frequencyBadge {
+  font-size: 0.75rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.platformBadge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  border: 1px solid;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .title {
+    font-size: 0.88rem;
+  }
+
+  /* tags: horizontal scroll on mobile */
+  .meta {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .meta::-webkit-scrollbar { display: none; }
+
+  .tag, .diffScore, .frequencyBadge, .platformBadge {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .diffScore {
+    margin-left: 0;
+  }
+}
+
+/* BUG-005/008: stretched link (same idea as PatternCard) + raised button */
+.titleReset { margin: 0; }
+.titleLink { color: inherit; text-decoration: none; }
+.titleLink::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.titleLink:focus-visible { outline: none; }
+.titleLink:focus-visible::after {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  border-radius: var(--radius-md);
+}
+.bookmarkRaised { z-index: 2; }
+.srOnlyText {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

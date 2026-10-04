@@ -1,0 +1,56 @@
+{
+ "id": "yelp",
+ "name": "Yelp",
+ "tier": null,
+ "roles": [
+  "Software Engineer"
+ ],
+ "roleGuidance": {
+  "Software Engineer": {
+   "dsaDepth": "Moderate — a HackerRank-style OA then 2-3 back-to-back technical interviews, one often with a manager rather than only peer engineers",
+   "rounds": [
+    "Recruiter/co-op screen for some pipelines",
+    "HackerRank coding challenge",
+    "Technical interview (~45 min) with a software engineer",
+    "2 further back-to-back technical interviews (~45 min each): one with a software engineer, one with a manager",
+    "Later stages for some pipelines: deeper technical tests plus reference and personality-style assessments"
+   ],
+   "extraTopics": [
+    "LeetCode-style problems delivered via an online link/interview platform, with a real-time follow-up conversation",
+    "Being ready to discuss \"why Yelp\" and a proudest project across multiple rounds, not just once"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Entry",
+   "title": "Software Engineer",
+   "experience": "0–3 yrs"
+  },
+  {
+   "level": "Mid–Senior",
+   "title": "Software Engineer II, Senior Software Engineer",
+   "experience": "3+ yrs"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (local-search / marketplace platform)",
+  "Data Engineering"
+ ],
+ "sources": [
+  {
+   "title": "Glassdoor: Yelp Software Engineer interview reports (co-op, Mexico City, London)",
+   "url": "https://www.glassdoor.fr/Entretien/Yelp-Entretien-E43314-RVW21971219.htm",
+   "used": [
+    "HackerRank challenge then 3 back-to-back technical rounds including a manager round; LeetCode-style online interview format"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "low",
+ "rolesNotes": "Only one source page was reviewed (aggregating several independent candidate reports) — treat the loop shape as one documented pattern, not broadly cross-verified. Level naming beyond \"Software Engineer\" is not confirmed by the source reviewed.",
+ "indiaNote": null
+}

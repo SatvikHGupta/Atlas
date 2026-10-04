@@ -1,0 +1,83 @@
+{
+ "id": "doordash",
+ "name": "DoorDash",
+ "tier": null,
+ "roles": [
+  "Software Engineer"
+ ],
+ "roleGuidance": {
+  "Software Engineer": {
+   "dsaDepth": "Heavy — new grads start with a HackerRank OA (2 medium–hard problems), then a decentralized team-run loop",
+   "rounds": [
+    "Recruiter screen (~30 min: background, motivation, leveling)",
+    "Technical screen / OA: timed, HackerRank or CoderPad, medium–hard problems",
+    "Onsite (4–5 rounds, ~1 week turnaround): 2–3 coding rounds, often including a \"CodeCraft\" round (build a small working logistics-flavored service, e.g. a Dasher-pay calculator or order-assignment component), sometimes a dedicated debugging round",
+    "System design (marketplace-scale distributed systems, e.g. coordinating merchants/dashers/consumers under latency constraints)",
+    "Behavioral / hiring-manager round"
+   ],
+   "extraTopics": [
+    "CodeCraft: building a small working service rather than solving an abstract algorithm problem",
+    "Marketplace-scale systems thinking — merchants, dashers and consumers coordinated under real-time constraints",
+    "DoorDash has been piloting AI-assisted coding-tool rounds in some loops as of 2026 — worth confirming the current format with your recruiter"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Entry",
+   "title": "Software Engineer",
+   "experience": "0–2 yrs"
+  },
+  {
+   "level": "Mid",
+   "title": "Software Engineer II",
+   "experience": "2–5 yrs"
+  },
+  {
+   "level": "Senior",
+   "title": "Senior Software Engineer",
+   "experience": "5–8 yrs"
+  },
+  {
+   "level": "Staff",
+   "title": "Staff Software Engineer",
+   "experience": "8+ yrs",
+   "notes": "Not covered in depth by the cited sources"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (logistics / marketplace platform)",
+  "Machine Learning (dispatch & pricing)",
+  "Data Engineering"
+ ],
+ "sources": [
+  {
+   "title": "What Is the DoorDash Interview Process Like? (DesignGurus)",
+   "url": "https://www.designgurus.io/answers/detail/what-is-the-doordash-interview-process-like-round-by-round",
+   "used": [
+    "full stage-by-stage breakdown including CodeCraft, debugging round, AI-assisted format"
+   ]
+  },
+  {
+   "title": "DoorDash Software Engineer interview guide (Interview Query)",
+   "url": "https://www.interviewquery.com/guides/doordash-software-engineer",
+   "used": [
+    "first-person account: CodeCraft (Dasher-payment problem), debugging round, RewardAndReview system design"
+   ]
+  },
+  {
+   "title": "DoorDash's Interview Process & Questions (interviewing.io)",
+   "url": "https://interviewing.io/doordash-interview-questions",
+   "used": [
+    "4-step process, decentralized hiring, behavioral rounds used for leveling"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "The distinctive CodeCraft/debugging round format is corroborated across independent sources. DoorDash’s process is explicitly decentralized (moved from centralized recently), so loop composition varies by team.",
+ "indiaNote": null
+}

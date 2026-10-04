@@ -1,0 +1,83 @@
+{
+ "id": "deloitte",
+ "name": "Deloitte",
+ "tier": 3,
+ "roles": [
+  "Software Engineer (India, entry)",
+  "Consultant / Senior Software Engineer"
+ ],
+ "roleGuidance": {
+  "Software Engineer (India, entry)": {
+   "dsaDepth": "Light–Moderate — an aptitude test first, then technical rounds that can range from basic array/string questions to full HLD/LLD design discussions depending on the team/project",
+   "rounds": [
+    "Aptitude test: logical, quantitative and verbal reasoning",
+    "Technical round(s) (1-2): DSA questions ranging from simple (string traversal, array reversal) to complex (a full system design covering HLD and LLD with trade-off discussion, for some pipelines)",
+    "Behavioral/HR round: communication and cultural fit, sometimes a case study for problem-solving demonstration"
+   ],
+   "extraTopics": [
+    "Adaptability — reports show a very wide range from \"simple, basic questions\" to full HLD/LLD design in round 2, so the actual bar depends heavily on team/project staffing",
+    "Language-specific fundamentals tied to your resume (Python, Java, OOP, databases all reported)"
+   ],
+   "focusPatterns": null
+  },
+  "Consultant / Senior Software Engineer": {
+   "dsaDepth": "Moderate — 2 technical rounds, a managerial round, and sometimes a distinct \"Versant\" (spoken-English assessment) round",
+   "rounds": [
+    "2 technical rounds: resume-driven, language-specific (Java, SQL, testing frameworks)",
+    "Managerial round",
+    "Versant round (automated spoken-English/communication assessment) for some pipelines",
+    "HR round"
+   ],
+   "extraTopics": [
+    "Spoken English assessment (Versant) — a format specific to consulting-style client-facing roles, not common at product companies"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Analyst / Software Engineer",
+   "title": "Analyst, Software Engineer",
+   "experience": "Entry level (campus, incl. India)"
+  },
+  {
+   "level": "Consultant / Senior",
+   "title": "Consultant, Senior Software Engineer",
+   "experience": "Mid–senior"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (client-staffed consulting)",
+  "Technology Consultant",
+  "Data / Analytics Consultant"
+ ],
+ "sources": [
+  {
+   "title": "Glassdoor: Deloitte Software Engineer interview report, Hyderabad",
+   "url": "https://www.glassdoor.com.mx/Entrevista/Deloitte-Entrevista-E2763-RVW94042664.htm",
+   "used": [
+    "aptitude test then 2 technical/HR rounds"
+   ]
+  },
+  {
+   "title": "Glassdoor: Deloitte Software Engineer interview report, Chennai (case study)",
+   "url": "https://www.glassdoor.com.ar/Entrevista/Deloitte-Entrevista-E2763-RVW95464313.htm",
+   "used": [
+    "OA, technical interviews, behavioral interview, case study, HR discussion"
+   ]
+  },
+  {
+   "title": "Glassdoor: Deloitte Software Engineer interview report, Pune (HLD/LLD)",
+   "url": "https://www.glassdoor.com.mx/Entrevista/Deloitte-Entrevista-E2763-RVW8829953.htm",
+   "used": [
+    "basic round 1 then a full HLD/LLD system-design round 2, plus a Versant round"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "Technical bar varies widely by report — from very basic to full HLD/LLD — consistent with Deloitte’s project-staffed consulting model where the actual team determines depth.",
+ "indiaNote": "Multiple detailed reports come from Hyderabad, Pune and Chennai."
+}

@@ -1,0 +1,107 @@
+{
+ "id": "jpmorgan",
+ "name": "JPMorgan Chase",
+ "tier": null,
+ "roles": [
+  "Analyst",
+  "Associate",
+  "VP and above"
+ ],
+ "roleGuidance": {
+  "Analyst": {
+   "dsaDepth": "Moderate — online assessment (medium–hard LeetCode-style, string/greedy) then a variable-length loop",
+   "rounds": [
+    "Online assessment (HackerRank-style, 1–2 hrs, easy–medium coding plus aptitude)",
+    "Technical/code-pair round (live HackerRank or pair programming; questions escalate from syntax to HashMap internals, dependency injection)",
+    "System design discussion (e.g. a high-traffic full-stack app or video-streaming service)",
+    "Code-review exercise: spot issues in a colleague’s code",
+    "Behavioral round (teamwork, conflict, \"three words to describe yourself\")"
+   ],
+   "extraTopics": [
+    "Reasoning about WHY something works, not just that it works",
+    "Code-review / critique skills, a less common interview format"
+   ],
+   "focusPatterns": null,
+   "notes": "India campus hiring often runs through \"Code for Good\", a hackathon-based recruiting track."
+  },
+  "Associate": {
+   "dsaDepth": "Moderate–Heavy — similar loop with more system design and ownership framing",
+   "rounds": [
+    "Recruiter screen",
+    "Coding/pair-programming round(s)",
+    "System design round",
+    "Behavioral round"
+   ],
+   "extraTopics": [
+    "Ownership and cross-team collaboration examples"
+   ],
+   "focusPatterns": null
+  },
+  "VP and above": {
+   "dsaDepth": "Light–Moderate — architecture and leadership dominate",
+   "rounds": [
+    "Fewer pure-coding rounds; system design, architecture, and technical leadership discussion"
+   ],
+   "extraTopics": [],
+   "focusPatterns": null,
+   "notes": "Thinly documented in public reports; treat as indicative."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Analyst",
+   "title": "Software Engineer, Analyst / New Associate Programmer",
+   "experience": "0–3 yrs",
+   "notes": "Entry level, incl. Code for Good hackathon route in India"
+  },
+  {
+   "level": "Associate",
+   "title": "Software Engineer, Associate",
+   "experience": "3–7 yrs"
+  },
+  {
+   "level": "VP",
+   "title": "Vice President, Software Engineering",
+   "experience": "7–12 yrs"
+  },
+  {
+   "level": "ED / MD",
+   "title": "Executive Director, Managing Director",
+   "experience": "12+ yrs",
+   "notes": "Senior technical leadership"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (Analyst/Associate/VP track)",
+  "Quantitative Research / Data"
+ ],
+ "sources": [
+  {
+   "title": "JPMorgan Chase Software Engineer interview guide (Interview Query)",
+   "url": "https://www.interviewquery.com/guides/jp-morgan-chase-software-engineer",
+   "used": [
+    "round mix, code-review round, comp"
+   ]
+  },
+  {
+   "title": "Top JP Morgan Interview Questions for Software Engineers (Interview Kickstart)",
+   "url": "https://stg.interviewkickstart.com/?p=5414",
+   "used": [
+    "Code for Good, HireVue, technical round"
+   ]
+  },
+  {
+   "title": "Glassdoor: J.P. Morgan Software Engineer interview reports, Bengaluru/Mumbai",
+   "url": "https://static.glassdoor.it/Interview/J-P-Morgan-Software-Engineer-Interview-Questions-EI_IE145.0,10_KO11,28_IP57.htm",
+   "used": [
+    "India campus Code for Good hackathon process"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "Analyst-level loop is well documented, including the distinctive code-review round. VP+ is general knowledge of the standard IB ladder.",
+ "indiaNote": "India hiring frequently runs through the \"Code for Good\" hackathon-based campus program in Bengaluru and Mumbai."
+}

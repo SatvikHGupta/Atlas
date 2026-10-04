@@ -1,0 +1,58 @@
+{
+ "id": "pinterest",
+ "name": "Pinterest",
+ "tier": null,
+ "roles": [
+  "Software Engineer"
+ ],
+ "roleGuidance": {
+  "Software Engineer": {
+   "dsaDepth": "Moderate — an async CodeSignal test for new grads vs. a live CoderPad session for experienced hires, then a 4-6 round onsite",
+   "rounds": [
+    "Recruiter screen (30-45 min): background, motivation, and Pinterest’s \"PinFlex\" flexible-work-model preferences",
+    "Technical screen: an asynchronous CodeSignal test for new grads/interns (1-2 DS&A problems: arrays, strings, hash maps, trees, graphs); a live CoderPad session for experienced hires",
+    "Onsite coding round(s) (~45 min each): algorithms, clean code, communication",
+    "Onsite system design round (~60 min): architecture, scaling, product thinking",
+    "Onsite project-review and behavioral rounds (~45 min each): past work, collaboration, values fit"
+   ],
+   "extraTopics": [
+    "PinFlex (Pinterest’s flexible/remote work policy) comes up explicitly in the recruiter screen — have a clear answer ready",
+    "Tying system design answers to product thinking, not just pure architecture"
+   ],
+   "focusPatterns": null,
+   "notes": "Total timeline is reported as 3-5 weeks, with a decision typically within a few days of the final round."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Entry",
+   "title": "Software Engineer",
+   "experience": "0–2 yrs (new grad / intern)"
+  },
+  {
+   "level": "Mid–Senior",
+   "title": "Software Engineer II, Senior Software Engineer",
+   "experience": "2+ yrs"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (content platform / discovery)",
+  "Machine Learning (recommendations / ads)",
+  "Data Engineering"
+ ],
+ "sources": [
+  {
+   "title": "What Is the Pinterest Interview Process Like? (Round by Round) (DesignGurus)",
+   "url": "https://www.designgurus.io/answers/detail/what-is-the-pinterest-interview-process-like-round-by-round",
+   "used": [
+    "full stage-by-stage breakdown with per-round timing and what each evaluates"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "Only one detailed source was reviewed for this entry, but it is a thorough, structured round-by-round breakdown rather than a single anecdotal report.",
+ "indiaNote": null
+}

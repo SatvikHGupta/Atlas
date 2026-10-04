@@ -1,0 +1,117 @@
+{
+ "id": "infosys",
+ "name": "Infosys",
+ "tier": 3,
+ "roles": [
+  "Systems Engineer (SE)",
+  "Specialist Programmer (SP)",
+  "Power Programmer (PP)"
+ ],
+ "roleGuidance": {
+  "Systems Engineer (SE)": {
+   "dsaDepth": "Light–Moderate — online assessment then a technical + HR round",
+   "rounds": [
+    "Online assessment (aptitude, verbal, logical reasoning, basic coding)",
+    "Technical interview (CS fundamentals, projects, DSA basics)",
+    "HR interview"
+   ],
+   "extraTopics": [
+    "Core CS fundamentals (DBMS, OOP, OS)",
+    "Project discussion"
+   ],
+   "focusPatterns": null
+  },
+  "Specialist Programmer (SP)": {
+   "dsaDepth": "Heavy — timed competitive-programming rounds (implementation-heavy DP/greedy/grid problems), then DSA and system-design interviews",
+   "rounds": [
+    "HackWithInfy or direct SP test: Round 1 (about 3 hrs, 3 problems: easy/medium/hard, implementation-heavy DP and modular arithmetic); Round 2 (offline, 4 problems: greedy, grid DP, state-transition DP)",
+    "Interview: DSA (2 problems, medium–hard) plus a system-design question (e.g. \"design WhatsApp notifications at a high level\")",
+    "Some loops add a paper-coding phase and a soft-skills-under-pressure group coding session"
+   ],
+   "extraTopics": [
+    "Competitive-programming-style DP and greedy problems (implementation-heavy, not always standard LeetCode)",
+    "High-level system design basics",
+    "Staying composed while being interrupted during live coding"
+   ],
+   "focusPatterns": null
+  },
+  "Power Programmer (PP)": {
+   "dsaDepth": "Heavy — similar bar to SP with added emphasis on internal upskilling potential",
+   "rounds": [
+    "Coding rounds similar to SP",
+    "Technical interview covering DSA, projects and system design"
+   ],
+   "extraTopics": [
+    "Same as Specialist Programmer"
+   ],
+   "focusPatterns": null,
+   "notes": "Fewer public reports specifically on PP; treat as close to the SP process."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "SE",
+   "title": "Systems Engineer",
+   "experience": "Fresher (standard hiring)",
+   "notes": "Most common fresher entry route"
+  },
+  {
+   "level": "SP",
+   "title": "Specialist Programmer",
+   "experience": "Fresher, via HackWithInfy or direct test",
+   "notes": "Coding-heavier track than SE"
+  },
+  {
+   "level": "PP",
+   "title": "Power Programmer",
+   "experience": "Fresher/early career",
+   "notes": "Elite in-house upskilling program"
+  },
+  {
+   "level": "Experienced",
+   "title": "Technology Analyst, Senior Systems Engineer, Technology Lead and above",
+   "notes": "Lateral hiring is role-specific"
+  }
+ ],
+ "roleFamilies": [
+  "Systems Engineer (generalist)",
+  "Specialist Programmer / Power Programmer (coding-heavy)",
+  "Digital Specialist Engineer (design/consulting-leaning)"
+ ],
+ "sources": [
+  {
+   "title": "Infosys HackWithInfy 2026 (Specialist Programmer L3) Interview Experience (LeetCode discuss)",
+   "url": "https://leetcode.com/discuss/post/8444640/infosys-hackwithinfy-2026-specialist-pro-o0jw/",
+   "used": [
+    "2-round coding process plus 3-phase interview"
+   ]
+  },
+  {
+   "title": "Infosys Interview Process & Experience 2026 (Hyring)",
+   "url": "https://hyring.com/jobseeker-toolkit/interview-questions/company/infosys",
+   "used": [
+    "SE/SP/PP routes, HackWithInfy structure"
+   ]
+  },
+  {
+   "title": "Glassdoor: Infosys Specialist Programmer interview reports (2026)",
+   "url": "https://www.glassdoor.co.uk/Interview/Infosys-Interview-E7927-RVW104786318.htm",
+   "used": [
+    "SP L2 rounds: DSA, system design, projects"
+   ]
+  },
+  {
+   "title": "Glassdoor: Infosys Specialist Programmer interview report (Pune)",
+   "url": "https://fr.glassdoor.ca/Entretien/Infosys-Entretien-E7927-RVW100065605.htm",
+   "used": [
+    "3-round SP loop: OA, technical, HR"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "SE and SP are well documented and clearly differentiated by coding depth. PP is thinner in public reports.",
+ "indiaNote": "All-India campus and off-campus hiring; HackWithInfy is a nationwide coding contest feeding the SP track."
+}

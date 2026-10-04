@@ -1,0 +1,72 @@
+:root {
+  --diff-beginner:    #22c55e;
+  --diff-easy:        #86efac;
+  --diff-medium:      #facc15;
+  --diff-hard:        #f97316;
+  --diff-expert:      #ef4444;
+
+  --diff-beginner-bg: rgba(34, 197, 94, 0.1);
+  --diff-easy-bg:     rgba(134, 239, 172, 0.1);
+  --diff-medium-bg:   rgba(250, 204, 21, 0.1);
+  --diff-hard-bg:     rgba(249, 115, 22, 0.1);
+  --diff-expert-bg:   rgba(239, 68, 68, 0.1);
+
+  --solved:       #22c55e;
+  --solved-bg:    rgba(34, 197, 94, 0.08);
+  --attempted:    #f97316;
+  --attempted-bg: rgba(249, 115, 22, 0.08);
+
+  /* Text that sits ON a solved/attempted filled button. Dark on the bright dark-theme greens/oranges; light themes override these to white because their status colors are darkened for text contrast. */
+  --solved-fg:    #0a0a0f;
+  --attempted-fg: #0a0a0f;
+
+  /* Generic status tokens (BUG-026). Same hues in every theme by convention - red means error everywhere - so they live here, not in the per-theme files. */
+  --cyan-fg:    #0a0a0f;
+  --danger-fg:  #0a0a0f;
+
+  --success:    #22c55e;
+  --success-bg: rgba(34, 197, 94, 0.1);
+  --warning:    #f59e0b;
+  --warning-bg: rgba(245, 158, 11, 0.1);
+  --error:      #ef4444;
+  --error-bg:   rgba(239, 68, 68, 0.1);
+  --danger:     var(--error);
+  --danger-bg:  var(--error-bg);
+
+  /* Modal/drawer scrims are always a dark dim, whatever the mode. Code block colors (--code-*) are per mode now, see src/themes/modes.js. */
+  --overlay:     rgba(0, 0, 0, 0.6);
+
+  /* These reference per-theme tokens, so they re-tint automatically when the theme changes. */
+  --focus-ring:    0 0 0 3px var(--accent-glow);
+  --surface-hover: var(--bg-elevated);
+
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-full: 9999px;
+
+  --font-sans: var(--font-sans-loaded), 'Plus Jakarta Sans', 'DM Sans', system-ui, sans-serif;
+  --font-mono: var(--font-mono-loaded), 'JetBrains Mono', 'Fira Code', monospace;
+
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+
+  --sidebar-width:     240px;
+  --navbar-height:     60px;
+  --bottom-nav-height: 60px;
+  --content-max-width: 1280px;
+  --mobile-padding:    16px;
+}

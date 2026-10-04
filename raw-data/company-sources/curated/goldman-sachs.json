@@ -1,0 +1,120 @@
+{
+ "id": "goldman-sachs",
+ "name": "Goldman Sachs",
+ "tier": null,
+ "roles": [
+  "Analyst",
+  "Associate",
+  "VP"
+ ],
+ "roleGuidance": {
+  "Analyst": {
+   "dsaDepth": "Heavy — CoderPad/HackerRank screen (2–3 problems), then a multi-round SuperDay",
+   "rounds": [
+    "Online HackerRank test (3 problems, ~120 min)",
+    "Recruiter/HR screen (~30 min, fit and background)",
+    "CoderPad phone screen (1–2 coding problems, easy–medium)",
+    "SuperDay: 3–6 back-to-back rounds covering DSA/coding, low- and high-level design, SDLC practices, and behavioral"
+   ],
+   "extraTopics": [
+    "SDLC and engineering-practice questions (testing, code review, CI/CD)",
+    "Behavioral: \"why Goldman\", teamwork, handling ambiguity"
+   ],
+   "focusPatterns": null
+  },
+  "Associate": {
+   "dsaDepth": "Heavy — same SuperDay format, more design and past-project weight",
+   "rounds": [
+    "Recruiter screen",
+    "Technical phone screen (coding)",
+    "SuperDay: coding, system design (HLD+LLD), and a deeper resume/project deep-dive across several rounds"
+   ],
+   "extraTopics": [
+    "System design at a securities-firm scale",
+    "Leading and justifying past technical decisions"
+   ],
+   "focusPatterns": null
+  },
+  "VP": {
+   "dsaDepth": "Moderate — coding still present, design and leadership dominate",
+   "rounds": [
+    "Recruiter screen",
+    "SuperDay: fewer pure-coding rounds, more system design, architecture and people-leadership discussion"
+   ],
+   "extraTopics": [
+    "Architecture and cross-team technical strategy",
+    "Leadership and stakeholder management"
+   ],
+   "focusPatterns": null,
+   "notes": "Process for VP+ is thinner in public reports than Analyst/Associate."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Analyst",
+   "title": "Software Engineer, Analyst",
+   "experience": "0–3 yrs",
+   "notes": "Entry level (campus and early-career hires)"
+  },
+  {
+   "level": "Associate",
+   "title": "Software Engineer, Associate",
+   "experience": "3–7 yrs"
+  },
+  {
+   "level": "VP",
+   "title": "Vice President, Software Engineering",
+   "experience": "7–12 yrs"
+  },
+  {
+   "level": "ED",
+   "title": "Executive Director",
+   "experience": "12+ yrs"
+  },
+  {
+   "level": "MD",
+   "title": "Managing Director",
+   "notes": "Senior-most; a small fraction of engineers reach this title"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (Analyst/Associate/VP track)",
+  "Quantitative Strategist (quant-leaning)"
+ ],
+ "sources": [
+  {
+   "title": "Goldman Sachs Software Engineer interview guide (Interview Query)",
+   "url": "https://www.interviewquery.com/guides/goldman-sachs-software-engineer",
+   "used": [
+    "SuperDay format, round mix, comp"
+   ]
+  },
+  {
+   "title": "Goldman Sachs Interview Process and Timeline (Interview Kickstart)",
+   "url": "https://interviewkickstart.com/blogs/companies/goldman-sachs-interview-process",
+   "used": [
+    "process stages, eligibility"
+   ]
+  },
+  {
+   "title": "Goldman Sachs Software Engineer Interview Guide (Prepfully)",
+   "url": "https://prepfully.com/interview-guides/goldman-sachs-software-engineer",
+   "used": [
+    "HackerRank test, initial screen, CoderPad, onsite"
+   ]
+  },
+  {
+   "title": "NodeFlair: Goldman Sachs interview listings by title",
+   "url": "https://nodeflair.com/companies/goldman-sachs/interviews/software-engineer",
+   "used": [
+    "Analyst/Associate/VP title structure"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "Analyst/Associate SuperDay structure is well documented. VP+ process and role families beyond the two main tracks are general knowledge of standard investment-bank ladders.",
+ "indiaNote": null
+}

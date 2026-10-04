@@ -1,0 +1,83 @@
+{
+ "id": "wipro",
+ "name": "Wipro",
+ "tier": 3,
+ "roles": [
+  "Project Engineer (Elite/NLTH)"
+ ],
+ "roleGuidance": {
+  "Project Engineer (Elite/NLTH)": {
+   "dsaDepth": "Light — 2 easy–moderate coding problems inside a broader aptitude test; interview is fundamentals-heavy, not algorithm-heavy",
+   "rounds": [
+    "Online test (about 128 min): aptitude (quant, logical reasoning, verbal), a written communication/essay section, and an online programming section (2 problems, C/C++/Java/Python, easy–moderate)",
+    "Technical interview (about 20–25 min): OOP pillars, access specifiers, polymorphism/encapsulation/abstraction, DBMS/SQL basics, project discussion, sometimes a small live-coding task",
+    "HR interview: background, motivation, relocation, backlog/gap questions"
+   ],
+   "extraTopics": [
+    "OOP fundamentals explained clearly",
+    "Basic SQL and DBMS concepts",
+    "Composure and clarity, since panels are described as friendly but fundamentals-focused"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Elite / NLTH",
+   "title": "Project Engineer",
+   "experience": "Fresher (Elite National Level Talent Hunt)",
+   "notes": "Wipro’s main fresher hiring track"
+  },
+  {
+   "level": "WILP",
+   "title": "Project Engineer (WILP integrated program)",
+   "experience": "Fresher",
+   "notes": "Combines work with a part-time BITS Pilani degree"
+  },
+  {
+   "level": "Experienced",
+   "title": "Senior Project Engineer, Technical Lead and above",
+   "notes": "Lateral hiring is role-specific"
+  }
+ ],
+ "roleFamilies": [
+  "Project Engineer (generalist delivery)",
+  "WILP (integrated degree + work track)"
+ ],
+ "sources": [
+  {
+   "title": "Wipro NLTH Interview Experience, Off-Campus (GeeksforGeeks)",
+   "url": "https://www.geeksforgeeks.org/?p=700333",
+   "used": [
+    "3-round Elite NLTH loop with topics per round"
+   ]
+  },
+  {
+   "title": "Wipro Elite NLTH Interview Experience (GeeksforGeeks)",
+   "url": "https://www.geeksforgeeks.org/?p=620557",
+   "used": [
+    "online test, technical interview content, HR interview"
+   ]
+  },
+  {
+   "title": "Wipro Elite NTH: Exam Pattern & Selection Process (Hitbullseye)",
+   "url": "https://cpt.hitbullseye.com/wipro-elite-nlth-exam-pattern-and-syllabus.php?amp=1",
+   "used": [
+    "128-minute test section breakdown"
+   ]
+  },
+  {
+   "title": "Glassdoor: Wipro Project Engineer interview reports",
+   "url": "https://www.glassdoor.com.hk/Interview/Wipro-Interview-E9936-RVW42866908.htm",
+   "used": [
+    "technical + HR round content, multiple candidate reports"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "Elite/NLTH is consistently documented across many reports and years. Coding difficulty is lower here than at product companies; the round is closer to a screening filter than a DSA test.",
+ "indiaNote": "Wipro’s Elite NLTH is a nationwide fresher hiring drive across India; the process described is India-specific."
+}

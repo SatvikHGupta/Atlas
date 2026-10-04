@@ -1,0 +1,251 @@
+/* Pattern detail page module - practice rows are hover-lift cards with a colored difficulty pill. */
+
+.page {
+  color: var(--text-primary);
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 48px 20px 100px;
+}
+
+.back {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 24px;
+  transition: color 0.15s ease;
+}
+.back:hover { color: var(--text-primary); }
+
+.header { margin-bottom: 28px; }
+.header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 10px;
+  color: var(--text-primary);
+}
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 0.97rem;
+  max-width: 62ch;
+  line-height: 1.6;
+  margin: 0 0 14px;
+}
+
+/* one light row under the subtitle - complexity + "most asked by" together, no boxes, so the header
+   stays a single glanceable unit instead of stacking separate bordered cards */
+/* ─── complexity: proper cards, not pills - some notes have a single "O(n)" here, others (like
+   Array, which covers several techniques) have a full sentence, so a pill shape stretched into an
+   oval looked broken. A bordered card with a small label wraps either case cleanly. ─── */
+.complexityGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+.complexityCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+}
+.complexityLabel {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--cyan);
+  margin-bottom: 4px;
+}
+.complexityValue {
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.topCompaniesInline { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; }
+.topCompaniesLabel { font-size: 0.78rem; color: var(--text-muted); flex-shrink: 0; }
+
+/* ─── note callout: a plain div now, not a Link - it holds real links to the note AND to related
+   patterns, and an <a> can't contain another <a> ─── */
+.noteCallout {
+  background: linear-gradient(160deg, rgba(var(--cyan-rgb), 0.07), transparent 60%), var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  margin-bottom: 32px;
+}
+.noteCalloutHead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.noteCalloutLabel { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--cyan); }
+.noteCalloutMeta { font-size: 0.76rem; color: var(--text-muted); }
+.noteCalloutBody { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.55; margin: 0 0 10px; }
+
+.signalRow { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.signalChip {
+  font-size: 0.76rem;
+  color: var(--cyan);
+  background: rgba(var(--cyan-rgb), 0.1);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+
+.pitfallLine {
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  line-height: 1.5;
+  margin: 0 0 14px;
+}
+.pitfallLine strong { color: var(--diff-hard, #f97316); }
+
+.noteCalloutFooter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 20px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.noteCalloutLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 0.84rem;
+  font-weight: 650;
+  color: var(--accent-fg);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.noteCalloutLink:hover, .noteCalloutLink:focus-visible { background: var(--accent-hover); outline: none; transform: translateX(2px); }
+.noteCalloutLink:focus-visible { box-shadow: 0 0 0 3px var(--accent-subtle); }
+
+.relatedRow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.relatedLabel { font-size: 0.78rem; color: var(--text-muted); }
+.relatedChip {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+  border-radius: 999px;
+  padding: 3px 11px;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.relatedChip:hover { color: var(--text-primary); }
+
+/* ─── practice section heading - matches .sectionTitle on the list page for a consistent feel ─── */
+.sectionHeading {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin: 0 0 16px;
+}
+.sectionCount { font-weight: 500; text-transform: none; letter-spacing: 0; opacity: 0.7; }
+
+/* ─── filter bar (difficulty tabs + sort) ─── */
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); overflow-x: auto; }
+.tab {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  padding: 10px 16px;
+  font-size: 0.88rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+.tabActive { color: var(--cyan); border-bottom-color: var(--cyan); background: rgba(var(--cyan-rgb), 0.08); }
+
+.sortSelect {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.84rem;
+}
+
+.practiceList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.emptyState {
+  grid-column: 1 / -1;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  padding: 20px 0;
+}
+
+.practiceRow {
+  padding: 16px 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
+}
+.practiceRow:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--cyan);
+  box-shadow: 0 4px 24px rgba(var(--cyan-rgb), 0.16);
+}
+
+.practiceTop { display: flex; align-items: center; justify-content: flex-start; gap: 8px; margin-bottom: 10px; }
+
+.practiceTitle {
+  color: var(--text-primary);
+  font-size: 0.92rem;
+  text-decoration: none;
+  font-weight: 500;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.practiceTitle:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+
+.diffPill { font-weight: 700; padding: 2px 9px; border-radius: 999px; border: 1px solid; flex-shrink: 0; font-size: 0.72rem; }
+.diffEasy   { color: var(--diff-easy, #86efac); border-color: color-mix(in srgb, var(--diff-easy) 40%, transparent); background: var(--diff-easy-bg); }
+.diffMedium { color: var(--diff-medium, #facc15); border-color: color-mix(in srgb, var(--diff-medium) 40%, transparent); background: var(--diff-medium-bg); }
+.diffHard   { color: var(--diff-hard, #f97316); border-color: color-mix(in srgb, var(--diff-hard) 40%, transparent); background: var(--diff-hard-bg); }
+
+.inNoteBadge { flex-shrink: 0; font-size: 0.82rem; opacity: 0.85; }
+
+.alsoTaggedRow { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 10px; }
+.alsoTaggedLabel { font-size: 0.72rem; color: var(--text-muted); }
+.alsoTaggedChip {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+  border-radius: 999px;
+  padding: 2px 9px;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.alsoTaggedChip:hover { color: var(--text-primary); }
+
+/* company chips ("asked at") rendered by CompanyChipRow.jsx (src/components/company/) - shared with the notes flashcards */
+
+@media (max-width: 560px) {
+  .page { padding: 32px 14px 70px; }
+  .noteCalloutFooter { flex-direction: column; align-items: flex-start; }
+}

@@ -1,0 +1,87 @@
+{
+ "id": "epam-systems",
+ "name": "EPAM Systems",
+ "tier": 3,
+ "roles": [
+  "Software Engineer (India)"
+ ],
+ "roleGuidance": {
+  "Software Engineer (India)": {
+   "dsaDepth": "Moderate — a coding assessment (DoSelect/HackerRank), a DSA test, sometimes a group discussion, then 2-3 technical rounds and HR",
+   "rounds": [
+    "Online technical assessment (DoSelect or similar): coding round for initial screening",
+    "Nodal/location coding test for some pipelines: DSA questions (e.g. HashMap usage, a parking-lot design problem), with a numeric cutoff (one report: 100/400)",
+    "Group discussion round for some campus pipelines (topic example: AI’s effects on UPI), added on the spot for some cohorts",
+    "Technical interview(s): resume/project deep-dive, Core Java (OOP, garbage collection, memory allocation), problem-solving, SQL and DSA",
+    "Client round(s) for some project-staffed hires: interviews conducted directly with the client team, sometimes including High-Level Design of distributed systems",
+    "Optional/final HR round"
+   ],
+   "extraTopics": [
+    "Core Java internals (garbage collection, memory allocation, OOP pillars) tested in real depth, not just surface-level",
+    "Group discussion performance for campus hires — a format not common at most software companies",
+    "Being staffed-project-aware: some loops include a \"client round\" since EPAM is a consultancy assigning engineers to client projects"
+   ],
+   "focusPatterns": null,
+   "notes": "Round count and sequence vary a lot: reports range from 3 rounds (technical, managerial, HR) to 5 (OA, nodal test, GD, technical, HR) depending on campus vs. off-campus vs. client-specific hiring."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Junior",
+   "title": "Junior Software Engineer",
+   "experience": "Entry level (campus)"
+  },
+  {
+   "level": "Software Engineer",
+   "title": "Software Engineer",
+   "experience": "Mid level"
+  },
+  {
+   "level": "Senior",
+   "title": "Senior Software Engineer",
+   "experience": "Senior"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (client-staffed consulting)",
+  "QA Automation Engineer",
+  "Data Engineer",
+  "Full Stack Engineer"
+ ],
+ "sources": [
+  {
+   "title": "EPAM India interview process & guide 2026 (Dataford)",
+   "url": "https://dataford.io/interview-guides/epam-india",
+   "used": [
+    "505 aggregated reports, 5.5/10 difficulty (harder than 95% of tracked companies), Python/SQL/Java/system-design/DSA emphasis"
+   ]
+  },
+  {
+   "title": "Glassdoor: EPAM Systems Senior Software Engineer interview report, Chennai",
+   "url": "https://www.glassdoor.fr/Entretien/EPAM-Systems-Entretien-E15544-RVW90694958.htm",
+   "used": [
+    "2 technical + 1 manager + HR round loop"
+   ]
+  },
+  {
+   "title": "Glassdoor: EPAM Systems Software Engineer interview report (5-round campus loop)",
+   "url": "https://static.glassdoor.at/Interview/EPAM-Systems-Interview-E15544-RVW100273361.htm",
+   "used": [
+    "full 5-round sequence: DoSelect assessment, nodal DSA test with cutoff, GD, technical interview, optional HR"
+   ]
+  },
+  {
+   "title": "Glassdoor: EPAM Systems Software Engineer interview report, Pune (client rounds)",
+   "url": "https://www.glassdoor.co.in/Interview/EPAM-Systems-Interview-E15544-RVW47252243.htm",
+   "used": [
+    "4-round loop including 2 client-facing rounds with a team lead and senior manager (HLD)"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "Round count and sequence vary significantly by pipeline (campus vs. off-campus vs. client-staffed hire) — treat any single sequence as one common pattern, not a fixed script, consistent with EPAM’s nature as a project-staffing consultancy.",
+ "indiaNote": "Multiple detailed reports come from Chennai, Hyderabad, Pune and New Delhi — EPAM has large India delivery centers."
+}

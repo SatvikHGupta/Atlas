@@ -1,0 +1,57 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  position: absolute;
+  left: var(--space-3);
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  padding: var(--space-2) var(--space-3) var(--space-2) 32px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  /* 16px minimum prevents iOS zoom on focus */
+  font-size: 16px;
+  transition: border-color var(--transition-fast);
+  min-height: 40px;
+  font-family: inherit;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.input::placeholder { color: var(--text-muted); }
+
+.clear {
+  position: absolute;
+  right: var(--space-3);
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  transition: color var(--transition-fast);
+  min-width: 32px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear:hover { color: var(--text-primary); }
+
+@media (min-width: 769px) {
+  .input {
+    /* slightly smaller on desktop is fine */
+    font-size: 0.875rem;
+  }
+}

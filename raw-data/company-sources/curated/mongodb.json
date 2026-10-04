@@ -1,0 +1,60 @@
+{
+ "id": "mongodb",
+ "name": "MongoDB",
+ "tier": null,
+ "roles": [
+  "Software Engineer (junior–mid)",
+  "Senior Software Engineer (SE3)"
+ ],
+ "roleGuidance": {
+  "Software Engineer (junior–mid)": {
+   "dsaDepth": "Moderate — practical, non-puzzle coding (arrays/strings/hash-maps/data-processing) via a third-party interviewer, with reasoning-out-loud valued as much as the answer",
+   "rounds": [
+    "Recruiter screen (~30 min): background, stack, motivation, logistics",
+    "Technical screen (~60 min, live coding): for junior/mid roles often run via Karat (a third-party interview service); 2-3 practical problems (not puzzle-style) — arrays, strings, hash maps, data processing",
+    "Hiring-manager round (~60 min): project depth, decision-making, conflict handling — often gates whether the onsite happens",
+    "Onsite loop (several interviews, 1-2 days): further coding, system design, behavioral, and MongoDB/database-specific questions (SQL vs NoSQL trade-offs are a recurring topic, unsurprisingly)"
+   ],
+   "extraTopics": [
+    "Narrating complexity and trade-offs out loud unprompted — several candidates note that an algorithmically correct answer still felt at risk if the reasoning wasn’t made explicit",
+    "Basic database/NoSQL fundamentals given the product domain"
+   ],
+   "focusPatterns": null
+  },
+  "Senior Software Engineer (SE3)": {
+   "dsaDepth": "Heavy — senior candidates code directly with a MongoDB engineer instead of the third-party screener, and the loop adds LLD/HLD",
+   "rounds": [
+    "Similar recruiter/hiring-manager stages",
+    "Technical screen with an actual MongoDB engineer (not Karat) for senior candidates",
+    "Onsite: 2 coding rounds, 1 system design (LLD + HLD), 1 behavioral round"
+   ],
+   "extraTopics": [
+    "Low-level AND high-level design in the same loop",
+    "Bug-bash-style debugging exercises reported in some India pipelines"
+   ],
+   "focusPatterns": null,
+   "notes": "India-based reports (Gurgaon) describe a longer, 5-round loop that candidates found notably tiring."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  { "level": "SE1 / SE2", "title": "Software Engineer 1, Software Engineer 2", "experience": "Entry–mid level" },
+  { "level": "SE3", "title": "Software Engineer 3", "experience": "Senior — the level most reports reference" },
+  { "level": "Staff+", "title": "Staff Software Engineer and above", "notes": "Not covered in depth by the cited sources" }
+ ],
+ "roleFamilies": [
+  "Software Engineer (database internals / distributed systems)",
+  "Cloud/Atlas Platform Engineer"
+ ],
+ "sources": [
+  { "title": "What Is the MongoDB Interview Process Like? (Round by Round) (DesignGurus)", "url": "https://www.designgurus.io/answers/detail/what-is-the-mongodb-interview-process-like-round-by-round", "used": ["full 4-stage breakdown with per-round timing, Karat usage for junior/mid vs MongoDB engineers for senior"] },
+  { "title": "MongoDB Software Engineer interview guide (Interview Query)", "url": "https://www.interviewquery.com/guides/mongodb-software-engineer?exp_page=1", "used": ["emphasis on reasoning-out-loud over pure correctness, comp data ($119K base/$226K total avg)"] },
+  { "title": "Glassdoor: MongoDB Software Engineer 3 interview reports (multiple, Madrid/Dublin)", "url": "https://fr.glassdoor.ca/Entretien/MongoDB-Entretien-E433703-RVW102088496.htm", "used": ["SE3-level 4-round onsite: 2 coding, 1 behavioral, 1 system design"] },
+  { "title": "Glassdoor: MongoDB Software Engineer Intern interview report, Gurgaon", "url": "https://fr.glassdoor.ca/Entretien/MongoDB-Entretien-E433703-RVW85920613.htm", "used": ["India-specific 5-round loop starting with a Karat DSA+fundamentals round"] }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "Junior/mid (Karat-screened) and senior (SE3, engineer-screened) loops are each corroborated by multiple independent reports with consistent structure.",
+ "indiaNote": "One detailed report is from MongoDB’s Gurgaon office describing a 5-round intern loop."
+}

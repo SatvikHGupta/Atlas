@@ -1,0 +1,79 @@
+{
+ "id": "zomato",
+ "name": "Zomato",
+ "tier": 1,
+ "roles": [
+  "SDE-1"
+ ],
+ "roleGuidance": {
+  "SDE-1": {
+   "dsaDepth": "Moderate — usually 1 DSA problem per round (medium; binary-search-on-answer reported), heavy on projects",
+   "rounds": [
+    "Recruiter call",
+    "Online test on campus drives (about 60 min: 10 MCQs + 2 medium coding problems)",
+    "Technical round 1 (1–1.5 hr): intro, current work, project discussion, 1 DSA problem with full working code",
+    "Technical round 2 (about 1 hr 15 min): prior experience, REST APIs, project discussion, further problem solving",
+    "HR round"
+   ],
+   "extraTopics": [
+    "Project deep dives (expect follow-ups on any project you name)",
+    "REST APIs, DBMS, OS",
+    "Frontend roles: JavaScript, React internals (virtual DOM, lifecycle, Redux, event loop)"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "SDE-1",
+   "title": "Software Development Engineer 1",
+   "experience": "Entry level (about 0–2 yrs)"
+  },
+  {
+   "level": "SDE-2 and above",
+   "title": "SDE-2, Senior and beyond",
+   "notes": "Not covered by the cited sources"
+  }
+ ],
+ "roleFamilies": [
+  "Backend",
+  "Frontend",
+  "Data / ML"
+ ],
+ "sources": [
+  {
+   "title": "Zomato SDE-1, 1.5 YOE, Feb 2024, Offer (LeetCode discuss)",
+   "url": "https://leetcode.com/discuss/post/4832993/zomato-sde-1-15-yoe-feb-2024-offer",
+   "used": [
+    "Gurugram loop"
+   ]
+  },
+  {
+   "title": "Zomato interview experience, off-campus (Code360, Apr 2022)",
+   "url": "https://www.naukri.com/code360/interview-experiences/zomato/zomato-interview-experience-off-campus-apr-2022",
+   "used": [
+    "frontend-flavoured technical round"
+   ]
+  },
+  {
+   "title": "Zomato interview experience, off-campus (Code360, Mar 2022)",
+   "url": "https://www.naukri.com/code360/interview-experiences/zomato/zomato-interview-experience-off-campus-mar-2022",
+   "used": [
+    "SDE-1 DSA round"
+   ]
+  },
+  {
+   "title": "Zomato interview experience (Code360, Dec 2018)",
+   "url": "https://www.naukri.com/code360/interview-experiences/zomato/zomato-interview-experience-dec-2018-exp-0-2-years",
+   "used": [
+    "online test format"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "low",
+ "rolesNotes": "Only SDE-1 experiences were found, so the ladder above SDE-1 is not documented here.",
+ "indiaNote": "Reports mention Gurugram (NCR) hiring and campus drives."
+}

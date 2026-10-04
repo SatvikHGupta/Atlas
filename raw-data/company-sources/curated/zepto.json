@@ -1,0 +1,99 @@
+{
+ "id": "zepto",
+ "name": "Zepto",
+ "tier": null,
+ "roles": [
+  "SDE-1",
+  "Staff Software Engineer (L6)"
+ ],
+ "roleGuidance": {
+  "SDE-1": {
+   "dsaDepth": "Heavy — an OA (MCQs + SQL + DSA) then 2 DSA rounds and a hiring-manager round with a live debugging exercise",
+   "rounds": [
+    "Online assessment (90 min): 5 MCQs, 1 SQL question, 3 DSA questions",
+    "Interview round 1: string manipulation plus a coin-change variant (return how many of each denomination is used), plus OS questions",
+    "Interview round 2: a further DSA/math problem (e.g. removing brackets from a mathematical expression) under time pressure",
+    "Hiring-manager round: past-experience discussion, then a live debugging exercise on a shared doc (e.g. spot and fix a Java method-overriding bug and explain the execution flow)",
+    "HR round: past experience, other offers, background"
+   ],
+   "extraTopics": [
+    "Live debugging and explaining code flow, not just fixing the bug",
+    "Time management — multiple reports mention running out of time mid-problem"
+   ],
+   "focusPatterns": null,
+   "notes": "Other reports describe a similar loop with LLD/OOPs and Spring Boot weighted in for slightly more experienced candidates — Zepto is quick-commerce and moves fast, and interview format varies by hiring wave."
+  },
+  "Staff Software Engineer (L6)": {
+   "dsaDepth": "Heavy — 2 HLD rounds plus 1 LLD round before a hiring-manager round that weighs scalability experience heavily",
+   "rounds": [
+    "2 high-level design rounds",
+    "1 low-level design round",
+    "Hiring-manager round, evaluated in STAR format, with explicit scrutiny of scalability experience — one candidate was rejected here specifically for insufficient scalability depth despite passing all technical rounds"
+   ],
+   "extraTopics": [
+    "Scalability experience articulated in STAR format, not just technical HLD/LLD correctness",
+    "Fluency describing your own past projects under direct HM questioning"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "SDE-1",
+   "title": "Software Development Engineer 1",
+   "experience": "Entry level (fresher/0-2 yrs)"
+  },
+  {
+   "level": "SDE-2",
+   "title": "Software Development Engineer 2",
+   "experience": "Mid level"
+  },
+  {
+   "level": "Staff / L6",
+   "title": "Staff Software Engineer (L6)",
+   "experience": "Senior",
+   "notes": "A distinct level naming — \"L6\" — appears for staff-level hires"
+  }
+ ],
+ "roleFamilies": [
+  "Backend (Java/Spring Boot)",
+  "Systems / Infrastructure (quick-commerce scale)",
+  "Data Engineering"
+ ],
+ "sources": [
+  {
+   "title": "Zepto | SDE-1 (Fresher) | Bangalore | May 2022 [Reject] (LeetCode discuss)",
+   "url": "https://leetcode.com/discuss/interview-experience/2237553",
+   "used": [
+    "full SDE-1 fresher loop: OA, 2 technical rounds, HM round with live debugging, HR round"
+   ]
+  },
+  {
+   "title": "Zepto interview experience, SDE-1 (Code360, Aug 2024)",
+   "url": "https://www.naukri.com/code360/interview-experiences/zepto/zepto-interview-experience-aug-2024-exp-0-2-years",
+   "used": [
+    "DSA + LLD + OOPs + Spring Boot preparation for a 4-round, 8-problem loop"
+   ]
+  },
+  {
+   "title": "Zepto Staff Software Engineer (L6) interview experience (Exponent)",
+   "url": "https://www.tryexponent.com/experiences/zepto-staff-software-engineer-interview-5f9bba",
+   "used": [
+    "L6 loop: 2 HLD, 1 LLD, 1 HM round; rejected specifically on scalability-experience assessment"
+   ]
+  },
+  {
+   "title": "Zepto Software Engineer interview guide 2026 (Dataford)",
+   "url": "https://dataford.io/interview-guides/zepto/software-engineer",
+   "used": [
+    "DSA and technical-depth emphasis, quick-commerce scale context"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "SDE-1 loop is corroborated across multiple independent reports; the Staff/L6 loop comes from a single detailed report, so treat that level with more caution.",
+ "indiaNote": "All reports are Bengaluru-based, consistent with Zepto’s India-only quick-commerce operations."
+}

@@ -1,0 +1,163 @@
+{
+ "id": "swiggy",
+ "name": "Swiggy",
+ "tier": 1,
+ "roles": [
+  "SDE-1",
+  "SDE-2"
+ ],
+ "roleGuidance": {
+  "SDE-1": {
+   "dsaDepth": "Heavy — 3 DSA problems in the OA (2 Medium + 1 Hard reported), then 2 medium in the interview",
+   "rounds": [
+    "Online assessment: 3 DSA problems (Java and Golang were the only languages in one 2026 report); campus 2021 added 1 SQL question",
+    "Technical round (1 hr): 2 medium DSA problems in running code + about 25 min of language fundamentals",
+    "Low-level design round (1 hr): resume deep-dive, then a design + coding problem (e.g. assigning drivers to orders)",
+    "Managerial / hiring-manager round"
+   ],
+   "extraTopics": [
+    "Java or Golang fundamentals: OOP, JVM, garbage collection, collections, multithreading",
+    "SQL",
+    "Low-level design with runnable code",
+    "Some loops start with a machine-coding round"
+   ],
+   "focusPatterns": null
+  },
+  "SDE-2": {
+   "dsaDepth": "Heavy — DSA plus design and system design",
+   "rounds": [
+    "Online assessment / DSA screen",
+    "Machine coding or low-level design",
+    "System design (backend profiles)",
+    "Hiring-manager round"
+   ],
+   "extraTopics": [
+    "LLD and HLD",
+    "Backend fundamentals"
+   ],
+   "focusPatterns": null,
+   "notes": "Less documented than SDE-1: only scattered reports (e.g. SDET-2) were found."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [
+  {
+   "title": "House Robber",
+   "atlasProblemId": "3aac66ff-0207-4429-bd6e-8910d530abc3",
+   "leetcodeId": null,
+   "leetcodeSlug": "house-robber",
+   "difficulty": "Medium",
+   "frequency": null,
+   "patterns": [
+    "Array",
+    "Dynamic Programming"
+   ],
+   "role": "Backend",
+   "confidenceTier": "B",
+   "source": "code360",
+   "sourceUrl": "https://www.naukri.com/code360/interview-experiences/swiggy-private-limited",
+   "topicSourceUrl": null,
+   "lastSeen": "2021-07",
+   "atlasSlug": "house-robber"
+  },
+  {
+   "title": "Partition Equal Subset Sum (0/1 Knapsack)",
+   "atlasProblemId": "cc02fe21-0f70-42bc-8904-b201f074e9b0",
+   "leetcodeId": null,
+   "leetcodeSlug": "partition-equal-subset-sum",
+   "difficulty": "Medium",
+   "frequency": null,
+   "patterns": [
+    "Array",
+    "Dynamic Programming"
+   ],
+   "role": "Backend",
+   "confidenceTier": "A",
+   "source": "code360",
+   "sourceUrl": "https://www.naukri.com/code360/interview-experiences/swiggy-private-limited",
+   "topicSourceUrl": null,
+   "lastSeen": "2019-07",
+   "atlasSlug": "partition-equal-subset-sum"
+  },
+  {
+   "title": "Design Twitter (system design round)",
+   "atlasProblemId": "25b95859-9d2f-4c61-80ff-8c0e9ad54b45",
+   "leetcodeId": null,
+   "leetcodeSlug": "design-twitter",
+   "difficulty": "Medium",
+   "frequency": null,
+   "patterns": [
+    "Hash Table",
+    "Linked List",
+    "Design",
+    "Heap (Priority Queue)"
+   ],
+   "role": "Backend",
+   "confidenceTier": "B",
+   "source": "code360",
+   "sourceUrl": "https://www.naukri.com/code360/interview-experiences/swiggy-private-limited",
+   "topicSourceUrl": null,
+   "lastSeen": "2020-07",
+   "atlasSlug": "design-twitter"
+  }
+ ],
+ "ladder": [
+  {
+   "level": "SDE-1",
+   "title": "Software Development Engineer 1",
+   "experience": "Entry level (campus and 0–2 yrs)",
+   "notes": "Campus shortlisting reported at 7+ CGPA"
+  },
+  {
+   "level": "SDE-2",
+   "title": "Software Development Engineer 2",
+   "experience": "Mid level",
+   "notes": "SDET-2 also appears in reports"
+  },
+  {
+   "level": "SDE-3 and above",
+   "title": "SDE-3, Staff and beyond",
+   "notes": "Not covered by the cited sources"
+  }
+ ],
+ "roleFamilies": [
+  "Backend",
+  "Frontend / mobile",
+  "Data Engineering",
+  "SDET"
+ ],
+ "sources": [
+  {
+   "title": "Swiggy Interview Experience for SDE-1, On-Campus 2021 (GeeksforGeeks)",
+   "url": "https://www.geeksforgeeks.org/?p=703061",
+   "used": [
+    "campus OA and rounds"
+   ]
+  },
+  {
+   "title": "Swiggy SDE-1 Interview Experience (LeetCode discuss, Mar 2026)",
+   "url": "https://leetcode.com/discuss/post/7642548/swiggy-sde-1-interview-experience-by-ano-4lnc/",
+   "used": [
+    "2026 four-round loop"
+   ]
+  },
+  {
+   "title": "Swiggy interview experience, SDE-1 (Code360, Jan 2022)",
+   "url": "https://www.naukri.com/code360/interview-experiences/swiggy/swiggy-interview-experience-jan-2022-exp-0-2-years",
+   "used": [
+    "machine coding first round"
+   ]
+  },
+  {
+   "title": "Swiggy interview experience, SDET-2 (Code360, Oct 2021)",
+   "url": "https://www.naukri.com/code360/interview-experiences/swiggy/swiggy-interview-experience-oct-2021-exp-0-2-years",
+   "used": [
+    "SDET-2 title and rounds"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "SDE-1 rounds are well documented and recent. SDE-2+ details are thin and SDE-3+ is general knowledge.",
+ "indiaNote": "Bengaluru-based hiring, with campus drives and referrals."
+}

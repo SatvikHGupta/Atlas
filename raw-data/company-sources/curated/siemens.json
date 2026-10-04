@@ -1,0 +1,83 @@
+{
+ "id": "siemens",
+ "name": "Siemens",
+ "tier": null,
+ "roles": [
+  "Software Engineer / Graduate Engineer Trainee"
+ ],
+ "roleGuidance": {
+  "Software Engineer / Graduate Engineer Trainee": {
+   "dsaDepth": "Light–Moderate — resume-driven and fundamentals-first: OOP, core language behavior, simple DSA and SQL, with real depth expected on whatever technology you list, but rarely hard algorithms",
+   "rounds": [
+    "Online assessment: 2-3 sections (technical MCQs, coding, sometimes aptitude/quant)",
+    "Technical interview(s) (1-2): OOP pillars explained with examples (C++ or Java), simple-to-medium DSA (linked list, array, pattern-printing, \"find the unique word in a document\"-style problems), and stack-specific depth for Java roles (multithreading, collections, Spring/Hibernate, SQL, JUnit/Mockito)",
+    "Managerial round: mostly behavioral, project discussion, \"where do you see yourself in 5 years\"",
+    "HR round: culture fit, logistics, salary"
+   ],
+   "extraTopics": [
+    "Explaining OOP concepts and design-pattern choices clearly, in your own words — repeatedly the actual differentiator, more than solving hard algorithms",
+    "Depth on whatever you name on your resume — interviewers are reported to circle back and ask \"why\" for specific technology choices"
+   ],
+   "focusPatterns": null,
+   "notes": "India reports (Bengaluru, Pune, Mumbai) show round counts from 2 to 4, and difficulty is consistently described as easy-to-moderate rather than hard."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Graduate Engineer Trainee",
+   "title": "Graduate Engineer Trainee",
+   "experience": "Entry level (campus, incl. India)"
+  },
+  {
+   "level": "Software Engineer",
+   "title": "Software Engineer",
+   "experience": "Mid level"
+  },
+  {
+   "level": "Systems Engineer",
+   "title": "Systems Engineer",
+   "notes": "A parallel, less DSA-heavy track seen in several reports"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (industrial automation / digital industries)",
+  "Systems Engineer",
+  "Graduate Engineer Trainee (campus track)"
+ ],
+ "sources": [
+  {
+   "title": "Siemens Software Engineer interview guide (Interview Query)",
+   "url": "https://www.interviewquery.com/guides/siemens-software-engineer",
+   "used": [
+    "fundamentals-first pattern, resume-driven questioning, comp data ($104K base/$136K total avg)"
+   ]
+  },
+  {
+   "title": "Glassdoor: Siemens Software Engineer interview report (multithreading/Java focus)",
+   "url": "https://www.glassdoor.com.ar/Entrevista/Siemens-Entrevista-E3510-RVW95047165.htm",
+   "used": [
+    "2 technical rounds (Java/multithreading/collections) + managerial round"
+   ]
+  },
+  {
+   "title": "Glassdoor: Siemens Systems Engineer interview report, Bengaluru (campus, C++)",
+   "url": "https://www.glassdoor.com.mx/Entrevista/Siemens-Entrevista-E3510-RVW9297297.htm",
+   "used": [
+    "4-round campus loop: C++ round, verbal/quant/technical, technical, HR"
+   ]
+  },
+  {
+   "title": "Glassdoor: Siemens Graduate Engineer Trainee interview report, Mumbai/Bengaluru",
+   "url": "https://www.glassdoor.es/Entrevista/Siemens-Entrevista-E3510-RVW89339750.htm",
+   "used": [
+    "3-round loop: OA (3 sections), pen-and-paper technical explanation round, HR"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "The fundamentals-over-algorithms pattern and resume-driven questioning style are corroborated across many independent reports, consistent with Siemens’ identity as an industrial/engineering conglomerate rather than a pure software company.",
+ "indiaNote": "Multiple detailed reports come from Bengaluru, Pune and Mumbai."
+}

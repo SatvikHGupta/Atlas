@@ -1,0 +1,115 @@
+{
+ "id": "tcs",
+ "name": "TCS",
+ "tier": 3,
+ "roles": [
+  "Ninja",
+  "Digital",
+  "Prime"
+ ],
+ "roleGuidance": {
+  "Ninja": {
+   "dsaDepth": "Light — Foundation section only (numerical, verbal, reasoning); no coding interview typically required",
+   "rounds": [
+    "TCS NQT: Foundation section (75 min, 65 questions, no negative marking)",
+    "Technical interview (brief, resume/basics)",
+    "HR interview"
+   ],
+   "extraTopics": [
+    "Speed on straightforward quant and reasoning questions"
+   ],
+   "focusPatterns": null
+  },
+  "Digital": {
+   "dsaDepth": "Moderate — Foundation plus Advanced (quant, reasoning, coding) sections",
+   "rounds": [
+    "TCS NQT: Foundation + Advanced sections (115 more minutes: advanced quant, reasoning, coding)",
+    "Technical interview (more depth than Ninja)",
+    "HR interview"
+   ],
+   "extraTopics": [
+    "Coding fundamentals",
+    "Advanced quantitative and reasoning"
+   ],
+   "focusPatterns": null
+  },
+  "Prime": {
+   "dsaDepth": "Moderate–Heavy — top NQT band, at least one fully solved Advanced coding problem, project-focused interview",
+   "rounds": [
+    "TCS NQT: Foundation + Advanced, with a fully-solved Advanced coding problem expected",
+    "Extended technical interview including an AI/data project review",
+    "HR interview"
+   ],
+   "extraTopics": [
+    "A deployable AI/data project you can explain end-to-end",
+    "Coding depth beyond the Digital track"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Ninja",
+   "title": "Assistant System Engineer (Ninja track)",
+   "experience": "Fresher",
+   "notes": "Foundation-only NQT score; lowest of the three tracks"
+  },
+  {
+   "level": "Digital",
+   "title": "Assistant System Engineer (Digital track)",
+   "experience": "Fresher",
+   "notes": "Higher NQT score, Foundation + Advanced sections"
+  },
+  {
+   "level": "Prime",
+   "title": "Assistant System Engineer (Prime track)",
+   "experience": "Fresher",
+   "notes": "Top NQT scorers; extended interview, AI/data project expected"
+  },
+  {
+   "level": "Experienced",
+   "title": "IT Analyst, System Engineer and above",
+   "notes": "Lateral hiring uses role-specific rounds, not the NQT"
+  }
+ ],
+ "roleFamilies": [
+  "Assistant System Engineer (all tracks feed this title)",
+  "IT Analyst / System Engineer (experienced lateral hiring)"
+ ],
+ "sources": [
+  {
+   "title": "TCS Recruitment 2026: Ninja, Digital, and Prime Track Guide (FACEPrep)",
+   "url": "https://faceprep.in/article/tcs-recruitment-latest-updates/",
+   "used": [
+    "three tracks, CTC bands, NQT sections per track"
+   ]
+  },
+  {
+   "title": "TCS NQT 2026: Ninja, Digital and Prime Tracks Explained (FACEPrep)",
+   "url": "https://faceprep.in/article/tcs-ninja-2019-tcs-digital-2019-updates-tcs-recruitment-2019/",
+   "used": [
+    "single unified NQT, track routing by score"
+   ]
+  },
+  {
+   "title": "TCS Ninja Recruitment Process 2026 (FACEPrep)",
+   "url": "https://www.faceprep.in/article/tcs-ninja-recruitment-process-for-tcs-nqt-2019-faceprep/",
+   "used": [
+    "post-NQT interview rounds by track"
+   ]
+  },
+  {
+   "title": "TCS Interview Process & Experience 2026 (Hyring)",
+   "url": "https://hyring.com/jobseeker-toolkit/interview-questions/company/tcs",
+   "used": [
+    "NQT structure, lateral hiring process"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "TCS restructured the old separate Ninja/Digital tests into one NQT with three tracks; the sources describe the 2026 process and are internally consistent. Lateral/lead-level rounds are not detailed here.",
+ "indiaNote": "TCS hires almost entirely through the centralised NQT for freshers across India; the process described here is India-specific."
+}

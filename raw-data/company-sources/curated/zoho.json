@@ -1,0 +1,99 @@
+{
+ "id": "zoho",
+ "name": "Zoho",
+ "tier": 2,
+ "roles": [
+  "MTS (fresher)",
+  "MTS (experienced)"
+ ],
+ "roleGuidance": {
+  "MTS (fresher)": {
+   "dsaDepth": "Moderate — logic and implementation, not LeetCode-style; the programming rounds decide the outcome",
+   "rounds": [
+    "Round 1: written test (aptitude, output prediction, C-style programming MCQs)",
+    "Round 2: programming round (simple programs: expression evaluation, string operations from an index, matrix and linked-list programs)",
+    "Round 3: advanced programming (scenario-based; often one application built in modules, e.g. a coloured-ball game)",
+    "Round 4: technical interview, resume-focused (OOP, data structures, DBMS)",
+    "Round 5: HR"
+   ],
+   "extraTopics": [
+    "Aptitude (speed-distance, probability)",
+    "Clean, working code under restricted libraries or timed conditions",
+    "SQL and DBMS basics"
+   ],
+   "focusPatterns": null,
+   "notes": "Reports say most selections hinge on the two programming rounds."
+  },
+  "MTS (experienced)": {
+   "dsaDepth": "Team-specific — each team runs its own format",
+   "rounds": [
+    "Team-specific technical rounds, sometimes across two weekends",
+    "Some candidates are offered a contract period first, then evaluated"
+   ],
+   "extraTopics": [
+    "Core concepts and design relevant to the team"
+   ],
+   "focusPatterns": null,
+   "notes": "One 2025 report notes every team uses its own format; details vary a lot."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "MTS",
+   "title": "Member of Technical Staff",
+   "experience": "Entry level / campus",
+   "notes": "Zoho’s standard engineering title"
+  },
+  {
+   "level": "Software Developer",
+   "title": "Software Developer",
+   "notes": "Title also listed in Glassdoor role counts"
+  },
+  {
+   "level": "Senior levels",
+   "title": "Senior MTS, Lead and above",
+   "notes": "Not covered by the cited sources"
+  }
+ ],
+ "roleFamilies": [
+  "Software Development (product teams)",
+  "Technical support engineering",
+  "Web development"
+ ],
+ "sources": [
+  {
+   "title": "Glassdoor: Zoho MTS interview report (Jun 2026)",
+   "url": "https://www.glassdoor.fr/Entretien/Zoho-Entretien-E328604-RVW8077881.htm",
+   "used": [
+    "5-round fresher process"
+   ]
+  },
+  {
+   "title": "Glassdoor: Zoho interview, on-campus 7 rounds",
+   "url": "https://www.glassdoor.co.in/Interview/Zoho-Interview-E328604-RVW2944344.htm",
+   "used": [
+    "round-by-round campus format"
+   ]
+  },
+  {
+   "title": "Glassdoor: Zoho MTS interview report (Jul 2025)",
+   "url": "https://fr.glassdoor.ca/Entretien/Zoho-Entretien-E328604-RVW2972272.htm",
+   "used": [
+    "team-specific formats"
+   ]
+  },
+  {
+   "title": "Glassdoor: Zoho interview report (2017 campus)",
+   "url": "https://fr.glassdoor.ch/Entretien/Zoho-Entretien-E328604-RVW18099997.htm",
+   "used": [
+    "coding rounds structure"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "Zoho’s rounds test aptitude and programming logic more than LeetCode patterns, so the DSA pool below is a weaker guide here than at other companies.",
+ "indiaNote": "Chennai-centred hiring, with campus drives and Madurai/other Tamil Nadu offices in reports."
+}

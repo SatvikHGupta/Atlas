@@ -1,0 +1,140 @@
+{
+ "id": "cred",
+ "name": "CRED",
+ "tier": 1,
+ "roles": [
+  "Software Engineer",
+  "SDE-3",
+  "SDET"
+ ],
+ "roleGuidance": {
+  "Software Engineer": {
+   "dsaDepth": "Moderate — online coding then technical interviews",
+   "rounds": [
+    "Online coding interview (about 90 min)",
+    "Technical interviews (3 rounds in total in campus-style reports)",
+    "Team / pod conversations"
+   ],
+   "extraTopics": [
+    "Projects and fundamentals (DBMS, SQL, HTML/CSS for some roles)"
+   ],
+   "focusPatterns": null,
+   "notes": "Very small sample; treat as indicative only."
+  },
+  "SDE-3": {
+   "dsaDepth": "Unknown — only the round count (3 rounds, 3 coding problems) is reported",
+   "rounds": [
+    "3 rounds reported; details not available in the cited pages"
+   ],
+   "extraTopics": [],
+   "focusPatterns": null
+  },
+  "SDET": {
+   "dsaDepth": "Moderate — testing depth plus easy-medium coding",
+   "rounds": [
+    "Round 1: testing acumen (integration scenarios across 2–3 APIs and databases, write end-to-end test cases)",
+    "Round 2: automation and technical (LeetCode easy–medium coding)",
+    "Pod-lead and member rounds"
+   ],
+   "extraTopics": [
+    "API and integration testing",
+    "Automation frameworks"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [
+  {
+   "title": "Sort Colors (0s 1s 2s)",
+   "atlasProblemId": "fd2f4d02-412f-4c3c-9c2e-fa2d6c0547bf",
+   "leetcodeId": null,
+   "leetcodeSlug": "sort-colors",
+   "difficulty": "Medium",
+   "frequency": null,
+   "patterns": [
+    "Array",
+    "Two Pointers",
+    "Sorting"
+   ],
+   "role": "SDE",
+   "confidenceTier": "B",
+   "source": "code360",
+   "sourceUrl": "https://www.naukri.com/code360/interview-experiences/cred",
+   "topicSourceUrl": null,
+   "lastSeen": "2021-06",
+   "atlasSlug": "sort-colors"
+  },
+  {
+   "title": "Binary Tree Left Side View",
+   "atlasProblemId": "9d4cfe09-e0d9-498f-bfdf-e8ba87fcddbf",
+   "leetcodeId": null,
+   "leetcodeSlug": "binary-tree-right-side-view",
+   "difficulty": "Medium",
+   "frequency": null,
+   "patterns": [
+    "Tree",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Binary Tree"
+   ],
+   "role": "SDE",
+   "confidenceTier": "B",
+   "source": "code360",
+   "sourceUrl": "https://www.naukri.com/code360/interview-experiences/cred",
+   "topicSourceUrl": null,
+   "lastSeen": "2021-08",
+   "atlasSlug": "binary-tree-right-side-view"
+  }
+ ],
+ "ladder": [
+  {
+   "level": "Software Engineer",
+   "title": "Software Engineer (SDE-1 equivalent)",
+   "experience": "Entry level / campus"
+  },
+  {
+   "level": "SDE-3",
+   "title": "SDE-3",
+   "experience": "Experienced",
+   "notes": "Title appears in a Code360 report"
+  },
+  {
+   "level": "SDET",
+   "title": "Software Development Engineer in Test",
+   "notes": "Separate testing track"
+  }
+ ],
+ "roleFamilies": [
+  "Backend",
+  "Mobile",
+  "SDET"
+ ],
+ "sources": [
+  {
+   "title": "CRED interview experiences (Code360)",
+   "url": "https://www.naukri.com/code360/interview-experiences/cred",
+   "used": [
+    "role titles: SDE-3, Software Engineer, SDE Intern, Backend Developer"
+   ]
+  },
+  {
+   "title": "CRED interview experience, Software Engineer (Code360, Jun 2021)",
+   "url": "https://www.naukri.com/code360/interview-experiences/cred/interview-experience-software-engineer-jun-2021-exp-0-2-years",
+   "used": [
+    "campus format"
+   ]
+  },
+  {
+   "title": "Glassdoor: CRED SDET interview reports",
+   "url": "https://www.glassdoor.sg/Interview/CRED-Interview-E3050300-RVW74396058.htm",
+   "used": [
+    "SDET rounds"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "low",
+ "rolesNotes": "CRED publishes little and public interview reports are scarce; this is the thinnest entry. Expect the DSA pool below to be small (only a handful of CRED-tagged problems).",
+ "indiaNote": null
+}

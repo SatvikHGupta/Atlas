@@ -1,0 +1,91 @@
+.section { display: flex; flex-direction: column; gap: 32px; }
+
+.block h2, .dangerZone h2 {
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.block p { margin: 0 0 14px; font-size: 0.86rem; color: var(--text-secondary); }
+
+.signOutBtn {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  padding: 9px 16px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.signOutBtn:hover { border-color: var(--border-strong); }
+
+.dangerZone {
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--bg-card);
+}
+
+.dangerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-subtle);
+}
+.dangerRow:first-of-type { border-top: none; padding-top: 0; }
+
+.dangerTitle { display: block; font-size: 0.92rem; font-weight: 650; color: var(--text-primary); }
+.dangerDesc { display: block; font-size: 0.8rem; color: var(--text-secondary); max-width: 46ch; margin-top: 2px; }
+
+.dangerBtn {
+  border-radius: var(--radius-md);
+  padding: 8px 14px;
+  font-size: 0.84rem;
+  font-weight: 650;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.danger {
+  background: transparent;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
+.danger:hover:not(:disabled) { background: var(--danger); color: var(--danger-fg); }
+.danger:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.confirmBox {
+  width: 100%;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-md);
+  padding: 14px;
+}
+.confirmBox p { margin: 0 0 6px; font-size: 0.82rem; color: var(--text-secondary); }
+.confirmHint { color: var(--text-muted) !important; font-size: 0.78rem !important; }
+
+.confirmRow { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.confirmInput {
+  flex: 1 1 140px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  color: var(--text-primary);
+  font-size: 0.86rem;
+}
+.cancelBtn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  cursor: pointer;
+  padding: 8px 10px;
+}
+.cancelBtn:hover { color: var(--text-secondary); }

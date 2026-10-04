@@ -1,0 +1,138 @@
+{
+ "id": "freshworks",
+ "name": "Freshworks",
+ "tier": 2,
+ "roles": [
+  "Software Engineer",
+  "Senior SE (SSE)",
+  "Lead",
+  "SDET"
+ ],
+ "roleGuidance": {
+  "Software Engineer": {
+   "dsaDepth": "Moderate — online assessment then technical rounds",
+   "rounds": [
+    "Screening, then online assessment (campus/CSG-style hiring)",
+    "Technical / HR rounds"
+   ],
+   "extraTopics": [
+    "Basic project and fundamentals questions"
+   ],
+   "focusPatterns": null,
+   "notes": "Fresher hiring details are sparse in the cited sources."
+  },
+  "Senior SE (SSE)": {
+   "dsaDepth": "Moderate–Heavy — LeetCode-medium in one round, then LLD and HLD",
+   "rounds": [
+    "Screening",
+    "Round 1: DSA and problem solving (LeetCode medium)",
+    "Round 2: low-level design (e.g. feature-flag system, LRU cache)",
+    "Round 3: high-level design (e.g. comment section, ride-hailing app with DB design)",
+    "Hiring-manager deep dive on design and projects"
+   ],
+   "extraTopics": [
+    "Project deep dives (expect 30–40 min drilling on your own work)",
+    "Backend/Java fundamentals",
+    "Database design"
+   ],
+   "focusPatterns": null,
+   "notes": "Reports mention both 3-round and 4-round variants; some loops are in-person only."
+  },
+  "Lead": {
+   "dsaDepth": "Moderate — DSA plus system design and managerial rounds",
+   "rounds": [
+    "Two technical rounds: DSA (Trie, heap) and system design (file system, document manager, log management)",
+    "Managerial round",
+    "HR round"
+   ],
+   "extraTopics": [
+    "System design with senior engineers",
+    "Leadership and project ownership"
+   ],
+   "focusPatterns": null
+  },
+  "SDET": {
+   "dsaDepth": "Moderate — automation-focused",
+   "rounds": [
+    "HackerRank (3 questions, loops/collections)",
+    "Manual testing round",
+    "Technical rounds (Selenium / API testing, one strong programming language)",
+    "Manager or architect round",
+    "HR round"
+   ],
+   "extraTopics": [
+    "Selenium, API testing, testing process"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Software Engineer",
+   "title": "Software Engineer / Software Developer",
+   "experience": "Entry level (campus)"
+  },
+  {
+   "level": "SSE",
+   "title": "Senior Software Engineer",
+   "experience": "~3+ yrs",
+   "notes": "Most-reported title on Glassdoor"
+  },
+  {
+   "level": "Lead",
+   "title": "Lead Software Engineer"
+  },
+  {
+   "level": "SDET",
+   "title": "Software Engineer in Test",
+   "notes": "Separate testing track"
+  },
+  {
+   "level": "Staff and above",
+   "title": "Staff, Principal",
+   "notes": "Not covered by the cited sources"
+  }
+ ],
+ "roleFamilies": [
+  "Backend",
+  "Front-end",
+  "SDET / automation",
+  "Data"
+ ],
+ "sources": [
+  {
+   "title": "Freshworks Interview Experience | SSE | Chennai & Bangalore (LeetCode discuss)",
+   "url": "https://leetcode.com/discuss/interview-experience/7031783",
+   "used": [
+    "SSE rounds"
+   ]
+  },
+  {
+   "title": "Glassdoor: Freshworks Senior Software Engineer reports",
+   "url": "https://www.glassdoor.ie/Interview/Freshworks-Interview-E1680273-RVW73602014.htm",
+   "used": [
+    "SSE 4-round loop (2026)"
+   ]
+  },
+  {
+   "title": "Glassdoor: Freshworks Lead Software Engineer reports",
+   "url": "https://www.glassdoor.fr/Entretien/Freshworks-Entretien-E1680273-RVW86424414.htm",
+   "used": [
+    "Lead loop"
+   ]
+  },
+  {
+   "title": "Glassdoor: Freshworks SDET reports",
+   "url": "https://static.glassdoor.co.in/Interview/Freshworks-Interview-E1680273-RVW21277332.htm",
+   "used": [
+    "SDET rounds"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "Senior and Lead loops are well documented; entry-level details are thin.",
+ "indiaNote": "Chennai (HQ engineering) and Bengaluru; some loops are on-site only."
+}

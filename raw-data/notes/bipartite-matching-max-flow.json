@@ -1,0 +1,160 @@
+{
+  "topic": "Bipartite Matching & Max Flow",
+  "level": 9,
+  "slug": "bipartite-matching-max-flow",
+  "estimated_read": "14 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What are Bipartite Matching & Max Flow?",
+      "content": "A **bipartite graph** splits every node into one of two sides (left/right) such that every edge crosses from one side to the other - never within a side. A **matching** is a set of edges with no shared endpoints (each node touches at most one chosen edge); the classic question is the **maximum matching**: the largest such set possible, which models 'pair up as many left-items with right-items as their compatible edges allow' (assigning workers to tasks, students to schools). **Max Flow** generalizes this further: model the graph as a network of pipes with capacities, add a super-source feeding the left side and a super-sink draining the right side, and the maximum amount of 'flow' that can travel source-to-sink equals the maximum bipartite matching exactly - so every bipartite matching problem is secretly a max-flow problem with all capacities set to 1. This note covers both together because in Atlas's problem set they're the same small cluster of hard, application-style problems - not a whole separate multi-week topic, but the right toolbox for a distinct type of problem that shows up in these specific hard problems even though this note extends `advanced-graph.json`, not Advanced Graph itself."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "The signal is almost always a two-sided assignment or pairing problem, or an explicit mention of network capacity/flow.",
+      "signals": [
+        "assign each item on side A to a compatible item on side B",
+        "maximum number of pairs that can be matched",
+        "is the graph bipartite (can nodes be 2-colored with no same-color edge)",
+        "maximum flow through a network",
+        "minimum number of edges to remove to disconnect source from sink",
+        "assignment problem: minimize total cost while matching every item"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Checking Bipartiteness",
+      "content": "A graph is bipartite exactly when it can be 2-colored such that no edge connects two same-colored nodes - equivalently, when it contains no odd-length cycle. This is checked with a plain BFS/DFS: color the start node 0, every neighbor gets the opposite color of its parent, and if you ever reach an already-colored neighbor with the *same* color as the current node, the graph is not bipartite. This check is usually the first step before attempting to build a matching or flow network on the graph at all."
+    },
+    {
+      "type": "concept",
+      "title": "Augmenting Paths: How Matching (and Flow) Actually Grows",
+      "content": "Start with an empty matching. To grow it, look for an **augmenting path**: starting from an unmatched left node, alternate between an unmatched edge and a matched edge, ending at an unmatched right node. Flipping every edge along this path (matched becomes unmatched and vice versa) increases the total matching size by exactly one, because the path had one more unmatched edge than matched. Repeat - try every unmatched left node, search for an augmenting path via DFS/BFS, flip if found - until no augmenting path exists for any unmatched node, at which point the matching is provably maximum (this is the Hungarian/Kuhn's algorithm for bipartite matching). Max flow generalizes the exact same idea (Ford-Fulkerson/Edmonds-Karp): repeatedly find any path from source to sink with spare capacity (an augmenting path in the flow network), push as much flow as the path's tightest edge allows, and repeat until no augmenting path remains - at which point the total flow pushed is provably maximum, by the max-flow min-cut theorem, which says max flow always equals the capacity of the smallest 'cut' (set of edges) that would disconnect source from sink."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "language": "javascript",
+      "code": "// Bipartite check via 2-coloring (BFS)\nfunction isBipartite(graph) {          // graph[i] = list of neighbors of node i\n  const color = new Array(graph.length).fill(-1);\n  for (let start = 0; start < graph.length; start++) {\n    if (color[start] !== -1) continue;\n    color[start] = 0;\n    const queue = [start];\n    while (queue.length) {\n      const u = queue.shift();\n      for (const v of graph[u]) {\n        if (color[v] === -1) {\n          color[v] = 1 - color[u];   // opposite color from parent\n          queue.push(v);\n        } else if (color[v] === color[u]) {\n          return false;              // same-colored edge = odd cycle = not bipartite\n        }\n      }\n    }\n  }\n  return true;\n}\n\n// Kuhn's algorithm: maximum bipartite matching via augmenting paths\nfunction maxBipartiteMatching(leftSize, adj) {   // adj[l] = list of compatible right-side nodes\n  const matchRight = new Array(adj.length).fill(-1);  // right node -> matched left node\n\n  function tryAugment(l, visited) {\n    for (const r of adj[l]) {\n      if (visited.has(r)) continue;\n      visited.add(r);\n      // r is free, or r's current match can be reassigned elsewhere\n      if (matchRight[r] === -1 || tryAugment(matchRight[r], visited)) {\n        matchRight[r] = l;\n        return true;\n      }\n    }\n    return false;\n  }\n\n  let matches = 0;\n  for (let l = 0; l < leftSize; l++) {\n    if (tryAugment(l, new Set())) matches++;\n  }\n  return matches;\n}",
+      "explanation": "`tryAugment` IS the augmenting-path search: it tries to find a free right node for `l` directly, or - if `r` is already matched - recursively tries to find `matchRight[r]` a *different* match, freeing up `r` for `l`. The `visited` set (reset per top-level call) prevents infinite recursion by never reconsidering the same right node twice within one augmenting-path search."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Bipartiteness Check",
+          "description": "Just the 2-coloring BFS/DFS, no matching involved - answers whether a graph can be split into two independent sets with all edges crossing between them.",
+          "example_problem": "Is Graph Bipartite?",
+          "example_slug": "is-graph-bipartite"
+        },
+        {
+          "name": "Maximum Bipartite Matching",
+          "description": "Unweighted - just maximize the count of matched pairs, via repeated augmenting-path search (Kuhn's algorithm).",
+          "example_problem": "Maximum Students Taking Exam",
+          "example_slug": "maximum-students-taking-exam"
+        },
+        {
+          "name": "Weighted Assignment (Hungarian Algorithm)",
+          "description": "Every possible left-right pair has a cost/score, and you must match every node to minimize total cost (or maximize total score) - a generalization of plain matching that needs the Hungarian algorithm or a min-cost-flow formulation rather than plain augmenting paths.",
+          "example_problem": "Maximum Compatibility Score Sum",
+          "example_slug": "maximum-compatibility-score-sum"
+        },
+        {
+          "name": "Max Flow / Min Cut Modeling",
+          "description": "The problem isn't phrased as a graph at all on the surface (grid seating, group-to-group costs) - the core skill is recognizing the hidden bipartite/flow structure and building the source-sink network yourself before any algorithm applies.",
+          "example_problem": "Minimum Cost to Connect Two Groups of Points",
+          "example_slug": "minimum-cost-to-connect-two-groups-of-points"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "Kuhn's algorithm: O(V x E) - one augmenting-path DFS (O(E)) attempted per left node (O(V)). General max flow (Edmonds-Karp): O(V x E^2). Both are expensive relative to earlier graph topics - these algorithms are the reason this cluster is 'advanced'.",
+      "space": "O(V + E) for the adjacency structure, plus O(V) for the match/visited tracking arrays used during each augmenting-path search.",
+      "explanation": "The O(V x E) matching bound comes directly from the algorithm's structure: in the worst case every one of V left-nodes triggers a fresh O(E) search before the matching stabilizes - there's no way to amortize this away for general bipartite graphs."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Forgetting to reset the `visited` set for each new top-level augmenting-path search - reusing one global visited set across different left nodes' searches silently blocks valid augmenting paths.",
+        "Not recognizing a problem as bipartite matching in disguise because it's phrased as grids, groups, or costs rather than an explicit graph - the modeling step (build the bipartite graph or flow network yourself) is usually harder than the algorithm itself.",
+        "Using plain unweighted matching (Kuhn's algorithm) on a problem that actually has per-edge costs/weights - that needs the Hungarian algorithm or min-cost flow, not plain augmenting paths, or the answer will be wrong even though a matching is found.",
+        "Confusing 'maximum matching size' with 'is a perfect matching possible' - a perfect matching only exists when the maximum matching size equals the number of nodes on the smaller side; check for that explicitly rather than assuming it.",
+        "In bipartiteness checking, forgetting the graph may be disconnected - the color-assignment loop must restart from every uncolored node, not just the first one, or disconnected components get silently skipped."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Is Graph Bipartite?",
+          "slug": "is-graph-bipartite",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "The plain 2-coloring check with no matching involved - confirm this before anything else in the topic."
+        },
+        {
+          "title": "Possible Bipartition",
+          "slug": "possible-bipartition",
+          "difficulty": 5,
+          "difficulty_label": "Medium",
+          "why": "Same 2-coloring idea, but the graph must first be built from a list of 'these two dislike each other' pairs rather than being given directly."
+        },
+        {
+          "title": "Two City Scheduling",
+          "slug": "two-city-scheduling",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "A weighted-assignment problem small enough to have a greedy sort-based shortcut - a good bridge into Hungarian-style problems before the full algorithm is needed."
+        },
+        {
+          "title": "Maximum Compatibility Score Sum",
+          "slug": "maximum-compatibility-score-sum",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "Small enough to brute-force via permutations, but structurally the exact weighted bipartite assignment problem the Hungarian algorithm solves at scale."
+        },
+        {
+          "title": "Minimum XOR Sum of Two Arrays",
+          "slug": "minimum-xor-sum-of-two-arrays",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Weighted assignment (minimize total XOR pairing cost) solved via bitmask DP here rather than the Hungarian algorithm - shows the same assignment problem attacked with a different tool."
+        },
+        {
+          "title": "Number of Ways to Wear Different Hats to Each Other",
+          "slug": "number-of-ways-to-wear-different-hats-to-each-other",
+          "difficulty": 8,
+          "difficulty_label": "Hard",
+          "why": "Counting perfect matchings (not just finding one) via bitmask DP over 'which people are covered so far' - a matching-counting variant."
+        },
+        {
+          "title": "Minimum Cost to Connect Two Groups of Points",
+          "slug": "minimum-cost-to-connect-two-groups-of-points",
+          "difficulty": 8,
+          "difficulty_label": "Hard",
+          "why": "The modeling step is the whole problem - every point in group 1 needs >=1 connection, every point in group 2 needs >=1 connection, minimizing total cost, which is a min-cost bipartite covering problem."
+        },
+        {
+          "title": "Maximum Students Taking Exam",
+          "slug": "maximum-students-taking-exam",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "The hardest problem in this set - a grid seating constraint reframed as bipartite matching between odd and even columns, solved with real max-flow/matching machinery, not bitmask DP."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Game Theory",
+      "next_slug": "game-theory",
+      "why": "Game Theory is the next topic at this level - a natural sibling to Bipartite Matching & Max Flow, reinforcing the same tier of difficulty before moving up."
+    }
+  ]
+}

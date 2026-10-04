@@ -1,0 +1,95 @@
+{
+ "id": "expedia",
+ "name": "Expedia Group",
+ "tier": null,
+ "roles": [
+  "SDE I",
+  "SDE II / Senior"
+ ],
+ "roleGuidance": {
+  "SDE I": {
+   "dsaDepth": "Moderate — an online assessment (2 string/substring problems, 75 min) then a 3-round onsite mixing behavioral, OOP design, and coding",
+   "rounds": [
+    "Online assessment: 2 coding questions (string manipulation/substrings), 75 minutes",
+    "Round 1 — Behavioral: background and motivation, often with a junior engineer",
+    "Round 2 — Data structures and OOP design: a design-flavored coding problem (e.g. hotel-bookings max-occupancy)",
+    "Round 3 — \"Problem solving\" (actually coding): a further LeetCode-style problem"
+   ],
+   "extraTopics": [
+    "LeetCode-easy-to-medium pattern recognition (Valid Parentheses, anagrams, palindrome variants are commonly reported) — the bar rewards speed and clarity over obscure algorithms",
+    "OOP design thinking applied to a travel-domain problem (bookings, hotels)"
+   ],
+   "focusPatterns": null
+  },
+  "SDE II / Senior": {
+   "dsaDepth": "Moderate — 2 coding rounds plus a discussion-based system design round and a behavioral/hiring-manager conversation",
+   "rounds": [
+    "Online assessment",
+    "Technical round with an engineer",
+    "Onsite: 2 medium-difficulty coding rounds, 1 discussion-based system design round (e.g. a notification service, with many follow-up questions rather than one deep prompt), 1 hiring-manager/behavioral round"
+   ],
+   "extraTopics": [
+    "Discussion-based system design — interviewers keep extending follow-ups rather than staying on a single narrow prompt",
+    "Clear articulation of technical decisions and trade-offs"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "SDE I",
+   "title": "Software Development Engineer I",
+   "experience": "Entry level (campus and 0–2 yrs)"
+  },
+  {
+   "level": "SDE II / Software Engineer",
+   "title": "Software Development Engineer II, Software Engineer",
+   "experience": "Mid level"
+  },
+  {
+   "level": "Senior",
+   "title": "Senior Software Engineer",
+   "experience": "Senior"
+  }
+ ],
+ "roleFamilies": [
+  "Software Development Engineer (travel platform)",
+  "Data Engineering"
+ ],
+ "sources": [
+  {
+   "title": "Expedia Software Engineer interview guide (Interview Query)",
+   "url": "https://www.interviewquery.com/guides/expedia-software-engineer",
+   "used": [
+    "LeetCode-style easy-medium coding pattern, discussion-based system design, comp data"
+   ]
+  },
+  {
+   "title": "Expedia Software Engineer Interview Process (Interview Kickstart)",
+   "url": "https://interviewkickstart.com/blogs/companies/expedia-software-engineer-interview-process",
+   "used": [
+    "role responsibilities and 2-part process (OA then onsite)"
+   ]
+  },
+  {
+   "title": "Glassdoor: Expedia Group Software Development Engineer I interview reports, Austin/Seattle",
+   "url": "https://www.glassdoor.es/Entrevista/Expedia-Group-Entrevista-E9876-RVW54209721.htm",
+   "used": [
+    "3-round SDE I loop: behavioral, OOP design, coding"
+   ]
+  },
+  {
+   "title": "Glassdoor: Expedia Group Software Engineer interview report, Bellevue",
+   "url": "https://www.glassdoor.com.mx/Entrevista/Expedia-Group-Entrevista-E9876-RVW13039983.htm",
+   "used": [
+    "hiring-manager + 2 coding + system design (URL shortener) loop"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "SDE I and SDE II/Senior loops are each corroborated by several independent reports.",
+ "indiaNote": null
+}

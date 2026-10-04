@@ -1,0 +1,69 @@
+{
+ "id": "lyft",
+ "name": "Lyft",
+ "tier": null,
+ "roles": [
+  "Software Engineer"
+ ],
+ "roleGuidance": {
+  "Software Engineer": {
+   "dsaDepth": "Moderate — one coding round plus a distinct 4-round onsite mixing CS fundamentals with design",
+   "rounds": [
+    "Recruiter screen (fit and background)",
+    "Technical phone screen (~1 hr on Coderpad, one question, moderate depth)",
+    "Onsite (4 rounds): system design, CS fundamentals, a laptop programming test, and a behavioral interview",
+    "Team matching after the loop, not before"
+   ],
+   "extraTopics": [
+    "CS fundamentals as its own dedicated round, separate from the coding test — distinct from most peers who fold fundamentals into coding rounds",
+    "A \"laptop programming test\" round format (bring-your-own-environment coding)"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Entry–Mid",
+   "title": "Software Engineer",
+   "experience": "0–5 yrs"
+  },
+  {
+   "level": "Senior",
+   "title": "Senior Software Engineer",
+   "experience": "5–8 yrs"
+  },
+  {
+   "level": "Staff",
+   "title": "Staff Software Engineer",
+   "experience": "8+ yrs",
+   "notes": "Not covered in depth by the cited sources"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (marketplace / rider-driver platform)",
+  "Data Engineering",
+  "Machine Learning (pricing & matching)"
+ ],
+ "sources": [
+  {
+   "title": "Lyft Software Engineer Interview Guide (Exponent)",
+   "url": "https://www.tryexponent.com/guides/lyft-swe-interview",
+   "used": [
+    "4-stage process: recruiter screen, technical phone screen, onsite, team matching"
+   ]
+  },
+  {
+   "title": "Lyft Software Engineer Interview Guide, onsite round breakdown (Exponent)",
+   "url": "https://www.tryexponent.com/guides/lyft-software-engineer-interview",
+   "used": [
+    "onsite round list: system design, CS fundamentals, laptop programming test, behavioral"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "low",
+ "rolesNotes": "Only two closely-related guides (same publisher) were reviewed for this entry — treat the round structure as one documented pattern rather than broadly cross-verified. Senior/Staff-level detail was not found.",
+ "indiaNote": null
+}

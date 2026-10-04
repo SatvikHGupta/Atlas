@@ -1,0 +1,140 @@
+{
+ "id": "phonepe",
+ "name": "PhonePe",
+ "tier": 1,
+ "roles": [
+  "SDE-1",
+  "SDE-2"
+ ],
+ "roleGuidance": {
+  "SDE-1": {
+   "dsaDepth": "Moderate–Heavy — DSA-heavy, Medium to Hard",
+   "rounds": [
+    "Online assessment (about 3 DS/algo problems)",
+    "2 DSA rounds (2 problems each)",
+    "Hiring manager round: current work, projects, DBMS"
+   ],
+   "extraTopics": [
+    "DBMS and OOP",
+    "Resume project depth",
+    "Focus reported on trees, graphs, DP"
+   ],
+   "focusPatterns": null
+  },
+  "SDE-2": {
+   "dsaDepth": "Heavy — DSA plus machine coding and system design",
+   "rounds": [
+    "Online coding round (medium)",
+    "Machine coding / low-level design (e.g. snake-and-ladder in 60 min, modular and demoable)",
+    "System design round (about 90 min, e.g. airline management system)",
+    "Hiring manager round (behavioral)"
+   ],
+   "extraTopics": [
+    "Low-level design with extensible code",
+    "Scalability basics",
+    "Design patterns"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [
+  {
+   "title": "Sort Colors (Dutch National Flag)",
+   "atlasProblemId": "fd2f4d02-412f-4c3c-9c2e-fa2d6c0547bf",
+   "leetcodeId": null,
+   "leetcodeSlug": "sort-colors",
+   "difficulty": "Medium",
+   "frequency": null,
+   "patterns": [
+    "Array",
+    "Two Pointers",
+    "Sorting"
+   ],
+   "role": "SDE",
+   "confidenceTier": "A",
+   "source": "code360",
+   "sourceUrl": "https://www.naukri.com/code360/interview-experiences/phonepe",
+   "topicSourceUrl": null,
+   "lastSeen": "2021-11",
+   "atlasSlug": "sort-colors"
+  },
+  {
+   "title": "Climbing Stairs (Count Ways to Reach Nth Stair)",
+   "atlasProblemId": "b2410fb2-5ed1-414c-8069-c51c7653d015",
+   "leetcodeId": null,
+   "leetcodeSlug": "climbing-stairs",
+   "difficulty": "Easy",
+   "frequency": null,
+   "patterns": [
+    "Math",
+    "Dynamic Programming",
+    "Memoization"
+   ],
+   "role": "SDE",
+   "confidenceTier": "B",
+   "source": "code360",
+   "sourceUrl": "https://www.naukri.com/code360/interview-experiences/phonepe",
+   "topicSourceUrl": null,
+   "lastSeen": "2021-11",
+   "atlasSlug": "climbing-stairs"
+  }
+ ],
+ "ladder": [
+  {
+   "level": "SDE-1",
+   "title": "Software Development Engineer 1",
+   "experience": "Entry level (campus and 0–2 yrs)"
+  },
+  {
+   "level": "SDE-2",
+   "title": "Software Development Engineer 2",
+   "experience": "Mid level"
+  },
+  {
+   "level": "SDE-3 and above",
+   "title": "SDE-3, Staff and beyond",
+   "notes": "Not covered by the cited sources"
+  }
+ ],
+ "roleFamilies": [
+  "Backend (Java)",
+  "Frontend / mobile",
+  "Data Engineering",
+  "SDET"
+ ],
+ "sources": [
+  {
+   "title": "PhonePe interview experience, SDE-2 (Code360)",
+   "url": "https://www.naukri.com/code360/interview-experiences/phonepe/phone-pe-interview-experience-may-2022-exp-0-2-years",
+   "used": [
+    "machine coding round"
+   ]
+  },
+  {
+   "title": "PhonePe interview experience, SDE-2 (Code360, Apr 2022)",
+   "url": "https://www.naukri.com/code360/interview-experiences/phonepe/phone-pe-interview-experience-apr-2022-exp-0-2-years",
+   "used": [
+    "system design round"
+   ]
+  },
+  {
+   "title": "LeetCode discuss: PhonePe SDE 1 Bangalore (offer, 2022)",
+   "url": "https://leetcode.com/discuss/compensation/1852629/phonepe-sde-1-bangalore",
+   "used": [
+    "SDE-1 loop"
+   ]
+  },
+  {
+   "title": "LeetCode discuss: PhonePe SDE-1 Bangalore (Oct 2021)",
+   "url": "https://leetcode.com/discuss/compensation/1532849/phonepe-sde-1-bangalore",
+   "used": [
+    "3-round SDE-1 loop"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "SDE-1 and SDE-2 loops are supported by several candidate reports. SDE-3+ and role families are general knowledge.",
+ "indiaNote": "Bengaluru-centred hiring; campus drives use an online coding test first."
+}

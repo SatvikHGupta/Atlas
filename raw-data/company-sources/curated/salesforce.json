@@ -1,0 +1,89 @@
+{
+ "id": "salesforce",
+ "name": "Salesforce",
+ "tier": null,
+ "roles": [
+  "AMTS / MTS"
+ ],
+ "roleGuidance": {
+  "AMTS / MTS": {
+   "dsaDepth": "Heavy — one LeetCode-style DSA round plus HLD, and OOP/DBMS-focused technical rounds",
+   "rounds": [
+    "Recruiter screen",
+    "Online coding assessment (DSA and problem-solving) for some pipelines",
+    "Technical round 1: DSA (a LeetCode-hard problem, e.g. DFS-based, is reported for some loops)",
+    "Technical round 2: high-level design emphasizing scalability and reliability, or DBMS/OOP/project discussion for other pipelines",
+    "Hiring-manager round: teamwork, problem solving, career goals"
+   ],
+   "extraTopics": [
+    "System scalability and reliability trade-offs in the design round",
+    "OOP and DBMS fundamentals",
+    "Project discussion depth"
+   ],
+   "focusPatterns": null,
+   "notes": "Loop composition varies noticeably by pipeline: some reports show 3 rounds (coding, HLD, HM), others show 4 (assessment + 2 technical + HR)."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "AMTS",
+   "title": "Associate Member of Technical Staff",
+   "experience": "Entry level / new grad"
+  },
+  {
+   "level": "MTS",
+   "title": "Member of Technical Staff",
+   "experience": "Early–mid career"
+  },
+  {
+   "level": "SMTS",
+   "title": "Senior Member of Technical Staff",
+   "experience": "Senior"
+  },
+  {
+   "level": "PMTS / Architect",
+   "title": "Principal Member of Technical Staff, Architect",
+   "notes": "Not covered in depth by the cited sources"
+  }
+ ],
+ "roleFamilies": [
+  "Member of Technical Staff (product engineering)",
+  "Platform / Cloud Engineer"
+ ],
+ "sources": [
+  {
+   "title": "What is the Salesforce interview process? (DesignGurus)",
+   "url": "https://www.designgurus.io/answers/detail/what-is-the-salesforce-interview-process",
+   "used": [
+    "overview and links to related company guides"
+   ]
+  },
+  {
+   "title": "Glassdoor: Salesforce Software Engineer interview report (May 2026)",
+   "url": "https://www.glassdoor.com.ar/Interview/Salesforce-Interview-E11159-RVW104860128.htm",
+   "used": [
+    "hard DSA (DFS) plus HLD round"
+   ]
+  },
+  {
+   "title": "Glassdoor: Salesforce Associate Software Engineer interview report",
+   "url": "https://www.glassdoor.com.mx/Entrevista/Salesforce-Entrevista-E11159-RVW14077592.htm",
+   "used": [
+    "4-round loop: 3 technical + 1 non-technical"
+   ]
+  },
+  {
+   "title": "Glassdoor: Salesforce Software Engineer interview report (2026)",
+   "url": "https://www.glassdoor.com.ar/Entrevista/Salesforce-Entrevista-E11159-RVW26456397.htm",
+   "used": [
+    "OA + 2 technical + HR round structure"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "The AMTS/MTS/SMTS title ladder is Salesforce’s well-known naming convention; loop structure is corroborated by several reports but varies by pipeline.",
+ "indiaNote": null
+}

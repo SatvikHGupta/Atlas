@@ -1,0 +1,128 @@
+{
+ "id": "uber",
+ "name": "Uber",
+ "tier": 1,
+ "roles": [
+  "SWE II (L4)",
+  "Senior SWE (L5A)",
+  "Staff SWE (L5B)"
+ ],
+ "roleGuidance": {
+  "SWE II (L4)": {
+   "dsaDepth": "Heavy — LeetCode-style coding (DP, trees, binary search, strings) with follow-ups",
+   "rounds": [
+    "Recruiter screen",
+    "Online assessment or live coding screen (CodeSignal reported)",
+    "Virtual loop of about 4 rounds: coding, low-level / machine coding, architecture, behavioral"
+   ],
+   "extraTopics": [
+    "Machine coding / low-level design (key-value store style problems)",
+    "Explaining trade-offs and past work"
+   ],
+   "focusPatterns": null,
+   "notes": "Round mix varies by team; one L4 report describes an assessment, two technical interviews and a hiring-manager round."
+  },
+  "Senior SWE (L5A)": {
+   "dsaDepth": "Heavy — hard algorithms plus production-quality machine coding",
+   "rounds": [
+    "Business phone screen: 1 medium-hard/hard coding problem",
+    "Algorithms & data structures round (2 problems, e.g. tree + graph/topological sort)",
+    "Depth-in-specialisation round: machine coding of a small service",
+    "System design round (Uber-style: dispatch, surge pricing)",
+    "Hiring manager / behavioral round"
+   ],
+   "extraTopics": [
+    "Large-scale distributed system design",
+    "Ownership and decision-making stories"
+   ],
+   "focusPatterns": null
+  },
+  "Staff SWE (L5B)": {
+   "dsaDepth": "Moderate–Heavy — two coding rounds remain, design and project depth grow",
+   "rounds": [
+    "Recruiter call and initial coding screen",
+    "Five-round final: two coding, one system design, one past-project round (behavioral deep-dive), and a further round"
+   ],
+   "extraTopics": [
+    "System design at scale",
+    "Deep dive on a past project and its trade-offs"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "L3",
+   "title": "Software Engineer I",
+   "notes": "Entry level (title/level not covered by the cited sources)"
+  },
+  {
+   "level": "L4",
+   "title": "Software Engineer II",
+   "experience": "Mid level",
+   "notes": "Appears as \"Mid Level / L4\" in candidate reports"
+  },
+  {
+   "level": "L5A",
+   "title": "Senior Software Engineer"
+  },
+  {
+   "level": "L5B",
+   "title": "Staff Software Engineer"
+  },
+  {
+   "level": "L6+",
+   "title": "Senior Staff and above",
+   "notes": "Not covered by the cited sources"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (backend / full-stack)",
+  "Mobile (iOS / Android)",
+  "Machine Learning",
+  "Data"
+ ],
+ "sources": [
+  {
+   "title": "Uber Software Engineer interview guide, candidate experiences (Exponent)",
+   "url": "https://www.tryexponent.com/guides/uber-software-engineer-interview/experiences",
+   "used": [
+    "levels L4 and L5B, staff loop"
+   ]
+  },
+  {
+   "title": "Uber Software Engineer interview guide (Interview Query)",
+   "url": "https://www.interviewquery.com/guides/uber-software-engineer?exp_page=2",
+   "used": [
+    "rounds mix, low-level design"
+   ]
+  },
+  {
+   "title": "Glassdoor: Uber interview report",
+   "url": "https://www.glassdoor.com.ar/Entrevista/Uber-Entrevista-E575263-RVW11100336.htm",
+   "used": [
+    "process stages and round types"
+   ]
+  },
+  {
+   "title": "Glassdoor: Uber Sr Software Engineer interview report",
+   "url": "https://static.glassdoor.nl/Interview/Uber-Sr-Software-Engineer-Interview-Questions-EI_IE575263.0,4_KO5,25_IP14.htm",
+   "used": [
+    "OA and 4 virtual onsite rounds"
+   ]
+  },
+  {
+   "title": "Reddit r/leetcode: Uber L5A interview experience",
+   "url": "https://red.applefritter.com/r/leetcode/duplicates/1ozppep",
+   "used": [
+    "L5A round breakdown"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "L4, L5A and L5B come from candidate reports; L3 and L6+ and the role families are general knowledge. Uber rounds vary by team and level.",
+ "indiaNote": null
+}

@@ -1,0 +1,167 @@
+{
+ "id": "google",
+ "name": "Google",
+ "tier": 1,
+ "roles": [
+  "SWE II (L3)",
+  "SWE III (L4)",
+  "Senior SWE (L5)",
+  "Staff SWE (L6)"
+ ],
+ "roleGuidance": {
+  "SWE II (L3)": {
+   "dsaDepth": "Heavy — algorithms and coding are the main signal (Medium–Hard)",
+   "rounds": [
+    "Recruiter screen",
+    "1–2 technical screens (live coding)",
+    "Loop of several coding/algorithm rounds",
+    "Googleyness & leadership round",
+    "Hiring committee review, then team matching"
+   ],
+   "extraTopics": [
+    "Clean, tested code and complexity analysis",
+    "Thinking out loud / communication"
+   ],
+   "focusPatterns": null
+  },
+  "SWE III (L4)": {
+   "dsaDepth": "Heavy — same coding bar as L3, more independence expected",
+   "rounds": [
+    "Recruiter screen",
+    "1–2 technical screens (live coding)",
+    "Loop of several coding/algorithm rounds",
+    "Googleyness & leadership round",
+    "Hiring committee review, then team matching"
+   ],
+   "extraTopics": [
+    "Clean, tested code and complexity analysis",
+    "Discussing trade-offs"
+   ],
+   "focusPatterns": null
+  },
+  "Senior SWE (L5)": {
+   "dsaDepth": "Heavy — coding still tested; system design and role competence weigh in",
+   "rounds": [
+    "Recruiter screen",
+    "Technical screen(s)",
+    "Loop: coding rounds plus a system design round",
+    "Googleyness & leadership round",
+    "Hiring committee review, then team matching"
+   ],
+   "extraTopics": [
+    "System design fundamentals",
+    "Communication and technical leadership"
+   ],
+   "focusPatterns": null
+  },
+  "Staff SWE (L6)": {
+   "dsaDepth": "Moderate — coding present, but scope and impact of past work decide the level",
+   "rounds": [
+    "Recruiter screen",
+    "Technical screen(s)",
+    "Loop weighted to large-scale system design, leadership and past-project depth",
+    "Hiring committee review, then team matching"
+   ],
+   "extraTopics": [
+    "Large-scale architecture",
+    "Cross-team technical leadership"
+   ],
+   "focusPatterns": null,
+   "notes": "Rarely hired externally at this level."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "L3",
+   "title": "Software Engineer II",
+   "experience": "0–2 yrs",
+   "notes": "Entry level / new-grad"
+  },
+  {
+   "level": "L4",
+   "title": "Software Engineer III",
+   "experience": "2–5 yrs"
+  },
+  {
+   "level": "L5",
+   "title": "Senior Software Engineer",
+   "experience": "5–8+ yrs",
+   "notes": "The level most engineers stay at; promotion beyond is competitive"
+  },
+  {
+   "level": "L6",
+   "title": "Staff Software Engineer",
+   "experience": "8–15 yrs",
+   "notes": "Rarely an external hire"
+  },
+  {
+   "level": "L7",
+   "title": "Senior Staff Software Engineer",
+   "experience": "12+ yrs"
+  },
+  {
+   "level": "L8",
+   "title": "Principal Engineer"
+  },
+  {
+   "level": "L9",
+   "title": "Distinguished Engineer"
+  },
+  {
+   "level": "L10",
+   "title": "Google Fellow",
+   "notes": "Very rare"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineering (backend / frontend / full-stack)",
+  "Site Reliability Engineering",
+  "Machine Learning / AI",
+  "Android / iOS"
+ ],
+ "sources": [
+  {
+   "title": "Google Software Engineer Levels Explained (DesignGurus)",
+   "url": "https://www.designgurus.io/blog/google-software-engineer-levels",
+   "used": [
+    "ladder",
+    "titles",
+    "experience bands"
+   ]
+  },
+  {
+   "title": "Google Career Ladder for Engineers Explained (ShiftMag)",
+   "url": "https://shiftmag.dev/google-career-ladder-explained-for-engineers-10368/",
+   "used": [
+    "ladder"
+   ]
+  },
+  {
+   "title": "Software Engineer Job Levels at Google (Interview Kickstart)",
+   "url": "https://interviewkickstart.com/blogs/articles/google-software-engineer-level",
+   "used": [
+    "what each level is evaluated on"
+   ]
+  },
+  {
+   "title": "Software Engineer at Google 2026 (ResumeGeni)",
+   "url": "https://resumegeni.com/blog/software-engineer/at-google",
+   "used": [
+    "hiring committee, algorithm-heavy junior/mid loops"
+   ]
+  },
+  {
+   "title": "Google promotions: the real scoop (Candor)",
+   "url": "https://candor.co/articles/tech-careers/google-promotions-the-real-scoop-on-leveling-up",
+   "used": [
+    "experience per level"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "Ladder and level titles agree across the cited sources. Round counts are not fixed by Google and vary by team. Role families are general knowledge, not taken from the cited pages.",
+ "indiaNote": null
+}

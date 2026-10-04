@@ -1,0 +1,272 @@
+/* Patterns list page module - top 3 get a featured bento row, the rest get a hue-tinted grid, every card has a cursor-follow spotlight. */
+
+.page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 3.5rem) var(--space-6) var(--space-12);
+  position: relative;
+}
+
+.headerGlow {
+  position: absolute;
+  top: -60px;
+  right: -10%;
+  width: 70%;
+  height: 340px;
+  background: radial-gradient(ellipse at center top, rgba(var(--cyan-rgb), 0.16) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.header { position: relative; z-index: 1; margin-bottom: 32px; }
+
+.header h1 {
+  font-size: clamp(1.9rem, 3.4vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 0 0 10px;
+  background: linear-gradient(120deg, var(--text-primary) 40%, var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.subtitle { color: var(--text-secondary); font-size: 0.97rem; margin: 0; }
+
+.sectionTitle {
+  position: relative;
+  z-index: 1;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin: 36px 0 14px;
+}
+.sectionCount { font-weight: 500; text-transform: none; letter-spacing: 0; opacity: 0.7; }
+
+/* ─── controls (search + tier chips), same pattern as CompanyList.module.css ─── */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.search {
+  flex: 1 1 240px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 14px;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+.search:focus-visible { border-color: var(--cyan); }
+
+.tierChips { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.chip {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+.chip:hover { color: var(--text-primary); border-color: var(--border-strong); }
+.chipActive { color: var(--cyan-fg); background: var(--cyan); border-color: var(--cyan); }
+
+.emptyState { color: var(--text-secondary); padding: 32px 4px; font-size: 0.92rem; }
+
+.showMore {
+  display: block;
+  margin: 4px auto 8px;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+  position: relative;
+  z-index: 1;
+}
+.showMore:hover { color: var(--text-primary); border-color: var(--border-strong); }
+
+/* ─── shared spotlight (cursor-follow glow) ─── */
+.card, .featuredCard {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.card::before, .featuredCard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(var(--accent-rgb), 0.1), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.card:hover::before, .featuredCard:hover::before { opacity: 1; }
+.card > *, .featuredCard > * { position: relative; z-index: 1; }
+
+/* Stretched link: the <Link> in PatternCard is an empty anchor (aria-label only) that must cover the WHOLE card.
+   This selector was missing, so the anchor collapsed to zero size and the cards were not clickable at all.
+   It sits ABOVE the card text (z-index 2 > the 1 given by `.card > *`), otherwise the name/stat spans would
+   swallow the click. The note badge (z-index 3) stays above it as its own separate link.
+   `.card > .stretchedLink` is more specific than `.card > *`, so position:absolute wins. */
+.card > .stretchedLink, .featuredCard > .stretchedLink {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  text-decoration: none;
+}
+.card > .stretchedLink:focus-visible, .featuredCard > .stretchedLink:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+/* ─── featured bento row (top 3 patterns) ─── */
+.featuredRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.featuredCard {
+  background: linear-gradient(160deg, rgba(var(--cyan-rgb), 0.1), transparent 55%), var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  text-decoration: none;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+.featuredCard:hover {
+  border-color: var(--cyan);
+  box-shadow: 0 12px 40px rgba(var(--cyan-rgb), 0.22);
+  transform: translateY(-3px);
+}
+
+.rankBadge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: 0.04em;
+}
+
+.noteBadge {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  z-index: 3; /* above .stretchedLink (2) so the note badge stays its own clickable link */
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.featuredName {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.featuredStatValue {
+  font-size: 2.4rem;
+  font-weight: 800;
+  line-height: 1;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ─── dense grid (the rest) ─── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  text-decoration: none;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  position: relative;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+.card:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+.cardNoSet { opacity: 0.68; }
+
+.cardName {
+  font-weight: 650;
+  font-size: 0.95rem;
+  letter-spacing: -0.005em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cardStat {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.cardStatValue { font-size: 1.5rem; font-weight: 800; color: var(--text-primary); line-height: 1; }
+.cardStatLabel { font-size: 0.74rem; color: var(--text-muted); }
+
+.coverageTrack {
+  height: 4px;
+  background: var(--bg-elevated);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.coverageFill {
+  height: 100%;
+  border-radius: 2px;
+}
+.featuredCard .coverageFill { background: var(--accent-gradient); }
+
+.cardFooter {
+  margin-top: auto;
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+.cardFooterMuted { margin-top: auto; color: var(--text-muted); font-style: italic; font-size: 0.74rem; }
+
+@media (max-width: 780px) {
+  .featuredRow { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+  .page { padding: 32px 14px 70px; }
+}

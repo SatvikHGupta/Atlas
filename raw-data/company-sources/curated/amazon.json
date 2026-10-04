@@ -1,0 +1,161 @@
+{
+ "id": "amazon",
+ "name": "Amazon",
+ "tier": 1,
+ "roles": [
+  "SDE I (L4)",
+  "SDE II (L5)",
+  "SDE III (L6)",
+  "Principal (L7)"
+ ],
+ "roleGuidance": {
+  "SDE I (L4)": {
+   "dsaDepth": "Heavy — coding (Medium), with Leadership Principles in every round",
+   "rounds": [
+    "Recruiter call",
+    "Online assessment (coding)",
+    "Virtual loop of 3–5 interviews: coding plus Leadership Principles, including a Bar Raiser"
+   ],
+   "extraTopics": [
+    "Amazon Leadership Principles stories",
+    "Ownership and customer obsession"
+   ],
+   "focusPatterns": null,
+   "notes": "Design rounds are usually skipped at L4, though some 2026 loops add one."
+  },
+  "SDE II (L5)": {
+   "dsaDepth": "Heavy — 2 coding rounds plus design",
+   "rounds": [
+    "Recruiter call",
+    "Online assessment and/or technical phone screen",
+    "Loop of 4: two coding, one system design, one low-level design or extra coding",
+    "Bar Raiser woven into the loop; behavioral questions open most rounds"
+   ],
+   "extraTopics": [
+    "Leadership Principles (20–30 min per round)",
+    "Object-oriented / low-level design",
+    "System design fundamentals"
+   ],
+   "focusPatterns": null
+  },
+  "SDE III (L6)": {
+   "dsaDepth": "Moderate–Heavy — 2 coding rounds, design carries more weight",
+   "rounds": [
+    "Recruiter call",
+    "Technical phone screen (coding)",
+    "Loop of 5: two coding, system design, object-oriented design or project deep-dive, Bar Raiser behavioral"
+   ],
+   "extraTopics": [
+    "Distributed system design and trade-offs",
+    "Leadership Principles with 7+ years of examples",
+    "Mentoring and technical decision-making"
+   ],
+   "focusPatterns": null
+  },
+  "Principal (L7)": {
+   "dsaDepth": "Light–Moderate — depth in architecture and organisational impact",
+   "rounds": [
+    "Recruiter call",
+    "Loop centred on system design, technical strategy and leadership; Bar Raiser"
+   ],
+   "extraTopics": [
+    "Org-level technical strategy",
+    "Leadership Principles at scale"
+   ],
+   "focusPatterns": null,
+   "notes": "Details for L7+ are not covered by the cited interview guides."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "L4",
+   "title": "SDE I (Software Development Engineer)",
+   "experience": "0–2 yrs",
+   "notes": "Entry level"
+  },
+  {
+   "level": "L5",
+   "title": "SDE II",
+   "experience": "2–6 yrs"
+  },
+  {
+   "level": "L6",
+   "title": "SDE III / Senior SDE",
+   "experience": "5–10 yrs",
+   "notes": "Tech lead for a team"
+  },
+  {
+   "level": "L7",
+   "title": "Principal Engineer",
+   "experience": "12+ yrs"
+  },
+  {
+   "level": "L8",
+   "title": "Senior Principal Engineer",
+   "experience": "15+ yrs"
+  },
+  {
+   "level": "L10",
+   "title": "Distinguished Engineer",
+   "notes": "Highest engineering levels"
+  }
+ ],
+ "roleFamilies": [
+  "Software Development Engineer",
+  "Software Development Engineer in Test",
+  "Applied Scientist / ML",
+  "Front-End Engineer"
+ ],
+ "sources": [
+  {
+   "title": "Amazon SDE Levels Explained (DesignGurus)",
+   "url": "https://www.designgurus.io/blog/amazon-sde-levels",
+   "used": [
+    "ladder",
+    "titles",
+    "experience bands"
+   ]
+  },
+  {
+   "title": "Amazon L5 (SDE II) Interview Guide (Hello Interview)",
+   "url": "https://www.hellointerview.com/guides/amazon/l5",
+   "used": [
+    "L5 loop"
+   ]
+  },
+  {
+   "title": "Amazon L6 (SDE III) Interview Guide (Hello Interview)",
+   "url": "https://www.hellointerview.com/guides/amazon/l6",
+   "used": [
+    "L6 loop"
+   ]
+  },
+  {
+   "title": "Inside the Amazon 2026 Loop (DG Learning)",
+   "url": "https://dglearning.substack.com/p/inside-the-amazon-2026-loop-rounds",
+   "used": [
+    "Bar Raiser, behavioral in every round, L4 design"
+   ]
+  },
+  {
+   "title": "Amazon SDE interview guide (Interview Kickstart)",
+   "url": "https://interviewkickstart.com/interview-questions/companies/amazon/sde-interview-guide",
+   "used": [
+    "loop structure"
+   ]
+  },
+  {
+   "title": "Amazon software engineer levels and prep (Codemia)",
+   "url": "https://codemia.io/guides/amazon-software-engineer",
+   "used": [
+    "level expectations"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "high",
+ "rolesNotes": "L4–L6 loops are documented by several independent guides that agree on structure. L7+ details and role families are general knowledge.",
+ "indiaNote": null
+}

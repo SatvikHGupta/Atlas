@@ -1,0 +1,83 @@
+{
+ "id": "qualcomm",
+ "name": "Qualcomm",
+ "tier": null,
+ "roles": [
+  "Software Engineer"
+ ],
+ "roleGuidance": {
+  "Software Engineer": {
+   "dsaDepth": "Moderate — an OA mixing C/C++/OS multiple-choice with 2-3 easy–medium coding problems, then a loop weighted toward core fundamentals over pure algorithms",
+   "rounds": [
+    "Recruiter screen (~30 min)",
+    "Online assessment (HackerRank, ~90 min): MCQs on C, C++, OS and computer architecture, plus 2-3 coding problems (easy–medium, pointer and bit-manipulation questions are common)",
+    "Technical screen (~30-45 min, often with the hiring manager): resume/project questions, C/memory/OS basics",
+    "Interview loop (3-4 rounds, 45-60 min each): coding (arrays, linked lists, trees; DP/heap/hashing also reported), OS/driver-level questions, design, and a behavioral/HR round"
+   ],
+   "extraTopics": [
+    "Bit manipulation and pointer-heavy C problems, tested more here than at most software-only companies",
+    "OS internals and, for driver-adjacent teams, hardware/driver-specific questions"
+   ],
+   "focusPatterns": null,
+   "notes": "India-specific reports (Hyderabad, Bhopal) show anywhere from 2 to 5 rounds and describe the process as notably slow (one report: 6 months end-to-end)."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Associate Engineer",
+   "title": "Associate Engineer",
+   "experience": "Entry level"
+  },
+  {
+   "level": "Software Engineer",
+   "title": "Software Engineer",
+   "experience": "Early–mid career"
+  },
+  {
+   "level": "Senior Software Engineer",
+   "title": "Senior Software Engineer",
+   "experience": "Senior"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (systems / drivers)",
+  "Firmware / DSP Engineer",
+  "Hardware-Software Co-design Engineer"
+ ],
+ "sources": [
+  {
+   "title": "What Is the Qualcomm Interview Process Like? (DesignGurus)",
+   "url": "https://www.designgurus.io/answers/detail/what-is-the-qualcomm-interview-process-like-round-by-round",
+   "used": [
+    "full stage breakdown: recruiter screen, HackerRank OA (C/C++/OS MCQs + coding), technical screen, 3-4 round loop"
+   ]
+  },
+  {
+   "title": "Glassdoor: Qualcomm Software Engineer interview reports, Hyderabad",
+   "url": "https://www.glassdoor.co.in/Interview/Qualcomm-Interview-E640-RVW79173588.htm",
+   "used": [
+    "3-round loop (2 technical + HR), standard DSA from LeetCode"
+   ]
+  },
+  {
+   "title": "Glassdoor: Qualcomm Associate Engineer interview report, Hyderabad",
+   "url": "https://www.glassdoor.com.mx/Entrevista/Qualcomm-Entrevista-E640-RVW85772964.htm",
+   "used": [
+    "OA then 4 back-to-back technical rounds covering coding and driver-level core questions"
+   ]
+  },
+  {
+   "title": "Glassdoor: Qualcomm Senior Software Engineer interview report, Cork/Hyderabad",
+   "url": "https://www.glassdoor.com.ar/Entrevista/Qualcomm-Entrevista-E640-RVW81372986.htm",
+   "used": [
+    "5-step loop: 4 technical + 1 HR, DSA plus puzzles plus experience discussion"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "OA and loop structure are corroborated across several independent reports, including India-specific ones. Senior/Staff-level detail beyond the loop shape is thin.",
+ "indiaNote": "Multiple reports come from Qualcomm’s Hyderabad and Bengaluru offices; the India process is reported as notably slower than average (weeks to several months)."
+}

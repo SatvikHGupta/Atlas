@@ -1,0 +1,120 @@
+{
+ "id": "netflix",
+ "name": "Netflix",
+ "tier": null,
+ "roles": [
+  "L4",
+  "L5 Senior",
+  "L6 Staff"
+ ],
+ "roleGuidance": {
+  "L4": {
+   "dsaDepth": "Heavy — algorithmic coding plus architectural thinking even at mid-level, since Netflix hires few juniors",
+   "rounds": [
+    "Recruiter screen",
+    "Technical screen(s): live coding, data structures and algorithms",
+    "Onsite loop: further coding plus a system-design/architecture discussion (microservice ownership, scalability, low-latency, observability)",
+    "Culture/values interview (Netflix’s well-known \"Freedom & Responsibility\" culture)"
+   ],
+   "extraTopics": [
+    "Explaining architectural trade-offs even at a \"mid\" level, since Netflix skews senior",
+    "Netflix culture-deck-style values questions"
+   ],
+   "focusPatterns": null
+  },
+  "L5 Senior": {
+   "dsaDepth": "Heavy — coding plus full system design; this is the level most candidates are actually evaluated against",
+   "rounds": [
+    "Recruiter screen",
+    "Technical screen(s)",
+    "Onsite: coding, system design (micro-service ownership, continuous delivery), a data-modeling round for some tracks, and a values/culture interview"
+   ],
+   "extraTopics": [
+    "Cross-team leadership and roadmap influence at this level and above",
+    "Micro-service architecture and observability for rapid troubleshooting"
+   ],
+   "focusPatterns": null
+  },
+  "L6 Staff": {
+   "dsaDepth": "Moderate — technical scope and organisational impact weigh more than raw coding speed",
+   "rounds": [
+    "Similar loop shifted toward staff-level scope: architecture, mentorship, cross-team influence"
+   ],
+   "extraTopics": [
+    "Strategic technical roadmap influence",
+    "Mentorship at scale"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "L3",
+   "title": "Software Engineer (entry)",
+   "experience": "0–2 yrs",
+   "notes": "Netflix hires very few at this level — rarely uses junior titles"
+  },
+  {
+   "level": "L4",
+   "title": "Software Engineer",
+   "experience": "2–5 yrs"
+  },
+  {
+   "level": "L5",
+   "title": "Senior Software Engineer",
+   "experience": "5–10+ yrs",
+   "notes": "Where most Netflix engineers sit; historically the company used one flat \"Senior Software Engineer\" title for 5 to 20 years of experience"
+  },
+  {
+   "level": "L6",
+   "title": "Staff Software Engineer",
+   "experience": "8–15 yrs"
+  },
+  {
+   "level": "L7",
+   "title": "Principal Software Engineer",
+   "notes": "Rare"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (backend / infrastructure / streaming)",
+  "Data Engineer",
+  "Machine Learning Engineer (recommendations)"
+ ],
+ "sources": [
+  {
+   "title": "Netflix Engineer Levels Explained: L3 to L7 and What They Pay (DesignGurus)",
+   "url": "https://www.designgurus.io/blog/netflix-software-engineer-levels",
+   "used": [
+    "L3–L7 level table, why Netflix hires mostly senior engineers, historical flat-title practice"
+   ]
+  },
+  {
+   "title": "Netflix L5 Interview Guide (Interview Query)",
+   "url": "https://www.interviewquery.com/interview-guides/netflix",
+   "used": [
+    "L5 growth path, micro-service ownership focus, architectural-thinking interview questions"
+   ]
+  },
+  {
+   "title": "What is L5 in Netflix? (DesignGurus)",
+   "url": "https://designgurus.io/answers/detail/what-is-l5-in-netflix",
+   "used": [
+    "L5 seniority and years-of-experience band"
+   ]
+  },
+  {
+   "title": "Is L4 entry level Netflix? (DesignGurus)",
+   "url": "https://www.designgurus.io/answers/detail/is-l4-entry-level-netflix",
+   "used": [
+    "L3 vs L4 responsibilities and experience bands"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "Level bands (L3-L7) and the \"mostly senior hires\" pattern are well corroborated. Round-by-round loop detail is thinner than at Google/Amazon-scale employers since Netflix interviews far fewer people.",
+ "indiaNote": null
+}

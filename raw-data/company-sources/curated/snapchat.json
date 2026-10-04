@@ -1,0 +1,97 @@
+{
+ "id": "snapchat",
+ "name": "Snap",
+ "tier": null,
+ "roles": [
+  "L3",
+  "L4 and Senior (L5+)"
+ ],
+ "roleGuidance": {
+  "L3": {
+   "dsaDepth": "Heavy — straightforward DSA-pattern rounds, no system design yet",
+   "rounds": [
+    "Recruiter call",
+    "1 DSA coding screen (HackerRank, Snap’s tool)",
+    "Onsite: 3 rounds, all DSA-focused (~3 hours total)"
+   ],
+   "extraTopics": [
+    "Standard LeetCode-style DSA patterns — reports describe this level’s loop as \"pretty straightforward\""
+   ],
+   "focusPatterns": null
+  },
+  "L4 and Senior (L5+)": {
+   "dsaDepth": "Heavy — fully centralized loop (team matching happens after, not before), with dedicated \"Decider\" interviewers evaluating culture fit throughout every round rather than in one dedicated round",
+   "rounds": [
+    "Recruiter call (~1 hr)",
+    "Technical phone screen (~1 hr): DSA via HackerRank, occasional light behavioral questions",
+    "Onsite (~6 hrs, 6 rounds): 4 coding rounds (speed matters as much as a working solution), 1 system design round tied to an actual Snapchat feature/product, a Q&A session — some reports add a lunch/culture conversation and a round with an Engineering Director"
+   ],
+   "extraTopics": [
+    "Snap’s \"Decider\" interviewers (Snap’s equivalent of Amazon’s Bar Raiser) evaluate against 3 values: \"We are Kind\", \"We are Smart\", \"We are Creative\" — spread across every round, not one dedicated behavioral interview",
+    "System design tied to real Snapchat products (e.g. a messaging recommendation system, a Snapchat feature interface) rather than a generic prompt"
+   ],
+   "focusPatterns": null,
+   "notes": "Interviews are held in a separate building from where engineers actually work, for feature-privacy reasons — several candidates note this limits getting a feel for the culture."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "L3",
+   "title": "Software Engineer",
+   "experience": "0–2 yrs",
+   "notes": "Entry level"
+  },
+  {
+   "level": "L4",
+   "title": "Software Engineer",
+   "experience": "2–5 yrs",
+   "notes": "Loop reportedly adds system design at this level and above"
+  },
+  {
+   "level": "L5+",
+   "title": "Senior Software Engineer and above",
+   "experience": "5+ yrs"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (camera platform / AR)",
+  "Machine Learning (ranking & recommendations)",
+  "Site Reliability Engineering"
+ ],
+ "sources": [
+  {
+   "title": "Snap's Interview Process & Questions (interviewing.io)",
+   "url": "https://interviewing.io/snap-interview-questions",
+   "used": [
+    "fully centralized process, \"Decider\" interviewers, values-based evaluation spread across rounds, 6-round onsite breakdown"
+   ]
+  },
+  {
+   "title": "Glassdoor: Snap Software Engineer interview report, Seattle (L3 vs L4+ distinction)",
+   "url": "https://www.glassdoor.co.nz/Interview/Snap-Interview-E671946-RVW94990411.htm",
+   "used": [
+    "explicit L3 (3 DSA rounds) vs L4+ (adds system design) distinction"
+   ]
+  },
+  {
+   "title": "Glassdoor: Snap Software Engineer interview report, Santa Monica (HM + 2 coding + 2 system design)",
+   "url": "https://www.glassdoor.ca/Interview/Snap-Interview-E671946-RVW94791931.htm",
+   "used": [
+    "messaging-recommendation-system and hit-counter coding prompts"
+   ]
+  },
+  {
+   "title": "Glassdoor: Snap Software Engineer interview report, Melbourne (5-6 hour onsite)",
+   "url": "https://www.glassdoor.fr/Entretien/Snap-Entretien-E671946-RVW12010916.htm",
+   "used": [
+    "5-6 hour onsite with 4-5 technical rounds plus a lunch/culture conversation"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "The L3-vs-L4+ distinction (system design added at L4) and the centralized \"Decider\" evaluation model are corroborated across several independent, detailed reports.",
+ "indiaNote": null
+}

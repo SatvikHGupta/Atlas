@@ -1,0 +1,98 @@
+{
+ "id": "nvidia",
+ "name": "NVIDIA",
+ "tier": null,
+ "roles": [
+  "Software Engineer (entry–mid)",
+  "Senior Software Engineer (IC4)"
+ ],
+ "roleGuidance": {
+  "Software Engineer (entry–mid)": {
+   "dsaDepth": "Moderate — online coding test (LeetCode medium–hard) for early-career roles, then a decentralized, hiring-manager-driven loop",
+   "rounds": [
+    "Recruiter call (~30 min, often skippable if referred)",
+    "Online assessment (timed, proctored, often HackerRank; mainly for early-career roles)",
+    "Technical phone screen (~1 hr, live coding: e.g. reverse a linked list recursively/non-recursively)",
+    "Optional hiring-manager call (~30 min) — order varies a lot, sometimes held before other rounds",
+    "Onsite loop (~5 hrs): several technical interviews plus a domain deep-dive and often a system design round"
+   ],
+   "extraTopics": [
+    "Domain depth — the loop is shaped heavily by the specific team and hiring manager, more so than most large tech companies",
+    "Being ready for the loop order to vary (one candidate had the hiring-manager call first)"
+   ],
+   "focusPatterns": null
+  },
+  "Senior Software Engineer (IC4)": {
+   "dsaDepth": "Moderate — similar structure with more system design and architecture weight",
+   "rounds": [
+    "Similar stages, with a heavier system design round and deeper technical-experience discussion"
+   ],
+   "extraTopics": [
+    "System design for the specific hardware/software domain"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "IC1–IC2",
+   "title": "Software Engineer (entry–early career)",
+   "experience": "0–3 yrs"
+  },
+  {
+   "level": "IC3",
+   "title": "Software Engineer"
+  },
+  {
+   "level": "IC4",
+   "title": "Senior Software Engineer",
+   "notes": "Common mid-senior title in candidate reports"
+  },
+  {
+   "level": "IC5+",
+   "title": "Senior/Staff/Principal Software Engineer",
+   "notes": "Higher levels not detailed in the cited sources"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (CUDA / systems / driver)",
+  "Deep Learning / AI Engineer",
+  "ASIC / Hardware-adjacent Software Engineer"
+ ],
+ "sources": [
+  {
+   "title": "Nvidia Interview Guide: Process, Questions, and How to Prepare (DesignGurus)",
+   "url": "https://www.designgurus.io/blog/nvidia-interview-guide",
+   "used": [
+    "5-stage process, decentralized team-by-team hiring"
+   ]
+  },
+  {
+   "title": "Nvidia's Interview Process & Questions (interviewing.io)",
+   "url": "https://interviewing.io/nvidia-interview-questions",
+   "used": [
+    "2-4 step process for mid/senior engineers, variable order confirmed by multiple engineers"
+   ]
+  },
+  {
+   "title": "Nvidia Interview Questions & Process in 2026 (Interview Query)",
+   "url": "https://www.interviewquery.com/interview-guides/nvidia?exp_page=3",
+   "used": [
+    "hiring-manager-driven decisions, no centralized committee, role breadth"
+   ]
+  },
+  {
+   "title": "Glassdoor: NVIDIA Software Engineer interview reports (multiple)",
+   "url": "https://www.glassdoor.ca/Interview/NVIDIA-Interview-E7633-RVW5740070.htm",
+   "used": [
+    "phone + onsite loop examples, various locations including Tel Aviv"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "Nvidia is explicitly decentralized — hiring managers shape the loop per team, so round order and count vary more here than at most large tech companies. IC-level naming is inferred from candidate/job-posting title patterns, not an official published ladder.",
+ "indiaNote": null
+}

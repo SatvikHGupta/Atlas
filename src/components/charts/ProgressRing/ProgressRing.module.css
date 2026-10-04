@@ -1,0 +1,29 @@
+.wrapper { position: relative; display: inline-flex; align-items: center; justify-content: center; }
+
+.svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+
+.track {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 6;
+}
+
+.fill {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: ringFill 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+}
+
+.pct { font-size: 1rem; font-weight: 700; color: var(--text-primary); line-height: 1; }
+
+.label { font-size: 0.6rem; color: var(--text-muted); margin-top: 2px; }

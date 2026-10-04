@@ -1,0 +1,5 @@
+{
+  "_comment": "Known, accepted content gaps: the build may not fail for these. Any gap NOT listed here must fail the build. The original 10 slugs here (4 JS algo, 7 JS optimal) were filled on 2026-09-29 by scripts/known-content-gaps.json's gap-solutions patch, each independently re-verified against every stored official example before being marked pass (see raw-data/oc-split/02-code-bearing-index.json checks and content/_meta/gap-solutions-report.json). Empty on purpose: the invariant now fails loudly if any DSA problem is missing a JS solution, since the previously-known gaps are closed.",
+  "js_algo_missing": [],
+  "js_optimal_missing": []
+}

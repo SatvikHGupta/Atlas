@@ -1,0 +1,256 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  max-width: 860px;
+  margin: 0 auto;
+  width: 100%;
+  padding: var(--space-6) var(--space-8);
+}
+
+.header { display: flex; flex-direction: column; gap: var(--space-4); }
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 6px 12px;
+  margin-bottom: var(--space-2);
+  transition: border-color 0.15s, color 0.15s;
+}
+.backBtn:hover { border-color: var(--border-strong); color: var(--text-secondary); }
+
+.titleRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.title {
+  font-size: 1.7rem;
+  font-weight: 700;
+  flex: 1;
+  line-height: 1.25;
+}
+
+.bookmarkBtn {
+  color: var(--text-muted);
+  transition: color var(--transition-fast), transform var(--transition-fast);
+  flex-shrink: 0;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.bookmarkBtn svg { width: 20px; height: 20px; }
+.bookmarkBtn:hover { color: var(--accent); transform: scale(1.15); }
+.bookmarkBtn[data-active='true'] { color: var(--accent-light); }
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.topicTag {
+  font-size: 0.78rem;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+.patternTag {
+  font-size: 0.78rem;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  background: var(--accent-subtle);
+  color: var(--accent);
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+.patternTag:hover { background: var(--accent-glow); }
+
+.tagGroup {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+.tagGroupLabel {
+  min-width: 58px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+/* the two collapsed dropdowns at the end of the page sit together as one tidy stack */
+.disclosures { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.askedAtRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+.askedAtLabel {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+/* .askedAtChip removed - superseded by CompanyChipRow.jsx's own .chip class (see the askedAt block above) now that
+   this row can hold 60+ companies instead of a hand-capped few. */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  /* never wrap- Solve button must always stay visible */
+  flex-wrap: nowrap;
+}
+
+.solvedBtn, .attemptedBtn {
+  /* flex:1 so they share space equally, Solve button stays at natural width */
+  flex: 1;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  transition: all var(--transition-fast);
+  font-family: inherit;
+  min-height: 40px;
+  cursor: pointer;
+  background: transparent;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.solvedBtn:hover {
+  background: var(--solved-bg);
+  border-color: var(--solved);
+  color: var(--solved);
+}
+
+/* active = already marked- solid fill so clearly visible */
+.solvedBtn[data-active='true'] {
+  background: var(--solved);
+  border-color: var(--solved);
+  color: var(--solved-fg);
+  font-weight: 600;
+}
+
+.attemptedBtn:hover {
+  background: var(--attempted-bg);
+  border-color: var(--attempted);
+  color: var(--attempted);
+}
+
+.attemptedBtn[data-active='true'] {
+  background: var(--attempted);
+  border-color: var(--attempted);
+  color: var(--attempted-fg);
+  font-weight: 600;
+}
+
+/* always-visible Solve button- 3rd in the actions row */
+.solveBtn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--accent);
+  color: var(--accent-fg);
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  text-decoration: none;
+  min-height: 40px;
+  white-space: nowrap;
+  transition: background var(--transition-fast), opacity var(--transition-fast);
+}
+.solveBtn:hover { background: var(--accent-hover); opacity: 0.92; }
+
+.section { display: flex; flex-direction: column; gap: var(--space-4); }
+.sectionTitle { font-size: 1rem; font-weight: 600; color: var(--text-primary); }
+.notFound { color: var(--text-muted); text-align: center; padding: var(--space-16); }
+
+/* ---- mobile ---- */
+@media (max-width: 768px) {
+  .wrapper {
+    padding: var(--space-3) var(--space-3);
+    padding-bottom: calc(var(--bottom-nav-height, 60px) + env(safe-area-inset-bottom) + 16px);
+    gap: var(--space-4);
+  }
+  .title { font-size: 1.15rem; }
+  .backBtn { font-size: 0.78rem; padding: 5px 10px; }
+  .metaRow {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .metaRow::-webkit-scrollbar { display: none; }
+  .topicTag, .patternTag { flex-shrink: 0; white-space: nowrap; }
+  /* 3 buttons always in one row on mobile- nowrap keeps Solve visible */
+  .actions { gap: var(--space-2); }
+  .solvedBtn, .attemptedBtn {
+    flex: 1;
+    padding: var(--space-2) var(--space-2);
+    font-size: 0.78rem;
+    min-height: 38px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title { font-size: 1rem; }
+  .wrapper { padding: var(--space-3) var(--space-2); }
+}
+
+
+/* --- appended: functional classes from an earlier merge round the theme-fix predates --- */
+.frequencyBadge {
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.askedAtChip {
+  font-size: 0.78rem;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  text-decoration: none;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.askedAtChip:hover { color: var(--text-primary); border-color: var(--border-strong); }
+
+/* BUG-145: note shown instead of the Solve button when a problem has no external URL. */
+.noSource {
+  font-size: 0.8125rem;
+  opacity: 0.7;
+}

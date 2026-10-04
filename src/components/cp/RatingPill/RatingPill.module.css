@@ -1,0 +1,23 @@
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  padding: 2px var(--space-2);
+  border: 1px solid currentColor;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+.pill[data-unrated='true'] {
+  color: var(--text-muted);
+  border-color: var(--border);
+  background: transparent;
+  border-style: dashed;
+  font-family: inherit;
+  font-weight: 500;
+}

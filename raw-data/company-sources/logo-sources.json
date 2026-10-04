@@ -1,0 +1,335 @@
+{
+ "generatedAt": "2026-09-29T12:11:12.158Z",
+ "sizePx": 128,
+ "sources": {
+  "gilbarbara": {
+   "repo": "https://github.com/gilbarbara/logos",
+   "commit": "a5b65275e761a8347a99eded1101c6b130a06e52"
+  },
+  "dashboard-icons": {
+   "repo": "https://github.com/walkxcode/dashboard-icons",
+   "commit": "ab52e3bfaa737cba86793c76ccfcb312f8841278"
+  },
+  "simple-icons": {
+   "repo": "https://github.com/simple-icons/simple-icons",
+   "commit": "d4e6ba93e48f178898707f0145ec285f28b64b38"
+  }
+ },
+ "companies": {
+  "accenture": {
+   "repo": "simple-icons",
+   "title": "Accenture",
+   "file": "accenture.svg",
+   "tint": "#A100FF"
+  },
+  "adobe": {
+   "repo": "gilbarbara",
+   "file": "adobe-icon.svg",
+   "variant": "icon"
+  },
+  "amazon": {
+   "repo": "dashboard-icons",
+   "file": "amazon.png"
+  },
+  "google": {
+   "repo": "gilbarbara",
+   "file": "google-icon.svg",
+   "variant": "icon"
+  },
+  "infosys": {
+   "repo": "simple-icons",
+   "title": "Infosys",
+   "file": "infosys.svg",
+   "tint": "#007CC3"
+  },
+  "microsoft": {
+   "repo": "gilbarbara",
+   "file": "microsoft-icon.svg",
+   "variant": "icon"
+  },
+  "paytm": {
+   "repo": "simple-icons",
+   "title": "Paytm",
+   "file": "paytm.svg",
+   "tint": "#20336B"
+  },
+  "phonepe": {
+   "repo": "simple-icons",
+   "title": "PhonePe",
+   "file": "phonepe.svg",
+   "tint": "#5F259F"
+  },
+  "razorpay": {
+   "repo": "simple-icons",
+   "title": "Razorpay",
+   "file": "razorpay.svg",
+   "tint": "#0C2451"
+  },
+  "swiggy": {
+   "repo": "simple-icons",
+   "title": "Swiggy",
+   "file": "swiggy.svg",
+   "tint": "#FC8019"
+  },
+  "tcs": {
+   "repo": "simple-icons",
+   "title": "Tata Consultancy Services",
+   "file": "tcs.svg",
+   "tint": "#EE3984"
+  },
+  "uber": {
+   "repo": "simple-icons",
+   "title": "Uber",
+   "file": "uber.svg",
+   "tint": "#000000"
+  },
+  "wipro": {
+   "repo": "simple-icons",
+   "title": "Wipro",
+   "file": "wipro.svg",
+   "tint": "#341C53"
+  },
+  "zoho": {
+   "repo": "gilbarbara",
+   "file": "zoho.svg",
+   "variant": "full"
+  },
+  "zomato": {
+   "repo": "simple-icons",
+   "title": "Zomato",
+   "file": "zomato.svg",
+   "tint": "#E23744"
+  },
+  "meta": {
+   "repo": "gilbarbara",
+   "file": "meta-icon.svg",
+   "variant": "icon"
+  },
+  "oracle": {
+   "repo": "gilbarbara",
+   "file": "oracle.svg",
+   "variant": "full"
+  },
+  "apple": {
+   "repo": "gilbarbara",
+   "file": "apple.svg",
+   "variant": "full"
+  },
+  "goldman-sachs": {
+   "repo": "simple-icons",
+   "title": "Goldman Sachs",
+   "file": "goldmansachs.svg",
+   "tint": "#7399C6"
+  },
+  "salesforce": {
+   "repo": "gilbarbara",
+   "file": "salesforce.svg",
+   "variant": "full"
+  },
+  "ibm": {
+   "repo": "gilbarbara",
+   "file": "ibm.svg",
+   "variant": "full"
+  },
+  "linkedin": {
+   "repo": "gilbarbara",
+   "file": "linkedin-icon.svg",
+   "variant": "icon"
+  },
+  "visa": {
+   "repo": "gilbarbara",
+   "file": "visa.svg",
+   "variant": "full"
+  },
+  "nvidia": {
+   "repo": "simple-icons",
+   "title": "NVIDIA",
+   "file": "nvidia.svg",
+   "tint": "#76B900"
+  },
+  "paypal": {
+   "repo": "gilbarbara",
+   "file": "paypal.svg",
+   "variant": "full"
+  },
+  "cisco": {
+   "repo": "dashboard-icons",
+   "file": "cisco.png"
+  },
+  "snapchat": {
+   "repo": "dashboard-icons",
+   "file": "snapchat.png"
+  },
+  "doordash": {
+   "repo": "simple-icons",
+   "title": "DoorDash",
+   "file": "doordash.svg",
+   "tint": "#FF3008"
+  },
+  "samsung": {
+   "repo": "gilbarbara",
+   "file": "samsung.svg",
+   "variant": "full"
+  },
+  "nutanix": {
+   "repo": "dashboard-icons",
+   "file": "nutanix.png"
+  },
+  "ebay": {
+   "repo": "dashboard-icons",
+   "file": "ebay.png"
+  },
+  "expedia": {
+   "repo": "simple-icons",
+   "title": "Expedia",
+   "file": "expedia.svg",
+   "tint": "#191E3B"
+  },
+  "qualcomm": {
+   "repo": "gilbarbara",
+   "file": "qualcomm.svg",
+   "variant": "full"
+  },
+  "intuit": {
+   "repo": "simple-icons",
+   "title": "Intuit",
+   "file": "intuit.svg",
+   "tint": "#236CFF"
+  },
+  "atlassian": {
+   "repo": "gilbarbara",
+   "file": "atlassian.svg",
+   "variant": "full"
+  },
+  "airbnb": {
+   "repo": "gilbarbara",
+   "file": "airbnb-icon.svg",
+   "variant": "icon"
+  },
+  "wix": {
+   "repo": "gilbarbara",
+   "file": "wix.svg",
+   "variant": "full"
+  },
+  "roblox": {
+   "repo": "simple-icons",
+   "title": "Roblox",
+   "file": "roblox.svg",
+   "tint": "#000000"
+  },
+  "epam-systems": {
+   "repo": "manual",
+   "file": "epam-systems.png"
+  },
+  "sap": {
+   "repo": "gilbarbara",
+   "file": "sap.svg",
+   "variant": "full"
+  },
+  "twitter": {
+   "repo": "simple-icons",
+   "title": "X",
+   "file": "x.svg",
+   "tint": "#000000"
+  },
+  "tesla": {
+   "repo": "simple-icons",
+   "title": "Tesla",
+   "file": "tesla.svg",
+   "tint": "#CC0000"
+  },
+  "docusign": {
+   "repo": "dashboard-icons",
+   "file": "docusign.png"
+  },
+  "pinterest": {
+   "repo": "gilbarbara",
+   "file": "pinterest.svg",
+   "variant": "full"
+  },
+  "yahoo": {
+   "repo": "gilbarbara",
+   "file": "yahoo.svg",
+   "variant": "full"
+  },
+  "grammarly": {
+   "repo": "gilbarbara",
+   "file": "grammarly-icon.svg",
+   "variant": "icon"
+  },
+  "yelp": {
+   "repo": "simple-icons",
+   "title": "Yelp",
+   "file": "yelp.svg",
+   "tint": "#FF1A1A"
+  },
+  "netflix": {
+   "repo": "gilbarbara",
+   "file": "netflix-icon.svg",
+   "variant": "icon"
+  },
+  "palantir": {
+   "repo": "simple-icons",
+   "title": "Palantir",
+   "file": "palantir.svg",
+   "tint": "#101113"
+  },
+  "american-express": {
+   "repo": "simple-icons",
+   "title": "American Express",
+   "file": "americanexpress.svg",
+   "tint": "#2E77BC"
+  },
+  "siemens": {
+   "repo": "simple-icons",
+   "title": "Siemens",
+   "file": "siemens.svg",
+   "tint": "#009999"
+  },
+  "wells-fargo": {
+   "repo": "simple-icons",
+   "title": "Wells Fargo",
+   "file": "wellsfargo.svg",
+   "tint": "#D71E28"
+  },
+  "intel": {
+   "repo": "gilbarbara",
+   "file": "intel.svg",
+   "variant": "full"
+  },
+  "lyft": {
+   "repo": "simple-icons",
+   "title": "Lyft",
+   "file": "lyft.svg",
+   "tint": "#FF00BF"
+  }
+ },
+ "withoutLocalLogo": [
+  "capgemini",
+  "cognizant",
+  "cred",
+  "delhivery",
+  "dream11",
+  "flipkart",
+  "freshworks",
+  "groww",
+  "meesho",
+  "myntra",
+  "nykaa",
+  "urban-company",
+  "walmart-labs",
+  "bloomberg",
+  "de-shaw",
+  "citadel",
+  "jpmorgan",
+  "morgan-stanley",
+  "capital-one",
+  "anduril",
+  "agoda",
+  "coupang",
+  "deloitte",
+  "rubrik",
+  "zepto",
+  "makemytrip"
+ ]
+}

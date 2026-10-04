@@ -1,0 +1,102 @@
+{
+ "id": "dream11",
+ "name": "Dream11",
+ "tier": 2,
+ "roles": [
+  "SDE-1",
+  "SDE-2"
+ ],
+ "roleGuidance": {
+  "SDE-1": {
+   "dsaDepth": "Light–Moderate — simple two-pointer, bitwise or binary-search problems",
+   "rounds": [
+    "Online assessment",
+    "Coding interview (SDE-1 level DSA)",
+    "Manager round: resume and behavioral"
+   ],
+   "extraTopics": [
+    "Resume depth",
+    "Bitwise and binary-search basics"
+   ],
+   "focusPatterns": null
+  },
+  "SDE-2": {
+   "dsaDepth": "Moderate — LeetCode-medium DSA (min path sum, first missing positive) then design and database depth",
+   "rounds": [
+    "Round 1 (virtual, 1 hr): 2 DSA problems, dry-run with complexity, panel of an SDE-3",
+    "Round 2 (virtual, 1 hr): database and project round with a senior engineering manager",
+    "On-site rounds in Mumbai (travel arranged): LLD / machine coding with concurrency, system design, and a hiring-manager round"
+   ],
+   "extraTopics": [
+    "Database internals: isolation levels, locking, indexing, replication, scaling reads and writes",
+    "Concurrency (read-write locks, race conditions) in the LLD round",
+    "Reactive stack / Java backend depth for backend roles"
+   ],
+   "focusPatterns": null,
+   "notes": "Typical loop is 5 rounds: 2 virtual + 3 on-site."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "SDE-1",
+   "title": "Software Development Engineer (SDE-1)",
+   "experience": "Entry level (campus and early career)"
+  },
+  {
+   "level": "SDE-2",
+   "title": "Software Development Engineer 2",
+   "experience": "Mid level, about 5 yrs in reports"
+  },
+  {
+   "level": "SDE-3",
+   "title": "SDE-3",
+   "notes": "SDE-3 engineers appear as interview-panel members"
+  },
+  {
+   "level": "Staff and above",
+   "title": "Staff, Principal",
+   "notes": "Not covered by the cited sources"
+  }
+ ],
+ "roleFamilies": [
+  "Backend (Java)",
+  "Frontend / mobile",
+  "Data / ML"
+ ],
+ "sources": [
+  {
+   "title": "Dream11 SDE-2 Interview Experience | Offer (LeetCode discuss, 2024)",
+   "url": "https://leetcode.com/discuss/interview-experience/6023577",
+   "used": [
+    "5-round SDE-2 loop"
+   ]
+  },
+  {
+   "title": "SDE 2 | Dream11 | Mumbai | Not Selected (LeetCode discuss)",
+   "url": "https://leetcode.com/discuss/post/5088540/sde-2-dream11-mumbai-not-selected",
+   "used": [
+    "rounds 1 and 2 detail"
+   ]
+  },
+  {
+   "title": "Dream11 Software Engineer interview guide (Interview Query)",
+   "url": "https://www.interviewquery.com/guides/dream11-software-engineer",
+   "used": [
+    "machine coding, DB, system design"
+   ]
+  },
+  {
+   "title": "Glassdoor: Dream11 SDE interview report (Mumbai, 2024)",
+   "url": "https://www.glassdoor.fr/Entretien/Dream11-Entretien-E493359-RVW93053125.htm",
+   "used": [
+    "SDE-1 style OA + coding + manager"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "SDE-2 loop is documented by several first-person accounts. SDE-1 details are thinner.",
+ "indiaNote": "Mumbai office; SDE-2 onsite rounds are held there."
+}

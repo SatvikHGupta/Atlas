@@ -1,0 +1,85 @@
+{
+ "id": "roblox",
+ "name": "Roblox",
+ "tier": null,
+ "roles": [
+  "Software Engineer"
+ ],
+ "roleGuidance": {
+  "Software Engineer": {
+   "dsaDepth": "Heavy — a genuinely unusual 2-hour OA mixing LeetCode coding with proprietary game-based puzzle tasks and a 25-minute behavioral section, then a coding-focused phone screen",
+   "rounds": [
+    "Recruiter screen (~30 min): background, motivation, in-office policy and comp alignment",
+    "Online assessment (~2 hrs, CodeSignal/HackerRank plus Roblox’s own platform): standard coding problems, proprietary game-based challenges (e.g. build-a-car, factory-optimization puzzles — described as fluid-intelligence tests, not pattern-matchable), and a dedicated 25-min situational-judgment section",
+    "Technical phone screen (60-90 min): coding for junior/mid, project deep-dive and architecture for senior",
+    "Onsite loop (4+ hrs): further coding (medium-hard, LeetCode-pattern, with follow-ups anchored to Roblox features, e.g. designing a Robux escrow system instead of a generic payment system), system design (massive concurrent-user scale, Lua performance, engine efficiency)",
+    "Bar Raiser round (~60 min): system design plus behavioral, run by a calibrated outside interviewer"
+   ],
+   "extraTopics": [
+    "The game-based OA sections — described by multiple candidates as the single biggest surprise/filter in the whole process",
+    "Comfort with ambiguity: interviewers reportedly give minimal guidance and expect candidates to drive problems independently",
+    "Anchoring generic algorithms to Roblox-specific product scenarios (payments, UGC, concurrency at scale)"
+   ],
+   "focusPatterns": null,
+   "notes": "Process length is reported as 4-6 weeks typically, with some candidates reporting up to 3 months."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Entry",
+   "title": "Software Engineer",
+   "experience": "0–3 yrs"
+  },
+  {
+   "level": "Mid",
+   "title": "Software Engineer II",
+   "experience": "3–6 yrs"
+  },
+  {
+   "level": "Senior",
+   "title": "Senior Software Engineer",
+   "experience": "6+ yrs"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (backend / platform infrastructure)",
+  "Game Engine / Graphics Engineer",
+  "Machine Learning (safety & moderation)"
+ ],
+ "sources": [
+  {
+   "title": "What Is the Roblox Interview Process Like? (Round by Round) (DesignGurus)",
+   "url": "https://www.designgurus.io/answers/detail/what-is-the-roblox-interview-process-like-round-by-round",
+   "used": [
+    "full 5-stage breakdown with per-stage timing and evaluation criteria"
+   ]
+  },
+  {
+   "title": "Roblox Software Engineer interview guide (Interview Query)",
+   "url": "https://www.interviewquery.com/guides/roblox-software-engineer",
+   "used": [
+    "game-based OA detail, escrow-system design example, comp data ($157K base / $420K total avg)"
+   ]
+  },
+  {
+   "title": "Roblox Software Engineer Interview Experiences 2026 (Dataford)",
+   "url": "https://dataford.io/interview-guides/roblox/software-engineer/experiences",
+   "used": [
+    "recent (2026) candidate reports, OA and technical-round patterns"
+   ]
+  },
+  {
+   "title": "Glassdoor: Roblox Software Engineer interview report, San Mateo (4-round OA + interviews)",
+   "url": "https://www.glassdoor.com.mx/Entrevista/Roblox-Entrevista-E242265-RVW91775297.htm",
+   "used": [
+    "4-module OA (3 inside Roblox platform, 1 CodeSignal) then 4 interview rounds"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "The distinctive game-based OA and Bar-Raiser round are corroborated across multiple independent sources. This is one of the more thoroughly and consistently documented entries in this batch.",
+ "indiaNote": null
+}

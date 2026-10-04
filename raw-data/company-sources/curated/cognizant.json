@@ -1,0 +1,76 @@
+{
+ "id": "cognizant",
+ "name": "Cognizant",
+ "tier": 3,
+ "roles": [
+  "GenC / GenC Elevate"
+ ],
+ "roleGuidance": {
+  "GenC / GenC Elevate": {
+   "dsaDepth": "Light — AMCAT-based aptitude test plus an \"Automata Fix\" coding round (fixing/completing code rather than writing from scratch)",
+   "rounds": [
+    "Online aptitude test (AMCAT-based, about 35 min, 25 questions: logical reasoning, seating arrangement, syllogism, data sufficiency)",
+    "Automata Fix coding round (fix/complete given code rather than write-from-scratch algorithms)",
+    "Technical interview",
+    "HR interview",
+    "Some drives add a communication assessment before the technical interview"
+   ],
+   "extraTopics": [
+    "Logical reasoning speed and accuracy",
+    "Reading and correcting existing code rather than pure algorithm design"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "GenC",
+   "title": "Programmer Analyst Trainee (GenC track)",
+   "experience": "Fresher",
+   "notes": "Standard fresher track"
+  },
+  {
+   "level": "GenC Elevate",
+   "title": "Programmer Analyst Trainee (GenC Elevate track)",
+   "experience": "Fresher, higher band",
+   "notes": "Decided by aptitude + coding performance, not chosen upfront"
+  },
+  {
+   "level": "Experienced",
+   "title": "Programmer Analyst, Associate and above",
+   "notes": "Lateral hiring is role-specific"
+  }
+ ],
+ "roleFamilies": [
+  "Programmer Analyst Trainee (GenC / GenC Elevate)"
+ ],
+ "sources": [
+  {
+   "title": "Cognizant Recruitment Process 2026: Step-by-Step Guide (FACEPrep)",
+   "url": "https://www.faceprep.in/article/cognizant-recruitment-process-2017-2018-all-you-need-to-know/",
+   "used": [
+    "4-stage process, GenC vs GenC Elevate track split"
+   ]
+  },
+  {
+   "title": "Cognizant Aptitude Questions 2026 (FACEPrep)",
+   "url": "https://faceprep.in/blog/company-corner/10/",
+   "used": [
+    "AMCAT-based test format, 25 questions in 35 min"
+   ]
+  },
+  {
+   "title": "Cognizant Logical Reasoning Questions with Answers 2026 (FACEPrep)",
+   "url": "https://faceprep.in/blog/company-corner/",
+   "used": [
+    "logical reasoning question types used in the GenC test"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "low",
+ "rolesNotes": "The Automata Fix round (editing code rather than writing algorithms from scratch) is a distinctive format worth noting; depth beyond the 4-stage outline is thin in the cited sources.",
+ "indiaNote": "India-wide campus recruitment; GenC is Cognizant’s standard India fresher pipeline."
+}

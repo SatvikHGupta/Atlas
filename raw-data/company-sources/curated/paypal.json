@@ -1,0 +1,103 @@
+{
+ "id": "paypal",
+ "name": "PayPal",
+ "tier": null,
+ "roles": [
+  "Software Engineer",
+  "Senior Software Engineer"
+ ],
+ "roleGuidance": {
+  "Software Engineer": {
+   "dsaDepth": "Moderate — communication and reasoning weighed more than raw LeetCode difficulty, since the domain is moving money",
+   "rounds": [
+    "Online assessment (HackerRank: 2–3 LeetCode-style problems)",
+    "Recruiter screen",
+    "Technical screen (sometimes via Karat, a third-party interviewing service, sometimes directly with a PayPal engineer)",
+    "Onsite loop: pair programming, system design, project-experience deep-dive, behavioral, hiring-manager conversation"
+   ],
+   "extraTopics": [
+    "Explaining assumptions and trade-offs, not just reaching a correct answer — interviewers probe reasoning about systems that move money",
+    "SQL alongside DSA in some pipelines"
+   ],
+   "focusPatterns": null
+  },
+  "Senior Software Engineer": {
+   "dsaDepth": "Moderate–Heavy — DSA, system design, and a role-specialization round",
+   "rounds": [
+    "DSA round (easy–medium)",
+    "System design (e.g. a chat-based application)",
+    "Role-specialization round (stack-specific for the team)",
+    "Hiring-manager round"
+   ],
+   "extraTopics": [
+    "Security, scalability and fraud/risk-aware design thinking, given the payments domain"
+   ],
+   "focusPatterns": null,
+   "notes": "Loop composition varies by team; senior full-stack loops add extra role-specialization rounds."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Entry",
+   "title": "Software Engineer",
+   "experience": "0–2 yrs"
+  },
+  {
+   "level": "Mid",
+   "title": "Software Engineer 2",
+   "experience": "2–5 yrs"
+  },
+  {
+   "level": "Senior",
+   "title": "Senior Software Engineer",
+   "experience": "5–8 yrs"
+  },
+  {
+   "level": "Staff / Principal",
+   "title": "Staff Software Engineer, Principal Engineer",
+   "experience": "8+ yrs",
+   "notes": "Not covered in depth by the cited sources"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (payments platform)",
+  "Risk / Fraud Engineering",
+  "Site Reliability Engineering"
+ ],
+ "sources": [
+  {
+   "title": "What Is the PayPal Interview Process Like? (DesignGurus)",
+   "url": "https://www.designgurus.io/answers/detail/what-is-the-paypal-interview-process-like-round-by-round",
+   "used": [
+    "4-6 stage process, communication/reasoning emphasis over raw difficulty"
+   ]
+  },
+  {
+   "title": "PayPal Software Engineer Interview Guide (Interview Query)",
+   "url": "https://www.interviewquery.com/interview-guides/paypal-software-engineer",
+   "used": [
+    "payments/fintech domain focus: scalability, security, distributed systems"
+   ]
+  },
+  {
+   "title": "PayPal Software Engineer Interview Guide (Prepfully)",
+   "url": "https://prepfully.com/interview-guides/paypal-software-engineer",
+   "used": [
+    "3-4 round structure: recruiter screen, technical phone screen, take-home, onsite (5 interviews)"
+   ]
+  },
+  {
+   "title": "Glassdoor: PayPal Software Engineer interview reports",
+   "url": "https://static.glassdoor.com.hk/Interview/PayPal-Software-Engineer-Interview-Questions-EI_IE9848.0,6_KO7,24.htm",
+   "used": [
+    "DSA + system design + role-specialization + hiring-manager loop, Chennai and Singapore reports"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "Loop shape and the domain-reasoning emphasis are corroborated across several independent sources. Staff/Principal-level detail is not covered.",
+ "indiaNote": "Reports include a Chennai-based loop with the same DSA/system-design/role-specialization/hiring-manager structure."
+}

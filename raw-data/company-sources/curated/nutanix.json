@@ -1,0 +1,51 @@
+{
+ "id": "nutanix",
+ "name": "Nutanix",
+ "tier": null,
+ "roles": [
+  "Site Reliability Engineer"
+ ],
+ "roleGuidance": {
+  "Site Reliability Engineer": {
+   "dsaDepth": "Moderate — a core-CS-fundamentals OA (OS, networking, aptitude) then resume-driven technical rounds and an HR round",
+   "rounds": [
+    "Round 1 — Online assessment: core CS concepts (OS, computer networks) plus general aptitude",
+    "Technical Round 1: resume-based and scenario-based questions",
+    "Technical Round 2: follow-ups probing weaknesses identified in Round 1",
+    "HR round: company fit and culture"
+   ],
+   "extraTopics": [
+    "Deep theory knowledge of virtualization, Linux commands, OS concepts and networking — SREs are client-facing and troubleshoot these areas directly",
+    "CPU scheduling algorithms and similar OS fundamentals came up explicitly in one report"
+   ],
+   "focusPatterns": null,
+   "notes": "Reported end-to-end process length is about 1 month."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "SRE / SE",
+   "title": "Site Reliability Engineer, Software Engineer",
+   "experience": "Entry–mid level"
+  }
+ ],
+ "roleFamilies": [
+  "Site Reliability Engineer",
+  "Software Engineer (hyperconverged infrastructure / virtualization)"
+ ],
+ "sources": [
+  {
+   "title": "Glassdoor: Nutanix Site Reliability Engineer interview report",
+   "url": "https://www.glassdoor.com.mx/Entrevista/Nutanix-Entrevista-E429159-RVW22301179.htm",
+   "used": [
+    "4-round loop: OA (OS/networking/aptitude), 2 technical rounds, HR round; ~1 month total"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "low",
+ "rolesNotes": "Only one detailed report was reviewed, and it covers the SRE track specifically rather than general Software Engineer hiring — treat as indicative of one team’s process, not the whole company.",
+ "indiaNote": null
+}

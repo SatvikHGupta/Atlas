@@ -1,0 +1,82 @@
+{
+ "id": "intel",
+ "name": "Intel",
+ "tier": null,
+ "roles": [
+  "Software Engineer (new grad/campus)"
+ ],
+ "roleGuidance": {
+  "Software Engineer (new grad/campus)": {
+   "dsaDepth": "Moderate — an OA for freshers, then 1-3 technical rounds mixing coding with genuinely deep OS/CS-fundamentals and C/C++ pointer/memory questions, plus real project-defense pressure",
+   "rounds": [
+    "Resume screening",
+    "Online assessment (new grads/interns): 60-90 min, ~2 problems, easy-medium (arrays, strings, basic logic) — experienced hires often skip straight to the recruiter",
+    "Recruiter/HR phone screen (~30-45 min): background, motivation, salary expectations",
+    "Technical screen/interview(s) (45-110 min each, 1-3 rounds): live coding (arrays, linked lists, recursion, bit manipulation, trees) in C/C++/Python/Java, PLUS a strong emphasis on OS, computer organization, caching, synchronization, pointers/memory management, DBMS, Linux, networking and OOP — genuinely deep for a \"software\" role given Intel’s hardware-adjacent culture",
+    "Project defense: interviewers push hard for specifics (dataset sources, preprocessing choices, architecture decisions, exact project timeline), not just bullet-point summaries",
+    "Closing manager round (~30 min): fit and career direction",
+    "Behavioral/HR round"
+   ],
+   "extraTopics": [
+    "Real depth on OS/computer-organization/memory topics, not just DSA — this shows up repeatedly and is more emphasized than at typical product companies",
+    "Defending project specifics in detail: dataset choices, why a particular database or architecture was picked, exact timelines",
+    "C/C++ pointer and bit-manipulation fluency, reflecting Intel’s hardware-adjacent software culture"
+   ],
+   "focusPatterns": null,
+   "notes": "India campus drives (Bengaluru, Hyderabad, Chennai, Pune) typically run all rounds in a single day; off-campus candidates get an extra 40-60 min phone/virtual technical screen first. Software (CSE/IT) and hardware (ECE/EEE) tracks are interviewed differently."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Entry",
+   "title": "Software Engineer",
+   "experience": "0–3 yrs (campus and new grad)"
+  },
+  {
+   "level": "Mid–Senior",
+   "title": "Software Engineer, Senior Software Engineer",
+   "experience": "3+ yrs"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (systems / drivers)",
+  "Hardware Engineer (separate ECE/EEE track)",
+  "Firmware / Embedded Engineer"
+ ],
+ "sources": [
+  {
+   "title": "Intel Interview Process: Step-by-Step Guide for Freshers (FACEPrep)",
+   "url": "https://faceprep.in/article/intel-interview-process-a-step-by-step-guide-for-aspiring-candidates/",
+   "used": [
+    "full India fresher sequence, single-day campus format, software vs hardware track split"
+   ]
+  },
+  {
+   "title": "What Is the Intel Interview Process Like? (Round by Round) (DesignGurus)",
+   "url": "https://www.designgurus.io/answers/detail/what-is-the-intel-interview-process-like-round-by-round",
+   "used": [
+    "5-stage breakdown with per-stage timing, business-group variance, ~23 day average timeline"
+   ]
+  },
+  {
+   "title": "Intel Software Engineer interview guide (Interview Query)",
+   "url": "https://www.interviewquery.com/interview-guides/intel-software-engineer",
+   "used": [
+    "project-defense emphasis, OS/low-level-fundamentals depth, comp data ($125K base/$230K total avg)"
+   ]
+  },
+  {
+   "title": "Glassdoor: Intel Corporation Software Engineer(Internship) interview reports, Bengaluru",
+   "url": "https://www.glassdoor.com.mx/Entrevista/Intel-Corporation-Entrevista-E1519-RVW103093856.htm",
+   "used": [
+    "3 technical rounds with mixed-difficulty LeetCode questions, panel-style team-specific interviews"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "The OS/low-level-fundamentals depth and project-defense intensity are corroborated across many independent sources and are more pronounced here than at most pure-software companies in this batch, consistent with Intel’s hardware-adjacent engineering culture.",
+ "indiaNote": "Multiple detailed reports come from Bengaluru campus and off-campus drives."
+}

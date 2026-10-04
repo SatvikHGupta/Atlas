@@ -1,0 +1,134 @@
+{
+ "id": "walmart-labs",
+ "name": "Walmart Global Tech",
+ "tier": 1,
+ "roles": [
+  "SDE-1",
+  "SDE-2",
+  "SDE-3 (SE III)"
+ ],
+ "roleGuidance": {
+  "SDE-1": {
+   "dsaDepth": "Moderate — HackerRank assessment plus DSA and design rounds",
+   "rounds": [
+    "Recruiter screen with light technical questions",
+    "60-minute HackerRank assessment (1–2 medium–hard problems; Python and SQL appear)",
+    "Technical round: DSA coding",
+    "Design round (LLD)",
+    "Hiring manager round (behavioral, STAR)"
+   ],
+   "extraTopics": [
+    "SQL: joins, aggregations, window functions",
+    "Core CS fundamentals",
+    "Resume projects"
+   ],
+   "focusPatterns": null
+  },
+  "SDE-2": {
+   "dsaDepth": "Moderate–Heavy — DSA plus design",
+   "rounds": [
+    "Recruiter screen",
+    "HackerRank assessment (campus drives: 2 medium problems)",
+    "Round 1: DSA (medium)",
+    "Round 2: HLD / technical deep-dive",
+    "Round 3: hiring manager round (projects and behavioral)"
+   ],
+   "extraTopics": [
+    "Low-level and high-level design",
+    "Resume project deep dive"
+   ],
+   "focusPatterns": null
+  },
+  "SDE-3 (SE III)": {
+   "dsaDepth": "Moderate–Heavy — 2 medium DSA problems, then system design",
+   "rounds": [
+    "Recruiter screen",
+    "Rounds: 2 technical (DSA), 1 system design, 1 hiring manager (one 2021 report adds an HR round)",
+    "Some teams run a stack-specific round (e.g. JS/CSS/React or Java + DevOps)"
+   ],
+   "extraTopics": [
+    "System design (e.g. inventory management)",
+    "Object/schema design",
+    "GenAI/LLM usage appears in 2026 reports"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "SDE-1 / SE I",
+   "title": "Software Engineer I",
+   "experience": "Entry level",
+   "notes": "Titles vary in reports (SDE, Software Engineer, SE I)"
+  },
+  {
+   "level": "SDE-2 / SE II",
+   "title": "Software Engineer II",
+   "experience": "Mid level"
+  },
+  {
+   "level": "SDE-3 / SE III",
+   "title": "Software Engineer III",
+   "experience": "Senior",
+   "notes": "Reported both as \"SDE-3\" and \"Software Engineer III\""
+  },
+  {
+   "level": "Senior / Staff",
+   "title": "Senior Software Engineer, Staff Software Engineer",
+   "notes": "Titles listed by candidates"
+  },
+  {
+   "level": "Principal",
+   "title": "Principal Software Engineer"
+  }
+ ],
+ "roleFamilies": [
+  "Backend (Java)",
+  "Full-stack / front-end",
+  "Data Engineering",
+  "DevOps / platform"
+ ],
+ "sources": [
+  {
+   "title": "Walmart Global Tech interview process, round by round (DesignGurus)",
+   "url": "https://www.designgurus.io/answers/detail/what-is-the-walmart-global-tech-interview-process-like-round-by-round",
+   "used": [
+    "assessment, technical and design rounds, 2026 notes"
+   ]
+  },
+  {
+   "title": "Glassdoor: Walmart Global Tech SDE interview reports",
+   "url": "https://static.glassdoor.co.in/Interview/Walmart-Global-Tech-Interview-E3293060-RVW96612332.htm",
+   "used": [
+    "SDE-3 loop, campus drive"
+   ]
+  },
+  {
+   "title": "Glassdoor: Walmart Global Tech Software Engineer III reports",
+   "url": "https://www.glassdoor.es/Entrevista/Walmart-Global-Tech-Entrevista-E3293060-RVW64421151.htm",
+   "used": [
+    "SE III round sequence"
+   ]
+  },
+  {
+   "title": "LeetCode discuss: SDE3 at Walmart",
+   "url": "https://leetcode.com/discuss/interview-experience/5331800/",
+   "used": [
+    "SDE3 rounds"
+   ]
+  },
+  {
+   "title": "NodeFlair: Walmart Global Tech interviews by role",
+   "url": "https://nodeflair.com/companies/walmart-global-tech/interviews/sde-2",
+   "used": [
+    "title variants (SE II, SE III, Staff, Principal)"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "low",
+ "rolesNotes": "Titles and level codes vary widely across candidate reports; experience bands are not given by the cited sources.",
+ "indiaNote": "Most reports come from Bengaluru campus and off-campus drives."
+}

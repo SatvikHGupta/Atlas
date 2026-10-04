@@ -1,0 +1,425 @@
+/* Company detail page module (shared by CompanyDetailClient/ProblemRow/RoleGuide) - rows get a left accent bar by confidence tier. */
+
+.page {
+  color: var(--text-primary);
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 48px 20px 100px;
+  position: relative;
+}
+
+.headerGlow {
+  position: absolute;
+  top: -40px;
+  left: -10%;
+  width: 65%;
+  height: 300px;
+  background: radial-gradient(ellipse at center top, var(--company-hue-glow, rgba(var(--accent-rgb), 0.16)) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.back {
+  position: relative;
+  z-index: 1;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 24px;
+  transition: color 0.15s ease;
+}
+.back:hover { color: var(--text-primary); }
+
+.header { position: relative; z-index: 1; margin-bottom: 40px; }
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.titleRow h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3.4vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(120deg, var(--text-primary) 45%, var(--company-hue-light, var(--accent-light)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 0.97rem;
+  max-width: 62ch;
+  line-height: 1.6;
+  margin: 10px 0 0;
+}
+
+.sectionTitle {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin: 0 0 14px;
+}
+
+.tierBadge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+.tierBadge1 { background: var(--accent-subtle); color: var(--accent-light); }
+
+.state { color: var(--text-secondary); padding: 32px 4px; font-size: 0.92rem; }
+
+/* ─── pattern profile ("asks most from") ─── */
+.profile { position: relative; z-index: 1; margin-bottom: 36px; }
+
+.profileBars {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.profileBar {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  color: var(--text-primary);
+  text-decoration: none;
+  display: block;
+  transition: border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.profileBar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* THEME-SAFETY FIX: same white-on-white-card issue as CompanyList.module.css's .card::before - see that file's
+     comment. --accent-subtle tracks the active theme's accent instead of assuming a dark card. */
+  background: radial-gradient(200px circle at var(--mx, 50%) var(--my, 50%), var(--accent-subtle), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.profileBar:hover::before { opacity: 1; }
+.profileBar > * { position: relative; z-index: 1; }
+.profileBar:hover { border-color: var(--border-strong); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+
+.profileBarTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  gap: 8px;
+}
+.profileShare { font-size: 1.3rem; font-weight: 800; line-height: 1; flex-shrink: 0; }
+.profileTrack { height: 4px; background: var(--bg-elevated); border-radius: 2px; overflow: hidden; margin-top: 10px; }
+.profileFill { height: 100%; border-radius: 2px; }
+
+/* ─── role tabs ─── */
+.tabsSection { margin-bottom: 36px; }
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+}
+
+.tab {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  padding: 10px 16px;
+  font-size: 0.88rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  border-radius: 8px 8px 0 0;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+.tab:hover { color: var(--text-primary); background: var(--bg-elevated); }
+.tabActive { color: var(--accent-light); border-bottom-color: var(--accent); background: var(--accent-subtle); }
+
+/* ─── role guide ─── */
+.roleGuide {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+  margin-bottom: 36px;
+}
+.roleGuide::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.14), transparent 70%);
+  pointer-events: none;
+}
+.roleGuide > * { position: relative; }
+
+.roleGuideHead {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.roleGuideHead h3 { margin: 0; font-size: 1.05rem; font-weight: 600; }
+
+.roleDepth {
+  font-size: 0.76rem;
+  color: var(--accent-light);
+  background: var(--accent-subtle);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.roleGuideBody {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+.roleLabel { display: block; font-size: 0.76rem; color: var(--text-muted); margin-bottom: 8px; }
+
+.roleRounds, .roleExtras {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.rolePatterns { display: flex; flex-wrap: wrap; gap: 7px; }
+
+.rolePatternChip {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 999px;
+  padding: 5px 11px;
+  font-size: 0.76rem;
+  text-decoration: none;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.rolePatternChip:hover { color: var(--text-primary); border-color: var(--border-strong); }
+
+/* ─── filters + sort ─── */
+.filtersSection { margin-bottom: 36px; }
+
+.detailControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.patternFilter { flex: 1; min-width: 240px; }
+.patternChips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.chip {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 999px;
+  padding: 5px 11px;
+  font-size: 0.76rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+.chip:hover { color: var(--text-primary); border-color: var(--border-strong); }
+/* THEME-SAFETY FIX: see the identical note in CompanyList.module.css - var(--bg-primary) reads correctly against
+   var(--accent) under every theme; a hardcoded #fff doesn't. */
+.chipActive { color: var(--bg-primary); background: var(--accent); border-color: var(--accent); }
+
+.patternMore {
+  background: none;
+  border: 1px dashed var(--border-strong);
+  color: var(--text-muted);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 0.76rem;
+  cursor: pointer;
+}
+.patternMore:hover { color: var(--text-secondary); border-color: var(--text-muted); }
+
+.sort { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--text-secondary); }
+.sort select {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.82rem;
+}
+
+/* ─── problem rows ─── */
+.problemList { display: flex; flex-direction: column; gap: 12px; }
+
+.row {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  transition: border-color 0.15s ease;
+}
+.row:hover { border-color: var(--border-strong); }
+.rowVerified { border-left-color: var(--accent); }
+.rowReported { border-left-color: var(--border-strong); }
+
+.rowMain { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+
+.rowTitle { color: var(--text-primary); font-weight: 500; font-size: 0.96rem; text-decoration: none; }
+.rowTitle:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+.rowTitleUnlinked { color: var(--text-secondary); cursor: default; }
+
+.unlinkedTag {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+  border-radius: 999px;
+  padding: 1px 8px;
+}
+
+.rowMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.diff { font-weight: 600; padding: 1px 8px; border-radius: 999px; background: var(--bg-elevated); }
+.diffEasy   { color: var(--diff-easy, #86efac); }
+.diffMedium { color: var(--diff-medium, #facc15); }
+.diffHard   { color: var(--diff-hard, #f97316); }
+
+.roleTag { background: var(--bg-elevated); padding: 1px 8px; border-radius: 999px; }
+
+.confidence { padding: 1px 8px; border-radius: 999px; }
+.confidenceA { background: var(--accent-subtle); color: var(--accent-light); }
+.confidenceB { background: var(--bg-elevated); color: var(--text-secondary); }
+
+.rowPatterns { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.patternPill {
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 9px;
+}
+
+.sourceLink { font-size: 0.74rem; color: var(--text-muted); text-decoration: none; }
+.sourceLink:hover { color: var(--accent-light); }
+
+.rolesPending {
+  margin: -12px 0 36px;
+  padding: 12px 16px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  background: var(--bg-elevated);
+}
+.frequency, .lastSeen { font-size: 0.74rem; color: var(--text-muted); }
+
+@media (max-width: 560px) {
+  .page { padding: 32px 14px 70px; }
+  .detailControls { flex-direction: column; }
+}
+
+/* ---- Levels & roles (LadderSection.jsx) ---- */
+.ladderSection { margin-bottom: 36px; }
+.ladderTable { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--bg-card); }
+/* THEME/LAYOUT FIX: the level column was a fixed 72px, sized for short labels like "L3" or "Ninja". CSS grid's
+   fixed tracks don't shrink their content to fit - a longer label like "Experienced" (TCS's lateral-hire tier)
+   just overflowed straight into the title column with no wrap, which is the overlap seen in the reported screenshot.
+   minmax(..., max-content) lets the column grow to fit whatever label a given company's ladder actually uses,
+   without widening it for every row when most labels are short. */
+.ladderRow { display: grid; grid-template-columns: minmax(64px, max-content) minmax(160px, 1.4fr) minmax(90px, 0.8fr); gap: 8px 14px; align-items: baseline; padding: 10px 14px; border-top: 1px solid var(--border); }
+.ladderRow:first-child { border-top: 0; }
+.ladderLevel { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--company-hue-light, var(--accent-light)); white-space: nowrap; }
+.ladderTitle { color: var(--text-primary); }
+.ladderExp { color: var(--text-muted); font-size: 0.85rem; }
+.ladderNote { grid-column: 2 / -1; color: var(--text-muted); font-size: 0.8rem; }
+.ladderFamilies { margin-top: 14px; }
+.ladderChips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.ladderChip { padding: 4px 10px; border-radius: 999px; border: 1px solid var(--border); font-size: 0.8rem; color: var(--text-muted); }
+.ladderMeta { margin: 10px 0 0; color: var(--text-muted); font-size: 0.85rem; }
+.ladderSources { margin-top: 12px; color: var(--text-muted); font-size: 0.85rem; }
+.ladderSources summary { cursor: pointer; }
+.ladderSources ul { margin: 8px 0 0; padding-left: 18px; }
+.ladderSources a { color: var(--accent-light); }
+.ladderUsed { color: var(--text-muted); }
+@media (max-width: 560px) { .ladderRow { grid-template-columns: minmax(52px, max-content) 1fr; } .ladderExp { grid-column: 2; } }
+
+/* ─── all outbound links, shown as buttons with label + host spelled out ─── */
+.linkRow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.linkBtn {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1px;
+  max-width: 100%;
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.linkBtn:hover, .linkBtn:focus-visible { border-color: var(--accent); background: var(--bg-card-hover); outline: none; }
+.linkBtnLabel { font-size: 0.8rem; font-weight: 600; }
+.linkBtnHost { font-size: 0.72rem; color: var(--text-muted); overflow-wrap: anywhere; }
+
+/* ─── page-closing reference block ─── */
+.footnotes { margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 28px; }
+.footBlock { min-width: 0; }
+.sourceList { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.sourceList li { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
+
+/* source on a problem card: a real button, not loose text */
+.sourceBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 5px 11px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  font-size: 0.76rem;
+  text-decoration: none;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+a.sourceBtn:hover, a.sourceBtn:focus-visible { border-color: var(--accent); color: var(--accent-light); outline: none; }
+.sourceBtnStatic { opacity: 0.75; cursor: default; }
+.sourceBtnLabel { font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.66rem; color: var(--text-muted); }

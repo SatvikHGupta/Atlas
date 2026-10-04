@@ -1,0 +1,144 @@
+{
+  "topic": "Misc Advanced Techniques",
+  "level": 9,
+  "slug": "misc-advanced-techniques",
+  "estimated_read": "9 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What are Misc Advanced Techniques?",
+      "content": "This note bundles two small, self-contained techniques that each solve a narrow but recurring problem shape and don't have enough surface area individually to justify a full note: **Meet in the Middle** (split a large search space in half, brute-force each half separately, then combine) and **Reservoir Sampling** (pick a uniformly random sample from a stream of unknown or unbounded length, using O(1) memory per item). They share nothing algorithmically - they're grouped here purely because both are real, low-frequency techniques worth knowing rather than being worth a dedicated note each."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Meet in the middle: reach for it when brute force is exponential but the input size is roughly double what brute force could normally handle (n around 30-40 instead of 15-20) - the halving trick turns O(2^n) into O(2^(n/2)). Reservoir sampling: reach for it whenever you must pick uniformly at random from a stream/list where you can't see the total length in advance, or don't want to store the whole thing.",
+      "signals": [
+        "n is around 30-40 and brute force over all subsets would be too slow",
+        "split the array/set into two halves and combine results",
+        "closest subsequence sum / partition into two parts with minimal difference",
+        "pick a random element/node from a stream, list, or generator with unknown length",
+        "random sampling without knowing the total count in advance"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Meet in the Middle",
+      "content": "For problems asking about all 2^n subsets of a set (e.g. 'does some subset sum to exactly X'), brute force is O(2^n x n) - infeasible past n ~ 20-25. Meet in the middle splits the set into two halves of size n/2 each, enumerates all 2^(n/2) subset results for each half separately (still exponential, but of a much smaller exponent), sorts one half's results, then for each result in the other half, binary-searches (or two-pointers) for a matching/complementary value across the two sorted lists. Total cost: O(2^(n/2) x n) to generate plus O(2^(n/2) log(2^(n/2))) to sort and search - which for n=40 turns a hopeless 2^40 brute force into a very manageable ~2^20 x 2 workload."
+    },
+    {
+      "type": "concept",
+      "title": "Reservoir Sampling",
+      "content": "To pick one uniformly random element from a stream of unknown length N, seen one item at a time: keep the i-th item you see as your current answer with probability `1/i` (replacing whatever answer you were holding). By induction, after processing all N items, every item has ended up as the final answer with exactly probability `1/N` - each later replacement dilutes an earlier item's survival probability by exactly the right amount to keep everything uniform. For a reservoir of size k (pick k uniformly random items, not just 1): keep the first k items unconditionally, then for the i-th item (i > k), replace a uniformly random one of the current k reservoir slots with probability `k/i` (and discard it entirely otherwise) - the same dilution argument generalizes directly."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "language": "javascript",
+      "code": "// Meet in the middle: does any subset of arr sum to exactly target?\nfunction subsetSumExists(arr, target) {\n  const n = arr.length;\n  const half = Math.floor(n / 2);\n\n  function allSubsetSums(part) {\n    const sums = [0];\n    for (const x of part) {\n      const len = sums.length;\n      for (let i = 0; i < len; i++) sums.push(sums[i] + x);\n    }\n    return sums;\n  }\n\n  const leftSums = allSubsetSums(arr.slice(0, half));\n  const rightSums = allSubsetSums(arr.slice(half)).sort((a, b) => a - b);\n\n  for (const l of leftSums) {\n    // binary search for (target - l) in rightSums\n    let lo = 0, hi = rightSums.length - 1;\n    const need = target - l;\n    while (lo <= hi) {\n      const mid = (lo + hi) >> 1;\n      if (rightSums[mid] === need) return true;\n      if (rightSums[mid] < need) lo = mid + 1; else hi = mid - 1;\n    }\n  }\n  return false;\n}\n\n// Reservoir sampling: pick one uniformly random node from a linked list of unknown length\nfunction randomNode(head) {\n  let result = null;\n  let i = 0;\n  let node = head;\n  while (node !== null) {\n    i++;\n    if (Math.floor(Math.random() * i) === 0) result = node.val;  // replace w/ prob 1/i\n    node = node.next;\n  }\n  return result;\n}",
+      "explanation": "`allSubsetSums` generates every subset sum of its half by doubling the array each iteration (append `x` to every existing sum) - classic small-scale subset enumeration. `randomNode` never knows the list's length in advance; `Math.floor(Math.random() * i) === 0` fires with probability exactly `1/i`, which is precisely the reservoir-sampling update rule for a reservoir of size 1."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "Meet in the Middle - Subset Sum / Partition",
+          "description": "Split into two halves, enumerate all subset sums of each, then binary-search or two-pointer across the sorted halves to find a matching or closest pair.",
+          "example_problem": "Closest Subsequence Sum",
+          "example_slug": "closest-subsequence-sum"
+        },
+        {
+          "name": "Meet in the Middle - Two-Group Partition",
+          "description": "Split the array into two groups such that both groups' subset averages/sums satisfy some balance condition - same halving idea, with the combine step checking a relationship between two chosen subsets instead of a single target.",
+          "example_problem": "Split Array With Same Average",
+          "example_slug": "split-array-with-same-average"
+        },
+        {
+          "name": "Reservoir Sampling - Single Random Pick",
+          "description": "Pick exactly one uniformly random element from a stream/structure of unknown size in O(n) time, O(1) space.",
+          "example_problem": "Linked List Random Node",
+          "example_slug": "linked-list-random-node"
+        },
+        {
+          "name": "Reservoir Sampling - Weighted / Indexed Pick",
+          "description": "Pick a uniformly random *index* satisfying some condition (e.g. equal to a target value) among a set of candidates seen one at a time, rather than a random element outright.",
+          "example_problem": "Random Pick Index",
+          "example_slug": "random-pick-index"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "Meet in the middle: O(2^(n/2) x n) to generate both halves' subset sums, plus O(2^(n/2) log(2^(n/2))) to sort/search - overall O(2^(n/2) x n), far below brute force's O(2^n x n). Reservoir sampling: O(n) to stream through n items once, O(1) work per item.",
+      "space": "Meet in the middle: O(2^(n/2)) to store one half's subset sums. Reservoir sampling: O(k) for a reservoir of size k (O(1) for the single-pick case) - never O(n), which is the entire point versus 'store everything, then pick randomly'.",
+      "explanation": "Both techniques exist specifically to trade an intractable time or space bound (O(2^n), or O(n) memory for an unbounded stream) for a tractable one, at the cost of a more involved algorithm - always confirm the naive approach is actually infeasible before reaching for either."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Splitting the set into halves of very unequal size - meet in the middle's speedup depends on both halves being close to n/2; an uneven split doesn't reduce the dominant exponential term.",
+        "Forgetting to sort one half's subset sums before searching the other half against it - without sorting, the combine step degrades back to O(2^(n/2) x 2^(n/2)), erasing the speedup entirely.",
+        "In reservoir sampling, using `Math.random() < 1/i` style probability checks with off-by-one errors (`1/i` vs `1/(i+1)`, 0-indexed vs 1-indexed counters) - the replacement probability must exactly match the item's 1-indexed position in the stream.",
+        "For reservoir sampling of size k, replacing a *fixed* (not randomly chosen) slot in the reservoir on a hit - the slot to evict must itself be chosen uniformly at random among the k current slots, or the sample stops being uniform."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Linked List Random Node",
+          "slug": "linked-list-random-node",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "The canonical reservoir-sampling problem - pick one uniformly random node without knowing the list's length up front."
+        },
+        {
+          "title": "Random Pick Index",
+          "slug": "random-pick-index",
+          "difficulty": 4,
+          "difficulty_label": "Medium",
+          "why": "Reservoir sampling restricted to indices matching a target value - same replacement rule, applied to a filtered stream."
+        },
+        {
+          "title": "Random Point in Non-overlapping Rectangles",
+          "slug": "random-point-in-non-overlapping-rectangles",
+          "difficulty": 6,
+          "difficulty_label": "Medium",
+          "why": "Weighted random selection (by rectangle area) via prefix sums plus binary search - a different but related 'pick fairly at random' technique worth knowing alongside plain reservoir sampling."
+        },
+        {
+          "title": "Closest Subsequence Sum",
+          "slug": "closest-subsequence-sum",
+          "difficulty": 8,
+          "difficulty_label": "Hard",
+          "why": "The canonical meet-in-the-middle problem - split, enumerate both halves' subset sums, then two-pointer across the sorted halves for the closest-to-target pair."
+        },
+        {
+          "title": "Tallest Billboard",
+          "slug": "tallest-billboard",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Meet in the middle where the combine step matches on the *difference* between two chosen subsets from each half, not a plain sum - a step harder than the basic template."
+        },
+        {
+          "title": "Split Array With Same Average",
+          "slug": "split-array-with-same-average",
+          "difficulty": 9,
+          "difficulty_label": "Hard",
+          "why": "Meet in the middle applied to a two-group averaging constraint - requires reformulating 'equal averages' as a subset-sum condition before the halving trick applies."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Search & Number Theory Extras",
+      "next_slug": "search-and-number-theory-extras",
+      "why": "Search & Number Theory Extras is the next topic at this level - a natural sibling to Misc Advanced Techniques, reinforcing the same tier of difficulty before moving up."
+    }
+  ]
+}

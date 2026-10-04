@@ -1,0 +1,133 @@
+{
+ "id": "linkedin",
+ "name": "LinkedIn",
+ "tier": null,
+ "roles": [
+  "L3",
+  "L4 Senior",
+  "L5+ Staff"
+ ],
+ "roleGuidance": {
+  "L3": {
+   "dsaDepth": "Heavy — verbal reasoning matters as much as correctness; easy–medium LeetCode across two coding rounds",
+   "rounds": [
+    "Recruiter screen (~15–30 min)",
+    "Technical phone screen (Coderpad/Collabedit, ~1 hr, 1–2 easy–medium problems: strings/arrays/binary search/trees) plus light behavioral",
+    "Optional take-home or async assessment (2 LeetCode-style problems) for some pipelines",
+    "Onsite/virtual loop (5–7 rounds): further coding, an SQL round, system design (told to keep it verbal, not whiteboard-heavy), hiring-manager/culture-fit conversation",
+    "Team matching (LinkedIn’s process is centralized — you interview before being matched to a team)"
+   ],
+   "extraTopics": [
+    "Explaining your logic out loud clearly — interviewers are reported to value verbal reasoning over silently arriving at a correct answer",
+    "SQL, alongside DSA"
+   ],
+   "focusPatterns": null
+  },
+  "L4 Senior": {
+   "dsaDepth": "Heavy — same format, system design and past-work defense weighted more",
+   "rounds": [
+    "Similar loop to L3 with a heavier system-design round and hiring-manager conversation that probes trade-offs on past projects in depth"
+   ],
+   "extraTopics": [
+    "System design (verbal, not whiteboard — several candidates report being told to put away diagrams)",
+    "Defending past technical decisions in detail"
+   ],
+   "focusPatterns": null
+  },
+  "L5+ Staff": {
+   "dsaDepth": "Moderate — coding present, system design and technical leadership dominate",
+   "rounds": [
+    "Coding round(s), a deeper system design round, and leadership/scope-focused conversations"
+   ],
+   "extraTopics": [
+    "Cross-team technical leadership",
+    "Broader system design scope"
+   ],
+   "focusPatterns": null,
+   "notes": "Thinner public detail above L4; treat as indicative."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "L2",
+   "title": "Software Engineer",
+   "experience": "0–2 yrs (rare, mostly new-grad)"
+  },
+  {
+   "level": "L3",
+   "title": "Software Engineer",
+   "experience": "2–5 yrs"
+  },
+  {
+   "level": "L4",
+   "title": "Senior Software Engineer",
+   "experience": "5–8 yrs"
+  },
+  {
+   "level": "L5",
+   "title": "Staff Software Engineer",
+   "experience": "8–12 yrs"
+  },
+  {
+   "level": "L6",
+   "title": "Senior Staff Software Engineer"
+  },
+  {
+   "level": "L7",
+   "title": "Principal Software Engineer"
+  },
+  {
+   "level": "L8",
+   "title": "Distinguished Engineer",
+   "notes": "Very rare"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (product / infrastructure)",
+  "Data Engineering",
+  "Machine Learning / AI"
+ ],
+ "sources": [
+  {
+   "title": "LinkedIn Software Engineer interview guide (Interview Query)",
+   "url": "https://www.interviewquery.com/guides/linkedin-software-engineer",
+   "used": [
+    "round structure, verbal-reasoning emphasis, comp data"
+   ]
+  },
+  {
+   "title": "LinkedIn's Interview Process & Questions (interviewing.io)",
+   "url": "https://interviewing.io/linkedIn-interview-questions",
+   "used": [
+    "5-step process for mid/senior hires, centralized team matching"
+   ]
+  },
+  {
+   "title": "LinkedIn Software Engineer Interview Guide (Prepfully)",
+   "url": "https://prepfully.com/interview-guides/linkedin-software-engineer-interview",
+   "used": [
+    "recruiter screen, technical phone interview, onsite structure"
+   ]
+  },
+  {
+   "title": "LinkedIn Senior Software Engineer interview experience, L4 (Exponent)",
+   "url": "https://www.tryexponent.com/experiences/linkedin-software-engineer-interview-8739c8",
+   "used": [
+    "L4 level naming, phone/DS/system-design/hiring-manager rounds"
+   ]
+  },
+  {
+   "title": "LinkedIn Software Engineer Interview Guide, comp by level (Interview Query alt)",
+   "url": "https://interviewquery.com/... (comp: L2 $134k to distinguished $2.15M)",
+   "used": [
+    "L2 through Distinguished Engineer level range and comp band"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "L2–L8 level naming and comp bands are corroborated across sources. Round-by-round detail is best documented for L3/L4; L5+ is thinner.",
+ "indiaNote": null
+}

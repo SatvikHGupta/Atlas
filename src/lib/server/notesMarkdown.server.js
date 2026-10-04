@@ -1,0 +1,70 @@
+// Sanitised Markdown renderer for notes (marked + Shiki). Author: Satvik Hemant Gupta
+import { Marked } from 'marked';
+import { highlightCode } from './highlight.server.js';
+import { toSafeLink } from '../urlPolicy.js';
+
+// Escape text for HTML element content and attribute values.
+export function escapeHtml(text) {
+  return String(text ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// BUG-150 / ATLAS-BUG-005 / 015: only http, https, mailto, #anchors and same-site/relative URLs pass. javascript:, data:,
+// vbscript:, protocol-relative ("//host") and its browser-equivalent forms ("/\\host", "\\/host") return null.
+// The policy itself lives in lib/urlPolicy.js and is shared with the HTML sanitizer and the redirect helper.
+export function safeUrl(href) {
+  return toSafeLink(href);
+}
+
+// Render note Markdown to safe HTML. Raw HTML is escaped, unsafe URLs are
+// dropped, and code fences are Shiki-highlighted (BUG-149). Shiki output is
+// trusted and inserted only after marked has finished, so it is never
+// re-parsed or filtered. `highlight` is injectable for tests.
+export async function renderNoteMarkdown(markdown, highlight = highlightCode) {
+  const fences = [];
+  const marked = new Marked({
+    gfm: true,
+    breaks: true,
+    renderer: {
+      // Raw HTML (block or inline) is shown as text, never emitted.
+      html(token) {
+        return escapeHtml(token.text ?? token.raw ?? '');
+      },
+      // Park each fence behind a marker, highlight it after parsing.
+      code(token) {
+        const lang =
+          String(token.lang || '')
+            .trim()
+            .split(/\s+/)[0] || 'text';
+        fences.push({ code: token.text, lang });
+        return `<div data-atlas-fence="${fences.length - 1}"></div>\n`;
+      },
+      link(token) {
+        const inner = this.parser.parseInline(token.tokens);
+        const url = safeUrl(token.href);
+        if (!url) return inner;
+        const title = token.title ? ` title="${escapeHtml(token.title)}"` : '';
+        return `<a href="${escapeHtml(url)}"${title}>${inner}</a>`;
+      },
+      image(token) {
+        const url = safeUrl(token.href);
+        const alt = escapeHtml(token.text);
+        if (!url) return alt;
+        const title = token.title ? ` title="${escapeHtml(token.title)}"` : '';
+        return `<img src="${escapeHtml(url)}" alt="${alt}"${title}>`;
+      },
+    },
+  });
+
+  let html = marked.parse(String(markdown ?? ''));
+  // Substitute each marker with its highlighted block.
+  for (let i = 0; i < fences.length; i++) {
+    const block = await highlight(fences[i].code, fences[i].lang);
+    html = html.replace(`<div data-atlas-fence="${i}"></div>`, () => block);
+  }
+  return html;
+}

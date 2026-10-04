@@ -1,0 +1,68 @@
+{
+  "_readme": "Question links for problems whose source dataset carries no URL (the Striver A2Z basics; the 8 that had no honest link or were premium-only are removed, see src/constants/retiredProblems.js). Applied by scripts/build-content.mjs via src/lib/linkOverrides.js: each entry is APPENDED to the problem's source_platforms (the dataset itself is never edited). The Solve button prefers LeetCode, then the first platform that has a real http(s) URL. `match`: exact = the same task; closest = the nearest real LeetCode problem (solving it solves the same idea but the statement differs). A problem with no honest equivalent is simply not listed here and keeps showing 'No external link for this problem'.",
+  "overrides": [
+    {
+      "canonical_id": "65b4f3cc-f452-400c-b16f-4c2a10cf9ad7",
+      "title": "Check Palindrome (Number)",
+      "platform": "leetcode",
+      "platform_id": "9",
+      "url": "https://leetcode.com/problems/palindrome-number/",
+      "match": "exact",
+      "verified": "page opened"
+    },
+    {
+      "canonical_id": "2df96a03-b868-41ec-83c8-9fd23ba73145",
+      "title": "Reverse a Number",
+      "platform": "leetcode",
+      "platform_id": "7",
+      "url": "https://leetcode.com/problems/reverse-integer/",
+      "match": "exact",
+      "verified": "known LeetCode slug, not opened"
+    },
+    {
+      "canonical_id": "e96513c2-cd3d-4fb5-b4cd-a1d1ae736683",
+      "title": "GCD / HCF",
+      "platform": "leetcode",
+      "platform_id": "1979",
+      "url": "https://leetcode.com/problems/find-greatest-common-divisor-of-array/",
+      "match": "closest",
+      "verified": "known LeetCode slug, not opened"
+    },
+    {
+      "canonical_id": "a0bd44c3-813e-4f04-bf2d-9220bc4bbc33",
+      "title": "Largest Element in Array",
+      "platform": "geeksforgeeks",
+      "platform_id": "largest-element-in-array4009",
+      "url": "https://www.geeksforgeeks.org/problems/largest-element-in-array4009/1",
+      "match": "exact",
+      "verified": "page opened"
+    },
+    {
+      "canonical_id": "eb2a2153-79ab-4c0c-a6e8-545d78ed5250",
+      "title": "Second Largest Element",
+      "platform": "code360",
+      "platform_id": "second-largest-element-in-the-array_873375",
+      "url": "https://www.naukri.com/code360/problems/second-largest-element-in-the-array_873375",
+      "match": "exact",
+      "verified": "page opened"
+    },
+    {
+      "canonical_id": "3329ce4b-dae0-49b1-afbb-3f62dcb3ed93",
+      "title": "Check if Array is Sorted",
+      "platform": "code360",
+      "platform_id": "sorted-array_7444305",
+      "url": "https://www.naukri.com/code360/problems/sorted-array_7444305",
+      "match": "exact",
+      "verified": "page opened"
+    },
+    {
+      "canonical_id": "00d096d2-60d3-4f3c-8ef6-b75adf629c3b",
+      "title": "Check Prime",
+      "platform": "geeksforgeeks",
+      "platform_id": "prime-number2314",
+      "url": "https://www.geeksforgeeks.org/problems/prime-number2314/1",
+      "match": "exact",
+      "verified": "URL quoted by a third-party repo, page not opened"
+    }
+  ]
+}

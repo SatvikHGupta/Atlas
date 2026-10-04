@@ -1,0 +1,102 @@
+{
+ "id": "intuit",
+ "name": "Intuit",
+ "tier": null,
+ "roles": [
+  "Software Engineer I (campus)",
+  "Software Engineer / Senior"
+ ],
+ "roleGuidance": {
+  "Software Engineer I (campus)": {
+   "dsaDepth": "Moderate — an OA (MCQs + coding) then 2-4 technical rounds mixing DSA, CS fundamentals and debugging",
+   "rounds": [
+    "Online round (HackerEarth): ~20 MCQs plus 2-3 coding questions, easy to difficult",
+    "Technical round 1: project discussion, C/C++/Java differences, OS/DBMS fundamentals, trees and graphs",
+    "Technical round 2 (some pipelines): a second, harder round revisiting resume projects and coding problems with multiple approaches discussed",
+    "HR/behavioral round: situational questions, company overview"
+   ],
+   "extraTopics": [
+    "Explaining language/paradigm trade-offs (C vs C++ vs Java)",
+    "Discussing multiple algorithmic approaches to the same problem, not just one solution"
+   ],
+   "focusPatterns": null
+  },
+  "Software Engineer / Senior": {
+   "dsaDepth": "Moderate — a build-challenge take-home plus a tech screen focused on trade-offs and AI-tool usage, increasingly common in recent (2026) loops",
+   "rounds": [
+    "Recruiter screen (~30 min)",
+    "Take-home \"build challenge\" (4-5 hrs, uploaded to GitHub)",
+    "Tech screen: questions on the build challenge, OOP concepts, and trade-offs made",
+    "Some 2026 reports mention explicit questions on AI-assistant usage in day-to-day development"
+   ],
+   "extraTopics": [
+    "Justifying trade-offs in a take-home project, not just completing it",
+    "Familiarity with AI coding assistants — recent interviews ask about this directly"
+   ],
+   "focusPatterns": null,
+   "notes": "Senior-level candidates report friction if leveling expectations aren’t aligned with the recruiter up front — clarify this early."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "SE1",
+   "title": "Software Engineer I",
+   "experience": "Entry level (campus)"
+  },
+  {
+   "level": "SE2",
+   "title": "Software Engineer II",
+   "experience": "Mid level"
+  },
+  {
+   "level": "Senior",
+   "title": "Senior Software Engineer",
+   "experience": "Senior IC — reports mention explicit \"senior IC leveling\" discussions with recruiters"
+  },
+  {
+   "level": "Staff+",
+   "title": "Staff Software Engineer and above",
+   "notes": "Not covered in depth"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (product / full-stack)",
+  "Data Engineering"
+ ],
+ "sources": [
+  {
+   "title": "Glassdoor: Intuit Software Engineer interview report, campus (2 rounds)",
+   "url": "https://www.glassdoor.ca/Interview/Intuit-Interview-E2293-RVW5098612.htm",
+   "used": [
+    "2-round campus loop: HR behavioral then DSA technical"
+   ]
+  },
+  {
+   "title": "Glassdoor: Intuit Software Engineer interview report, build-challenge process (2026)",
+   "url": "https://www.glassdoor.com.mx/Entrevista/Intuit-Entrevista-E2293-RVW62687330.htm",
+   "used": [
+    "OA, recruiter screen, take-home build challenge, tech screen"
+   ]
+  },
+  {
+   "title": "Glassdoor: Intuit Software Engineer interview report, Bengaluru",
+   "url": "https://static.glassdoor.com.mx/Interview/Intuit-Interview-E2293-RVW16614748.htm",
+   "used": [
+    "India-specific 4-round loop: coding/puzzles, 2 technical, HR"
+   ]
+  },
+  {
+   "title": "Glassdoor: Intuit Software Engineer interview report, HackerEarth OA",
+   "url": "https://www.glassdoor.com.hk/Interview/Intuit-Interview-E2293-RVW12055049.htm",
+   "used": [
+    "23-question OA (20 MCQ + 3 coding) then 2 technical rounds"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "Campus-era loop (OA + 2 technical + HR) and the newer build-challenge format are both corroborated by multiple independent reports; the newer format appears to be replacing the older one in recent (2026) reviews.",
+ "indiaNote": "One detailed report is from Intuit’s Bengaluru office, describing a 4-round loop."
+}

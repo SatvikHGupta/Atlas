@@ -1,0 +1,1089 @@
+{
+  "version": 1,
+  "purpose": "Companies shown on /companies. tier=null means \"derive from pool depth\" (Tier 1 if linkable pool >= 100, else Tier 2); Tier 3 is set by hand for IT-services/consulting. Existing 29 keep their curated tier. region is a hand classification (India-based or Indian-origin vs Global) used for filtering.",
+  "folderAliases": {
+    "zeta-suite": "zeta",
+    "kla-tencor": "kla",
+    "machinezone": "machine-zone"
+  },
+  "companies": [
+    {
+      "id": "accenture",
+      "name": "Accenture",
+      "folders": [
+        "accenture"
+      ],
+      "tier": 3,
+      "region": "Global",
+      "origin": "existing",
+      "domain": "accenture.com",
+      "linkedin": "https://www.linkedin.com/company/accenture",
+      "careersUrl": "https://www.accenture.com/us-en/careers",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "adobe",
+      "name": "Adobe",
+      "folders": [
+        "adobe"
+      ],
+      "tier": 1,
+      "region": "Global",
+      "origin": "existing",
+      "domain": "adobe.com",
+      "linkedin": "https://www.linkedin.com/company/adobe",
+      "careersUrl": "https://www.adobe.com/careers.html",
+      "linkResearch": "confirmed"
+    },
+    {
+      "id": "amazon",
+      "name": "Amazon",
+      "folders": [
+        "amazon"
+      ],
+      "tier": 1,
+      "region": "Global",
+      "origin": "existing",
+      "domain": "amazon.com",
+      "linkedin": "https://www.linkedin.com/company/amazon",
+      "careersUrl": "https://www.amazon.jobs",
+      "linkResearch": "confirmed"
+    },
+    {
+      "id": "capgemini",
+      "name": "Capgemini",
+      "folders": [
+        "capgemini"
+      ],
+      "tier": 3,
+      "region": "Global",
+      "origin": "existing",
+      "domain": "capgemini.com",
+      "linkedin": "https://www.linkedin.com/company/capgemini",
+      "careersUrl": "https://www.capgemini.com/careers/",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "cognizant",
+      "name": "Cognizant",
+      "folders": [
+        "cognizant"
+      ],
+      "tier": 3,
+      "region": "Global",
+      "origin": "existing",
+      "domain": "cognizant.com",
+      "linkedin": "https://www.linkedin.com/company/cognizant",
+      "careersUrl": "https://careers.cognizant.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "cred",
+      "name": "CRED",
+      "folders": [
+        "cred"
+      ],
+      "tier": 1,
+      "region": "India",
+      "origin": "existing",
+      "domain": "cred.club",
+      "linkedin": "https://www.linkedin.com/company/cred-club",
+      "careersUrl": "https://careers.cred.club",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "delhivery",
+      "name": "Delhivery",
+      "folders": [
+        "delhivery"
+      ],
+      "tier": 2,
+      "region": "India",
+      "origin": "existing",
+      "domain": "delhivery.com",
+      "linkedin": "https://www.linkedin.com/company/delhivery",
+      "careersUrl": "https://www.delhivery.com/careers/",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "dream11",
+      "name": "Dream11",
+      "folders": [
+        "dream11"
+      ],
+      "tier": 2,
+      "region": "India",
+      "origin": "existing",
+      "domain": "dream11.com",
+      "linkedin": "https://www.linkedin.com/company/dream11",
+      "careersUrl": "https://dreamsports.group/careers/",
+      "linkResearch": "confirmed"
+    },
+    {
+      "id": "flipkart",
+      "name": "Flipkart",
+      "folders": [
+        "flipkart"
+      ],
+      "tier": 1,
+      "region": "India",
+      "origin": "existing",
+      "domain": "flipkart.com",
+      "linkedin": "https://www.linkedin.com/company/flipkart",
+      "careersUrl": "https://www.flipkartcareers.com",
+      "linkResearch": "confirmed"
+    },
+    {
+      "id": "freshworks",
+      "name": "Freshworks",
+      "folders": [
+        "freshworks"
+      ],
+      "tier": 2,
+      "region": "India",
+      "origin": "existing",
+      "domain": "freshworks.com",
+      "linkedin": "https://www.linkedin.com/company/freshworks",
+      "careersUrl": "https://www.freshworks.com/company/careers/",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "google",
+      "name": "Google",
+      "folders": [
+        "google"
+      ],
+      "tier": 1,
+      "region": "Global",
+      "origin": "existing",
+      "domain": "google.com",
+      "linkedin": "https://www.linkedin.com/company/google",
+      "careersUrl": "https://careers.google.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "groww",
+      "name": "Groww",
+      "folders": [
+        "groww"
+      ],
+      "tier": 2,
+      "region": "India",
+      "origin": "existing",
+      "domain": "groww.in",
+      "linkedin": "https://www.linkedin.com/company/groww",
+      "careersUrl": "https://groww.in/careers",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "infosys",
+      "name": "Infosys",
+      "folders": [
+        "infosys"
+      ],
+      "tier": 3,
+      "region": "India",
+      "origin": "existing",
+      "domain": "infosys.com",
+      "linkedin": "https://www.linkedin.com/company/infosys",
+      "careersUrl": "https://www.infosys.com/careers.html",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "meesho",
+      "name": "Meesho",
+      "folders": [
+        "meesho"
+      ],
+      "tier": 1,
+      "region": "India",
+      "origin": "existing",
+      "domain": "meesho.com",
+      "linkedin": "https://www.linkedin.com/company/meesho",
+      "careersUrl": "https://www.meesho.io/careers",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "microsoft",
+      "name": "Microsoft",
+      "folders": [
+        "microsoft"
+      ],
+      "tier": 1,
+      "region": "Global",
+      "origin": "existing",
+      "domain": "microsoft.com",
+      "linkedin": "https://www.linkedin.com/company/microsoft",
+      "careersUrl": "https://careers.microsoft.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "myntra",
+      "name": "Myntra",
+      "folders": [
+        "myntra"
+      ],
+      "tier": 2,
+      "region": "India",
+      "origin": "existing",
+      "domain": "myntra.com",
+      "linkedin": "https://www.linkedin.com/company/myntra",
+      "careersUrl": "https://careers.myntra.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "nykaa",
+      "name": "Nykaa",
+      "folders": [
+        "nykaa"
+      ],
+      "tier": 2,
+      "region": "India",
+      "origin": "existing",
+      "domain": "nykaa.com",
+      "linkedin": "https://www.linkedin.com/company/nykaa",
+      "careersUrl": "https://www.nykaa.com/careers",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "paytm",
+      "name": "Paytm",
+      "folders": [
+        "paytm"
+      ],
+      "tier": 2,
+      "region": "India",
+      "origin": "existing",
+      "domain": "paytm.com",
+      "linkedin": "https://www.linkedin.com/company/paytm",
+      "careersUrl": "https://paytm.com/careers",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "phonepe",
+      "name": "PhonePe",
+      "folders": [
+        "phonepe"
+      ],
+      "tier": 1,
+      "region": "India",
+      "origin": "existing",
+      "domain": "phonepe.com",
+      "linkedin": "https://www.linkedin.com/company/phonepe",
+      "careersUrl": "https://www.phonepe.com/careers/",
+      "linkResearch": "confirmed"
+    },
+    {
+      "id": "razorpay",
+      "name": "Razorpay",
+      "folders": [
+        "razorpay"
+      ],
+      "tier": 1,
+      "region": "India",
+      "origin": "existing",
+      "domain": "razorpay.com",
+      "linkedin": "https://www.linkedin.com/company/razorpay",
+      "careersUrl": "https://razorpay.com/jobs/",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "swiggy",
+      "name": "Swiggy",
+      "folders": [
+        "swiggy"
+      ],
+      "tier": 1,
+      "region": "India",
+      "origin": "existing",
+      "domain": "swiggy.com",
+      "linkedin": "https://www.linkedin.com/company/swiggy",
+      "careersUrl": "https://careers.swiggy.com",
+      "linkResearch": "confirmed"
+    },
+    {
+      "id": "tcs",
+      "name": "TCS",
+      "folders": [
+        "tcs"
+      ],
+      "tier": 3,
+      "region": "India",
+      "origin": "existing",
+      "domain": "tcs.com",
+      "linkedin": "https://www.linkedin.com/company/tata-consultancy-services",
+      "careersUrl": "https://www.tcs.com/careers",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "uber",
+      "name": "Uber",
+      "folders": [
+        "uber"
+      ],
+      "tier": 1,
+      "region": "Global",
+      "origin": "existing",
+      "domain": "uber.com",
+      "linkedin": "https://www.linkedin.com/company/uber-com",
+      "careersUrl": "https://www.uber.com/careers/",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "urban-company",
+      "name": "Urban Company",
+      "folders": [
+        "urban-company"
+      ],
+      "tier": 2,
+      "region": "India",
+      "origin": "existing",
+      "domain": "urbancompany.com",
+      "linkedin": "https://www.linkedin.com/company/urbanclap",
+      "careersUrl": "https://www.urbancompany.com/careers",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "walmart-labs",
+      "name": "Walmart Global Tech",
+      "folders": [
+        "walmart-labs"
+      ],
+      "tier": 1,
+      "region": "Global",
+      "origin": "existing",
+      "domain": "walmart.com",
+      "linkedin": "https://www.linkedin.com/company/walmartglobaltech",
+      "careersUrl": "https://careers.walmart.com/global-tech",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "wipro",
+      "name": "Wipro",
+      "folders": [
+        "wipro"
+      ],
+      "tier": 3,
+      "region": "India",
+      "origin": "existing",
+      "domain": "wipro.com",
+      "linkedin": "https://www.linkedin.com/company/wipro-technologies",
+      "careersUrl": "https://careers.wipro.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "zoho",
+      "name": "Zoho",
+      "folders": [
+        "zoho"
+      ],
+      "tier": 2,
+      "region": "India",
+      "origin": "existing",
+      "domain": "zoho.com",
+      "linkedin": "https://www.linkedin.com/company/zoho-corporation",
+      "careersUrl": "https://www.zoho.com/careers/",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "zomato",
+      "name": "Zomato",
+      "folders": [
+        "zomato"
+      ],
+      "tier": 1,
+      "region": "India",
+      "origin": "existing",
+      "domain": "zomato.com",
+      "linkedin": "https://www.linkedin.com/company/zomato",
+      "careersUrl": "https://www.zomato.com/careers",
+      "linkResearch": "confirmed"
+    },
+    {
+      "id": "meta",
+      "name": "Meta",
+      "folders": [
+        "meta"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "meta.com",
+      "linkedin": "https://www.linkedin.com/company/meta",
+      "careersUrl": "https://www.metacareers.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "bloomberg",
+      "name": "Bloomberg",
+      "folders": [
+        "bloomberg"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "bloomberg.com",
+      "linkedin": "https://www.linkedin.com/company/bloomberg-lp",
+      "careersUrl": "https://careers.bloomberg.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "oracle",
+      "name": "Oracle",
+      "folders": [
+        "oracle"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "oracle.com",
+      "linkedin": "https://www.linkedin.com/company/oracle",
+      "careersUrl": "https://www.oracle.com/careers/",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "apple",
+      "name": "Apple",
+      "folders": [
+        "apple"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "apple.com",
+      "linkedin": "https://www.linkedin.com/company/apple",
+      "careersUrl": "https://jobs.apple.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "goldman-sachs",
+      "name": "Goldman Sachs",
+      "folders": [
+        "goldman-sachs"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "goldmansachs.com",
+      "linkedin": "https://www.linkedin.com/company/goldman-sachs",
+      "careersUrl": "https://www.goldmansachs.com/careers/",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "salesforce",
+      "name": "Salesforce",
+      "folders": [
+        "salesforce"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "salesforce.com",
+      "linkedin": "https://www.linkedin.com/company/salesforce",
+      "careersUrl": "https://www.salesforce.com/company/careers/",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "ibm",
+      "name": "IBM",
+      "folders": [
+        "ibm"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "ibm.com",
+      "linkedin": "https://www.linkedin.com/company/ibm",
+      "careersUrl": "https://www.ibm.com/careers",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "linkedin",
+      "name": "LinkedIn",
+      "folders": [
+        "linkedin"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "linkedin.com",
+      "linkedin": "https://www.linkedin.com/company/linkedin",
+      "careersUrl": "https://careers.linkedin.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "visa",
+      "name": "Visa",
+      "folders": [
+        "visa"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "visa.com",
+      "linkedin": "https://www.linkedin.com/company/visa",
+      "careersUrl": "https://www.visa.com/careers/",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "nvidia",
+      "name": "NVIDIA",
+      "folders": [
+        "nvidia"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "nvidia.com",
+      "linkedin": "https://www.linkedin.com/company/nvidia",
+      "careersUrl": "https://www.nvidia.com/en-us/about-nvidia/careers/",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "paypal",
+      "name": "PayPal",
+      "folders": [
+        "paypal"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "paypal.com",
+      "linkedin": "https://www.linkedin.com/company/paypal",
+      "careersUrl": "https://careers.paypal.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "cisco",
+      "name": "Cisco",
+      "folders": [
+        "cisco"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "cisco.com",
+      "linkedin": "https://www.linkedin.com/company/cisco",
+      "careersUrl": "https://jobs.cisco.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "jpmorgan",
+      "name": "JPMorgan Chase",
+      "folders": [
+        "jpmorgan"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "jpmorganchase.com",
+      "linkedin": "https://www.linkedin.com/company/jpmorganchase",
+      "careersUrl": "https://careers.jpmorgan.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "snapchat",
+      "name": "Snap",
+      "folders": [
+        "snapchat"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "snap.com",
+      "linkedin": "https://www.linkedin.com/company/snap-inc-",
+      "careersUrl": "https://careers.snap.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "doordash",
+      "name": "DoorDash",
+      "folders": [
+        "doordash"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "doordash.com",
+      "linkedin": "https://www.linkedin.com/company/doordash",
+      "careersUrl": "https://careers.doordash.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "samsung",
+      "name": "Samsung",
+      "folders": [
+        "samsung"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "samsung.com",
+      "linkedin": "https://www.linkedin.com/company/samsung-electronics",
+      "careersUrl": "https://www.samsung.com/careers/",
+      "linkResearch": "confirmed"
+    },
+    {
+      "id": "nutanix",
+      "name": "Nutanix",
+      "folders": [
+        "nutanix"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "nutanix.com",
+      "linkedin": "https://www.linkedin.com/company/nutanix",
+      "careersUrl": "https://www.nutanix.com/company/careers",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "ebay",
+      "name": "eBay",
+      "folders": [
+        "ebay"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "ebay.com",
+      "linkedin": "https://www.linkedin.com/company/ebay",
+      "careersUrl": "https://careers.ebayinc.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "morgan-stanley",
+      "name": "Morgan Stanley",
+      "folders": [
+        "morgan-stanley"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "morganstanley.com",
+      "linkedin": "https://www.linkedin.com/company/morgan-stanley",
+      "careersUrl": "https://www.morganstanley.com/careers",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "expedia",
+      "name": "Expedia Group",
+      "folders": [
+        "expedia"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "expedia.com",
+      "linkedin": "https://www.linkedin.com/company/expedia",
+      "careersUrl": "https://careers.expediagroup.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "qualcomm",
+      "name": "Qualcomm",
+      "folders": [
+        "qualcomm"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "qualcomm.com",
+      "linkedin": "https://www.linkedin.com/company/qualcomm",
+      "careersUrl": "https://www.qualcomm.com/company/careers",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "intuit",
+      "name": "Intuit",
+      "folders": [
+        "intuit"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "intuit.com",
+      "linkedin": "https://www.linkedin.com/company/intuit",
+      "careersUrl": "https://www.intuit.com/careers/",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "atlassian",
+      "name": "Atlassian",
+      "folders": [
+        "atlassian"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "atlassian.com",
+      "linkedin": "https://www.linkedin.com/company/atlassian",
+      "careersUrl": "https://www.atlassian.com/company/careers",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "airbnb",
+      "name": "Airbnb",
+      "folders": [
+        "airbnb"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "airbnb.com",
+      "linkedin": "https://www.linkedin.com/company/airbnb",
+      "careersUrl": "https://careers.airbnb.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "wix",
+      "name": "Wix",
+      "folders": [
+        "wix"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "wix.com",
+      "linkedin": "https://www.linkedin.com/company/wix-com",
+      "careersUrl": "https://www.wix.com/jobs/careers",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "anduril",
+      "name": "Anduril",
+      "folders": [
+        "anduril"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "anduril.com",
+      "linkedin": "https://www.linkedin.com/company/anduril-industries",
+      "careersUrl": "https://www.anduril.com/careers/",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "roblox",
+      "name": "Roblox",
+      "folders": [
+        "roblox"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "roblox.com",
+      "linkedin": "https://www.linkedin.com/company/roblox",
+      "careersUrl": "https://corp.roblox.com/careers",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "epam-systems",
+      "name": "EPAM Systems",
+      "folders": [
+        "epam-systems"
+      ],
+      "tier": 3,
+      "region": "Global",
+      "origin": "new",
+      "domain": "epam.com",
+      "linkedin": "https://www.linkedin.com/company/epam-systems",
+      "careersUrl": "https://www.epam.com/careers",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "agoda",
+      "name": "Agoda",
+      "folders": [
+        "agoda"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "agoda.com",
+      "linkedin": "https://www.linkedin.com/company/agoda",
+      "careersUrl": "https://careersatagoda.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "coupang",
+      "name": "Coupang",
+      "folders": [
+        "coupang"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "coupang.com",
+      "linkedin": "https://www.linkedin.com/company/coupang",
+      "careersUrl": "https://www.coupang.jobs",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "sap",
+      "name": "SAP",
+      "folders": [
+        "sap"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "sap.com",
+      "linkedin": "https://www.linkedin.com/company/sap",
+      "careersUrl": "https://www.sap.com/about/careers.html",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "twitter",
+      "name": "X (Twitter)",
+      "folders": [
+        "twitter"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "x.com",
+      "linkedin": "https://www.linkedin.com/company/x-corp-",
+      "careersUrl": "https://careers.x.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "tesla",
+      "name": "Tesla",
+      "folders": [
+        "tesla"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "tesla.com",
+      "linkedin": "https://www.linkedin.com/company/tesla-motors",
+      "careersUrl": "https://www.tesla.com/careers",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "deloitte",
+      "name": "Deloitte",
+      "folders": [
+        "deloitte"
+      ],
+      "tier": 3,
+      "region": "Global",
+      "origin": "new",
+      "domain": "deloitte.com",
+      "linkedin": "https://www.linkedin.com/company/deloitte",
+      "careersUrl": "https://www2.deloitte.com/global/en/careers.html",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "docusign",
+      "name": "DocuSign",
+      "folders": [
+        "docusign"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "docusign.com",
+      "linkedin": "https://www.linkedin.com/company/docusign",
+      "careersUrl": "https://careers.docusign.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "pinterest",
+      "name": "Pinterest",
+      "folders": [
+        "pinterest"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "pinterest.com",
+      "linkedin": "https://www.linkedin.com/company/pinterest",
+      "careersUrl": "https://www.pinterestcareers.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "yahoo",
+      "name": "Yahoo",
+      "folders": [
+        "yahoo"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "yahoo.com",
+      "linkedin": "https://www.linkedin.com/company/yahoo",
+      "careersUrl": "https://www.yahooinc.com/careers/",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "rubrik",
+      "name": "Rubrik",
+      "folders": [
+        "rubrik"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "rubrik.com",
+      "linkedin": "https://www.linkedin.com/company/rubrik-inc",
+      "careersUrl": "https://www.rubrik.com/company/careers",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "grammarly",
+      "name": "Grammarly",
+      "folders": [
+        "grammarly"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "grammarly.com",
+      "linkedin": "https://www.linkedin.com/company/grammarly",
+      "careersUrl": "https://www.grammarly.com/careers",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "yelp",
+      "name": "Yelp",
+      "folders": [
+        "yelp"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "yelp.com",
+      "linkedin": "https://www.linkedin.com/company/yelp-com",
+      "careersUrl": "https://www.yelp.careers",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "netflix",
+      "name": "Netflix",
+      "folders": [
+        "netflix"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "netflix.com",
+      "linkedin": "https://www.linkedin.com/company/netflix",
+      "careersUrl": "https://jobs.netflix.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "palantir",
+      "name": "Palantir",
+      "folders": [
+        "palantir"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "palantir.com",
+      "linkedin": "https://www.linkedin.com/company/palantir-technologies",
+      "careersUrl": "https://www.palantir.com/careers/",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "american-express",
+      "name": "American Express",
+      "folders": [
+        "american-express"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "americanexpress.com",
+      "linkedin": "https://www.linkedin.com/company/american-express",
+      "careersUrl": "https://www.americanexpress.com/en-us/careers/",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "siemens",
+      "name": "Siemens",
+      "folders": [
+        "siemens"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "siemens.com",
+      "linkedin": "https://www.linkedin.com/company/siemens",
+      "careersUrl": "https://jobs.siemens.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "wells-fargo",
+      "name": "Wells Fargo",
+      "folders": [
+        "wells-fargo"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "wellsfargo.com",
+      "linkedin": "https://www.linkedin.com/company/wellsfargo",
+      "careersUrl": "https://www.wellsfargojobs.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "zepto",
+      "name": "Zepto",
+      "folders": [
+        "zepto"
+      ],
+      "tier": null,
+      "region": "India",
+      "origin": "new",
+      "domain": "zeptonow.com",
+      "linkedin": "https://www.linkedin.com/company/zeptonow",
+      "careersUrl": "https://www.zeptonow.com/careers",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "intel",
+      "name": "Intel",
+      "folders": [
+        "intel"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "intel.com",
+      "linkedin": "https://www.linkedin.com/company/intel-corporation",
+      "careersUrl": "https://jobs.intel.com",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "lyft",
+      "name": "Lyft",
+      "folders": [
+        "lyft"
+      ],
+      "tier": null,
+      "region": "Global",
+      "origin": "new",
+      "domain": "lyft.com",
+      "linkedin": "https://www.linkedin.com/company/lyft",
+      "careersUrl": "https://www.lyft.com/careers",
+      "linkResearch": "recall"
+    },
+    {
+      "id": "makemytrip",
+      "name": "MakeMyTrip",
+      "folders": [
+        "makemytrip"
+      ],
+      "tier": null,
+      "region": "India",
+      "origin": "new",
+      "domain": "makemytrip.com",
+      "linkedin": "https://www.linkedin.com/company/makemytrip-com",
+      "careersUrl": "https://careers.makemytrip.com",
+      "linkResearch": "recall"
+    }
+  ]
+}

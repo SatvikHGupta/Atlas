@@ -1,0 +1,122 @@
+{
+ "id": "nykaa",
+ "name": "Nykaa",
+ "tier": 2,
+ "roles": [
+  "SDE-1",
+  "SDE-2",
+  "SDE-3"
+ ],
+ "roleGuidance": {
+  "SDE-1": {
+   "dsaDepth": "Moderate — 1–2 Medium DSA problems per round",
+   "rounds": [
+    "Assignment or online coding round (60–90 min, 1–2 medium problems)",
+    "Technical round(s): further DSA, OS/DBMS basics",
+    "HR round"
+   ],
+   "extraTopics": [
+    "OS and DBMS fundamentals",
+    "Project discussion"
+   ],
+   "focusPatterns": null
+  },
+  "SDE-2": {
+   "dsaDepth": "Moderate — DSA plus system design; Java/Kotlin and threading depth expected",
+   "rounds": [
+    "Coding round(s): 1–2 medium problems (data structures, string/array)",
+    "System design round (LLD and/or HLD)"
+   ],
+   "extraTopics": [
+    "Java 8+ and multithreading (candidates note this as a hard requirement)",
+    "Spring Framework, relational and NoSQL databases, REST API design"
+   ],
+   "focusPatterns": null
+  },
+  "SDE-3": {
+   "dsaDepth": "Heavy — machine coding plus HLD, then a managerial round",
+   "rounds": [
+    "Round 1: online test (MCQs + 2 coding problems)",
+    "Round 2: machine coding (about 1.5 hr, e.g. a payment aggregator with multiple gateway modules, proper design patterns and running code)",
+    "Round 3: HLD round (about 1 hr, e.g. a multi-device notification service with read-status sync and priority handling)",
+    "Round 4: managerial round (project design deep-dive, situational questions, leadership principles)"
+   ],
+   "extraTopics": [
+    "Machine coding with design patterns",
+    "High-level design and trade-offs",
+    "Leadership-principles-style behavioral answers"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "SDE-1",
+   "title": "Software Development Engineer 1",
+   "experience": "Entry level (campus and 0–2 yrs)"
+  },
+  {
+   "level": "SDE-2",
+   "title": "Software Development Engineer 2",
+   "experience": "Mid level, ~2.5+ yrs in reports"
+  },
+  {
+   "level": "SDE-3",
+   "title": "SDE-3",
+   "experience": "Senior"
+  },
+  {
+   "level": "Senior Software Engineer",
+   "title": "Senior Software Engineer",
+   "notes": "Reported as a distinct title from SDE-2/3"
+  }
+ ],
+ "roleFamilies": [
+  "Backend (Java/Kotlin)",
+  "Frontend / mobile",
+  "Data / Analytics"
+ ],
+ "sources": [
+  {
+   "title": "Nykaa | SDE3 (LeetCode discuss)",
+   "url": "https://leetcode.com/discuss/interview-experience/4465743",
+   "used": [
+    "4-round SDE-3 loop"
+   ]
+  },
+  {
+   "title": "Nykaa SDE-1 interview experience (Code360, Sep 2020)",
+   "url": "https://www.naukri.com/code360/interview-experiences/nykaa/nykaa-interview-experience-sep-2020-exp-0-2-years",
+   "used": [
+    "SDE-1 assignment round"
+   ]
+  },
+  {
+   "title": "Nykaa SDE-2 interview experience (Code360, Apr 2022)",
+   "url": "https://www.naukri.com/code360/interview-experiences/nykaa/nykaa-interview-experience-apr-2022-exp-0-2-years",
+   "used": [
+    "SDE-2 Java/threading emphasis"
+   ]
+  },
+  {
+   "title": "Nykaa SDE-2 interview experience (Code360, Mar 2023)",
+   "url": "https://www.naukri.com/code360/interview-experiences/nykaa/interview-experience-mar-2023-exp-0-2-years-2",
+   "used": [
+    "SDE-2 coding + system design"
+   ]
+  },
+  {
+   "title": "Glassdoor: Nykaa interview report, Bengaluru (Sep 2024)",
+   "url": "https://www.glassdoor.co.nz/Interview/Nykaa-Interview-E3950094-RVW91327761.htm",
+   "used": [
+    "DSA, LLD, HLD 3-round loop"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "SDE-1 through SDE-3 all have multiple independent reports; Senior Software Engineer is named but not detailed.",
+ "indiaNote": "Reports come from Delhi/NCR and Bengaluru offices."
+}

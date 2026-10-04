@@ -1,0 +1,81 @@
+{
+ "id": "cisco",
+ "name": "Cisco",
+ "tier": null,
+ "roles": [
+  "Software Engineer II",
+  "Software Engineer IV (senior)"
+ ],
+ "roleGuidance": {
+  "Software Engineer II": {
+   "dsaDepth": "Moderate — 3 technical rounds plus managerial and HR, leaning on core CS fundamentals (C, networking, OS) alongside DSA",
+   "rounds": [
+    "3 technical rounds: coding (linked list and other DSA), networking fundamentals, OS concepts, past-experience discussion",
+    "1 managerial round",
+    "2 HR rounds"
+   ],
+   "extraTopics": [
+    "Networking fundamentals — expected given Cisco’s core business",
+    "C-language proficiency and OS concepts alongside DSA"
+   ],
+   "focusPatterns": null,
+   "notes": "One Bengaluru report describes this full loop completed in a single day (~5 hours) with a 95% reported pass rate for that cohort."
+  },
+  "Software Engineer IV (senior)": {
+   "dsaDepth": "Moderate — an HR screen, then a multi-stage onsite panel including engineering leadership",
+   "rounds": [
+    "HR contact for screening",
+    "Panel interviews with Director of Engineering, Hiring Manager, Senior Engineer, VP of Operations, and HR Manager (2+ engineers per round)",
+    "Earlier stages: a phone screen with basic C coding/OS questions, then a C-programming phone interview"
+   ],
+   "extraTopics": [
+    "C programming and OS/computer-architecture/assembly fundamentals across up to 6 video interviews",
+    "Engaging with senior leadership (VP-level) as part of the standard loop, not just an exception"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Software Engineer II",
+   "title": "Software Engineer II",
+   "experience": "Entry–early career (campus and lateral)"
+  },
+  {
+   "level": "Software Engineer",
+   "title": "Software Engineer",
+   "experience": "Mid level"
+  },
+  {
+   "level": "Software Engineer IV",
+   "title": "Senior/Staff-equivalent Software Engineer",
+   "notes": "Higher IC title seen in reports"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (networking / infrastructure)",
+  "Systems / Firmware Engineer"
+ ],
+ "sources": [
+  {
+   "title": "Cisco Software Engineer II Interview Experience, Bengaluru (Taro)",
+   "url": "https://www.jointaro.com/interviews/companies/cisco/experiences/software-engineer-ii-bengaluru-april-1-2016-accepted-offer-positive-7f54eedb/",
+   "used": [
+    "3 technical + 1 managerial + 2 HR rounds, topics tested, 95% pass-rate stat"
+   ]
+  },
+  {
+   "title": "Cisco Software Engineer IV Interview Experience, Pune (Taro)",
+   "url": "https://www.jointaro.com/interviews/companies/cisco/work-experiences/software-engineer-iv-pune-july-17-2022-5-42fd61a5",
+   "used": [
+    "senior-level loop: phone screens then 6 video interviews with engineering leadership"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "low",
+ "rolesNotes": "Only two detailed reports were reviewed (one entry-level, one senior), both from the same aggregator — treat as indicative of Cisco’s general pattern rather than broadly cross-verified.",
+ "indiaNote": "Reports reviewed are from Bengaluru and Pune Cisco offices."
+}

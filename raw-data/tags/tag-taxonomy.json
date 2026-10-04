@@ -1,0 +1,2662 @@
+{
+ "version": 1,
+ "purpose": "Seed taxonomy. name = canonical display name; aliases fold into it. Everything in `aliases` is an alternative spelling that appears in Atlas data. `decision: needs-review` items need an owner decision (see docs/02_TASK_SPEC.md section 6).",
+ "slug_rule": "NFKD-normalise, strip diacritics, drop apostrophes, lower-case, every other non-alphanumeric run becomes one hyphen. legacy_slug is what the existing company/pattern pages use today (apostrophes became \"-s-\", diacritics were dropped, e.g. b-zout-s-lemma) - keep it so old URLs can be redirected.",
+ "tags": [
+  {
+   "name": "Array",
+   "slug": "array",
+   "legacy_slug": "array",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1878
+  },
+  {
+   "name": "String",
+   "slug": "string",
+   "legacy_slug": "string",
+   "kind": "lc-topic",
+   "aliases": [
+    "String Manipulation"
+   ],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 754
+  },
+  {
+   "name": "Hash Table",
+   "slug": "hash-table",
+   "legacy_slug": "hash-table",
+   "kind": "lc-topic",
+   "aliases": [
+    "Hashing"
+   ],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 706
+  },
+  {
+   "name": "Math",
+   "slug": "math",
+   "legacy_slug": "math",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 595
+  },
+  {
+   "name": "Dynamic Programming",
+   "slug": "dynamic-programming",
+   "legacy_slug": "dynamic-programming",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 586
+  },
+  {
+   "name": "Sorting",
+   "slug": "sorting",
+   "legacy_slug": "sorting",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 452
+  },
+  {
+   "name": "Greedy",
+   "slug": "greedy",
+   "legacy_slug": "greedy",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 418
+  },
+  {
+   "name": "Binary Search",
+   "slug": "binary-search",
+   "legacy_slug": "binary-search",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 290
+  },
+  {
+   "name": "Depth-First Search",
+   "slug": "depth-first-search",
+   "legacy_slug": "depth-first-search",
+   "kind": "lc-topic",
+   "aliases": [
+    "DFS"
+   ],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 262
+  },
+  {
+   "name": "Bit Manipulation",
+   "slug": "bit-manipulation",
+   "legacy_slug": "bit-manipulation",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 256
+  },
+  {
+   "name": "Matrix",
+   "slug": "matrix",
+   "legacy_slug": "matrix",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 234
+  },
+  {
+   "name": "Prefix Sum",
+   "slug": "prefix-sum",
+   "legacy_slug": "prefix-sum",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 234
+  },
+  {
+   "name": "Two Pointers",
+   "slug": "two-pointers",
+   "legacy_slug": "two-pointers",
+   "kind": "lc-topic",
+   "aliases": [
+    "Two Pointer"
+   ],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 212
+  },
+  {
+   "name": "Breadth-First Search",
+   "slug": "breadth-first-search",
+   "legacy_slug": "breadth-first-search",
+   "kind": "lc-topic",
+   "aliases": [
+    "BFS"
+   ],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 204
+  },
+  {
+   "name": "Tree",
+   "slug": "tree",
+   "legacy_slug": "tree",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 198
+  },
+  {
+   "name": "Simulation",
+   "slug": "simulation",
+   "legacy_slug": "simulation",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 196
+  },
+  {
+   "name": "Counting",
+   "slug": "counting",
+   "legacy_slug": "counting",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 183
+  },
+  {
+   "name": "Heap (Priority Queue)",
+   "slug": "heap-priority-queue",
+   "legacy_slug": "heap-priority-queue",
+   "kind": "lc-topic",
+   "aliases": [
+    "Heap / Priority Queue",
+    "Heaps / Priority Queue"
+   ],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 182
+  },
+  {
+   "name": "DFS on Trees",
+   "slug": "dfs-on-trees",
+   "legacy_slug": null,
+   "kind": "atlas-technique",
+   "aliases": [],
+   "origins": [
+    "atlas-pattern"
+   ],
+   "decision": "kept",
+   "note": "Atlas-curated technique variant with no LeetCode equivalent [Owner decision applied: kept as its own tag - see integration report.]",
+   "suggested_action": "Always co-occurs with Depth-First Search + Tree (143/143). Derived compound. Recommend: drop, or keep only as an optional display tag.",
+   "problem_count": 155
+  },
+  {
+   "name": "Graph Theory",
+   "slug": "graph-theory",
+   "legacy_slug": "graph-theory",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 148
+  },
+  {
+   "name": "Stack",
+   "slug": "stack",
+   "legacy_slug": "stack",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 147
+  },
+  {
+   "name": "Sliding Window",
+   "slug": "sliding-window",
+   "legacy_slug": "sliding-window",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 143
+  },
+  {
+   "name": "Enumeration",
+   "slug": "enumeration",
+   "legacy_slug": "enumeration",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 142
+  },
+  {
+   "name": "Binary Tree",
+   "slug": "binary-tree",
+   "legacy_slug": "binary-tree",
+   "kind": "lc-topic",
+   "aliases": [
+    "Binary Trees"
+   ],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 132
+  },
+  {
+   "name": "String DP",
+   "slug": "string-dp",
+   "legacy_slug": null,
+   "kind": "atlas-technique",
+   "aliases": [],
+   "origins": [
+    "atlas-pattern"
+   ],
+   "decision": "kept",
+   "note": "Atlas-curated technique variant with no LeetCode equivalent [Owner decision applied: kept as its own tag - see integration report.]",
+   "suggested_action": "Always co-occurs with Dynamic Programming + String (118/118). Derived compound. Recommend: drop, or keep only as an optional display tag.",
+   "problem_count": 130
+  },
+  {
+   "name": "Design",
+   "slug": "design",
+   "legacy_slug": "design",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 104
+  },
+  {
+   "name": "Backtracking",
+   "slug": "backtracking",
+   "legacy_slug": "backtracking",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 93
+  },
+  {
+   "name": "Number Theory",
+   "slug": "number-theory",
+   "legacy_slug": "number-theory",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 92
+  },
+  {
+   "name": "Union-Find",
+   "slug": "union-find",
+   "legacy_slug": "union-find",
+   "kind": "lc-topic",
+   "aliases": [
+    "Union Find / DSU"
+   ],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 83
+  },
+  {
+   "name": "Linked List",
+   "slug": "linked-list",
+   "legacy_slug": "linked-list",
+   "kind": "lc-topic",
+   "aliases": [
+    "Linked Lists"
+   ],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 70
+  },
+  {
+   "name": "Segment Tree",
+   "slug": "segment-tree",
+   "legacy_slug": "segment-tree",
+   "kind": "lc-topic",
+   "aliases": [
+    "Segment Trees"
+   ],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 70
+  },
+  {
+   "name": "BFS on Trees",
+   "slug": "bfs-on-trees",
+   "legacy_slug": null,
+   "kind": "atlas-technique",
+   "aliases": [],
+   "origins": [
+    "atlas-pattern"
+   ],
+   "decision": "kept",
+   "note": "Atlas-curated technique variant with no LeetCode equivalent [Owner decision applied: kept as its own tag - see integration report.]",
+   "suggested_action": "Always co-occurs with Breadth-First Search + Tree (64/64). Derived compound. Recommend: drop, or keep only as an optional display tag.",
+   "problem_count": 64
+  },
+  {
+   "name": "Ordered Set",
+   "slug": "ordered-set",
+   "legacy_slug": "ordered-set",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 64
+  },
+  {
+   "name": "Divide and Conquer",
+   "slug": "divide-and-conquer",
+   "legacy_slug": "divide-and-conquer",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 58
+  },
+  {
+   "name": "Monotonic Stack",
+   "slug": "monotonic-stack",
+   "legacy_slug": "monotonic-stack",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 58
+  },
+  {
+   "name": "Combinatorics",
+   "slug": "combinatorics",
+   "legacy_slug": "combinatorics",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 54
+  },
+  {
+   "name": "Bitmask",
+   "slug": "bitmask",
+   "legacy_slug": "bitmask",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 47
+  },
+  {
+   "name": "Trie",
+   "slug": "trie",
+   "legacy_slug": "trie",
+   "kind": "lc-topic",
+   "aliases": [
+    "Tries"
+   ],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 47
+  },
+  {
+   "name": "Bitmask DP",
+   "slug": "bitmask-dp",
+   "legacy_slug": null,
+   "kind": "atlas-technique",
+   "aliases": [],
+   "origins": [
+    "atlas-pattern"
+   ],
+   "decision": "kept",
+   "note": "Atlas-curated technique variant with no LeetCode equivalent [Owner decision applied: kept as its own tag - see integration report.]",
+   "suggested_action": "Always co-occurs with Bitmask + Dynamic Programming (40/40). Derived compound. Recommend: drop, or keep only as an optional display tag.",
+   "problem_count": 45
+  },
+  {
+   "name": "DP on Trees",
+   "slug": "dp-on-trees",
+   "legacy_slug": "dp-on-trees",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 45
+  },
+  {
+   "name": "Queue",
+   "slug": "queue",
+   "legacy_slug": "queue",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 45
+  },
+  {
+   "name": "Recursion",
+   "slug": "recursion",
+   "legacy_slug": "recursion",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 45
+  },
+  {
+   "name": "Memoization",
+   "slug": "memoization",
+   "legacy_slug": "memoization",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 44
+  },
+  {
+   "name": "Geometry",
+   "slug": "geometry",
+   "legacy_slug": "geometry",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 40
+  },
+  {
+   "name": "JavaScript",
+   "slug": "javascript",
+   "legacy_slug": null,
+   "kind": "atlas-section",
+   "aliases": [],
+   "origins": [
+    "manual"
+   ],
+   "decision": "proposed",
+   "note": "Proposed. Marks the 37 \"30 Days of JavaScript\" problems, for which LeetCode lists no topics. Not a LeetCode topic.",
+   "problem_count": 37
+  },
+  {
+   "name": "Binary Indexed Tree",
+   "slug": "binary-indexed-tree",
+   "legacy_slug": "binary-indexed-tree",
+   "kind": "lc-topic",
+   "aliases": [
+    "Fenwick Tree"
+   ],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 35
+  },
+  {
+   "name": "Binary Search Tree",
+   "slug": "binary-search-tree",
+   "legacy_slug": "binary-search-tree",
+   "kind": "lc-topic",
+   "aliases": [
+    "BST"
+   ],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 33
+  },
+  {
+   "name": "Hash Function",
+   "slug": "hash-function",
+   "legacy_slug": "hash-function",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 33
+  },
+  {
+   "name": "String Matching",
+   "slug": "string-matching",
+   "legacy_slug": "string-matching",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 33
+  },
+  {
+   "name": "Shortest Path",
+   "slug": "shortest-path",
+   "legacy_slug": "shortest-path",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 31
+  },
+  {
+   "name": "Topological Sort",
+   "slug": "topological-sort",
+   "legacy_slug": "topological-sort",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 30
+  },
+  {
+   "name": "Game Theory",
+   "slug": "game-theory",
+   "legacy_slug": "game-theory",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 26
+  },
+  {
+   "name": "Rolling Hash",
+   "slug": "rolling-hash",
+   "legacy_slug": "rolling-hash",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 26
+  },
+  {
+   "name": "Greatest Common Divisor",
+   "slug": "greatest-common-divisor",
+   "legacy_slug": "greatest-common-divisor",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 24
+  },
+  {
+   "name": "Euclidean Algorithm",
+   "slug": "euclidean-algorithm",
+   "legacy_slug": "euclidean-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 22
+  },
+  {
+   "name": "Monotonic Queue",
+   "slug": "monotonic-queue",
+   "legacy_slug": "monotonic-queue",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic",
+    "atlas-pattern"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 21
+  },
+  {
+   "name": "Brainteaser",
+   "slug": "brainteaser",
+   "legacy_slug": "brainteaser",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 18
+  },
+  {
+   "name": "Data Stream",
+   "slug": "data-stream",
+   "legacy_slug": "data-stream",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 16
+  },
+  {
+   "name": "Knapsack Problem",
+   "slug": "knapsack-problem",
+   "legacy_slug": "knapsack-problem",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 16
+  },
+  {
+   "name": "Bracket Sequences",
+   "slug": "bracket-sequences",
+   "legacy_slug": "bracket-sequences",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 15
+  },
+  {
+   "name": "Minimax",
+   "slug": "minimax",
+   "legacy_slug": "minimax",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 15
+  },
+  {
+   "name": "Directed Acyclic Graph",
+   "slug": "directed-acyclic-graph",
+   "legacy_slug": "directed-acyclic-graph",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 14
+  },
+  {
+   "name": "Dijkstra's Algorithm",
+   "slug": "dijkstras-algorithm",
+   "legacy_slug": "dijkstra-s-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 12
+  },
+  {
+   "name": "Longest Increasing Subsequence",
+   "slug": "longest-increasing-subsequence",
+   "legacy_slug": "longest-increasing-subsequence",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 12
+  },
+  {
+   "name": "Prime Factorization",
+   "slug": "prime-factorization",
+   "legacy_slug": "prime-factorization",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 12
+  },
+  {
+   "name": "Zero-Sum Game",
+   "slug": "zero-sum-game",
+   "legacy_slug": "zero-sum-game",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 12
+  },
+  {
+   "name": "Merge Sort",
+   "slug": "merge-sort",
+   "legacy_slug": "merge-sort",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 11
+  },
+  {
+   "name": "Randomized",
+   "slug": "randomized",
+   "legacy_slug": "randomized",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 11
+  },
+  {
+   "name": "Z Algorithm",
+   "slug": "z-algorithm",
+   "legacy_slug": "z-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 11
+  },
+  {
+   "name": "1D Arrays",
+   "slug": "1d-arrays",
+   "legacy_slug": null,
+   "kind": "atlas-section",
+   "aliases": [],
+   "origins": [
+    "atlas-topic"
+   ],
+   "decision": "kept",
+   "note": "Atlas roadmap / CP section label, not a LeetCode topic. Owner must decide: keep as its own tag kind, map to an LC tag, or drop from tags [Owner decision applied: kept as its own tag - see integration report.]",
+   "suggested_action": "Roadmap / CP-section label (Codeforces/CSES/Striver style). Not an LC topic. Recommend: keep as its own kind (atlas-section) and exclude from LeetCode-style pattern pages.",
+   "problem_count": 10
+  },
+  {
+   "name": "Doubly-Linked List",
+   "slug": "doubly-linked-list",
+   "legacy_slug": "doubly-linked-list",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 10
+  },
+  {
+   "name": "Fermat's Little Theorem",
+   "slug": "fermats-little-theorem",
+   "legacy_slug": "fermat-s-little-theorem",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 10
+  },
+  {
+   "name": "Knuth–Morris–Pratt Algorithm",
+   "slug": "knuth-morris-pratt-algorithm",
+   "legacy_slug": "knuth-morris-pratt-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 10
+  },
+  {
+   "name": "Primality Test",
+   "slug": "primality-test",
+   "legacy_slug": "primality-test",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 10
+  },
+  {
+   "name": "Sieve Theory",
+   "slug": "sieve-theory",
+   "legacy_slug": "sieve-theory",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 10
+  },
+  {
+   "name": "Async / Timers",
+   "slug": "async-timers",
+   "legacy_slug": null,
+   "kind": "atlas-section",
+   "aliases": [],
+   "origins": [
+    "manual"
+   ],
+   "decision": "proposed",
+   "note": "Proposed. Promises, async functions, setTimeout/setInterval (Sleep, Promise Time Limit, Interval Cancellation). Not a LeetCode topic.",
+   "problem_count": 9
+  },
+  {
+   "name": "Counting Sort",
+   "slug": "counting-sort",
+   "legacy_slug": "counting-sort",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 9
+  },
+  {
+   "name": "Higher-Order Functions",
+   "slug": "higher-order-functions",
+   "legacy_slug": null,
+   "kind": "atlas-section",
+   "aliases": [],
+   "origins": [
+    "manual"
+   ],
+   "decision": "proposed",
+   "note": "Proposed. Functions taking or returning functions (map/filter/reduce re-implementations, compose). Not a LeetCode topic.",
+   "problem_count": 9
+  },
+  {
+   "name": "0-1 Knapsack",
+   "slug": "0-1-knapsack",
+   "legacy_slug": "0-1-knapsack",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 8
+  },
+  {
+   "name": "Bipartite Graph",
+   "slug": "bipartite-graph",
+   "legacy_slug": "bipartite-graph",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 8
+  },
+  {
+   "name": "Closures",
+   "slug": "closures",
+   "legacy_slug": null,
+   "kind": "atlas-section",
+   "aliases": [],
+   "origins": [
+    "manual"
+   ],
+   "decision": "proposed",
+   "note": "Proposed. Functions that keep private state (Counter, Memoize, Debounce, Once). Not a LeetCode topic.",
+   "problem_count": 8
+  },
+  {
+   "name": "Quickselect",
+   "slug": "quickselect",
+   "legacy_slug": "quickselect",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 8
+  },
+  {
+   "name": "Basic Math for CP",
+   "slug": "basic-math-for-cp",
+   "legacy_slug": null,
+   "kind": "atlas-section",
+   "aliases": [],
+   "origins": [
+    "atlas-topic"
+   ],
+   "decision": "kept",
+   "note": "Atlas roadmap / CP section label, not a LeetCode topic. Owner must decide: keep as its own tag kind, map to an LC tag, or drop from tags [Owner decision applied: kept as its own tag - see integration report.]",
+   "suggested_action": "Roadmap / CP-section label (Codeforces/CSES/Striver style). Not an LC topic. Recommend: keep as its own kind (atlas-section) and exclude from LeetCode-style pattern pages.",
+   "problem_count": 7
+  },
+  {
+   "name": "Binary Lifting",
+   "slug": "binary-lifting",
+   "legacy_slug": "binary-lifting",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 7
+  },
+  {
+   "name": "Graph Algorithms",
+   "slug": "graph-algorithms",
+   "legacy_slug": null,
+   "kind": "atlas-section",
+   "aliases": [],
+   "origins": [
+    "atlas-topic"
+   ],
+   "decision": "kept",
+   "note": "Atlas roadmap / CP section label, not a LeetCode topic. Owner must decide: keep as its own tag kind, map to an LC tag, or drop from tags [Owner decision applied: kept as its own tag - see integration report.]",
+   "suggested_action": "Roadmap / CP-section label (Codeforces/CSES/Striver style). Not an LC topic. Recommend: keep as its own kind (atlas-section) and exclude from LeetCode-style pattern pages.",
+   "problem_count": 7
+  },
+  {
+   "name": "Iterator",
+   "slug": "iterator",
+   "legacy_slug": "iterator",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 7
+  },
+  {
+   "name": "Least Common Multiple",
+   "slug": "least-common-multiple",
+   "legacy_slug": "least-common-multiple",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 7
+  },
+  {
+   "name": "Prime Number Sieve",
+   "slug": "prime-number-sieve",
+   "legacy_slug": "prime-number-sieve",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 7
+  },
+  {
+   "name": "Suffix Array",
+   "slug": "suffix-array",
+   "legacy_slug": "suffix-array",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 7
+  },
+  {
+   "name": "Bidirectional Search",
+   "slug": "bidirectional-search",
+   "legacy_slug": "bidirectional-search",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 6
+  },
+  {
+   "name": "Boyer–Moore String-Search Algorithm",
+   "slug": "boyer-moore-string-search-algorithm",
+   "legacy_slug": "boyer-moore-string-search-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 6
+  },
+  {
+   "name": "Bucket Sort",
+   "slug": "bucket-sort",
+   "legacy_slug": "bucket-sort",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 6
+  },
+  {
+   "name": "Floyd's Cycle Finding Algorithm",
+   "slug": "floyds-cycle-finding-algorithm",
+   "legacy_slug": "floyd-s-cycle-finding-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 6
+  },
+  {
+   "name": "Longest Common Subsequence",
+   "slug": "longest-common-subsequence",
+   "legacy_slug": "longest-common-subsequence",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 6
+  },
+  {
+   "name": "Lowest Common Ancestor",
+   "slug": "lowest-common-ancestor",
+   "legacy_slug": "lowest-common-ancestor",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 6
+  },
+  {
+   "name": "Polygons",
+   "slug": "polygons",
+   "legacy_slug": "polygons",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 6
+  },
+  {
+   "name": "Quicksort",
+   "slug": "quicksort",
+   "legacy_slug": "quicksort",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 6
+  },
+  {
+   "name": "Sweep Line",
+   "slug": "sweep-line",
+   "legacy_slug": "sweep-line",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 6
+  },
+  {
+   "name": "Complete Knapsack",
+   "slug": "complete-knapsack",
+   "legacy_slug": "complete-knapsack",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 5
+  },
+  {
+   "name": "Graph Coloring",
+   "slug": "graph-coloring",
+   "legacy_slug": "graph-coloring",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 5
+  },
+  {
+   "name": "Interactive",
+   "slug": "interactive",
+   "legacy_slug": "interactive",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 5
+  },
+  {
+   "name": "Pigeonhole Principle",
+   "slug": "pigeonhole-principle",
+   "legacy_slug": "pigeonhole-principle",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 5
+  },
+  {
+   "name": "Probability and Statistics",
+   "slug": "probability-and-statistics",
+   "legacy_slug": "probability-and-statistics",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 5
+  },
+  {
+   "name": "Sorting and Searching",
+   "slug": "sorting-and-searching",
+   "legacy_slug": null,
+   "kind": "atlas-section",
+   "aliases": [],
+   "origins": [
+    "atlas-topic"
+   ],
+   "decision": "kept",
+   "note": "Atlas roadmap / CP section label, not a LeetCode topic. Owner must decide: keep as its own tag kind, map to an LC tag, or drop from tags [Owner decision applied: kept as its own tag - see integration report.]",
+   "suggested_action": "Roadmap / CP-section label (Codeforces/CSES/Striver style). Not an LC topic. Recommend: keep as its own kind (atlas-section) and exclude from LeetCode-style pattern pages.",
+   "problem_count": 5
+  },
+  {
+   "name": "Treap",
+   "slug": "treap",
+   "legacy_slug": "treap",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 5
+  },
+  {
+   "name": "Bubble Sort",
+   "slug": "bubble-sort",
+   "legacy_slug": "bubble-sort",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 4
+  },
+  {
+   "name": "Cartesian Tree",
+   "slug": "cartesian-tree",
+   "legacy_slug": "cartesian-tree",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 4
+  },
+  {
+   "name": "Flow Network",
+   "slug": "flow-network",
+   "legacy_slug": "flow-network",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 4
+  },
+  {
+   "name": "Introductory",
+   "slug": "introductory",
+   "legacy_slug": null,
+   "kind": "atlas-section",
+   "aliases": [],
+   "origins": [
+    "atlas-topic"
+   ],
+   "decision": "kept",
+   "note": "Atlas roadmap / CP section label, not a LeetCode topic. Owner must decide: keep as its own tag kind, map to an LC tag, or drop from tags [Owner decision applied: kept as its own tag - see integration report.]",
+   "suggested_action": "Roadmap / CP-section label (Codeforces/CSES/Striver style). Not an LC topic. Recommend: keep as its own kind (atlas-section) and exclude from LeetCode-style pattern pages.",
+   "problem_count": 4
+  },
+  {
+   "name": "Kosaraju's Algorithm",
+   "slug": "kosarajus-algorithm",
+   "legacy_slug": "kosaraju-s-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 4
+  },
+  {
+   "name": "Matching (Graph)",
+   "slug": "matching-graph",
+   "legacy_slug": "matching-graph",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 4
+  },
+  {
+   "name": "Meet in the Middle",
+   "slug": "meet-in-the-middle",
+   "legacy_slug": "meet-in-the-middle",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 4
+  },
+  {
+   "name": "Reservoir Sampling",
+   "slug": "reservoir-sampling",
+   "legacy_slug": "reservoir-sampling",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 4
+  },
+  {
+   "name": "Successive Shortest Path Algorithm",
+   "slug": "successive-shortest-path-algorithm",
+   "legacy_slug": "successive-shortest-path-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 4
+  },
+  {
+   "name": "Tarjan's SCC Algorithm",
+   "slug": "tarjans-scc-algorithm",
+   "legacy_slug": "tarjan-s-scc-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 4
+  },
+  {
+   "name": "Algorithm X",
+   "slug": "algorithm-x",
+   "legacy_slug": "algorithm-x",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 3
+  },
+  {
+   "name": "Boyer–Moore Majority Vote Algorithm",
+   "slug": "boyer-moore-majority-vote-algorithm",
+   "legacy_slug": "boyer-moore-majority-vote-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 3
+  },
+  {
+   "name": "Eulerian Circuit",
+   "slug": "eulerian-circuit",
+   "legacy_slug": "eulerian-circuit",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 3
+  },
+  {
+   "name": "Eulerian Path",
+   "slug": "eulerian-path",
+   "legacy_slug": "eulerian-path",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 3
+  },
+  {
+   "name": "Generators",
+   "slug": "generators",
+   "legacy_slug": null,
+   "kind": "atlas-section",
+   "aliases": [],
+   "origins": [
+    "manual"
+   ],
+   "decision": "proposed",
+   "note": "Proposed. JavaScript generator functions / yield (Fibonacci generator, Nested Array Generator, Cancellable). Not a LeetCode topic.",
+   "problem_count": 3
+  },
+  {
+   "name": "Hungarian Algorithm",
+   "slug": "hungarian-algorithm",
+   "legacy_slug": "hungarian-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 3
+  },
+  {
+   "name": "Impartial Game",
+   "slug": "impartial-game",
+   "legacy_slug": "impartial-game",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 3
+  },
+  {
+   "name": "Inclusion-Exclusion Principle",
+   "slug": "inclusion-exclusion-principle",
+   "legacy_slug": "inclusion-exclusion-principle",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 3
+  },
+  {
+   "name": "Manacher",
+   "slug": "manacher",
+   "legacy_slug": "manacher",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 3
+  },
+  {
+   "name": "Minimum Spanning Tree",
+   "slug": "minimum-spanning-tree",
+   "legacy_slug": "minimum-spanning-tree",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 3
+  },
+  {
+   "name": "Nim Game",
+   "slug": "nim-game",
+   "legacy_slug": "nim-game",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 3
+  },
+  {
+   "name": "Radix Sort",
+   "slug": "radix-sort",
+   "legacy_slug": "radix-sort",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 3
+  },
+  {
+   "name": "Sqrt Decomposition",
+   "slug": "sqrt-decomposition",
+   "legacy_slug": "sqrt-decomposition",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 3
+  },
+  {
+   "name": "String Algorithms",
+   "slug": "string-algorithms",
+   "legacy_slug": null,
+   "kind": "atlas-section",
+   "aliases": [],
+   "origins": [
+    "atlas-topic"
+   ],
+   "decision": "kept",
+   "note": "Atlas roadmap / CP section label, not a LeetCode topic. Owner must decide: keep as its own tag kind, map to an LC tag, or drop from tags [Owner decision applied: kept as its own tag - see integration report.]",
+   "suggested_action": "Roadmap / CP-section label (Codeforces/CSES/Striver style). Not an LC topic. Recommend: keep as its own kind (atlas-section) and exclude from LeetCode-style pattern pages.",
+   "problem_count": 3
+  },
+  {
+   "name": "Suffix Automaton",
+   "slug": "suffix-automaton",
+   "legacy_slug": "suffix-automaton",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 3
+  },
+  {
+   "name": "Suffix Tree",
+   "slug": "suffix-tree",
+   "legacy_slug": "suffix-tree",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 3
+  },
+  {
+   "name": "0-1 BFS",
+   "slug": "0-1-bfs",
+   "legacy_slug": "0-1-bfs",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 2
+  },
+  {
+   "name": "A* Search",
+   "slug": "a-search",
+   "legacy_slug": "a-search",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 2
+  },
+  {
+   "name": "Bellman–Ford Algorithm",
+   "slug": "bellman-ford-algorithm",
+   "legacy_slug": "bellman-ford-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 2
+  },
+  {
+   "name": "Bézout's Lemma",
+   "slug": "bezouts-lemma",
+   "legacy_slug": "b-zout-s-lemma",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 2
+  },
+  {
+   "name": "Borůvka's Algorithm",
+   "slug": "boruvkas-algorithm",
+   "legacy_slug": "bor-vka-s-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 2
+  },
+  {
+   "name": "Brute-Force Search",
+   "slug": "brute-force-search",
+   "legacy_slug": "brute-force-search",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 2
+  },
+  {
+   "name": "Extended Euclidean Algorithm",
+   "slug": "extended-euclidean-algorithm",
+   "legacy_slug": "extended-euclidean-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 2
+  },
+  {
+   "name": "Floyd–Warshall Algorithm",
+   "slug": "floyd-warshall-algorithm",
+   "legacy_slug": "floyd-warshall-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 2
+  },
+  {
+   "name": "Hamiltonian Path",
+   "slug": "hamiltonian-path",
+   "legacy_slug": "hamiltonian-path",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 2
+  },
+  {
+   "name": "Heuristic Search",
+   "slug": "heuristic-search",
+   "legacy_slug": "heuristic-search",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 2
+  },
+  {
+   "name": "Kruskal's Algorithm",
+   "slug": "kruskals-algorithm",
+   "legacy_slug": "kruskal-s-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 2
+  },
+  {
+   "name": "Loops & Patterns",
+   "slug": "loops-patterns",
+   "legacy_slug": null,
+   "kind": "atlas-section",
+   "aliases": [],
+   "origins": [
+    "atlas-topic"
+   ],
+   "decision": "kept",
+   "note": "Atlas roadmap / CP section label, not a LeetCode topic. Owner must decide: keep as its own tag kind, map to an LC tag, or drop from tags [Owner decision applied: kept as its own tag - see integration report.]",
+   "suggested_action": "Roadmap / CP-section label (Codeforces/CSES/Striver style). Not an LC topic. Recommend: keep as its own kind (atlas-section) and exclude from LeetCode-style pattern pages.",
+   "problem_count": 2
+  },
+  {
+   "name": "Minimum-Cost Flow",
+   "slug": "minimum-cost-flow",
+   "legacy_slug": "minimum-cost-flow",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 2
+  },
+  {
+   "name": "Multiple Knapsack",
+   "slug": "multiple-knapsack",
+   "legacy_slug": null,
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "LeetCode topic; NOT one of the 170 existing pattern pages",
+   "problem_count": 2
+  },
+  {
+   "name": "Perfect Matching",
+   "slug": "perfect-matching",
+   "legacy_slug": "perfect-matching",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 2
+  },
+  {
+   "name": "Prim's Algorithm",
+   "slug": "prims-algorithm",
+   "legacy_slug": "prim-s-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 2
+  },
+  {
+   "name": "Range Minimum/Maximum Query",
+   "slug": "range-minimum-maximum-query",
+   "legacy_slug": "range-minimum-maximum-query",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 2
+  },
+  {
+   "name": "Semi-Eulerian Graph",
+   "slug": "semi-eulerian-graph",
+   "legacy_slug": "semi-eulerian-graph",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 2
+  },
+  {
+   "name": "Strongly Connected Component",
+   "slug": "strongly-connected-component",
+   "legacy_slug": "strongly-connected-component",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 2
+  },
+  {
+   "name": "Ternary Search",
+   "slug": "ternary-search",
+   "legacy_slug": "ternary-search",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 2
+  },
+  {
+   "name": "Tree Algorithms",
+   "slug": "tree-algorithms",
+   "legacy_slug": null,
+   "kind": "atlas-section",
+   "aliases": [],
+   "origins": [
+    "atlas-topic"
+   ],
+   "decision": "kept",
+   "note": "Atlas roadmap / CP section label, not a LeetCode topic. Owner must decide: keep as its own tag kind, map to an LC tag, or drop from tags [Owner decision applied: kept as its own tag - see integration report.]",
+   "suggested_action": "Roadmap / CP-section label (Codeforces/CSES/Striver style). Not an LC topic. Recommend: keep as its own kind (atlas-section) and exclude from LeetCode-style pattern pages.",
+   "problem_count": 2
+  },
+  {
+   "name": "2D DP",
+   "slug": "2d-dp",
+   "legacy_slug": null,
+   "kind": "atlas-section",
+   "aliases": [],
+   "origins": [
+    "atlas-topic"
+   ],
+   "decision": "kept",
+   "note": "Atlas roadmap / CP section label, not a LeetCode topic. Owner must decide: keep as its own tag kind, map to an LC tag, or drop from tags [Owner decision applied: kept as its own tag - see integration report.]",
+   "suggested_action": "Roadmap / CP-section label (Codeforces/CSES/Striver style). Not an LC topic. Recommend: keep as its own kind (atlas-section) and exclude from LeetCode-style pattern pages.",
+   "problem_count": 1
+  },
+  {
+   "name": "Aho–Corasick Algorithm",
+   "slug": "aho-corasick-algorithm",
+   "legacy_slug": "aho-corasick-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Articulation Point",
+   "slug": "articulation-point",
+   "legacy_slug": "articulation-point",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Biconnected Component",
+   "slug": "biconnected-component",
+   "legacy_slug": "biconnected-component",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Bridge (Graph)",
+   "slug": "bridge-graph",
+   "legacy_slug": "bridge-graph",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Convex Hull",
+   "slug": "convex-hull",
+   "legacy_slug": "convex-hull",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Dancing Links",
+   "slug": "dancing-links",
+   "legacy_slug": "dancing-links",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Dinic's Algorithm",
+   "slug": "dinics-algorithm",
+   "legacy_slug": "dinic-s-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Edmonds–Karp Algorithm",
+   "slug": "edmonds-karp-algorithm",
+   "legacy_slug": "edmonds-karp-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Euler's Theorem",
+   "slug": "eulers-theorem",
+   "legacy_slug": "euler-s-theorem",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Euler's Totient Function",
+   "slug": "eulers-totient-function",
+   "legacy_slug": "euler-s-totient-function",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Eulerian Graph",
+   "slug": "eulerian-graph",
+   "legacy_slug": "eulerian-graph",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "K Shortest Path",
+   "slug": "k-shortest-path",
+   "legacy_slug": "k-shortest-path",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "K-D Tree",
+   "slug": "k-d-tree",
+   "legacy_slug": "k-d-tree",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Lexicographically Minimal String Rotation",
+   "slug": "lexicographically-minimal-string-rotation",
+   "legacy_slug": "lexicographically-minimal-string-rotation",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Li Chao Tree",
+   "slug": "li-chao-tree",
+   "legacy_slug": null,
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "manual"
+   ],
+   "decision": "proposed",
+   "note": "LeetCode topic name present in the doocs/leetcode mirror but absent from the liquidslr snapshot and the seed taxonomy. Proposed as a real LC topic.",
+   "problem_count": 1
+  },
+  {
+   "name": "Linear Algebra",
+   "slug": "linear-algebra",
+   "legacy_slug": "linear-algebra",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Lyndon Factorization",
+   "slug": "lyndon-factorization",
+   "legacy_slug": "lyndon-factorization",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Maximum Flow",
+   "slug": "maximum-flow",
+   "legacy_slug": "maximum-flow",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Maximum Matching",
+   "slug": "maximum-matching",
+   "legacy_slug": "maximum-matching",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Minimum Cut",
+   "slug": "minimum-cut",
+   "legacy_slug": "minimum-cut",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Mixed Knapsack",
+   "slug": "mixed-knapsack",
+   "legacy_slug": "mixed-knapsack",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "MPM Algorithm",
+   "slug": "mpm-algorithm",
+   "legacy_slug": "mpm-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Newton's Method",
+   "slug": "newtons-method",
+   "legacy_slug": "newton-s-method",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Palindromic Tree",
+   "slug": "palindromic-tree",
+   "legacy_slug": null,
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "manual"
+   ],
+   "decision": "proposed",
+   "note": "LeetCode topic name present in the doocs/leetcode mirror but absent from the liquidslr snapshot and the seed taxonomy. Proposed as a real LC topic.",
+   "problem_count": 1
+  },
+  {
+   "name": "Persistent Data Structure",
+   "slug": "persistent-data-structure",
+   "legacy_slug": "persistent-data-structure",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Planar Graph",
+   "slug": "planar-graph",
+   "legacy_slug": "planar-graph",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Push-Relabel Algorithm",
+   "slug": "push-relabel-algorithm",
+   "legacy_slug": "push-relabel-algorithm",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Recursion Basics",
+   "slug": "recursion-basics",
+   "legacy_slug": null,
+   "kind": "atlas-section",
+   "aliases": [],
+   "origins": [
+    "atlas-topic"
+   ],
+   "decision": "kept",
+   "note": "Atlas roadmap / CP section label, not a LeetCode topic. Owner must decide: keep as its own tag kind, map to an LC tag, or drop from tags [Owner decision applied: kept as its own tag - see integration report.]",
+   "suggested_action": "Roadmap / CP-section label (Codeforces/CSES/Striver style). Not an LC topic. Recommend: keep as its own kind (atlas-section) and exclude from LeetCode-style pattern pages.",
+   "problem_count": 1
+  },
+  {
+   "name": "Rejection Sampling",
+   "slug": "rejection-sampling",
+   "legacy_slug": "rejection-sampling",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Sort",
+   "slug": "sort",
+   "legacy_slug": "sort",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc",
+    "atlas-topic"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Sparse Table",
+   "slug": "sparse-table",
+   "legacy_slug": null,
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "LeetCode topic; NOT one of the 170 existing pattern pages",
+   "problem_count": 1
+  },
+  {
+   "name": "Sprague–Grundy Theorem",
+   "slug": "sprague-grundy-theorem",
+   "legacy_slug": "sprague-grundy-theorem",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Timsort",
+   "slug": "timsort",
+   "legacy_slug": "timsort",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Tournament Sort",
+   "slug": "tournament-sort",
+   "legacy_slug": "tournament-sort",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Triangulation",
+   "slug": "triangulation",
+   "legacy_slug": "triangulation",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 1
+  },
+  {
+   "name": "Concurrency",
+   "slug": "concurrency",
+   "legacy_slug": "concurrency",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 0
+  },
+  {
+   "name": "Database",
+   "slug": "database",
+   "legacy_slug": "database",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 0
+  },
+  {
+   "name": "Minimum Enclosing Circle",
+   "slug": "minimum-enclosing-circle",
+   "legacy_slug": "minimum-enclosing-circle",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 0
+  },
+  {
+   "name": "Nearest Pair of Points",
+   "slug": "nearest-pair-of-points",
+   "legacy_slug": null,
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "LeetCode topic; NOT one of the 170 existing pattern pages",
+   "problem_count": 0
+  },
+  {
+   "name": "Shell",
+   "slug": "shell",
+   "legacy_slug": "shell",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 0
+  },
+  {
+   "name": "Splay Tree",
+   "slug": "splay-tree",
+   "legacy_slug": "splay-tree",
+   "kind": "lc-topic",
+   "aliases": [],
+   "origins": [
+    "lc"
+   ],
+   "decision": "auto",
+   "note": "",
+   "problem_count": 0
+  }
+ ]
+}

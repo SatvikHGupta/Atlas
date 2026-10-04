@@ -1,0 +1,137 @@
+{
+ "id": "apple",
+ "name": "Apple",
+ "tier": null,
+ "roles": [
+  "ICT2 (new grad)",
+  "ICT3",
+  "ICT4 Senior",
+  "ICT5 Staff"
+ ],
+ "roleGuidance": {
+  "ICT2 (new grad)": {
+   "dsaDepth": "Moderate–Heavy — team-dependent coding plus domain depth",
+   "rounds": [
+    "Recruiter screen",
+    "Technical phone screen(s)",
+    "Onsite/virtual day of several back-to-back interviews with the team"
+   ],
+   "extraTopics": [
+    "Depth in the team’s domain (iOS/Swift, backend, systems, ML)",
+    "Project deep-dives"
+   ],
+   "focusPatterns": null
+  },
+  "ICT3": {
+   "dsaDepth": "Moderate–Heavy — team-dependent coding plus domain depth",
+   "rounds": [
+    "Recruiter screen",
+    "Technical phone screen(s)",
+    "Several back-to-back team interviews"
+   ],
+   "extraTopics": [
+    "Domain depth for the team",
+    "Project deep-dives"
+   ],
+   "focusPatterns": null
+  },
+  "ICT4 Senior": {
+   "dsaDepth": "Moderate — domain depth and design carry more weight",
+   "rounds": [
+    "Recruiter screen",
+    "Technical screens",
+    "Long interview day with many team members (reports mention 6–8 sessions over about 6 hours)"
+   ],
+   "extraTopics": [
+    "Domain depth (systems, security, ML, mobile)",
+    "Design discussions",
+    "Cross-functional collaboration"
+   ],
+   "focusPatterns": null
+  },
+  "ICT5 Staff": {
+   "dsaDepth": "Light–Moderate — technical mastery, leadership and past impact",
+   "rounds": [
+    "Recruiter screen",
+    "Technical screens",
+    "Extended on-site loop with technical leads and cross-functional partners"
+   ],
+   "extraTopics": [
+    "Technical mastery in a specialised domain",
+    "Ownership across hardware/software/design teams"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "ICT2",
+   "title": "Software Engineer (entry level)",
+   "experience": "New grad",
+   "notes": "Most new graduates join here"
+  },
+  {
+   "level": "ICT3",
+   "title": "Software Engineer (intermediate)",
+   "experience": "Early-career"
+  },
+  {
+   "level": "ICT4",
+   "title": "Senior Software Engineer",
+   "experience": "3–5 yrs (as reported)",
+   "notes": "Sources differ on years and exact titles"
+  },
+  {
+   "level": "ICT5",
+   "title": "Staff Software Engineer / tech lead"
+  },
+  {
+   "level": "ICT6",
+   "title": "Principal / Senior Principal Engineer",
+   "notes": "Top of the individual-contributor ladder in these sources"
+  }
+ ],
+ "roleFamilies": [
+  "iOS / macOS applications",
+  "Backend / cloud services",
+  "Machine Learning / AI",
+  "Software QA",
+  "Firmware / systems"
+ ],
+ "sources": [
+  {
+   "title": "Software Engineer Job Levels at Apple (Interview Kickstart)",
+   "url": "https://interviewkickstart.com/blogs/articles/apple-software-engineer-job-levels",
+   "used": [
+    "ICT levels, interview stages"
+   ]
+  },
+  {
+   "title": "Apple technical hierarchy (NetworkInterview)",
+   "url": "https://networkinterview.com/apple-technical-hierarchy/",
+   "used": [
+    "level descriptions"
+   ]
+  },
+  {
+   "title": "Apple ICT5 Staff Software Engineer Interview Guide (Exponent)",
+   "url": "https://www.tryexponent.com/guides/apple-staff-software-engineer-interview",
+   "used": [
+    "ICT5 expectations"
+   ]
+  },
+  {
+   "title": "Apple job roles for freshers (PlacementPreparation)",
+   "url": "https://www.placementpreparation.io/apple/job-roles/",
+   "used": [
+    "fresher roles and ICT path"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "low",
+ "rolesNotes": "Apple keeps its process team-specific and the cited sources differ on ICT4 years and titles, so this is the loosest of the big-tech ladders. Round details are from candidate-facing guides, not Apple.",
+ "indiaNote": "Fresher and early-career hiring is described as running through the ICT ladder (ICT2 to ICT5). Apple does not publish a fixed India fresher pay band, so treat any figures you see as reports, not official numbers."
+}

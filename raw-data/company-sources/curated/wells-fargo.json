@@ -1,0 +1,92 @@
+{
+ "id": "wells-fargo",
+ "name": "Wells Fargo",
+ "tier": null,
+ "roles": [
+  "SDE (India campus)",
+  "Senior Software Engineer"
+ ],
+ "roleGuidance": {
+  "SDE (India campus)": {
+   "dsaDepth": "Moderate — an OA (aptitude, verbal, coding) then 1-2 technical rounds and an HR round, with DBMS and OS fundamentals weighted alongside DSA",
+   "rounds": [
+    "Online assessment: aptitude, verbal reasoning, and coding questions (some pipelines add SQL, REST API and code-reading/debugging sections)",
+    "Technical round(s): DSA problems (often easy-medium, e.g. buy/sell stocks), OS fundamentals (process vs thread is a recurring question), DBMS, and project discussion — some loops split this into 2 rounds (one project-focused, one DBMS/critical-thinking-focused)",
+    "HR/behavioral round: cultural fit, communication, sometimes an emphasis on academic CGPA"
+   ],
+   "extraTopics": [
+    "OS fundamentals (process/thread, CPU layers) tested explicitly and repeatedly across reports",
+    "DBMS and critical-thinking questions in a dedicated round, not just folded into general technical discussion"
+   ],
+   "focusPatterns": null,
+   "notes": "India round counts vary from 2 to 4 across reports (Hyderabad, Bengaluru, Varanasi); one report describes a multi-month gap between rounds — the timeline can be notably slow."
+  },
+  "Senior Software Engineer": {
+   "dsaDepth": "Moderate — a HackerRank pre-screen, then a coding round and a managerial round; tech-stack-specific rounds (e.g. .NET/SQL for Microsoft-stack roles) appear for some teams",
+   "rounds": [
+    "Pre-screening HackerRank test",
+    "Technical round: 2 LeetCode-medium coding problems with an interviewer on the call, sometimes combined with OOP/high-level-design questions, multithreading and collections internals",
+    "Managerial round: past projects and managerial/behavioral questions",
+    "Some tech-stack-specific loops (e.g. Microsoft/.NET) add a technical round weighted toward OOP, .NET and SQL, then a manager round, then a director/business round"
+   ],
+   "extraTopics": [
+    "Multithreading and Java collections internals (hashCode/equals, collision handling) came up explicitly in one report",
+    "Application architecture discussion for more senior/stack-specific loops"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "SDE / Software Engineer",
+   "title": "Software Development Engineer, Software Engineer",
+   "experience": "Entry level (campus, incl. India)"
+  },
+  {
+   "level": "Senior Software Engineer",
+   "title": "Senior Software Engineer",
+   "experience": "Senior"
+  }
+ ],
+ "roleFamilies": [
+  "Software Development Engineer (banking platform)",
+  "Software Engineer (Microsoft/.NET stack)",
+  "Data Engineering"
+ ],
+ "sources": [
+  {
+   "title": "Wells Fargo Software Engineer interview guide (Interview Query)",
+   "url": "https://www.interviewquery.com/guides/wells-fargo-software-engineer",
+   "used": [
+    "8 candidate reports synthesized: assessment-first pattern, prompt examples, comp data ($100K base/$160K total avg)"
+   ]
+  },
+  {
+   "title": "Glassdoor: Wells Fargo Software Development Engineer (SDE) interview reports, Hyderabad",
+   "url": "https://www.glassdoor.fr/Entretien/Wells-Fargo-Entretien-E8876-RVW90309866.htm",
+   "used": [
+    "OA then 2 technical rounds (DSA + system design) then behavioral, India campus"
+   ]
+  },
+  {
+   "title": "Glassdoor: Wells Fargo Senior Software Engineer interview report, Bengaluru",
+   "url": "https://www.glassdoor.com.mx/Entrevista/Wells-Fargo-Entrevista-E8876-RVW54445283.htm",
+   "used": [
+    "HackerRank + 2-round senior loop, multithreading/collections focus"
+   ]
+  },
+  {
+   "title": "Glassdoor: Wells Fargo SDE Intern interview report",
+   "url": "https://www.glassdoor.com.ar/Entrevista/Wells-Fargo-Entrevista-E8876-RVW98955303.htm",
+   "used": [
+    "OA (aptitude+verbal+coding) then 1 technical round"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "SDE-level India loop and Senior-level US loop are each corroborated by several independent reports. Process length and round count vary noticeably between reports — one candidate reported a 3-4 month gap between rounds.",
+ "indiaNote": "Multiple detailed reports come from Hyderabad, Bengaluru and Varanasi campus/off-campus drives."
+}

@@ -1,0 +1,87 @@
+{
+ "id": "rubrik",
+ "name": "Rubrik",
+ "tier": null,
+ "roles": [
+  "Software Engineer"
+ ],
+ "roleGuidance": {
+  "Software Engineer": {
+   "dsaDepth": "Very Heavy — hard-rated DSA/OOP/distributed-systems problems across 3-6 rounds, with an extremely low pass rate reported for the Bengaluru pipeline (14% across tracked interviews) and coding rounds that can shift into system design mid-question",
+   "rounds": [
+    "Recruiter screen: interests, \"why Rubrik\", background",
+    "Technical screening: a coding round that can include semaphore/mutex (concurrency) questions even at the screening stage",
+    "2-3 DSA/competitive-programming rounds: medium-hard problems (2D dynamic programming, tree/LCA, two-pointer, DFS + binary search, priority-based task allocation) implemented on a shared doc or interviewing tool — some rounds combine an online assessment of 4 DSA questions (trees, partitioning, DP, arrays) before the live rounds",
+    "System coding round(s): implementing low-level distributed-systems components (e.g. producer-consumer with multithreading, a task scheduler with multithreading) — one report notes the coding round \"shifted into system design midstream,\" rewarding candidates who can extend a solution live",
+    "System design round (later-stage): a specific product/service design (e.g. \"design Twitter with a notification service\")",
+    "Hiring-manager round: interests and CV-based discussion"
+   ],
+   "extraTopics": [
+    "Concurrency and distributed-systems reasoning (mutex/semaphore, multithreading, producer-consumer patterns) tested directly in coding, not as a separate theory round",
+    "Staying composed when a \"coding\" question evolves into a system-design discussion mid-interview — flagged as the single biggest differentiator between candidates who pass and who don’t",
+    "Sustained hard-level DSA output across 2-3 back-to-back rounds"
+   ],
+   "focusPatterns": null,
+   "notes": "The Bengaluru pipeline specifically is reported as extremely selective: a 14% pass rate across 7 tracked interview experiences, with round count varying from 3 to 6 depending on report."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Entry",
+   "title": "Software Engineer",
+   "experience": "0–3 yrs (incl. Bengaluru/Gurgaon)"
+  },
+  {
+   "level": "Mid–Senior",
+   "title": "Senior Software Engineer",
+   "experience": "3+ yrs"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (distributed storage / cloud data management)",
+  "Systems Engineer (concurrency-focused)"
+ ],
+ "sources": [
+  {
+   "title": "Rubrik Software Engineer interview guide (Interview Query)",
+   "url": "https://www.interviewquery.com/guides/rubrik-software-engineer",
+   "used": [
+    "memory-management/multithreading/node-scheduling pattern, coding-round-shifts-to-design-midstream finding, comp data ($150K base/$209K total avg)"
+   ]
+  },
+  {
+   "title": "Taro: Rubrik Software Engineer interview experience, Bengaluru (system coding + DS + system design)",
+   "url": "https://www.jointaro.com/interviews/companies/rubrik/experiences/software-engineer-bengaluru-august-1-2021-no-offer-neutral-4090e5b2/",
+   "used": [
+    "4-round loop: 2 system coding (multithreading), 1 DS, 1 system design; 14% pass rate stat (7 interviews tracked)"
+   ]
+  },
+  {
+   "title": "Taro: Rubrik Software Engineer interview experience, Bengaluru (distributed systems coding)",
+   "url": "https://www.jointaro.com/interviews/companies/rubrik/experiences/software-engineer-bengaluru-september-16-2024-no-offer-neutral-25fe3517/",
+   "used": [
+    "coding round focused on low-level distributed systems implementation with a shadow interviewer"
+   ]
+  },
+  {
+   "title": "Taro: Rubrik SDE-1 interview experience, Gurgaon (screening + 2 DSA + hiring manager)",
+   "url": "https://www.jointaro.com/interviews/companies/rubrik/work-experiences/sde-1-gurgaon-haryana-november-7-2024-4-13bb0f1d",
+   "used": [
+    "recruiter screen with semaphore/mutex questions, 2 DSA rounds, hiring-manager round"
+   ]
+  },
+  {
+   "title": "Rubrik Interview Questions for Software Engineers (Interview Kickstart)",
+   "url": "https://interviewkickstart.com/blogs/interview-questions/rubrik-interview-questions",
+   "used": [
+    "2-3 coding rounds structure, core DSA + multithreading + system design topic breakdown"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "The distinctive concurrency-in-coding-rounds pattern and the very low Bengaluru pass rate are corroborated across several independent, detailed reports from the same tracking source (Taro) plus an independent guide (Interview Query) — consistent findings across different sources.",
+ "indiaNote": "Multiple detailed reports with pass-rate statistics come from Rubrik’s Bengaluru pipeline; one additional report is from Gurgaon."
+}

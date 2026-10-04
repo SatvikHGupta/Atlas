@@ -1,0 +1,86 @@
+{
+ "id": "visa",
+ "name": "Visa",
+ "tier": null,
+ "roles": [
+  "Software Engineer",
+  "Senior Software Engineer"
+ ],
+ "roleGuidance": {
+  "Software Engineer": {
+   "dsaDepth": "Moderate — breadth over depth: SQL, networking, OOP and REST alongside LeetCode-style coding in the same loop",
+   "rounds": [
+    "Phone screening (resume/background)",
+    "Technical screen with hiring manager",
+    "Online coding assessment (proctored)",
+    "Onsite/Superday: 3 back-to-back 1-hour technical rounds (coding on a whiteboard/shared doc) plus a behavioral round"
+   ],
+   "extraTopics": [
+    "Breadth: SQL, basic networking, OOP, REST APIs, sometimes Linux, alongside DSA in the same round",
+    "Defending every technology named on your resume in detail (Kafka, Kubernetes, OAuth, etc.)"
+   ],
+   "focusPatterns": null
+  },
+  "Senior Software Engineer": {
+   "dsaDepth": "Moderate–Heavy — same breadth-first format with a deeper resume interrogation and open-ended design prompts",
+   "rounds": [
+    "Similar loop with a heavier system design component (e.g. an open-ended elevator-system design prompt) and deeper resume follow-ups"
+   ],
+   "extraTopics": [
+    "Reasoning through trade-offs on open-ended design prompts, not just reaching an optimal answer"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Entry",
+   "title": "Software Engineer",
+   "experience": "0–3 yrs"
+  },
+  {
+   "level": "Senior",
+   "title": "Senior Software Engineer",
+   "experience": "3–8 yrs"
+  },
+  {
+   "level": "Staff / Principal",
+   "title": "Staff Software Engineer, Principal Engineer",
+   "experience": "8+ yrs",
+   "notes": "Not covered in depth by the cited sources"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (payments platform)",
+  "Backend / Infrastructure Engineer"
+ ],
+ "sources": [
+  {
+   "title": "Visa Software Engineer Interview Guide (Prepfully)",
+   "url": "https://prepfully.com/interview-guides/visa-software-engineer",
+   "used": [
+    "4-round structure: phone screening, technical screen, OA, onsite"
+   ]
+  },
+  {
+   "title": "Visa Software Engineer interview guide (Interview Query)",
+   "url": "https://www.interviewquery.com/guides/visa-software-engineer?exp_page=1",
+   "used": [
+    "breadth-first evaluation style, OA difficulty curve, resume interrogation"
+   ]
+  },
+  {
+   "title": "Glassdoor: Visa Inc. Senior Software Engineer interview report, Foster City",
+   "url": "https://fr.glassdoor.ca/Entretien/Visa-Inc-Entretien-E3035-RVW10220185.htm",
+   "used": [
+    "Superday format: 3 one-hour technical rounds plus behavioral, onsite at Foster City HQ"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "Loop structure and its distinctive breadth-over-depth style are corroborated across independent sources. Staff/Principal-level detail is not covered.",
+ "indiaNote": null
+}

@@ -1,0 +1,47 @@
+{
+  "name": "atlas-cp",
+  "version": "3.0.0",
+  "private": true,
+  "author": "Satvik Hemant Gupta",
+  "type": "module",
+  "scripts": {
+    "build:companies": "node scripts/build-companies.mjs",
+    "build:content": "node scripts/build-content.mjs raw-data/oc-split raw-data/company-problems",
+    "validate": "node scripts/validate-content.mjs",
+    "dev": "next dev",
+    "build": "npm run build:companies && npm run build:content && npm run validate && next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:rules": "firebase emulators:exec --only firestore \"vitest run tests/rules\""
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.100.14",
+    "chart.js": "^4.4.9",
+    "firebase": "^11.8.0",
+    "marked": "^14.1.4",
+    "motion": "^12.40.0",
+    "next": "^16.3.8",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "shiki": "^1.29.2",
+    "zustand": "^5.0.4"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^4.0.1",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^16.3.8",
+    "firebase-tools": "^15.32.1",
+    "vitest": "^5.0.1"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "overrides": {
+    "@grpc/grpc-js": "^1.13.6",
+    "basic-ftp": "^6.2.1",
+    "uuid": "^11.1.1",
+    "@opentelemetry/core": "^2.8.0"
+  }
+}

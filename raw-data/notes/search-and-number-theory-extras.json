@@ -1,0 +1,113 @@
+{
+  "topic": "Search & Number Theory Extras",
+  "level": 9,
+  "slug": "search-and-number-theory-extras",
+  "estimated_read": "10 min",
+  "sections": [
+    {
+      "type": "intro",
+      "title": "What are Search & Number Theory Extras?",
+      "content": "This note bundles three small, self-contained additions that don't have enough surface area for their own note but are each worth knowing: **Ternary Search** (a binary-search-family technique for unimodal functions), **0-1 BFS** (a specialized shortest-path technique for graphs with only two edge weights), and **A\\* Search** (a heuristic-guided extension of BFS/Dijkstra's). A fourth item, **Bezout's Lemma**, is a short extension to the existing GCD/Euclidean-algorithm coverage rather than a standalone technique - noted here since it's a natural companion fact once you know the Euclidean algorithm."
+    },
+    {
+      "type": "when_to_use",
+      "title": "When to Use This",
+      "content": "Reach for these when a problem's shape doesn't fit plain binary search or plain BFS/Dijkstra's cleanly.",
+      "signals": [
+        "find the maximum/minimum of a function that increases then decreases (or vice versa), not a flat sorted condition",
+        "graph edges have only two distinct weights (commonly 0 and 1)",
+        "shortest path search where a good heuristic estimate of remaining distance is available (grid/geometric distance)",
+        "express gcd(a, b) as a linear combination ax + by"
+      ]
+    },
+    {
+      "type": "concept",
+      "title": "Ternary Search",
+      "content": "Binary search requires a monotonic (strictly increasing or decreasing) condition. **Ternary search** handles the next shape up: a strictly unimodal function - one that strictly increases, reaches a single peak (or valley), then strictly decreases. Pick two interior points `m1` and `m2` that split the range into three parts; compare `f(m1)` and `f(m2)` to determine which third of the range cannot contain the peak, and discard it. This costs two function evaluations per iteration instead of binary search's one, giving O(log n) iterations but a larger constant factor - in practice, many unimodal-optimization problems are solved just as well (and more simply) with binary search on the *derivative's sign* (is `f(mid+1) > f(mid)`?) instead, which needs only one comparison per step. Ternary search is worth recognizing by name, but confirm binary-search-on-the-slope doesn't solve the same problem more simply first."
+    },
+    {
+      "type": "concept",
+      "title": "0-1 BFS",
+      "content": "Dijkstra's algorithm handles arbitrary non-negative edge weights using a priority queue, at O(E log V). When every edge weight is only 0 or 1, a plain **deque** replaces the priority queue and gets this down to O(V + E): push a node onto the *front* of the deque when reached via a 0-weight edge (it's already at the current best-known distance, so process it next), and onto the *back* when reached via a 1-weight edge (it belongs one distance-tier later). Popping from the front always gives the next node in true BFS-layer order, exactly the way a plain BFS deque works for unweighted graphs - 0-1 BFS is really just BFS's 'layers' idea generalized to two layer-costs instead of one. This applies directly to grid problems where 'continue in the given direction' costs 0 and 'change direction' costs 1."
+    },
+    {
+      "type": "concept",
+      "title": "A* Search",
+      "content": "A* extends Dijkstra's with a **heuristic function** `h(node)` estimating the remaining distance to the goal, prioritizing the queue by `f(node) = g(node) + h(node)` (cost-so-far plus estimated-cost-remaining) instead of `g(node)` alone. As long as `h` never *overestimates* the true remaining distance (an 'admissible' heuristic - straight-line/Manhattan distance for grids is a standard choice), A* is still guaranteed to find the shortest path, but explores far fewer nodes than plain Dijkstra's/BFS in practice, because the heuristic actively steers the search toward the goal instead of expanding uniformly outward in every direction. The entire implementation difference from Dijkstra's is exactly one line: sort the priority queue by `g + h` instead of by `g` alone."
+    },
+    {
+      "type": "concept",
+      "title": "Bezout's Lemma (Extension to the Euclidean Algorithm)",
+      "content": "Bezout's Lemma states that for any integers a and b, there exist integers x and y such that `ax + by = gcd(a, b)` - and the **extended Euclidean algorithm** finds such an (x, y) pair alongside computing the gcd itself, by unwinding the standard Euclidean algorithm's recursive division steps and back-substituting. This is the fact that makes modular inverses computable (`ax ≡ 1 (mod m)` has a solution for x exactly when `gcd(a, m) = 1`, and that x is recoverable via extended Euclid) - directly useful anywhere modular division comes up, extending straight from the plain GCD/Euclidean-algorithm coverage already in the Number Theory note."
+    },
+    {
+      "type": "template",
+      "title": "Core Template",
+      "language": "javascript",
+      "code": "// Ternary search for the peak of a unimodal function on [lo, hi]\nfunction ternarySearchMax(f, lo, hi) {\n  while (hi - lo > 2) {\n    const m1 = lo + Math.floor((hi - lo) / 3);\n    const m2 = hi - Math.floor((hi - lo) / 3);\n    if (f(m1) < f(m2)) lo = m1 + 1;  // peak can't be left of m1\n    else hi = m2 - 1;                // peak can't be right of m2\n  }\n  let best = lo;\n  for (let i = lo + 1; i <= hi; i++) if (f(i) > f(best)) best = i;\n  return best;\n}\n\n// 0-1 BFS using a deque (array with push/shift/unshift as a stand-in)\nfunction zeroOneBFS(n, edges, source) {   // edges[u] = list of [v, weight] with weight in {0, 1}\n  const dist = new Array(n).fill(Infinity);\n  dist[source] = 0;\n  const deque = [source];\n  while (deque.length) {\n    const u = deque.shift();\n    for (const [v, w] of edges[u]) {\n      if (dist[u] + w < dist[v]) {\n        dist[v] = dist[u] + w;\n        if (w === 0) deque.unshift(v);  // 0-weight: process next (front)\n        else deque.push(v);              // 1-weight: process later (back)\n      }\n    }\n  }\n  return dist;\n}\n\n// Extended Euclidean algorithm - returns [gcd, x, y] such that a*x + b*y = gcd\nfunction extendedGCD(a, b) {\n  if (b === 0) return [a, 1, 0];\n  const [g, x1, y1] = extendedGCD(b, a % b);\n  return [g, y1, x1 - Math.floor(a / b) * y1];\n}",
+      "explanation": "`ternarySearchMax` narrows the range by discarding a third each iteration, then linearly scans the tiny remaining window (avoids an off-by-one edge case when the range gets small). `zeroOneBFS` uses `shift`/`unshift`/`push` to simulate a deque - in production code, a real double-ended queue structure should replace `unshift` for O(1) front-insertion instead of the O(n) it costs on a plain JS array. `extendedGCD` recursively unwinds the Euclidean algorithm, back-substituting coefficients on the way up."
+    },
+    {
+      "type": "variants",
+      "title": "Variants",
+      "items": [
+        {
+          "name": "0-1 BFS on Grids",
+          "description": "Grid movement where continuing straight costs 0 and turning costs 1 - a direct 0-1 BFS application on an implicit graph rather than an explicit edge list.",
+          "example_problem": "Minimum Cost to Make at Least One Valid Path in a Grid",
+          "example_slug": "minimum-cost-to-make-at-least-one-valid-path-in-a-grid"
+        },
+        {
+          "name": "A* for State-Space Search",
+          "description": "The 'graph' isn't a physical map but a space of abstract states (e.g. puzzle configurations) - the heuristic estimates remaining moves rather than physical distance, but the algorithm is identical.",
+          "example_problem": "Sliding Puzzle",
+          "example_slug": "sliding-puzzle"
+        }
+      ]
+    },
+    {
+      "type": "complexity",
+      "title": "Complexity",
+      "time": "Ternary search: O(log n) iterations, each O(1) (or O(f) if evaluating f is expensive), with roughly double binary search's constant factor. 0-1 BFS: O(V + E), same as plain BFS. A*: worst case O(E log V) same as Dijkstra's, but typically far fewer nodes expanded in practice with a good heuristic.",
+      "space": "O(1) extra for ternary search. O(V) for 0-1 BFS's distance array and deque. O(V) for A*'s priority queue and distance tracking.",
+      "explanation": "None of these change the worst-case asymptotic class of their parent technique (binary search, BFS, Dijkstra's respectively) - they either narrow the applicable problem shape (ternary search, 0-1 BFS) or improve the practical constant factor via domain knowledge (A*'s heuristic)."
+    },
+    {
+      "type": "pitfalls",
+      "title": "Common Mistakes",
+      "items": [
+        "Using ternary search on a function that isn't strictly unimodal (has a flat plateau at the peak, or multiple local peaks) - the algorithm's correctness depends entirely on strict unimodality; a plateau can cause it to discard the wrong third.",
+        "Confusing 0-1 BFS's front/back push rule - a 0-weight edge pushes to the FRONT (process immediately, same distance tier), a 1-weight edge pushes to the BACK (process later, next tier). Swapping these breaks the algorithm's correctness.",
+        "Using a non-admissible heuristic in A* (one that can overestimate remaining distance) - this breaks the shortest-path guarantee entirely, not just the performance benefit.",
+        "Forgetting extended Euclid's coefficients (x, y) can be negative - a modular inverse computed as `((x % m) + m) % m` handles this; using the raw x directly can give a negative 'inverse'."
+      ]
+    },
+    {
+      "type": "problems",
+      "title": "Practice Problems",
+      "items": [
+        {
+          "title": "Minimum Cost to Make at Least One Valid Path in a Grid",
+          "slug": "minimum-cost-to-make-at-least-one-valid-path-in-a-grid",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "The canonical 0-1 BFS problem - following the cell's given direction costs 0, going against it costs 1, exactly the two-weight structure 0-1 BFS is built for."
+        },
+        {
+          "title": "Sliding Puzzle",
+          "slug": "sliding-puzzle",
+          "difficulty": 7,
+          "difficulty_label": "Hard",
+          "why": "Solvable with plain BFS over board states, but a Manhattan-distance-to-solved heuristic turns it into a good A* practice problem - fewer states explored for the same guaranteed-shortest answer."
+        }
+      ]
+    },
+    {
+      "type": "progression",
+      "title": "What to Learn Next",
+      "next_topic": "Bipartite Matching & Max Flow",
+      "next_slug": "bipartite-matching-max-flow",
+      "why": "Bipartite Matching & Max Flow is the next topic at this level - a natural sibling to Search & Number Theory Extras, reinforcing the same tier of difficulty before moving up."
+    }
+  ]
+}

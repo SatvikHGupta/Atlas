@@ -1,0 +1,63 @@
+{
+ "id": "capgemini",
+ "name": "Capgemini",
+ "tier": 3,
+ "roles": [
+  "Analyst (fresher)"
+ ],
+ "roleGuidance": {
+  "Analyst (fresher)": {
+   "dsaDepth": "Light — a game-based aptitude test (not MCQ logical reasoning) plus a coding/technical round",
+   "rounds": [
+    "Game-based aptitude test (replaced the older MCQ logical-reasoning section; several short game-style tasks measuring reasoning)",
+    "Verbal/quant sections (format varies by drive)",
+    "Technical interview",
+    "HR interview"
+   ],
+   "extraTopics": [
+    "Adapting to game-based reasoning tasks rather than traditional MCQs",
+    "Basic coding and CS fundamentals for the technical round"
+   ],
+   "focusPatterns": null,
+   "notes": "Public detail on the coding/technical round’s difficulty is thin; treat as lighter than product-company bars, similar in spirit to Accenture/Cognizant."
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "A1 / Fresher Analyst",
+   "title": "Analyst (fresher grade, e.g. A1)",
+   "experience": "Fresher",
+   "notes": "Standard fresher track"
+  },
+  {
+   "level": "Experienced",
+   "title": "Senior Analyst, Consultant and above",
+   "notes": "Lateral hiring is role-specific"
+  }
+ ],
+ "roleFamilies": [
+  "Analyst (delivery/consulting)"
+ ],
+ "sources": [
+  {
+   "title": "Capgemini Game-Based Aptitude Test: 2026 Prep Guide (FACEPrep)",
+   "url": "https://faceprep.in/blog/company-corner/",
+   "used": [
+    "what each game type measures, replacing MCQ logical reasoning"
+   ]
+  },
+  {
+   "title": "Capgemini Logical Reasoning and Game-Based Aptitude: 2026 Guide (FACEPrep)",
+   "url": "https://faceprep.in/blog/company-corner/10/",
+   "used": [
+    "2026 format and prep guidance"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "low",
+ "rolesNotes": "This is the thinnest of the six IT-services entries: only the aptitude-stage format is well documented; the technical/HR stages are not detailed in the cited sources.",
+ "indiaNote": "India-wide campus hiring; the game-based test is described as Capgemini’s current India fresher format."
+}

@@ -1,0 +1,153 @@
+{
+ "id": "meta",
+ "name": "Meta",
+ "tier": null,
+ "roles": [
+  "E3",
+  "E4",
+  "E5 Senior",
+  "E6 Staff"
+ ],
+ "roleGuidance": {
+  "E3": {
+   "dsaDepth": "Heavy — 2 coding rounds (Medium–Hard, speed matters)",
+   "rounds": [
+    "Recruiter screen",
+    "Technical phone screen (coding)",
+    "Loop: 2 coding rounds",
+    "Behavioral round"
+   ],
+   "extraTopics": [
+    "Behavioral: impact, collaboration, growth mindset"
+   ],
+   "focusPatterns": null
+  },
+  "E4": {
+   "dsaDepth": "Heavy — 2 coding rounds (Medium–Hard, speed matters)",
+   "rounds": [
+    "Recruiter screen",
+    "Technical phone screen (coding)",
+    "Loop: 2 coding rounds",
+    "Behavioral round"
+   ],
+   "extraTopics": [
+    "Behavioral: impact, collaboration, growth mindset"
+   ],
+   "focusPatterns": null
+  },
+  "E5 Senior": {
+   "dsaDepth": "Heavy — coding plus a design round",
+   "rounds": [
+    "Recruiter screen",
+    "Technical phone screen (coding)",
+    "Loop: 2 coding rounds, a system design round and a behavioral round"
+   ],
+   "extraTopics": [
+    "System design",
+    "Behavioral / leadership examples"
+   ],
+   "focusPatterns": null
+  },
+  "E6 Staff": {
+   "dsaDepth": "Moderate — coding present; design and scope dominate",
+   "rounds": [
+    "Recruiter screen",
+    "Technical screen",
+    "Loop: coding, system design (deeper), behavioral / leadership"
+   ],
+   "extraTopics": [
+    "Large-scale system design",
+    "Cross-team leadership"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "E3",
+   "title": "Software Engineer",
+   "experience": "0–2 yrs",
+   "notes": "New-grad entry level; expected to reach E4 in roughly 2 years"
+  },
+  {
+   "level": "E4",
+   "title": "Software Engineer",
+   "experience": "2–5 yrs"
+  },
+  {
+   "level": "E5",
+   "title": "Senior Software Engineer",
+   "experience": "5–10 yrs",
+   "notes": "Where most engineers settle; ownership of a problem space"
+  },
+  {
+   "level": "E6",
+   "title": "Staff Software Engineer",
+   "experience": "8–15 yrs"
+  },
+  {
+   "level": "E7",
+   "title": "Senior Staff Software Engineer",
+   "experience": "12+ yrs"
+  },
+  {
+   "level": "E8",
+   "title": "Principal Engineer",
+   "notes": "Very rare"
+  },
+  {
+   "level": "E9",
+   "title": "Distinguished Engineer",
+   "notes": "Fewer than 50 ever"
+  },
+  {
+   "level": "E10",
+   "title": "Engineering Fellow",
+   "notes": "Only a handful"
+  }
+ ],
+ "roleFamilies": [
+  "Software Engineer (product / infrastructure)",
+  "Machine Learning",
+  "iOS / Android",
+  "Production Engineering"
+ ],
+ "sources": [
+  {
+   "title": "Meta Software Engineer Levels Explained (DesignGurus)",
+   "url": "https://www.designgurus.io/blog/meta-software-engineer-levels",
+   "used": [
+    "ladder",
+    "experience bands",
+    "up-or-out rule"
+   ]
+  },
+  {
+   "title": "Meta's Software Engineer Levels Explained (HackerNoon)",
+   "url": "https://hackernoon.com/metas-software-engineer-levels-explained",
+   "used": [
+    "level responsibilities"
+   ]
+  },
+  {
+   "title": "Software Engineer at Meta 2026 (ResumeGeni)",
+   "url": "https://resumegeni.com/blog/software-engineer/at-meta",
+   "used": [
+    "coding environment, loop composition"
+   ]
+  },
+  {
+   "title": "Meta software engineer salaries and levels (Levels.fyi)",
+   "url": "https://levels.fyi/companies/meta/salaries/software-engineer/",
+   "used": [
+    "level names E3–E9"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "medium",
+ "rolesNotes": "Levels and the coding-plus-behavioral loop are consistent across sources; the source states system design is added at senior levels. The initial phone screen and the role families are general knowledge, not from the cited pages.",
+ "indiaNote": null
+}

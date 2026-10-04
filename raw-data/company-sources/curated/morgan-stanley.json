@@ -1,0 +1,85 @@
+{
+ "id": "morgan-stanley",
+ "name": "Morgan Stanley",
+ "tier": null,
+ "roles": [
+  "Technology Analyst",
+  "Technology Associate"
+ ],
+ "roleGuidance": {
+  "Technology Analyst": {
+   "dsaDepth": "Moderate — online coding test then technical + HR rounds, standard investment-bank format",
+   "rounds": [
+    "Online assessment (coding, 1–2 problems, plus aptitude/logical sections)",
+    "Technical interview(s): DSA plus CS fundamentals (OOP, DBMS)",
+    "HR/behavioral round"
+   ],
+   "extraTopics": [
+    "Core CS fundamentals",
+    "Resume/project discussion"
+   ],
+   "focusPatterns": null,
+   "notes": "This entry follows the standard investment-bank campus format also seen at Goldman Sachs and JPMorgan; no Morgan-Stanley-specific report was reviewed in depth for this ladder."
+  },
+  "Technology Associate": {
+   "dsaDepth": "Moderate — coding plus system/low-level design",
+   "rounds": [
+    "Technical round(s): coding and design",
+    "Behavioral/HR round"
+   ],
+   "extraTopics": [
+    "System design fundamentals"
+   ],
+   "focusPatterns": null
+  }
+ },
+ "rolesStatus": "researched",
+ "extraProblems": [],
+ "ladder": [
+  {
+   "level": "Analyst",
+   "title": "Technology Analyst",
+   "experience": "0–3 yrs",
+   "notes": "Entry level"
+  },
+  {
+   "level": "Associate",
+   "title": "Technology Associate",
+   "experience": "3–7 yrs"
+  },
+  {
+   "level": "VP",
+   "title": "Vice President, Technology",
+   "experience": "7–12 yrs"
+  },
+  {
+   "level": "ED / MD",
+   "title": "Executive Director, Managing Director",
+   "experience": "12+ yrs"
+  }
+ ],
+ "roleFamilies": [
+  "Technology (Analyst/Associate/VP track)",
+  "Quantitative / Risk Technology"
+ ],
+ "sources": [
+  {
+   "title": "Goldman Sachs Software Engineer interview guide (Interview Query)",
+   "url": "https://www.interviewquery.com/guides/goldman-sachs-software-engineer",
+   "used": [
+    "used as the reference for the standard investment-bank Analyst/Associate/VP/ED/MD ladder and loop shape applied here"
+   ]
+  },
+  {
+   "title": "JPMorgan Chase Software Engineer interview guide (Interview Query)",
+   "url": "https://www.interviewquery.com/guides/jp-morgan-chase-software-engineer",
+   "used": [
+    "used as a second reference point for the same standard bank loop shape"
+   ]
+  }
+ ],
+ "rolesAsOf": "2026-09",
+ "rolesConfidence": "low",
+ "rolesNotes": "No Morgan-Stanley-specific interview report was reviewed for this entry; the ladder and loop are inferred from the same standard investment-bank pattern confirmed at Goldman Sachs and JPMorgan. Verify against a Morgan Stanley-specific source before relying on this.",
+ "indiaNote": null
+}
