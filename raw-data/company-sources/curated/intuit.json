@@ -8,7 +8,7 @@
  ],
  "roleGuidance": {
   "Software Engineer I (campus)": {
-   "dsaDepth": "Moderate — an OA (MCQs + coding) then 2-4 technical rounds mixing DSA, CS fundamentals and debugging",
+   "dsaDepth": "Moderate - an OA (MCQs + coding) then 2-4 technical rounds mixing DSA, CS fundamentals and debugging",
    "rounds": [
     "Online round (HackerEarth): ~20 MCQs plus 2-3 coding questions, easy to difficult",
     "Technical round 1: project discussion, C/C++/Java differences, OS/DBMS fundamentals, trees and graphs",
@@ -22,7 +22,7 @@
    "focusPatterns": null
   },
   "Software Engineer / Senior": {
-   "dsaDepth": "Moderate — a build-challenge take-home plus a tech screen focused on trade-offs and AI-tool usage, increasingly common in recent (2026) loops",
+   "dsaDepth": "Moderate - a build-challenge take-home plus a tech screen focused on trade-offs and AI-tool usage, increasingly common in recent (2026) loops",
    "rounds": [
     "Recruiter screen (~30 min)",
     "Take-home \"build challenge\" (4-5 hrs, uploaded to GitHub)",
@@ -31,10 +31,10 @@
    ],
    "extraTopics": [
     "Justifying trade-offs in a take-home project, not just completing it",
-    "Familiarity with AI coding assistants — recent interviews ask about this directly"
+    "Familiarity with AI coding assistants - recent interviews ask about this directly"
    ],
    "focusPatterns": null,
-   "notes": "Senior-level candidates report friction if leveling expectations aren’t aligned with the recruiter up front — clarify this early."
+   "notes": "Senior-level candidates report friction if leveling expectations aren’t aligned with the recruiter up front - clarify this early."
   }
  },
  "rolesStatus": "researched",
@@ -53,7 +53,7 @@
   {
    "level": "Senior",
    "title": "Senior Software Engineer",
-   "experience": "Senior IC — reports mention explicit \"senior IC leveling\" discussions with recruiters"
+   "experience": "Senior IC - reports mention explicit \"senior IC leveling\" discussions with recruiters"
   },
   {
    "level": "Staff+",

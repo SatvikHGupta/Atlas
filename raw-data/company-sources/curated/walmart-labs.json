@@ -9,7 +9,7 @@
  ],
  "roleGuidance": {
   "SDE-1": {
-   "dsaDepth": "Moderate — HackerRank assessment plus DSA and design rounds",
+   "dsaDepth": "Moderate - HackerRank assessment plus DSA and design rounds",
    "rounds": [
     "Recruiter screen with light technical questions",
     "60-minute HackerRank assessment (1–2 medium–hard problems; Python and SQL appear)",
@@ -25,7 +25,7 @@
    "focusPatterns": null
   },
   "SDE-2": {
-   "dsaDepth": "Moderate–Heavy — DSA plus design",
+   "dsaDepth": "Moderate–Heavy - DSA plus design",
    "rounds": [
     "Recruiter screen",
     "HackerRank assessment (campus drives: 2 medium problems)",
@@ -40,7 +40,7 @@
    "focusPatterns": null
   },
   "SDE-3 (SE III)": {
-   "dsaDepth": "Moderate–Heavy — 2 medium DSA problems, then system design",
+   "dsaDepth": "Moderate–Heavy - 2 medium DSA problems, then system design",
    "rounds": [
     "Recruiter screen",
     "Rounds: 2 technical (DSA), 1 system design, 1 hiring manager (one 2021 report adds an HR round)",

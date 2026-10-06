@@ -46,9 +46,13 @@ export default function Heatmap({ weeks }) {
           role="img"
           aria-label={`Solve calendar for the last ${RANGE_LABEL[range]}: ${total} ${total === 1 ? 'solve' : 'solves'}`}
         >
-          {markers.map((m) => (
-            <span key={m.col} className={styles.heatMonth} style={{ gridColumn: `${m.col + 2} / span ${Math.min(3, shown.length - m.col)}`, gridRow: 1 }}>{m.label}</span>
-          ))}
+          {markers.map((m) => {
+            const span = Math.min(3, shown.length - m.col);
+            // a label in the last column(s) is end-aligned so it never pokes past the card edge (that made the scrollbar)
+            return (
+              <span key={m.col} className={styles.heatMonth} style={{ gridColumn: `${m.col + 2} / span ${span}`, gridRow: 1, justifySelf: span < 3 ? 'end' : undefined }}>{m.label}</span>
+            );
+          })}
           {Object.entries(DAY_LABEL).map(([row, text]) => (
             <span key={row} className={styles.heatDay} style={{ gridColumn: 1, gridRow: Number(row) + 2 }}>{text}</span>
           ))}

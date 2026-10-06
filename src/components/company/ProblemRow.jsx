@@ -49,7 +49,8 @@ export default function ProblemRow({ problem }) {
 
       {patterns && patterns.length > 0 && (
         <div className={styles.rowPatterns}>
-          {patterns.map((p) => <span key={p} className={styles.patternPill}>{p}</span>)}
+          {patterns.slice(0, 4).map((p) => <span key={p} className={styles.patternPill}>{p}</span>)}
+          {patterns.length > 4 && <span className={`${styles.patternPill} ${styles.patternMore}`} title={patterns.slice(4).join(', ')}>+{patterns.length - 4}</span>}
         </div>
       )}
 

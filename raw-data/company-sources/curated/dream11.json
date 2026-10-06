@@ -8,7 +8,7 @@
  ],
  "roleGuidance": {
   "SDE-1": {
-   "dsaDepth": "Light–Moderate — simple two-pointer, bitwise or binary-search problems",
+   "dsaDepth": "Light–Moderate - simple two-pointer, bitwise or binary-search problems",
    "rounds": [
     "Online assessment",
     "Coding interview (SDE-1 level DSA)",
@@ -21,7 +21,7 @@
    "focusPatterns": null
   },
   "SDE-2": {
-   "dsaDepth": "Moderate — LeetCode-medium DSA (min path sum, first missing positive) then design and database depth",
+   "dsaDepth": "Moderate - LeetCode-medium DSA (min path sum, first missing positive) then design and database depth",
    "rounds": [
     "Round 1 (virtual, 1 hr): 2 DSA problems, dry-run with complexity, panel of an SDE-3",
     "Round 2 (virtual, 1 hr): database and project round with a senior engineering manager",

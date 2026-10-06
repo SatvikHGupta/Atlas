@@ -7,7 +7,7 @@
  ],
  "roleGuidance": {
   "Software Engineer": {
-   "dsaDepth": "Moderate — an async CodeSignal test for new grads vs. a live CoderPad session for experienced hires, then a 4-6 round onsite",
+   "dsaDepth": "Moderate - an async CodeSignal test for new grads vs. a live CoderPad session for experienced hires, then a 4-6 round onsite",
    "rounds": [
     "Recruiter screen (30-45 min): background, motivation, and Pinterest’s \"PinFlex\" flexible-work-model preferences",
     "Technical screen: an asynchronous CodeSignal test for new grads/interns (1-2 DS&A problems: arrays, strings, hash maps, trees, graphs); a live CoderPad session for experienced hires",
@@ -16,7 +16,7 @@
     "Onsite project-review and behavioral rounds (~45 min each): past work, collaboration, values fit"
    ],
    "extraTopics": [
-    "PinFlex (Pinterest’s flexible/remote work policy) comes up explicitly in the recruiter screen — have a clear answer ready",
+    "PinFlex (Pinterest’s flexible/remote work policy) comes up explicitly in the recruiter screen - have a clear answer ready",
     "Tying system design answers to product thinking, not just pure architecture"
    ],
    "focusPatterns": null,

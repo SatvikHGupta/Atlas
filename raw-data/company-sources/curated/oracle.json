@@ -9,7 +9,7 @@
  ],
  "roleGuidance": {
   "IC2": {
-   "dsaDepth": "Moderate — a 3-hour technical interview is reported, with less-standardized loop structure than Google/Amazon",
+   "dsaDepth": "Moderate - a 3-hour technical interview is reported, with less-standardized loop structure than Google/Amazon",
    "rounds": [
     "Recruiter/phone screen",
     "Hiring-manager round (culture fit, resume)",
@@ -21,7 +21,7 @@
    "focusPatterns": null
   },
   "IC3": {
-   "dsaDepth": "Moderate–Heavy — 2 one-hour technical sessions with principal-level engineers, resume-driven",
+   "dsaDepth": "Moderate–Heavy - 2 one-hour technical sessions with principal-level engineers, resume-driven",
    "rounds": [
     "Phone screen",
     "Hiring-manager round",
@@ -30,12 +30,12 @@
    ],
    "extraTopics": [
     "Practical, job-like problems rather than pure LeetCode",
-    "Resume defense — reports describe every bullet point becoming fair game"
+    "Resume defense - reports describe every bullet point becoming fair game"
    ],
    "focusPatterns": null
   },
   "IC4 (OCI / Principal)": {
-   "dsaDepth": "Moderate–Heavy — distributed-systems and cloud-architecture design questions",
+   "dsaDepth": "Moderate–Heavy - distributed-systems and cloud-architecture design questions",
    "rounds": [
     "Phone screen and technical screens",
     "System design round (e.g. a live block-storage migration with no clean textbook answer for OCI-focused teams)"
@@ -44,7 +44,7 @@
     "Multi-tenant cloud architecture, network virtualization, distributed storage trade-offs"
    ],
    "focusPatterns": null,
-   "notes": "Loop composition is markedly team-dependent — OCI/cloud teams differ a lot from enterprise/campus tracks."
+   "notes": "Loop composition is markedly team-dependent - OCI/cloud teams differ a lot from enterprise/campus tracks."
   }
  },
  "rolesStatus": "researched",
@@ -117,6 +117,6 @@
  ],
  "rolesAsOf": "2026-09",
  "rolesConfidence": "medium",
- "rolesNotes": "IC0-IC5 level naming and the loop shape are confirmed across several sources, but Oracle’s process is unusually team-dependent — treat round detail as one common pattern, not a fixed script.",
+ "rolesNotes": "IC0-IC5 level naming and the loop shape are confirmed across several sources, but Oracle’s process is unusually team-dependent - treat round detail as one common pattern, not a fixed script.",
  "indiaNote": "Multiple reports come from Bengaluru and Chennai Oracle offices."
 }

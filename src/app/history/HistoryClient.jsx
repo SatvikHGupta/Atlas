@@ -15,6 +15,7 @@ import PageWrapper from '../../components/layout/PageWrapper/PageWrapper.jsx';
 import DifficultyBadge from '../../components/problem/DifficultyBadge/DifficultyBadge.jsx';
 import RatingPill from '../../components/cp/RatingPill/RatingPill.jsx';
 import { Loader } from '../../components/ui/Loader/Loader.jsx';
+import BackButton from '../../components/ui/BackButton/BackButton.jsx';
 import styles from './History.module.css';
 
 // BUG-061: `dayKey` is already a LOCAL "YYYY-MM-DD" key (lib/dates.js), so it is parsed by hand, not via new Date(string) which is UTC.
@@ -67,6 +68,7 @@ export default function HistoryClient() {
   return (
     <PageWrapper>
       <div className={styles.wrapper}>
+        <BackButton fallback="/dashboard" />
         <div className={styles.header}>
           {/* BUG-160: progress is one current record per problem, not an event log, so say exactly that. */}
           <h1>Recent activity</h1>

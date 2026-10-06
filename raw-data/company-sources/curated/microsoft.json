@@ -9,7 +9,7 @@
  ],
  "roleGuidance": {
   "SDE (59–60)": {
-   "dsaDepth": "Heavy — coding rounds (Medium)",
+   "dsaDepth": "Heavy - coding rounds (Medium)",
    "rounds": [
     "Recruiter screen",
     "Online assessment or phone screen (DSA)",
@@ -22,7 +22,7 @@
    "focusPatterns": null
   },
   "SDE II (61–62)": {
-   "dsaDepth": "Heavy — 1 Medium + 1 Hard style coding, plus design",
+   "dsaDepth": "Heavy - 1 Medium + 1 Hard style coding, plus design",
    "rounds": [
     "Recruiter screen",
     "Online assessment or hiring-manager screen",
@@ -37,7 +37,7 @@
    "notes": "Reports differ by team: some SDE II loops are 2 coding + 2 OOD with no system design."
   },
   "Senior SDE (63–64)": {
-   "dsaDepth": "Moderate–Heavy — coding plus full system design",
+   "dsaDepth": "Moderate–Heavy - coding plus full system design",
    "rounds": [
     "Recruiter screen",
     "Online coding assessment or phone screen",

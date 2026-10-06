@@ -7,7 +7,7 @@
  ],
  "roleGuidance": {
   "Project Engineer (Elite/NLTH)": {
-   "dsaDepth": "Light — 2 easy–moderate coding problems inside a broader aptitude test; interview is fundamentals-heavy, not algorithm-heavy",
+   "dsaDepth": "Light - 2 easy–moderate coding problems inside a broader aptitude test; interview is fundamentals-heavy, not algorithm-heavy",
    "rounds": [
     "Online test (about 128 min): aptitude (quant, logical reasoning, verbal), a written communication/essay section, and an online programming section (2 problems, C/C++/Java/Python, easy–moderate)",
     "Technical interview (about 20–25 min): OOP pillars, access specifiers, polymorphism/encapsulation/abstraction, DBMS/SQL basics, project discussion, sometimes a small live-coding task",

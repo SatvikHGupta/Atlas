@@ -7,7 +7,7 @@
  ],
  "roleGuidance": {
   "Software Engineer": {
-   "dsaDepth": "Moderate — 2 rounds of code screening then a system design and behavioral round, though loop composition varies noticeably by report",
+   "dsaDepth": "Moderate - 2 rounds of code screening then a system design and behavioral round, though loop composition varies noticeably by report",
    "rounds": [
     "Call screening with HR/recruiter",
     "2 rounds of code screening (LeetCode-medium style, sometimes practical Spring Boot / backend implementation tasks with follow-ups on scalability and error handling)",
@@ -19,7 +19,7 @@
     "Follow-up questions on scalability and design decisions after a working implementation"
    ],
    "focusPatterns": null,
-   "notes": "One report describes a 5-round loop (recruiter call, manager call, then 3 technical rounds) with situational rather than coding questions in the manager round — composition is not fixed."
+   "notes": "One report describes a 5-round loop (recruiter call, manager call, then 3 technical rounds) with situational rather than coding questions in the manager round - composition is not fixed."
   }
  },
  "rolesStatus": "researched",
@@ -56,6 +56,6 @@
  ],
  "rolesAsOf": "2026-09",
  "rolesConfidence": "low",
- "rolesNotes": "Only one source page was reviewed (several independent candidate reports on it, which is why the loop composition looks inconsistent — it may genuinely vary by team). Level naming beyond \"Software Engineer\" is not confirmed by any source reviewed.",
+ "rolesNotes": "Only one source page was reviewed (several independent candidate reports on it, which is why the loop composition looks inconsistent - it may genuinely vary by team). Level naming beyond \"Software Engineer\" is not confirmed by any source reviewed.",
  "indiaNote": null
 }

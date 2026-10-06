@@ -10,7 +10,7 @@
  ],
  "roleGuidance": {
   "SWE II (L3)": {
-   "dsaDepth": "Heavy — algorithms and coding are the main signal (Medium–Hard)",
+   "dsaDepth": "Heavy - algorithms and coding are the main signal (Medium–Hard)",
    "rounds": [
     "Recruiter screen",
     "1–2 technical screens (live coding)",
@@ -25,7 +25,7 @@
    "focusPatterns": null
   },
   "SWE III (L4)": {
-   "dsaDepth": "Heavy — same coding bar as L3, more independence expected",
+   "dsaDepth": "Heavy - same coding bar as L3, more independence expected",
    "rounds": [
     "Recruiter screen",
     "1–2 technical screens (live coding)",
@@ -40,7 +40,7 @@
    "focusPatterns": null
   },
   "Senior SWE (L5)": {
-   "dsaDepth": "Heavy — coding still tested; system design and role competence weigh in",
+   "dsaDepth": "Heavy - coding still tested; system design and role competence weigh in",
    "rounds": [
     "Recruiter screen",
     "Technical screen(s)",
@@ -55,7 +55,7 @@
    "focusPatterns": null
   },
   "Staff SWE (L6)": {
-   "dsaDepth": "Moderate — coding present, but scope and impact of past work decide the level",
+   "dsaDepth": "Moderate - coding present, but scope and impact of past work decide the level",
    "rounds": [
     "Recruiter screen",
     "Technical screen(s)",

@@ -9,7 +9,7 @@
  ],
  "roleGuidance": {
   "Software Engineer": {
-   "dsaDepth": "Moderate — online coding then technical interviews",
+   "dsaDepth": "Moderate - online coding then technical interviews",
    "rounds": [
     "Online coding interview (about 90 min)",
     "Technical interviews (3 rounds in total in campus-style reports)",
@@ -22,7 +22,7 @@
    "notes": "Very small sample; treat as indicative only."
   },
   "SDE-3": {
-   "dsaDepth": "Unknown — only the round count (3 rounds, 3 coding problems) is reported",
+   "dsaDepth": "Unknown - only the round count (3 rounds, 3 coding problems) is reported",
    "rounds": [
     "3 rounds reported; details not available in the cited pages"
    ],
@@ -30,7 +30,7 @@
    "focusPatterns": null
   },
   "SDET": {
-   "dsaDepth": "Moderate — testing depth plus easy-medium coding",
+   "dsaDepth": "Moderate - testing depth plus easy-medium coding",
    "rounds": [
     "Round 1: testing acumen (integration scenarios across 2–3 APIs and databases, write end-to-end test cases)",
     "Round 2: automation and technical (LeetCode easy–medium coding)",

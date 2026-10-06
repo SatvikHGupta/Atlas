@@ -7,7 +7,7 @@
  ],
  "roleGuidance": {
   "Software Engineer": {
-   "dsaDepth": "Heavy — new grads start with a HackerRank OA (2 medium–hard problems), then a decentralized team-run loop",
+   "dsaDepth": "Heavy - new grads start with a HackerRank OA (2 medium–hard problems), then a decentralized team-run loop",
    "rounds": [
     "Recruiter screen (~30 min: background, motivation, leveling)",
     "Technical screen / OA: timed, HackerRank or CoderPad, medium–hard problems",
@@ -17,8 +17,8 @@
    ],
    "extraTopics": [
     "CodeCraft: building a small working service rather than solving an abstract algorithm problem",
-    "Marketplace-scale systems thinking — merchants, dashers and consumers coordinated under real-time constraints",
-    "DoorDash has been piloting AI-assisted coding-tool rounds in some loops as of 2026 — worth confirming the current format with your recruiter"
+    "Marketplace-scale systems thinking - merchants, dashers and consumers coordinated under real-time constraints",
+    "DoorDash has been piloting AI-assisted coding-tool rounds in some loops as of 2026 - worth confirming the current format with your recruiter"
    ],
    "focusPatterns": null
   }

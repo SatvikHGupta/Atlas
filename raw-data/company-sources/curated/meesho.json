@@ -8,7 +8,7 @@
  ],
  "roleGuidance": {
   "SDE-1": {
-   "dsaDepth": "Moderate–Heavy — online test (MCQs + 2–3 coding), then interviews",
+   "dsaDepth": "Moderate–Heavy - online test (MCQs + 2–3 coding), then interviews",
    "rounds": [
     "Online assessment (about 90–150 min: MCQs plus 2–3 coding questions)",
     "Technical interviews (DSA, OOP, DBMS, low-level design)",
@@ -22,7 +22,7 @@
    "focusPatterns": null
   },
   "SDE-2": {
-   "dsaDepth": "Heavy — 1 medium + 1 hard style DSA, then machine coding and design",
+   "dsaDepth": "Heavy - 1 medium + 1 hard style DSA, then machine coding and design",
    "rounds": [
     "Round 1 (about 60 min): 2 DSA problems on HackerRank/HackerEarth",
     "Round 2 (up to 2 hours): machine coding / low-level design (e.g. Facebook-feed APIs, snake-and-ladder variant)",

@@ -10,7 +10,7 @@ export function generateMetadata() {
   const index = getNotesIndex();
   return {
     alternates: canonicalAlternates(routes.notes()),
-    title: `DSA Notes (${index.ready}/${index.total} ready) - Atlas`,
+    title: 'Notes',
     description: `In-depth study guides for ${index.total} major DSA topics, from foundations to advanced algorithms.`,
   };
 }

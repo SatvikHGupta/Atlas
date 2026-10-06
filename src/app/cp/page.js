@@ -6,7 +6,7 @@ export function generateMetadata() {
   const count = getCpIndex().length;
   return {
     alternates: canonicalAlternates(routes.cp()),
-    title: `Competitive Programming Problems (${count.toLocaleString()}) - Atlas`,
+    title: 'CP Problems',
     description: `${count.toLocaleString()} Codeforces problems, searchable by title, topic and problem code - solve directly on Codeforces.`,
   };
 }

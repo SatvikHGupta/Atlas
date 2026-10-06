@@ -21,6 +21,29 @@
 .tab:hover { background: var(--bg-elevated); color: var(--text-primary); }
 .active { background: var(--accent-subtle); color: var(--accent-light); }
 
+.legalGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.legalBtn {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: border-color var(--transition-fast), color var(--transition-fast), background var(--transition-fast);
+}
+.legalBtn:hover { border-color: var(--accent); color: var(--accent-light); background: var(--accent-subtle); }
+
 @media (max-width: 720px) {
   .nav {
     flex-direction: row;
@@ -29,4 +52,12 @@
     padding-bottom: 4px;
   }
   .tab { white-space: nowrap; flex-shrink: 0; }
+  .legalGroup {
+    flex-direction: row;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+    gap: 6px;
+  }
+  .legalBtn { white-space: nowrap; flex-shrink: 0; }
 }

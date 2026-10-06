@@ -8,7 +8,7 @@
  ],
  "roleGuidance": {
   "Software Engineer": {
-   "dsaDepth": "Moderate — communication and reasoning weighed more than raw LeetCode difficulty, since the domain is moving money",
+   "dsaDepth": "Moderate - communication and reasoning weighed more than raw LeetCode difficulty, since the domain is moving money",
    "rounds": [
     "Online assessment (HackerRank: 2–3 LeetCode-style problems)",
     "Recruiter screen",
@@ -16,13 +16,13 @@
     "Onsite loop: pair programming, system design, project-experience deep-dive, behavioral, hiring-manager conversation"
    ],
    "extraTopics": [
-    "Explaining assumptions and trade-offs, not just reaching a correct answer — interviewers probe reasoning about systems that move money",
+    "Explaining assumptions and trade-offs, not just reaching a correct answer - interviewers probe reasoning about systems that move money",
     "SQL alongside DSA in some pipelines"
    ],
    "focusPatterns": null
   },
   "Senior Software Engineer": {
-   "dsaDepth": "Moderate–Heavy — DSA, system design, and a role-specialization round",
+   "dsaDepth": "Moderate–Heavy - DSA, system design, and a role-specialization round",
    "rounds": [
     "DSA round (easy–medium)",
     "System design (e.g. a chat-based application)",

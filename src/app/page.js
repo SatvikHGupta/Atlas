@@ -7,7 +7,7 @@ import { routes, canonicalAlternates } from '../lib/routeIdentity.js';
 
 export const metadata = {
   alternates: canonicalAlternates(routes.home()),
-  title: 'Atlas: Every DSA & CP Problem, Fully Explained',
+  title: { absolute: 'Atlas' }, // home is just Atlas, no suffix
   description: 'LeetCode, Codeforces, and CSES - deduplicated, AI-explained, and tracked. One guided path from foundations to competitive programming.',
 };
 

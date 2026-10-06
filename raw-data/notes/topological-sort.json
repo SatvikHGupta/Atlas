@@ -7,12 +7,12 @@
     {
       "type": "intro",
       "title": "What is Topological Sort?",
-      "content": "Topological sort takes a **Directed Acyclic Graph (DAG)** and produces a linear ordering of its nodes such that for every directed edge u→v, node u appears before v. Dependencies must come first.\n\nReal-world examples: course prerequisites, npm package install order, Makefile compilation order. All are topological sort on a dependency DAG.\n\nCritical constraint: **topological sort only exists for DAGs**. A cycle means no valid linear ordering exists — A depends on B, B depends on A, neither can go first. This is why topological sort algorithms double as cycle detectors: if the output doesn't contain all nodes, a cycle exists.\n\nTwo standard implementations: **Kahn's algorithm** (BFS-based, repeatedly remove in-degree-0 nodes — intuitive and easy to explain) and **DFS post-order** (push nodes after all descendants are processed). Both O(V+E). Kahn's is generally preferred in interviews."
+      "content": "Topological sort takes a **Directed Acyclic Graph (DAG)** and produces a linear ordering of its nodes such that for every directed edge u→v, node u appears before v. Dependencies must come first.\n\nReal-world examples: course prerequisites, npm package install order, Makefile compilation order. All are topological sort on a dependency DAG.\n\nCritical constraint: **topological sort only exists for DAGs**. A cycle means no valid linear ordering exists - A depends on B, B depends on A, neither can go first. This is why topological sort algorithms double as cycle detectors: if the output doesn't contain all nodes, a cycle exists.\n\nTwo standard implementations: **Kahn's algorithm** (BFS-based, repeatedly remove in-degree-0 nodes - intuitive and easy to explain) and **DFS post-order** (push nodes after all descendants are processed). Both O(V+E). Kahn's is generally preferred in interviews."
     },
     {
       "type": "when_to_use",
       "title": "When to Use This",
-      "content": "Use topological sort when a problem involves ordering items with dependencies. Keywords: 'course prerequisites', 'build order', 'find a valid ordering', 'task dependencies'. Also for cycle detection in directed graphs — if sort can't include all nodes, a cycle exists.",
+      "content": "Use topological sort when a problem involves ordering items with dependencies. Keywords: 'course prerequisites', 'build order', 'find a valid ordering', 'task dependencies'. Also for cycle detection in directed graphs - if sort can't include all nodes, a cycle exists.",
       "signals": [
         "course prerequisites",
         "task dependencies",
@@ -75,10 +75,10 @@
       "type": "pitfalls",
       "title": "Common Mistakes",
       "items": [
-        "Building edges in the wrong direction — 'A is prerequisite for B' means A→B. Reversed edges produce a backwards topological order.",
-        "Not checking result.length === numNodes after Kahn's — a cycle silently produces an incomplete result. Always check.",
-        "Applying topological sort to undirected graphs — undefined for undirected edges which don't encode ordering.",
-        "Assuming topological sort gives a unique result — multiple valid orderings exist; don't test for a specific one unless the problem asks for lexicographically smallest.",
+        "Building edges in the wrong direction - 'A is prerequisite for B' means A→B. Reversed edges produce a backwards topological order.",
+        "Not checking result.length === numNodes after Kahn's - a cycle silently produces an incomplete result. Always check.",
+        "Applying topological sort to undirected graphs - undefined for undirected edges which don't encode ordering.",
+        "Assuming topological sort gives a unique result - multiple valid orderings exist; don't test for a specific one unless the problem asks for lexicographically smallest.",
         "In alien dictionary: comparing 'abc' and 'ab' where the shorter word comes after the longer prefix is an invalid dictionary (implies a cycle), not derivable ordering."
       ]
     },
@@ -91,14 +91,14 @@
           "slug": "course-schedule",
           "difficulty": 5,
           "difficulty_label": "Medium",
-          "why": "Pure cycle detection via topological sort — model prerequisites as a directed graph and detect impossibility via incomplete Kahn's output."
+          "why": "Pure cycle detection via topological sort - model prerequisites as a directed graph and detect impossibility via incomplete Kahn's output."
         },
         {
           "title": "Course Schedule II",
           "slug": "course-schedule-ii",
           "difficulty": 5,
           "difficulty_label": "Medium",
-          "why": "Returns the actual topological ordering — extends Course Schedule by outputting the valid course order."
+          "why": "Returns the actual topological ordering - extends Course Schedule by outputting the valid course order."
         },
         {
           "title": "Verifying an Alien Dictionary",
@@ -112,7 +112,7 @@
           "slug": "find-eventual-safe-states",
           "difficulty": 5,
           "difficulty_label": "Medium",
-          "why": "Reverse graph + Kahn's variant — safe nodes appear in topological order after reversing edges."
+          "why": "Reverse graph + Kahn's variant - safe nodes appear in topological order after reversing edges."
         }
       ]
     },

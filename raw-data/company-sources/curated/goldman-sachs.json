@@ -9,7 +9,7 @@
  ],
  "roleGuidance": {
   "Analyst": {
-   "dsaDepth": "Heavy — CoderPad/HackerRank screen (2–3 problems), then a multi-round SuperDay",
+   "dsaDepth": "Heavy - CoderPad/HackerRank screen (2–3 problems), then a multi-round SuperDay",
    "rounds": [
     "Online HackerRank test (3 problems, ~120 min)",
     "Recruiter/HR screen (~30 min, fit and background)",
@@ -23,7 +23,7 @@
    "focusPatterns": null
   },
   "Associate": {
-   "dsaDepth": "Heavy — same SuperDay format, more design and past-project weight",
+   "dsaDepth": "Heavy - same SuperDay format, more design and past-project weight",
    "rounds": [
     "Recruiter screen",
     "Technical phone screen (coding)",
@@ -36,7 +36,7 @@
    "focusPatterns": null
   },
   "VP": {
-   "dsaDepth": "Moderate — coding still present, design and leadership dominate",
+   "dsaDepth": "Moderate - coding still present, design and leadership dominate",
    "rounds": [
     "Recruiter screen",
     "SuperDay: fewer pure-coding rounds, more system design, architecture and people-leadership discussion"

@@ -7,7 +7,7 @@
  ],
  "roleGuidance": {
   "GenC / GenC Elevate": {
-   "dsaDepth": "Light — AMCAT-based aptitude test plus an \"Automata Fix\" coding round (fixing/completing code rather than writing from scratch)",
+   "dsaDepth": "Light - AMCAT-based aptitude test plus an \"Automata Fix\" coding round (fixing/completing code rather than writing from scratch)",
    "rounds": [
     "Online aptitude test (AMCAT-based, about 35 min, 25 questions: logical reasoning, seating arrangement, syllogism, data sufficiency)",
     "Automata Fix coding round (fix/complete given code rather than write-from-scratch algorithms)",

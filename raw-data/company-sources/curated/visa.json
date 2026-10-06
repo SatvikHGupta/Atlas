@@ -8,7 +8,7 @@
  ],
  "roleGuidance": {
   "Software Engineer": {
-   "dsaDepth": "Moderate — breadth over depth: SQL, networking, OOP and REST alongside LeetCode-style coding in the same loop",
+   "dsaDepth": "Moderate - breadth over depth: SQL, networking, OOP and REST alongside LeetCode-style coding in the same loop",
    "rounds": [
     "Phone screening (resume/background)",
     "Technical screen with hiring manager",
@@ -22,7 +22,7 @@
    "focusPatterns": null
   },
   "Senior Software Engineer": {
-   "dsaDepth": "Moderate–Heavy — same breadth-first format with a deeper resume interrogation and open-ended design prompts",
+   "dsaDepth": "Moderate–Heavy - same breadth-first format with a deeper resume interrogation and open-ended design prompts",
    "rounds": [
     "Similar loop with a heavier system design component (e.g. an open-ended elevator-system design prompt) and deeper resume follow-ups"
    ],

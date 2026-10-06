@@ -8,7 +8,7 @@ export function generateMetadata() {
   const count = getCompanyIndex().length;
   return {
     alternates: canonicalAlternates(routes.companies()),
-    title: `Company Interview Patterns (${count}) - Atlas`,
+    title: 'Companies',
     description: `What ${count} companies actually ask in interviews - problems, role-specific rounds, and the DSA patterns each one leans on most, sourced from LeetCode\u2019s company tags plus dated interview reports.`,
   };
 }
@@ -22,7 +22,7 @@ export default function CompaniesPage() {
       <header className={styles.header}>
         <h1>Company Interview Patterns</h1>
         <p className={styles.subtitle}>
-          What gets asked, where, and how often - sourced from LeetCode\u2019s company tags plus dated interview reports, not guesswork.
+          What gets asked, where, and how often - sources are inside each company page plus dated interview reports, not guesswork.
         </p>
       </header>
 

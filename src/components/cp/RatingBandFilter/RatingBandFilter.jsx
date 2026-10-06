@@ -1,20 +1,20 @@
 import { RATING_BANDS } from '../../../lib/codeforces.utils.js';
 import styles from './RatingBandFilter.module.css';
 
-// Single-select, like the existing status chips - clicking the active one clears it. Unlike topics
-// (where "Graphs AND DP" is a normal ask), picking two disjoint rating bands at once isn't a
-// meaningful combination, so this stays one-at-a-time rather than a multi-select.
-export default function RatingBandFilter({ active, onChange }) {
+// Multi-select: `active` is an array of band keys, clicking a chip adds or removes it. A problem matches if its
+// rating is in ANY picked band (so 1200-1399 + 1400-1599 together read as "1200 to 1599").
+export default function RatingBandFilter({ active = [], onChange }) {
+  const toggle = (key) => onChange(active.includes(key) ? active.filter((k) => k !== key) : [...active, key]);
   return (
     <div className={styles.row}>
       {RATING_BANDS.map((band) => (
         <button
           key={band.key}
           className={styles.chip}
-          data-active={active === band.key}
-          aria-pressed={active === band.key}
+          data-active={active.includes(band.key)}
+          aria-pressed={active.includes(band.key)}
           style={{ '--band-color': band.color }}
-          onClick={() => onChange(active === band.key ? null : band.key)}
+          onClick={() => toggle(band.key)}
         >
           <span className={styles.dot} />
           {band.label}

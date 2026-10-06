@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -10,8 +11,12 @@ import { NAV_LINKS, isActivePath } from '../../../constants/navLinks.js';
 import GearIcon from './GearIcon.jsx';
 import styles from './Navbar.module.css';
 
+// first letter of the name (or email) for users with no photo
+const initialOf = (user) => (user.displayName || user.email || '?').trim()[0].toUpperCase();
+
 export default function Navbar() {
   const pathname = usePathname();
+  const [photoBroken, setPhotoBroken] = useState(false); // photo URL failed to load, show the letter instead
   const { user, signInWithGoogle, signOut } = useAuth();
   const addToast = useUIStore((s) => s.addToast);
 
@@ -50,30 +55,33 @@ export default function Navbar() {
         ))}
       </div>
 
+      {/* Same markup for both states: the auth button has a fixed width and the 40px gear is always the last item,
+          so nothing moves when you sign in or out. */}
       <div className={styles.right}>
         {user ? (
-          <div className={styles.userArea}>
-            <Link href="/settings" className={styles.avatarLink} aria-label="Settings">
-              <GearIcon size={34} className={styles.navGear} />
-              <span className={styles.avatarInGear}>
-                {user.photoURL ? (
-                  // eslint-disable-next-line @next/next/no-img-element -- remote avatar, images.unoptimized is on
-                  <img src={user.photoURL} alt="" className={styles.avatarImg} referrerPolicy="no-referrer" />
-                ) : (
-                  <span className={styles.avatarFallback}>{(user.displayName || '?')[0].toUpperCase()}</span>
-                )}
-              </span>
-            </Link>
-            <button className={styles.signOutBtn} onClick={signOut}>Sign out</button>
-          </div>
+          <button className={styles.authBtn} onClick={signOut}>Sign out</button>
         ) : (
-          <div className={styles.signedOutArea}>
-            <Link href="/settings" className={styles.gearBtn} aria-label="Settings">
-              <GearIcon size={22} />
-            </Link>
-            <button className={styles.signInBtn} onClick={handleSignIn}>Sign in</button>
-          </div>
+          <button className={`${styles.authBtn} ${styles.signIn}`} onClick={handleSignIn}>Sign in</button>
         )}
+        <Link href="/settings" className={styles.gearLink} aria-label="Settings">
+          {user && (
+            <span className={styles.avatarInGear}>
+              {user.photoURL && !photoBroken ? (
+                // eslint-disable-next-line @next/next/no-img-element -- remote avatar, images.unoptimized is on
+                <img
+                  src={user.photoURL}
+                  alt=""
+                  className={styles.avatarImg}
+                  referrerPolicy="no-referrer"
+                  onError={() => setPhotoBroken(true)}
+                />
+              ) : (
+                <span className={styles.avatarFallback}>{initialOf(user)}</span>
+              )}
+            </span>
+          )}
+          <GearIcon size={40} className={styles.navGear} />
+        </Link>
       </div>
     </nav>
   );

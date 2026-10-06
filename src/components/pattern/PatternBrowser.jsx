@@ -82,7 +82,7 @@ export default function PatternBrowser({ patterns }) {
         <input
           className={styles.search}
           type="text"
-          placeholder="Search a pattern or a problem name…"
+          placeholder="Search a pattern…"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           aria-label="Search patterns"

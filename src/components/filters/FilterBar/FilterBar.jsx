@@ -7,7 +7,7 @@ import { useDsaIndex } from '../../../hooks/useProblems.js';
 import { buildPatternChips, searchChips } from '../../../lib/sidebarTags.js';
 import { useAuthStore } from '../../../store/auth.store.js';
 import { isAuthResolved } from '../../../lib/authGate.js';
-import { DSA_TOPICS, PROBLEM_PATTERNS } from '../../../constants/topics.js';
+import { DSA_TOPICS } from '../../../constants/topics.js';
 import FilterChip from '../FilterChip/FilterChip.jsx';
 import SearchBar from '../SearchBar/SearchBar.jsx';
 import SortDropdown from '../SortDropdown/SortDropdown.jsx';
@@ -79,36 +79,36 @@ function DifficultySlider({ value, onChange }) {
   );
 }
 
-// Every tag that may appear as a Pattern chip: the ~170 /patterns pages (DSA_TOPICS) plus the Atlas section/technique
-// tags (PROBLEM_PATTERNS). A tag only becomes a chip if the loaded index has at least one problem for it.
-const PATTERN_CANDIDATES = [...new Set([...DSA_TOPICS, ...PROBLEM_PATTERNS])];
+// Pattern chips (the /patterns page list). Multi-select: a problem must carry every selected pattern.
 const CHIPS_COLLAPSED = 24;
 
-/* Pattern section = ALL tags that return results (with live counts), biggest first, plus a search box. The old separate
-   "Topic" section listed the same ~170 names, so it is merged in here; a legacy ?topic= value in an old URL or session
-   still filters and still shows up as the selected chip so it can be cleared. */
 function PatternSection({ filters, patchFilters }) {
   const { data: index, isLoading, isError } = useDsaIndex();
   const [query, setQuery] = useState('');
   const [expanded, setExpanded] = useState(false);
 
-  const chips = useMemo(() => buildPatternChips(index, PATTERN_CANDIDATES, DSA_TOPICS), [index]);
+  const chips = useMemo(() => buildPatternChips(index, DSA_TOPICS, DSA_TOPICS), [index]);
   const matches = useMemo(() => searchChips(chips, query), [chips, query]);
 
-  const active = filters.pattern || filters.topic || '';
+  const selected = filters.topics || [];
   const searching = query.trim() !== '';
   let visible = expanded || searching ? matches : matches.slice(0, CHIPS_COLLAPSED);
-  // the selected chip must always be visible, even when it sits below the collapsed cut-off
-  if (active && !visible.some((c) => c.name === active)) {
-    visible = [chips.find((c) => c.name === active) || { name: active, count: 0, hasPage: DSA_TOPICS.includes(active), slug: patternSlug(active) }, ...visible];
+  // selected chips stay visible even below the collapsed cut-off
+  const hidden = selected.filter((name) => !visible.some((c) => c.name === name));
+  if (hidden.length) {
+    visible = [...hidden.map((name) => chips.find((c) => c.name === name) || { name, count: 0 }), ...visible];
   }
-  const activeChip = chips.find((c) => c.name === active);
-  const pageSlug = activeChip ? (activeChip.hasPage ? activeChip.slug : null) : (active && DSA_TOPICS.includes(active) ? patternSlug(active) : null);
 
-  const select = (name) => patchFilters({ pattern: active === name ? '' : name, topic: '', page: 1 });
+  const toggle = (name) => {
+    const next = selected.includes(name) ? selected.filter((n) => n !== name) : [...selected, name];
+    patchFilters({ topics: next, page: 1 });
+  };
+
+  // the pattern page link only makes sense for a single selection
+  const pageSlug = selected.length === 1 && DSA_TOPICS.includes(selected[0]) ? patternSlug(selected[0]) : null;
 
   return (
-    <Section label="Pattern" count={active ? 1 : 0}>
+    <Section label="Pattern" count={selected.length}>
       {isLoading && <p className={styles.tagEmpty}>Loading patterns...</p>}
       {isError && <p className={styles.tagEmpty}>Couldn&apos;t load patterns. Try refreshing.</p>}
       {!isLoading && !isError && (
@@ -123,21 +123,20 @@ function PatternSection({ filters, patchFilters }) {
           />
           <div className={styles.chips}>
             {visible.map((c) => (
-              <FilterChip key={c.name} label={c.name} count={c.count} active={active === c.name} onClick={() => select(c.name)} />
+              <FilterChip key={c.name} label={c.name} count={c.count} active={selected.includes(c.name)} onClick={() => toggle(c.name)} />
             ))}
             {!searching && matches.length > CHIPS_COLLAPSED && (
               <button type="button" className={styles.showMoreBtn} onClick={() => setExpanded((p) => !p)}>
-                {expanded ? '− Show less' : `+ ${matches.length - CHIPS_COLLAPSED} more`}
+                {expanded ? '- Show less' : `+ ${matches.length - CHIPS_COLLAPSED} more`}
               </button>
             )}
           </div>
-          {searching && matches.length === 0 && <p className={styles.tagEmpty}>No pattern matches &quot;{query.trim()}&quot;.</p>}
+          {searching && matches.length === 0 && <p className={styles.tagEmpty}>No patterns match &quot;{query.trim()}&quot;.</p>}
         </>
       )}
-      {/* BUG-23: tags that have a /patterns/<slug> page link to it once selected */}
       {pageSlug && (
         <Link href={`/patterns/${pageSlug}`} className={styles.patternLink}>
-          Open the {active} pattern page &rarr;
+          Open the {selected[0]} pattern page &rarr;
         </Link>
       )}
     </Section>
@@ -154,7 +153,7 @@ export default function FilterBar({ inDrawer = false }) {
   const personalDisabled = authResolved && !isAuthed;
 
   const activeCount = [
-    filters.pattern || filters.topic, // one merged Pattern control
+    filters.topics?.length ? 1 : 0,
     filters.difficulty,
     filters.status,
   ].filter(Boolean).length;

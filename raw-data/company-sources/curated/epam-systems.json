@@ -7,7 +7,7 @@
  ],
  "roleGuidance": {
   "Software Engineer (India)": {
-   "dsaDepth": "Moderate — a coding assessment (DoSelect/HackerRank), a DSA test, sometimes a group discussion, then 2-3 technical rounds and HR",
+   "dsaDepth": "Moderate - a coding assessment (DoSelect/HackerRank), a DSA test, sometimes a group discussion, then 2-3 technical rounds and HR",
    "rounds": [
     "Online technical assessment (DoSelect or similar): coding round for initial screening",
     "Nodal/location coding test for some pipelines: DSA questions (e.g. HashMap usage, a parking-lot design problem), with a numeric cutoff (one report: 100/400)",
@@ -18,7 +18,7 @@
    ],
    "extraTopics": [
     "Core Java internals (garbage collection, memory allocation, OOP pillars) tested in real depth, not just surface-level",
-    "Group discussion performance for campus hires — a format not common at most software companies",
+    "Group discussion performance for campus hires - a format not common at most software companies",
     "Being staffed-project-aware: some loops include a \"client round\" since EPAM is a consultancy assigning engineers to client projects"
    ],
    "focusPatterns": null,
@@ -82,6 +82,6 @@
  ],
  "rolesAsOf": "2026-09",
  "rolesConfidence": "medium",
- "rolesNotes": "Round count and sequence vary significantly by pipeline (campus vs. off-campus vs. client-staffed hire) — treat any single sequence as one common pattern, not a fixed script, consistent with EPAM’s nature as a project-staffing consultancy.",
- "indiaNote": "Multiple detailed reports come from Chennai, Hyderabad, Pune and New Delhi — EPAM has large India delivery centers."
+ "rolesNotes": "Round count and sequence vary significantly by pipeline (campus vs. off-campus vs. client-staffed hire) - treat any single sequence as one common pattern, not a fixed script, consistent with EPAM’s nature as a project-staffing consultancy.",
+ "indiaNote": "Multiple detailed reports come from Chennai, Hyderabad, Pune and New Delhi - EPAM has large India delivery centers."
 }

@@ -5,6 +5,7 @@ import { useAuth } from '../../../hooks/useAuth.js';
 import { useProgress } from '../../../hooks/useProgress.js';
 import { useBookmarks } from '../../../hooks/useBookmarks.js';
 import { displayCount } from '../../../lib/resourceState.js';
+import { usePostCard, POST_CARD_HINT } from '../../../hooks/usePostCard.js';
 import styles from './ProfileTab.module.css';
 
 function memberSince(user) {
@@ -21,6 +22,7 @@ export default function ProfileTab() {
   const failed = progressState === 'failed' || bookmarksState === 'failed';
   const retryAll = () => { if (progressState === 'failed') retryProgress?.(); if (bookmarksState === 'failed') retryBookmarks?.(); };
   const joined = memberSince(user);
+  const { download: downloadCard, busy: cardBusy } = usePostCard();
 
   return (
     <section className={styles.section}>
@@ -36,6 +38,10 @@ export default function ProfileTab() {
           <span className={styles.email}>{user?.email}</span>
           {joined && <span className={styles.joined}>On Atlas since {joined}</span>}
         </div>
+        {/* right side, level with the three profile lines */}
+        <button type="button" className={styles.cardBtn} onClick={downloadCard} disabled={cardBusy} title={POST_CARD_HINT}>
+          {cardBusy ? 'Creating...' : 'Post your card'}
+        </button>
       </div>
 
       <div className={styles.statStrip}>

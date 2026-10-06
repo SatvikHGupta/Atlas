@@ -1,31 +1,22 @@
-// Preview colors for a card, read from the SAME resolved tokens the CSS is built from. No separate "preview color"
-// configuration exists, so a card can never disagree with the real theme. A preview is always one mode + one accent:
-// mode cards show that mode with the visitor's current accent, accent cards show that accent on the current mode,
-// both with the visitor's chosen partner colour.
-import { resolveTokens, resolveSecondaryTokens } from './theme-utils.js';
+// CSS variables for the small preview panel in Settings, read from the SAME resolved tokens the real stylesheet is
+// built from. No separate "preview colour" configuration exists, so the panel can never disagree with the real theme.
+// The variables are set inline on the panel only, so previewing a draft never touches the rest of the page.
+import { resolveTokens } from './theme-utils.js';
 
 const cache = new Map();
 
-export function getThemePreview(mode, accent, partner = null) {
-  // partner: the accent whose secondary is the chosen partner colour (null = the accent's own)
-  const key = `${mode.id}|${accent.id}|${partner?.id ?? ''}`;
-  let preview = cache.get(key);
-  if (!preview) {
-    const t = resolveTokens(mode, accent);
-    preview = Object.freeze({
-      bg: t['bg-primary'],
-      card: t['bg-card'],
-      elevated: t['bg-elevated'],
-      text: t['text-primary'],
-      muted: t['text-muted'],
-      accent: t.accent,
-      accentLight: t['accent-light'],
-      accentFg: t['accent-fg'],
-      solved: t.solved,
-      codeBg: t['code-bg'],
-      partner: resolveSecondaryTokens(partner ?? accent)['accent-2'],
-    });
-    cache.set(key, preview);
+/** @returns a style object ({ '--bg-primary': ..., ... }) for one mode + primary + optional secondary (colour defs). */
+export function getPreviewVars(mode, accent, secondary = null) {
+  const key = `${mode.id}|${accent.id}|${secondary?.id ?? ''}`;
+  let vars = cache.get(key);
+  if (!vars) {
+    vars = Object.freeze(Object.fromEntries(
+      Object.entries(resolveTokens(mode, accent, secondary)).map(([name, value]) => [`--${name}`, value]),
+    ));
+    cache.set(key, vars);
   }
-  return preview;
+  return vars;
 }
+
+/** The shade a colour has in a mode, for swatches: { hex, name }. */
+export const swatchHex = (mode, color) => color[mode.id].primary;

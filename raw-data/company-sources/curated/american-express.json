@@ -8,7 +8,7 @@
  ],
  "roleGuidance": {
   "Engineer Trainee / SE1 (India campus)": {
-   "dsaDepth": "Moderate — an OA (tree/DP-style problems) then 2 technical rounds and an HR round; fundamentals and clean communication matter more than raw algorithm difficulty",
+   "dsaDepth": "Moderate - an OA (tree/DP-style problems) then 2 technical rounds and an HR round; fundamentals and clean communication matter more than raw algorithm difficulty",
    "rounds": [
     "Online test: 3 coding questions (e.g. a tree problem, the classic Frog Jump DP problem)",
     "Technical round 1: live coding plus project/resume discussion (web-scraping and similar practical questions reported); interviewers are described as understanding if you make a syntax error and let you debug it live",
@@ -16,20 +16,20 @@
     "HR round: puzzles, situational questions, \"why AmEx\""
    ],
    "extraTopics": [
-    "Staying calm through visible mistakes — interviewers are reported to let candidates Google and fix their own syntax errors live",
+    "Staying calm through visible mistakes - interviewers are reported to let candidates Google and fix their own syntax errors live",
     "Company research for the HR round (mission/vision alignment is explicitly checked)"
    ],
    "focusPatterns": null
   },
   "SE2 / SE3 (experienced)": {
-   "dsaDepth": "Light–Moderate — AmEx is explicitly reported as caring more about clean fundamentals than flashy algorithm tricks; coding stays on the easier side (merge sort, hashmap internals) once you have a few years of experience",
+   "dsaDepth": "Light–Moderate - AmEx is explicitly reported as caring more about clean fundamentals than flashy algorithm tricks; coding stays on the easier side (merge sort, hashmap internals) once you have a few years of experience",
    "rounds": [
-    "Recruiter screening (video, light — Java/backend fundamentals like checked vs unchecked exceptions, IOC)",
-    "Technical round: project discussion plus DSA (often easy-medium: merge sort, basic Spring Boot/Actuator questions) — interviewers may narrow the solution space and push for brute-force explanations specifically to test reasoning, not just optimization",
+    "Recruiter screening (video, light - Java/backend fundamentals like checked vs unchecked exceptions, IOC)",
+    "Technical round: project discussion plus DSA (often easy-medium: merge sort, basic Spring Boot/Actuator questions) - interviewers may narrow the solution space and push for brute-force explanations specifically to test reasoning, not just optimization",
     "Additional rounds (2-3 total) mixing further technical and behavioral/management conversation"
    ],
    "extraTopics": [
-    "Explaining brute-force reasoning clearly, not just jumping to an optimized answer — this is called out as a specific evaluation tactic",
+    "Explaining brute-force reasoning clearly, not just jumping to an optimized answer - this is called out as a specific evaluation tactic",
     "Spring Boot / backend framework basics for Java-stack roles"
    ],
    "focusPatterns": null,

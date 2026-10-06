@@ -7,7 +7,7 @@
     {
       "type": "intro",
       "title": "What are Matrix Operations?",
-      "content": "Matrices appear in DSA in two distinct contexts. The first — 2D grids for BFS/DFS — is covered in the 2D Arrays topic. The second is matrices as **mathematical objects** supporting multiplication, which unlocks powerful algorithms for linear recurrences and path counting.\n\n**Matrix exponentiation** computes M^k using repeated squaring: the same idea as fast modular exponentiation. Each squaring step halves the exponent, so M^k requires only O(log k) multiplications. For small matrices (2×2 or 3×3), each multiplication is effectively O(1), making the entire computation O(log k). This transforms computing the nth Fibonacci number from O(n) to O(log n).\n\nThe deeper insight: **any linear recurrence** of order d can be represented as matrix multiplication on a d-dimensional state vector. Raise the transition matrix to the (n-1)th power and multiply by the initial state. Works for Fibonacci, Tribonacci, any recurrence `f(n) = a1*f(n-1) + a2*f(n-2) + ...`\n\nMatrix exponentiation also solves **graph path counting**: the (i,j) entry of the adjacency matrix raised to the kth power gives the number of walks of exactly length k from node i to node j.\n\nThe second cluster is **grid transformations**: rotating a matrix 90 degrees (transpose + row reverse), reflecting it, spiral traversal."
+      "content": "Matrices appear in DSA in two distinct contexts. The first - 2D grids for BFS/DFS - is covered in the 2D Arrays topic. The second is matrices as **mathematical objects** supporting multiplication, which unlocks powerful algorithms for linear recurrences and path counting.\n\n**Matrix exponentiation** computes M^k using repeated squaring: the same idea as fast modular exponentiation. Each squaring step halves the exponent, so M^k requires only O(log k) multiplications. For small matrices (2×2 or 3×3), each multiplication is effectively O(1), making the entire computation O(log k). This transforms computing the nth Fibonacci number from O(n) to O(log n).\n\nThe deeper insight: **any linear recurrence** of order d can be represented as matrix multiplication on a d-dimensional state vector. Raise the transition matrix to the (n-1)th power and multiply by the initial state. Works for Fibonacci, Tribonacci, any recurrence `f(n) = a1*f(n-1) + a2*f(n-2) + ...`\n\nMatrix exponentiation also solves **graph path counting**: the (i,j) entry of the adjacency matrix raised to the kth power gives the number of walks of exactly length k from node i to node j.\n\nThe second cluster is **grid transformations**: rotating a matrix 90 degrees (transpose + row reverse), reflecting it, spiral traversal."
     },
     {
       "type": "when_to_use",
@@ -27,7 +27,7 @@
     {
       "type": "concept",
       "title": "Matrix Multiplication, Exponentiation, and Grid Operations",
-      "content": "## Matrix Multiplication\n\n`C[i][j] = sum over k of A[i][k] * B[k][j]`. O(n³) for n×n matrices.\n\nKey properties: **associative** (A×B×C = A×(B×C)) — this makes exponentiation valid. **NOT commutative** (A×B ≠ B×A). Identity matrix I has 1s on diagonal, 0s elsewhere. M×I = M.\n\n## Matrix Exponentiation\n\n```\nmatpow(M, k):\n  if k===0: return identity\n  if k even: half=matpow(M,k/2); return half×half\n  if k odd: return M×matpow(M,k-1)\n```\nO(log k) multiplications, each O(n³).\n\n## Fibonacci via Matrix\n\n`[[F(n+1)],[F(n)]] = [[1,1],[1,0]]^n × [[F(1)],[F(0)]]`\n\nRaise the 2×2 transition matrix to the nth power to get F(n) in O(log n).\n\n## Any Linear Recurrence\n\nFor `f(n) = a*f(n-1) + b*f(n-2) + c*f(n-3)`, build a 3×3 transition matrix. First row encodes coefficients; remaining rows shift state. Raise to (n-3)th power, multiply by initial state vector.\n\n## Graph Path Counting\n\n`A^k[i][j]` = number of walks of exactly length k from node i to j where A is the adjacency matrix.\n\n## Grid Operations\n\n**Rotate 90° clockwise**: transpose (swap A[i][j] and A[j][i] for j > i) then reverse each row.\n**Spiral traversal**: maintain four boundaries (top, bottom, left, right), peel one layer per cycle."
+      "content": "## Matrix Multiplication\n\n`C[i][j] = sum over k of A[i][k] * B[k][j]`. O(n³) for n×n matrices.\n\nKey properties: **associative** (A×B×C = A×(B×C)) - this makes exponentiation valid. **NOT commutative** (A×B ≠ B×A). Identity matrix I has 1s on diagonal, 0s elsewhere. M×I = M.\n\n## Matrix Exponentiation\n\n```\nmatpow(M, k):\n  if k===0: return identity\n  if k even: half=matpow(M,k/2); return half×half\n  if k odd: return M×matpow(M,k-1)\n```\nO(log k) multiplications, each O(n³).\n\n## Fibonacci via Matrix\n\n`[[F(n+1)],[F(n)]] = [[1,1],[1,0]]^n × [[F(1)],[F(0)]]`\n\nRaise the 2×2 transition matrix to the nth power to get F(n) in O(log n).\n\n## Any Linear Recurrence\n\nFor `f(n) = a*f(n-1) + b*f(n-2) + c*f(n-3)`, build a 3×3 transition matrix. First row encodes coefficients; remaining rows shift state. Raise to (n-3)th power, multiply by initial state vector.\n\n## Graph Path Counting\n\n`A^k[i][j]` = number of walks of exactly length k from node i to j where A is the adjacency matrix.\n\n## Grid Operations\n\n**Rotate 90° clockwise**: transpose (swap A[i][j] and A[j][i] for j > i) then reverse each row.\n**Spiral traversal**: maintain four boundaries (top, bottom, left, right), peel one layer per cycle."
     },
     {
       "type": "concept",
@@ -76,7 +76,7 @@
       "type": "pitfalls",
       "title": "Common Mistakes",
       "items": [
-        "Matrix multiplication is NOT commutative — in the exponentiation loop, always apply result = result × base to maintain the correct power accumulation invariant.",
+        "Matrix multiplication is NOT commutative - in the exponentiation loop, always apply result = result × base to maintain the correct power accumulation invariant.",
         "Identity matrix has 1s on the diagonal and 0s everywhere else. Using the zero matrix as identity causes M × I = zero matrix.",
         "Off-by-one in exponent for Fibonacci: raise T to the (n-1)th power, not nth. Verify manually with n=2: T^1 × [F(1), F(0)] should give [F(2), F(1)].",
         "Missing modular arithmetic inside matrix multiplication: each element accumulates up to n products of large values. Take mod after each addition in the inner loop, not just at the end.",
@@ -92,28 +92,28 @@
           "slug": "fibonacci-number",
           "difficulty": 3,
           "difficulty_label": "Easy",
-          "why": "Baseline matrix exponentiation — implement the 2×2 Fibonacci transition matrix and verify the power-to-index mapping."
+          "why": "Baseline matrix exponentiation - implement the 2×2 Fibonacci transition matrix and verify the power-to-index mapping."
         },
         {
           "title": "Count Vowels Permutation",
           "slug": "count-vowels-permutation",
           "difficulty": 8,
           "difficulty_label": "Hard",
-          "why": "Higher-order recurrence via matrix — derive the 5×5 transition matrix from vowel adjacency rules then apply exponentiation."
+          "why": "Higher-order recurrence via matrix - derive the 5×5 transition matrix from vowel adjacency rules then apply exponentiation."
         },
         {
           "title": "Number of Ways to Stay in the Same Place After Some Steps",
           "slug": "number-of-ways-to-stay-in-the-same-place-after-some-steps",
           "difficulty": 8,
           "difficulty_label": "Hard",
-          "why": "State-space matrix construction — positions form the state space, moves define the transition matrix, exponentiation counts paths returning to origin."
+          "why": "State-space matrix construction - positions form the state space, moves define the transition matrix, exponentiation counts paths returning to origin."
         },
         {
           "title": "Knight Dialer",
           "slug": "knight-dialer",
           "difficulty": 5,
           "difficulty_label": "Medium",
-          "why": "Adjacency matrix path counting — knight moves define edges, A^n counts all n-hop sequences starting from each digit."
+          "why": "Adjacency matrix path counting - knight moves define edges, A^n counts all n-hop sequences starting from each digit."
         }
       ]
     },

@@ -8,20 +8,20 @@
  ],
  "roleGuidance": {
   "Senior Software Engineer": {
-   "dsaDepth": "Moderate — an OA/coding round then a design-heavy in-person stage, with real variance in stack (backend vs frontend/JavaScript) between what candidates expect and what gets asked",
+   "dsaDepth": "Moderate - an OA/coding round then a design-heavy in-person stage, with real variance in stack (backend vs frontend/JavaScript) between what candidates expect and what gets asked",
    "rounds": [
     "Recruiter/HR call",
     "Online coding round (HackerRank): 2-3 easy-medium algorithm problems (examples reported: counting planes shot down, pivot element in an unsorted array, minimum-sum pairs)",
-    "In-person/virtual rounds (3-4): system design, past-project discussion, sometimes a stack mismatch — candidates report being pulled into frontend/JavaScript topics despite expecting a backend-focused conversation"
+    "In-person/virtual rounds (3-4): system design, past-project discussion, sometimes a stack mismatch - candidates report being pulled into frontend/JavaScript topics despite expecting a backend-focused conversation"
    ],
    "extraTopics": [
-    "Clarifying the expected stack/scope early — a recurring make-or-break factor, more so than raw question difficulty",
+    "Clarifying the expected stack/scope early - a recurring make-or-break factor, more so than raw question difficulty",
     "Staying flexible through a notably long process (often 2+ months with long gaps between rounds)"
    ],
    "focusPatterns": null
   },
   "Principal Software Engineer": {
-   "dsaDepth": "Heavy — coding, LLD, HLD and a system round, with the whole process reported as unusually lengthy (up to 8-9 rounds) and inconsistent",
+   "dsaDepth": "Heavy - coding, LLD, HLD and a system round, with the whole process reported as unusually lengthy (up to 8-9 rounds) and inconsistent",
    "rounds": [
     "Coding round",
     "Low-level design round",
@@ -30,10 +30,10 @@
     "Code review round for some pipelines"
    ],
    "extraTopics": [
-    "Persisting through a long, sometimes disorganized process — multiple candidates report being rejected late (after many positive rounds) for reasons like years-of-experience mismatch rather than skill"
+    "Persisting through a long, sometimes disorganized process - multiple candidates report being rejected late (after many positive rounds) for reasons like years-of-experience mismatch rather than skill"
    ],
    "focusPatterns": null,
-   "notes": "Selection is explicitly described by one candidate as \"completely dependent upon the hiring manager\" — consistency across interviewers/teams appears low."
+   "notes": "Selection is explicitly described by one candidate as \"completely dependent upon the hiring manager\" - consistency across interviewers/teams appears low."
   }
  },
  "rolesStatus": "researched",
@@ -80,6 +80,6 @@
  ],
  "rolesAsOf": "2026-09",
  "rolesConfidence": "medium",
- "rolesNotes": "Multiple independent reports agree the process is long (often 2+ months) and inconsistent between teams/hiring managers — that variability is itself the most consistent finding across sources.",
+ "rolesNotes": "Multiple independent reports agree the process is long (often 2+ months) and inconsistent between teams/hiring managers - that variability is itself the most consistent finding across sources.",
  "indiaNote": "Several detailed reports are from Agoda’s Gurgaon office."
 }

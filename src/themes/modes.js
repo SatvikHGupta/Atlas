@@ -58,8 +58,8 @@ export const light = {
   },
 
   code: {
-    background: '#f6f8fa',
-    border:     'rgba(15, 23, 42, 0.12)',
+    background: '#eceff3', // CHANGE THIS: light code block bg (was #f6f8fa)
+    border:     'rgba(15, 23, 42, 0.14)',
     text:       '#24292f',
   },
 };

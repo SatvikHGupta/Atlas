@@ -1,6 +1,6 @@
 /* ─── page ─── */
 .page {
-  min-height: 100dvh;
+  min-height: calc(100dvh - var(--navbar-height)); /* navbar sits above, so 100dvh made the page scroll */
   display: grid;
   grid-template-columns: 1fr 1fr;
   background: var(--bg-primary);
@@ -267,6 +267,7 @@
 /* ─── mobile: single column ─── */
 @media (max-width: 768px) {
   .page {
+    min-height: calc(100dvh - var(--navbar-height) - var(--bottom-nav-height) - env(safe-area-inset-bottom));
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
     overflow-y: auto;

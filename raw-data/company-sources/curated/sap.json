@@ -7,7 +7,7 @@
  ],
  "roleGuidance": {
   "Software Engineer (India)": {
-   "dsaDepth": "Moderate — an OA with role-based MCQs and coding, then 2 technical rounds and an HR round",
+   "dsaDepth": "Moderate - an OA with role-based MCQs and coding, then 2 technical rounds and an HR round",
    "rounds": [
     "Online assessment: role-based MCQs plus coding questions",
     "Technical Round 1: core CS fundamentals (data structures, algorithms), sometimes live coding or a system-design question depending on experience",

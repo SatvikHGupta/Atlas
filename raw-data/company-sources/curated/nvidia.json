@@ -8,22 +8,22 @@
  ],
  "roleGuidance": {
   "Software Engineer (entry–mid)": {
-   "dsaDepth": "Moderate — online coding test (LeetCode medium–hard) for early-career roles, then a decentralized, hiring-manager-driven loop",
+   "dsaDepth": "Moderate - online coding test (LeetCode medium–hard) for early-career roles, then a decentralized, hiring-manager-driven loop",
    "rounds": [
     "Recruiter call (~30 min, often skippable if referred)",
     "Online assessment (timed, proctored, often HackerRank; mainly for early-career roles)",
     "Technical phone screen (~1 hr, live coding: e.g. reverse a linked list recursively/non-recursively)",
-    "Optional hiring-manager call (~30 min) — order varies a lot, sometimes held before other rounds",
+    "Optional hiring-manager call (~30 min) - order varies a lot, sometimes held before other rounds",
     "Onsite loop (~5 hrs): several technical interviews plus a domain deep-dive and often a system design round"
    ],
    "extraTopics": [
-    "Domain depth — the loop is shaped heavily by the specific team and hiring manager, more so than most large tech companies",
+    "Domain depth - the loop is shaped heavily by the specific team and hiring manager, more so than most large tech companies",
     "Being ready for the loop order to vary (one candidate had the hiring-manager call first)"
    ],
    "focusPatterns": null
   },
   "Senior Software Engineer (IC4)": {
-   "dsaDepth": "Moderate — similar structure with more system design and architecture weight",
+   "dsaDepth": "Moderate - similar structure with more system design and architecture weight",
    "rounds": [
     "Similar stages, with a heavier system design round and deeper technical-experience discussion"
    ],
@@ -93,6 +93,6 @@
  ],
  "rolesAsOf": "2026-09",
  "rolesConfidence": "medium",
- "rolesNotes": "Nvidia is explicitly decentralized — hiring managers shape the loop per team, so round order and count vary more here than at most large tech companies. IC-level naming is inferred from candidate/job-posting title patterns, not an official published ladder.",
+ "rolesNotes": "Nvidia is explicitly decentralized - hiring managers shape the loop per team, so round order and count vary more here than at most large tech companies. IC-level naming is inferred from candidate/job-posting title patterns, not an official published ladder.",
  "indiaNote": null
 }

@@ -9,11 +9,11 @@
  ],
  "roleGuidance": {
   "Software Engineer (entry–mid)": {
-   "dsaDepth": "Heavy — 2 back-to-back LeetCode medium–hard coding rounds, little to no system design at this level",
+   "dsaDepth": "Heavy - 2 back-to-back LeetCode medium–hard coding rounds, little to no system design at this level",
    "rounds": [
     "Recruiter screen",
     "Online coding assessment (CodeSignal) for some pipelines",
-    "Two 45-minute technical coding interviews (CoderPad/Zoom): data structures, algorithms, edge cases, complexity — no heavy system design at junior/mid level",
+    "Two 45-minute technical coding interviews (CoderPad/Zoom): data structures, algorithms, edge cases, complexity - no heavy system design at junior/mid level",
     "Cross-team \"values\" interview (~45 min): collaboration, ownership, communication, product sense"
    ],
    "extraTopics": [
@@ -23,7 +23,7 @@
    "focusPatterns": null
   },
   "Senior Software Engineer": {
-   "dsaDepth": "Heavy — coding remains, system design and pull-request review are added",
+   "dsaDepth": "Heavy - coding remains, system design and pull-request review are added",
    "rounds": [
     "Recruiter screen",
     "Technical screening (coding, medium–hard)",
@@ -31,12 +31,12 @@
    ],
    "extraTopics": [
     "System design at Airbnb’s marketplace scale (search, booking, trust & safety)",
-    "Reviewing a colleague’s pull request — a distinctive round format"
+    "Reviewing a colleague’s pull request - a distinctive round format"
    ],
    "focusPatterns": null
   },
   "Staff Software Engineer": {
-   "dsaDepth": "Moderate — architecture, scope and technical leadership dominate",
+   "dsaDepth": "Moderate - architecture, scope and technical leadership dominate",
    "rounds": [
     "Deeper system-design and architecture rounds, technical strategy discussion, staff-level values interview"
    ],

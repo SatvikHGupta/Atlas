@@ -8,7 +8,7 @@
  ],
  "roleGuidance": {
   "SDE-1": {
-   "dsaDepth": "Light–Moderate — 1–2 Easy/Medium DSA problems per round, several short rounds",
+   "dsaDepth": "Light–Moderate - 1–2 Easy/Medium DSA problems per round, several short rounds",
    "rounds": [
     "Online coding round (30–90 min): usually 1–2 problems plus some MCQs",
     "Technical/face-to-face round(s): further DSA plus resume and project questions",
@@ -23,7 +23,7 @@
    "notes": "Loop length varies: reports range from 1 round to 4 rounds."
   },
   "SDE-2": {
-   "dsaDepth": "Moderate — DSA plus system/low-level design, resume-driven",
+   "dsaDepth": "Moderate - DSA plus system/low-level design, resume-driven",
    "rounds": [
     "Technical round(s): DSA plus resume/experience deep-dive",
     "System design or low-level design round"

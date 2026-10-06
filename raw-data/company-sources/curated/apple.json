@@ -10,7 +10,7 @@
  ],
  "roleGuidance": {
   "ICT2 (new grad)": {
-   "dsaDepth": "Moderate–Heavy — team-dependent coding plus domain depth",
+   "dsaDepth": "Moderate–Heavy - team-dependent coding plus domain depth",
    "rounds": [
     "Recruiter screen",
     "Technical phone screen(s)",
@@ -23,7 +23,7 @@
    "focusPatterns": null
   },
   "ICT3": {
-   "dsaDepth": "Moderate–Heavy — team-dependent coding plus domain depth",
+   "dsaDepth": "Moderate–Heavy - team-dependent coding plus domain depth",
    "rounds": [
     "Recruiter screen",
     "Technical phone screen(s)",
@@ -36,7 +36,7 @@
    "focusPatterns": null
   },
   "ICT4 Senior": {
-   "dsaDepth": "Moderate — domain depth and design carry more weight",
+   "dsaDepth": "Moderate - domain depth and design carry more weight",
    "rounds": [
     "Recruiter screen",
     "Technical screens",
@@ -50,7 +50,7 @@
    "focusPatterns": null
   },
   "ICT5 Staff": {
-   "dsaDepth": "Light–Moderate — technical mastery, leadership and past impact",
+   "dsaDepth": "Light–Moderate - technical mastery, leadership and past impact",
    "rounds": [
     "Recruiter screen",
     "Technical screens",

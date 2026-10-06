@@ -20,11 +20,11 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }) {
   params = await params;
   const entry = getPatternDetail(params.slug) || getTopicPatternEntry(params.slug);
-  if (!entry) return { title: 'Pattern not found - Atlas' };
+  if (!entry) return { title: 'Pattern not found' };
   const practiceCount = entry.practiceProblems?.length || 0;
   return {
     alternates: canonicalAlternates(routes.pattern(params.slug)),
-    title: `${entry.pattern || params.slug} Practice Problems - Atlas`,
+    title: entry.pattern || params.slug,
     description: entry.companiesSeenIn === 0
       ? `${entry.totalProblemsInPool} Atlas problems tagged ${entry.pattern}.`
       : practiceCount > 0
@@ -85,7 +85,9 @@ export default async function PatternDetailPage({ params }) {
     const bundle = getProblemBundle(p.atlasSlug);
     const alsoTagged = (bundle?.patterns || [])
       .map((name) => ({ name, slug: resolvePatternSlug(name, validPatternSlugs) }))
-      .filter((t) => t.slug && t.slug !== slug);
+      .filter((t) => t.slug && t.slug !== slug)
+      // two raw names can resolve to the same pattern ("DFS" and "Depth-First Search"), so keep one chip per slug
+      .filter((t, i, all) => all.findIndex((x) => x.slug === t.slug) === i);
     return { ...p, alsoTagged, inNote: noteExampleSlugs.has(p.atlasSlug) };
   });
 

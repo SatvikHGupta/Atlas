@@ -1,6 +1,6 @@
 // Persistence + the pre-paint init script. The ONLY place the localStorage keys are defined.
 import {
-  MODE_IDS, ACCENT_IDS, ACCENT_ALIASES, LEGACY_THEMES, DEFAULT_MODE_ID, DEFAULT_ACCENT_ID,
+  MODE_IDS, COLOR_IDS, COLOR_ALIASES, LEGACY_THEMES, DEFAULT_MODE_ID, DEFAULT_ACCENT_ID,
 } from '../themes/index.js';
 
 export const MODE_STORAGE_KEY = 'atlas-mode';
@@ -12,7 +12,7 @@ export const LEGACY_STORAGE_KEY = 'atlas-theme';
 
 /**
  * Inline script that runs before first paint (and before React) so a saved theme never flashes: it reads the saved
- * mode, accent and partner colour, validates them against the registry, sets <html data-mode data-accent data-secondary>, migrates an old
+ * mode, primary and secondary colour, validates them against the registry, sets <html data-mode data-accent data-secondary>, migrates an old
  * single-value theme and repairs bad stored values. Everything it needs is serialized from the registry at render
  * time, so it can never disagree with the theme list.
  *
@@ -22,8 +22,8 @@ export const LEGACY_STORAGE_KEY = 'atlas-theme';
  */
 export function buildThemeInitScript({
   modes = MODE_IDS,
-  accents = ACCENT_IDS,
-  aliases = ACCENT_ALIASES,
+  accents = COLOR_IDS,
+  aliases = COLOR_ALIASES,
   legacyThemes = LEGACY_THEMES,
   defaultMode = DEFAULT_MODE_ID,
   defaultAccent = DEFAULT_ACCENT_ID,

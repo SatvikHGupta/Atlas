@@ -15,10 +15,10 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }) {
   params = await params;
   const levelNum = parseLevelParam(params.level);
-  if (levelNum === null) return { title: 'Not found - Atlas Roadmap' };
+  if (levelNum === null) return { title: 'Not found' };
   const info = ROADMAP_LEVELS[levelNum];
   return {
-    title: `${info?.title || `Level ${levelNum}`} - Atlas Roadmap`,
+    title: info?.title || `Level ${levelNum}`,
     alternates: canonicalAlternates(routes.roadmapLevel(levelNum)),
   };
 }

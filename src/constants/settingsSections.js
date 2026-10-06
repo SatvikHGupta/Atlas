@@ -7,12 +7,11 @@ export const SETTINGS_SECTIONS = [
   { slug: 'profile',    label: 'Profile',    requiresAuth: true  },
   { slug: 'appearance', label: 'Appearance', requiresAuth: false },
   { slug: 'account',    label: 'Account',    requiresAuth: true  },
-  { slug: 'data',       label: 'Data',       requiresAuth: true  },
 ];
 
 export const settingsPath = (slug) => `/settings/${slug}`;
 
-/** The section a pathname belongs to ('/settings/data' -> data section), or null for '/settings' itself. */
+/** The section a pathname belongs to ('/settings/account' -> account section), or null for '/settings' itself. */
 export function sectionForPath(pathname) {
   const slug = String(pathname || '').split('/')[2];
   return SETTINGS_SECTIONS.find((s) => s.slug === slug) || null;

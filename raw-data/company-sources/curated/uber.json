@@ -9,7 +9,7 @@
  ],
  "roleGuidance": {
   "SWE II (L4)": {
-   "dsaDepth": "Heavy — LeetCode-style coding (DP, trees, binary search, strings) with follow-ups",
+   "dsaDepth": "Heavy - LeetCode-style coding (DP, trees, binary search, strings) with follow-ups",
    "rounds": [
     "Recruiter screen",
     "Online assessment or live coding screen (CodeSignal reported)",
@@ -23,7 +23,7 @@
    "notes": "Round mix varies by team; one L4 report describes an assessment, two technical interviews and a hiring-manager round."
   },
   "Senior SWE (L5A)": {
-   "dsaDepth": "Heavy — hard algorithms plus production-quality machine coding",
+   "dsaDepth": "Heavy - hard algorithms plus production-quality machine coding",
    "rounds": [
     "Business phone screen: 1 medium-hard/hard coding problem",
     "Algorithms & data structures round (2 problems, e.g. tree + graph/topological sort)",
@@ -38,7 +38,7 @@
    "focusPatterns": null
   },
   "Staff SWE (L5B)": {
-   "dsaDepth": "Moderate–Heavy — two coding rounds remain, design and project depth grow",
+   "dsaDepth": "Moderate–Heavy - two coding rounds remain, design and project depth grow",
    "rounds": [
     "Recruiter call and initial coding screen",
     "Five-round final: two coding, one system design, one past-project round (behavioral deep-dive), and a further round"

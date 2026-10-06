@@ -7,7 +7,7 @@
  ],
  "roleGuidance": {
   "Software Engineer / Graduate Engineer Trainee": {
-   "dsaDepth": "Light–Moderate — resume-driven and fundamentals-first: OOP, core language behavior, simple DSA and SQL, with real depth expected on whatever technology you list, but rarely hard algorithms",
+   "dsaDepth": "Light–Moderate - resume-driven and fundamentals-first: OOP, core language behavior, simple DSA and SQL, with real depth expected on whatever technology you list, but rarely hard algorithms",
    "rounds": [
     "Online assessment: 2-3 sections (technical MCQs, coding, sometimes aptitude/quant)",
     "Technical interview(s) (1-2): OOP pillars explained with examples (C++ or Java), simple-to-medium DSA (linked list, array, pattern-printing, \"find the unique word in a document\"-style problems), and stack-specific depth for Java roles (multithreading, collections, Spring/Hibernate, SQL, JUnit/Mockito)",
@@ -15,8 +15,8 @@
     "HR round: culture fit, logistics, salary"
    ],
    "extraTopics": [
-    "Explaining OOP concepts and design-pattern choices clearly, in your own words — repeatedly the actual differentiator, more than solving hard algorithms",
-    "Depth on whatever you name on your resume — interviewers are reported to circle back and ask \"why\" for specific technology choices"
+    "Explaining OOP concepts and design-pattern choices clearly, in your own words - repeatedly the actual differentiator, more than solving hard algorithms",
+    "Depth on whatever you name on your resume - interviewers are reported to circle back and ask \"why\" for specific technology choices"
    ],
    "focusPatterns": null,
    "notes": "India reports (Bengaluru, Pune, Mumbai) show round counts from 2 to 4, and difficulty is consistently described as easy-to-moderate rather than hard."

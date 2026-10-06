@@ -10,7 +10,7 @@
  ],
  "roleGuidance": {
   "SDE I (L4)": {
-   "dsaDepth": "Heavy — coding (Medium), with Leadership Principles in every round",
+   "dsaDepth": "Heavy - coding (Medium), with Leadership Principles in every round",
    "rounds": [
     "Recruiter call",
     "Online assessment (coding)",
@@ -24,7 +24,7 @@
    "notes": "Design rounds are usually skipped at L4, though some 2026 loops add one."
   },
   "SDE II (L5)": {
-   "dsaDepth": "Heavy — 2 coding rounds plus design",
+   "dsaDepth": "Heavy - 2 coding rounds plus design",
    "rounds": [
     "Recruiter call",
     "Online assessment and/or technical phone screen",
@@ -39,7 +39,7 @@
    "focusPatterns": null
   },
   "SDE III (L6)": {
-   "dsaDepth": "Moderate–Heavy — 2 coding rounds, design carries more weight",
+   "dsaDepth": "Moderate–Heavy - 2 coding rounds, design carries more weight",
    "rounds": [
     "Recruiter call",
     "Technical phone screen (coding)",
@@ -53,7 +53,7 @@
    "focusPatterns": null
   },
   "Principal (L7)": {
-   "dsaDepth": "Light–Moderate — depth in architecture and organisational impact",
+   "dsaDepth": "Light–Moderate - depth in architecture and organisational impact",
    "rounds": [
     "Recruiter call",
     "Loop centred on system design, technical strategy and leadership; Bar Raiser"

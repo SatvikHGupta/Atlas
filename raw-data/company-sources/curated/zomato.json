@@ -7,7 +7,7 @@
  ],
  "roleGuidance": {
   "SDE-1": {
-   "dsaDepth": "Moderate — usually 1 DSA problem per round (medium; binary-search-on-answer reported), heavy on projects",
+   "dsaDepth": "Moderate - usually 1 DSA problem per round (medium; binary-search-on-answer reported), heavy on projects",
    "rounds": [
     "Recruiter call",
     "Online test on campus drives (about 60 min: 10 MCQs + 2 medium coding problems)",

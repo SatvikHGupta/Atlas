@@ -7,18 +7,18 @@
  ],
  "roleGuidance": {
   "Software Engineer": {
-   "dsaDepth": "Very Heavy — hard-rated DSA/OOP/distributed-systems problems across 3-6 rounds, with an extremely low pass rate reported for the Bengaluru pipeline (14% across tracked interviews) and coding rounds that can shift into system design mid-question",
+   "dsaDepth": "Very Heavy - hard-rated DSA/OOP/distributed-systems problems across 3-6 rounds, with an extremely low pass rate reported for the Bengaluru pipeline (14% across tracked interviews) and coding rounds that can shift into system design mid-question",
    "rounds": [
     "Recruiter screen: interests, \"why Rubrik\", background",
     "Technical screening: a coding round that can include semaphore/mutex (concurrency) questions even at the screening stage",
-    "2-3 DSA/competitive-programming rounds: medium-hard problems (2D dynamic programming, tree/LCA, two-pointer, DFS + binary search, priority-based task allocation) implemented on a shared doc or interviewing tool — some rounds combine an online assessment of 4 DSA questions (trees, partitioning, DP, arrays) before the live rounds",
-    "System coding round(s): implementing low-level distributed-systems components (e.g. producer-consumer with multithreading, a task scheduler with multithreading) — one report notes the coding round \"shifted into system design midstream,\" rewarding candidates who can extend a solution live",
+    "2-3 DSA/competitive-programming rounds: medium-hard problems (2D dynamic programming, tree/LCA, two-pointer, DFS + binary search, priority-based task allocation) implemented on a shared doc or interviewing tool - some rounds combine an online assessment of 4 DSA questions (trees, partitioning, DP, arrays) before the live rounds",
+    "System coding round(s): implementing low-level distributed-systems components (e.g. producer-consumer with multithreading, a task scheduler with multithreading) - one report notes the coding round \"shifted into system design midstream,\" rewarding candidates who can extend a solution live",
     "System design round (later-stage): a specific product/service design (e.g. \"design Twitter with a notification service\")",
     "Hiring-manager round: interests and CV-based discussion"
    ],
    "extraTopics": [
     "Concurrency and distributed-systems reasoning (mutex/semaphore, multithreading, producer-consumer patterns) tested directly in coding, not as a separate theory round",
-    "Staying composed when a \"coding\" question evolves into a system-design discussion mid-interview — flagged as the single biggest differentiator between candidates who pass and who don’t",
+    "Staying composed when a \"coding\" question evolves into a system-design discussion mid-interview - flagged as the single biggest differentiator between candidates who pass and who don’t",
     "Sustained hard-level DSA output across 2-3 back-to-back rounds"
    ],
    "focusPatterns": null,
@@ -82,6 +82,6 @@
  ],
  "rolesAsOf": "2026-09",
  "rolesConfidence": "medium",
- "rolesNotes": "The distinctive concurrency-in-coding-rounds pattern and the very low Bengaluru pass rate are corroborated across several independent, detailed reports from the same tracking source (Taro) plus an independent guide (Interview Query) — consistent findings across different sources.",
+ "rolesNotes": "The distinctive concurrency-in-coding-rounds pattern and the very low Bengaluru pass rate are corroborated across several independent, detailed reports from the same tracking source (Taro) plus an independent guide (Interview Query) - consistent findings across different sources.",
  "indiaNote": "Multiple detailed reports with pass-rate statistics come from Rubrik’s Bengaluru pipeline; one additional report is from Gurgaon."
 }

@@ -1,4 +1,4 @@
-# raw-data/tags/ — problem tags overlay
+# raw-data/tags/ - problem tags overlay
 
 * `tags.ndjson`        one row per DSA problem, joined to the dataset by `canonical_id`. Fields: docs in the tags handoff (tags, lc_tags, atlas_topics, atlas_patterns, source, status, reviewed).
 * `tag-taxonomy.json`  canonical tag names, aliases, kind (lc-topic | atlas-technique | atlas-section), usage counts.

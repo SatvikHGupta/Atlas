@@ -233,7 +233,8 @@
 .statusChip[data-val="attempted"][data-active="true"] { background: var(--attempted-bg); border-color: var(--attempted); color: var(--attempted); }
 .statusChip[data-val="unsolved"][data-active="true"]  { background: color-mix(in srgb, var(--text-muted) 12%, transparent); border-color: var(--text-muted); color: var(--text-secondary); }
 .statusChip[data-val="bookmarked"][data-active="true"]{ background: var(--warning-bg); border-color: var(--warning); color: var(--warning); }
-.statusChip:hover:not([data-active="true"])           { border-color: var(--border-strong); color: var(--text-secondary); }
+.statusChip:hover:not([data-active="true"]):not(:disabled) { border-color: var(--border-strong); color: var(--text-secondary); }
+.statusChip:disabled { opacity: 0.45; cursor: not-allowed; }
 
 /* ---- MOBILE: hide desktop sidebar, but NOT when in drawer ---- */
 @media (max-width: 768px) {
@@ -266,6 +267,7 @@
   color: var(--text-muted);
   padding: 0 var(--space-1);
   margin: 0;
+  text-align: center;
 }
 .patternLink {
   display: inline-block;

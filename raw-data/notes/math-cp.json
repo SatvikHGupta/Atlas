@@ -7,12 +7,12 @@
     {
       "type": "intro",
       "title": "What is Math for CP?",
-      "content": "Competitive programming math problems require recognizing mathematical patterns, applying formulas, and translating problem statements into equations. Unlike number theory (integers and divisibility) or combinatorics (structured counting), 'math for CP' is a grab-bag of techniques: arithmetic and geometric series sums, floor/ceiling manipulation, coordinate transformations, and pattern-finding.\n\nThe key skill is **pattern recognition** — noticing that a problem's answer follows a simple closed-form formula, or that a counting problem reduces to a known mathematical identity. Many CP problems that look like they require iteration have O(1) or O(√n) solutions.\n\nThese techniques appear as standalone problems ('count multiples in range', 'sum of all subarray elements') and as subroutines inside larger algorithms. Knowing the standard formulas cold prevents you from wasting time deriving them under pressure.\n\nBefore reaching for a loop, ask: does this quantity have a closed form? If you are summing an arithmetic or geometric sequence, computing a count of multiples, or measuring grid distances, there is likely a formula."
+      "content": "Competitive programming math problems require recognizing mathematical patterns, applying formulas, and translating problem statements into equations. Unlike number theory (integers and divisibility) or combinatorics (structured counting), 'math for CP' is a grab-bag of techniques: arithmetic and geometric series sums, floor/ceiling manipulation, coordinate transformations, and pattern-finding.\n\nThe key skill is **pattern recognition** - noticing that a problem's answer follows a simple closed-form formula, or that a counting problem reduces to a known mathematical identity. Many CP problems that look like they require iteration have O(1) or O(√n) solutions.\n\nThese techniques appear as standalone problems ('count multiples in range', 'sum of all subarray elements') and as subroutines inside larger algorithms. Knowing the standard formulas cold prevents you from wasting time deriving them under pressure.\n\nBefore reaching for a loop, ask: does this quantity have a closed form? If you are summing an arithmetic or geometric sequence, computing a count of multiples, or measuring grid distances, there is likely a formula."
     },
     {
       "type": "when_to_use",
       "title": "When to Use This",
-      "content": "Apply CP math when the problem asks for a sum, count, or aggregate with arithmetic structure — sums over ranges, counts of multiples, contributions of elements to all subarrays. Also when geometric distances can be simplified by a coordinate transformation.",
+      "content": "Apply CP math when the problem asks for a sum, count, or aggregate with arithmetic structure - sums over ranges, counts of multiples, contributions of elements to all subarrays. Also when geometric distances can be simplified by a coordinate transformation.",
       "signals": [
         "sum of first n",
         "arithmetic sequence",
@@ -79,7 +79,7 @@
         "Integer overflow in sum formulas: n*(n+1)/2 overflows 32-bit integers for n > ~65535. In JavaScript safe up to n ≈ 2^26 before floating point precision loss. Use BigInt for very large n.",
         "Integer vs float division: n/k in JavaScript returns a float. Always use Math.floor(n/k) explicitly when you need integer quotient.",
         "Sum of 1 to n vs 0 to n-1: n*(n+1)/2 for 1..n; n*(n-1)/2 for 0..n-1. Off-by-one in the formula produces answers that are close but wrong.",
-        "Ceiling formula confusion: Math.ceil(n/k), Math.floor((n+k-1)/k), and Math.floor((n-1)/k)+1 are all equivalent. Pick one and use it consistently — mixing them when n is an exact multiple of k causes subtle bugs.",
+        "Ceiling formula confusion: Math.ceil(n/k), Math.floor((n+k-1)/k), and Math.floor((n-1)/k)+1 are all equivalent. Pick one and use it consistently - mixing them when n is an exact multiple of k causes subtle bugs.",
         "Coordinate rotation scaling: after rotating (x,y) to (x+y, x-y), distances in the new space are scaled relative to original. When comparing transformed distances to thresholds, verify the scaling factor."
       ]
     },
@@ -92,28 +92,28 @@
           "slug": "count-odd-numbers-in-an-interval-range",
           "difficulty": 3,
           "difficulty_label": "Easy",
-          "why": "Floor division range counting — derive the O(1) formula for counting integers satisfying a modular condition without iteration."
+          "why": "Floor division range counting - derive the O(1) formula for counting integers satisfying a modular condition without iteration."
         },
         {
           "title": "Minimum Moves to Equal Array Elements",
           "slug": "minimum-moves-to-equal-array-elements",
           "difficulty": 5,
           "difficulty_label": "Medium",
-          "why": "Mathematical invariant — incrementing n-1 elements equals decrementing one, reducing to summing differences from the minimum."
+          "why": "Mathematical invariant - incrementing n-1 elements equals decrementing one, reducing to summing differences from the minimum."
         },
         {
           "title": "Bulb Switcher",
           "slug": "bulb-switcher",
           "difficulty": 5,
           "difficulty_label": "Medium",
-          "why": "Divisor count pattern — answer is count of perfect squares ≤ n, testing whether you derive the mathematical pattern instead of simulating."
+          "why": "Divisor count pattern - answer is count of perfect squares ≤ n, testing whether you derive the mathematical pattern instead of simulating."
         },
         {
           "title": "Minimum Number of Steps to Make Two Strings Anagram",
           "slug": "minimum-number-of-steps-to-make-two-strings-anagram",
           "difficulty": 5,
           "difficulty_label": "Medium",
-          "why": "Frequency difference formula — reduce an operations problem to summing excess character frequencies."
+          "why": "Frequency difference formula - reduce an operations problem to summing excess character frequencies."
         }
       ]
     },

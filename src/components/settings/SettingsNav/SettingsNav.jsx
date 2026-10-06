@@ -24,6 +24,13 @@ export default function SettingsNav() {
           </Link>
         );
       })}
+      {/* not settings pages, so plain buttons under the list */}
+      <div className={styles.legalGroup}>
+        <Link href="/terms" className={styles.legalBtn}>Terms</Link>
+        <Link href="/privacy" className={styles.legalBtn}>Privacy</Link>
+        <Link href="/about" className={styles.legalBtn}>About</Link>
+        <Link href="/contact" className={styles.legalBtn}>Contact</Link>
+      </div>
     </nav>
   );
 }

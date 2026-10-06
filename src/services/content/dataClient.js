@@ -2,19 +2,19 @@
 
 /**
  * Client-side loader for the small static indexes used by interactive list
- * pages (Problems, CpProblems). No Worker, no IndexedDB — deliberately.
+ * pages (Problems, CpProblems). No Worker, no IndexedDB - deliberately.
  *
  * Those existed in the old app because problems.json/oc.json were
  * 44.5MB/66.7MB; parsing that on the main thread froze the page. The new
- * slim indexes are ~250KB (DSA) / ~700KB (CP) gzipped-JSON — a plain
+ * slim indexes are ~250KB (DSA) / ~700KB (CP) gzipped-JSON - a plain
  * `fetch().then(r => r.json())` is faster than spinning up a worker for
  * this size, and the browser's own HTTP cache (long max-age, see
  * next.config.mjs headers) already gives cross-session caching for free.
  * See docs note in the corrections report: "worker, IndexedDB layer sab
- * delete ho sakta hai — payload itna chhota hai ki wo complexity justify
+ * delete ho sakta hai - payload itna chhota hai ki wo complexity justify
  * nahi hoti."
  *
- * Per-problem detail content does NOT go through this file — that's
+ * Per-problem detail content does NOT go through this file - that's
  * server-rendered at build time (see lib/server/content.server.js) and
  * arrives already embedded in the page HTML, no client fetch needed at all.
  */

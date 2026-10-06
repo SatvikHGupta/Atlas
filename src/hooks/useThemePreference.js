@@ -17,5 +17,6 @@ export function useThemePreference() {
   const setMode = useCallback((id) => store.setMode(id), [store]);
   const setAccent = useCallback((id) => store.setAccent(id), [store]);
   const setSecondary = useCallback((id) => store.setSecondary(id), [store]);
-  return { mode, accent, secondary, setMode, setAccent, setSecondary };
+  const apply = useCallback((next) => store.apply(next), [store]);
+  return { mode, accent, secondary, setMode, setAccent, setSecondary, apply };
 }

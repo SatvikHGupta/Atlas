@@ -7,7 +7,7 @@
  ],
  "roleGuidance": {
   "AMTS / MTS": {
-   "dsaDepth": "Heavy — one LeetCode-style DSA round plus HLD, and OOP/DBMS-focused technical rounds",
+   "dsaDepth": "Heavy - one LeetCode-style DSA round plus HLD, and OOP/DBMS-focused technical rounds",
    "rounds": [
     "Recruiter screen",
     "Online coding assessment (DSA and problem-solving) for some pipelines",

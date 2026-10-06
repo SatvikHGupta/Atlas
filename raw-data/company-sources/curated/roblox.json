@@ -7,16 +7,16 @@
  ],
  "roleGuidance": {
   "Software Engineer": {
-   "dsaDepth": "Heavy — a genuinely unusual 2-hour OA mixing LeetCode coding with proprietary game-based puzzle tasks and a 25-minute behavioral section, then a coding-focused phone screen",
+   "dsaDepth": "Heavy - a genuinely unusual 2-hour OA mixing LeetCode coding with proprietary game-based puzzle tasks and a 25-minute behavioral section, then a coding-focused phone screen",
    "rounds": [
     "Recruiter screen (~30 min): background, motivation, in-office policy and comp alignment",
-    "Online assessment (~2 hrs, CodeSignal/HackerRank plus Roblox’s own platform): standard coding problems, proprietary game-based challenges (e.g. build-a-car, factory-optimization puzzles — described as fluid-intelligence tests, not pattern-matchable), and a dedicated 25-min situational-judgment section",
+    "Online assessment (~2 hrs, CodeSignal/HackerRank plus Roblox’s own platform): standard coding problems, proprietary game-based challenges (e.g. build-a-car, factory-optimization puzzles - described as fluid-intelligence tests, not pattern-matchable), and a dedicated 25-min situational-judgment section",
     "Technical phone screen (60-90 min): coding for junior/mid, project deep-dive and architecture for senior",
     "Onsite loop (4+ hrs): further coding (medium-hard, LeetCode-pattern, with follow-ups anchored to Roblox features, e.g. designing a Robux escrow system instead of a generic payment system), system design (massive concurrent-user scale, Lua performance, engine efficiency)",
     "Bar Raiser round (~60 min): system design plus behavioral, run by a calibrated outside interviewer"
    ],
    "extraTopics": [
-    "The game-based OA sections — described by multiple candidates as the single biggest surprise/filter in the whole process",
+    "The game-based OA sections - described by multiple candidates as the single biggest surprise/filter in the whole process",
     "Comfort with ambiguity: interviewers reportedly give minimal guidance and expect candidates to drive problems independently",
     "Anchoring generic algorithms to Roblox-specific product scenarios (payments, UGC, concurrency at scale)"
    ],

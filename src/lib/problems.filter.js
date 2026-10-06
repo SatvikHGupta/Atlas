@@ -1,11 +1,5 @@
 /* Pure functions over the full in-memory slim problem array (loaded once from /data/problems-index.json or /data/cp-index.json - see services/content/dataClient.js). Zero I/O, framework-agnostic, unit tested in lib/__tests__/problems.filter.test.js. BUG FIX (was: Problems.jsx / CpProblems.jsx in the old Vite app): status ('solved' | 'attempted' | 'unsolved' | 'bookmarked') depends on per-user Firestore progress, which can never be baked into a static page - so it has to be applied client-side. The old code fetched a *paginated* 50-item page from `findMany` and then filtered by status on top of that already-sliced page, so "Solved" showed at most 50 items (whatever solved problems happened to land on the current metadata- filtered page) and the count never matched, and page 2+ was useless. The fix: applyStatusFilter runs BEFORE pagination, on the full filtered array, exactly like every other filter here. findMany takes an optional pre-filtered array via `problems` so callers do: let list = applyFilters(all, filters); list = applyStatusFilter(list, status, progressMap, bookmarkedIds); list = applySort(list, sort); const page = list.slice(offset, offset + limit); - one filter pipeline, applied once, in the right order, every time. */
 
-/* ONE predicate for "does this problem carry this sidebar pattern tag". applyFilters uses it for the Pattern filter and
-   lib/sidebarTags.js uses it to count chips, so a chip's count can never disagree with the rows it returns. */
-export function matchesPatternTag(problem, name) {
-  return !!name && (!!problem.patterns?.includes(name) || !!problem.topics_display?.includes(name));
-}
-
 export function applyFilters(problems, filters = {}) {
   let result = problems;
 
@@ -19,26 +13,11 @@ export function applyFilters(problems, filters = {}) {
     const q = filters.search.toLowerCase();
     result = result.filter((p) => p.title?.toLowerCase().includes(q));
   }
-  if (filters.topic)            result = result.filter((p) => (p.topics_display ?? p.topics)?.includes(filters.topic));
-  // ADDED: multi-topic support (AND across all selected) - the single `topic` filter above only ever
-  // supported one at a time, but the CP page's topic filter needed "tagged with Graphs AND DP" (intersection),
-  // not one-at-a-time. Kept `topic` (singular) untouched for existing callers; this is additive, opt-in.
   if (filters.topics?.length) {
     result = result.filter((p) => {
       const t = p.topics_display ?? p.topics ?? [];
       return filters.topics.every((wanted) => t.includes(wanted));
     });
-  }
-  // BUG FIX: this used to read (p.topics_display ?? p.patterns) - copy-pasted from the topic filter above -
-  // but topics_display is topic taxonomy ("Hash Table", "String"), a completely different vocabulary from
-  // patterns ("String Manipulation", "Hashing"). Since topics_display is truthy on nearly every row, the
-  // `?? p.patterns` fallback almost never ran, so filtering by pattern silently returned close to nothing for
-  // every pattern name (measured: 752 "String Manipulation" rows, 0 matched by this filter). Pattern filtering
-  // must read p.patterns directly; it is never conditional on topics_display.
-  // The sidebar Pattern chips come from the tags overlay (stored in topics_display), the older
-  // pipeline names live in p.patterns - a chip must match either, otherwise 15 of 19 chips returned nothing.
-  if (filters.pattern) {
-    result = result.filter((p) => matchesPatternTag(p, filters.pattern));
   }
   if (filters.difficulty)       result = result.filter((p) => p.difficulty === Number(filters.difficulty));
   if (filters.difficulty_min)   result = result.filter((p) => p.difficulty >= Number(filters.difficulty_min));

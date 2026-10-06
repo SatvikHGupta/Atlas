@@ -8,7 +8,7 @@
  ],
  "roleGuidance": {
   "SDE-1": {
-   "dsaDepth": "Heavy — 3 DSA problems in the OA (2 Medium + 1 Hard reported), then 2 medium in the interview",
+   "dsaDepth": "Heavy - 3 DSA problems in the OA (2 Medium + 1 Hard reported), then 2 medium in the interview",
    "rounds": [
     "Online assessment: 3 DSA problems (Java and Golang were the only languages in one 2026 report); campus 2021 added 1 SQL question",
     "Technical round (1 hr): 2 medium DSA problems in running code + about 25 min of language fundamentals",
@@ -24,7 +24,7 @@
    "focusPatterns": null
   },
   "SDE-2": {
-   "dsaDepth": "Heavy — DSA plus design and system design",
+   "dsaDepth": "Heavy - DSA plus design and system design",
    "rounds": [
     "Online assessment / DSA screen",
     "Machine coding or low-level design",

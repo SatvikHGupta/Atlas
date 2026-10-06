@@ -7,7 +7,7 @@
  ],
  "roleGuidance": {
   "Software Engineer": {
-   "dsaDepth": "Moderate — an OA mixing C/C++/OS multiple-choice with 2-3 easy–medium coding problems, then a loop weighted toward core fundamentals over pure algorithms",
+   "dsaDepth": "Moderate - an OA mixing C/C++/OS multiple-choice with 2-3 easy–medium coding problems, then a loop weighted toward core fundamentals over pure algorithms",
    "rounds": [
     "Recruiter screen (~30 min)",
     "Online assessment (HackerRank, ~90 min): MCQs on C, C++, OS and computer architecture, plus 2-3 coding problems (easy–medium, pointer and bit-manipulation questions are common)",

@@ -3,7 +3,7 @@ import { routes, canonicalAlternates } from '../../lib/routeIdentity.js';
 
 export const metadata = {
   alternates: canonicalAlternates(routes.terms()),
-  title: 'Terms - Atlas',
+  title: 'Terms',
   description: 'The ground rules for using Atlas.',
 };
 
@@ -34,7 +34,7 @@ export default function TermsPage() {
       </p>
 
       <h2>Your data</h2>
-      <p>See the <a href="/privacy">privacy page</a>. You can delete your account at any time from Settings.</p>
+      <p>See the <a href="/privacy">privacy</a> page. You can delete your account at any time from Settings.</p>
 
       <h2>Changes</h2>
       <p>These terms may change; the date at the top shows the latest version.</p>

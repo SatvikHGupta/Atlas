@@ -12,6 +12,7 @@ import { useProgress } from '../../hooks/useProgress.js';
 import { useBookmarks } from '../../hooks/useBookmarks.js';
 import { useDsaIndex, useCpIndex } from '../../hooks/useProblems.js';
 import { useRoadmap } from '../../hooks/useRoadmap.js';
+import { usePostCard, POST_CARD_HINT } from '../../hooks/usePostCard.js';
 import { getStats, buildHeatmapWeeks, calcWeeklySolves } from '../../lib/stats.js';
 import { needsCpIndex } from '../../lib/resolveIds.js';
 import { visibleRoadmap } from '../../lib/roadmap.js';
@@ -88,6 +89,7 @@ export default function DashboardClient() {
   const { data: allProblems, isLoading: indexLoading, isError: indexError, refetch: refetchIndex } = useDsaIndex();
   const { data: roadmapLevels, isLoading: roadmapLoading } = useRoadmap();
   const router = useRouter();
+  const { download: downloadCard, busy: cardBusy } = usePostCard();
   const [topicView, setTopicView] = useState('bars');
 
   // The CP index is about 6 MB: fetched only when some progress entry is not a DSA problem (BUG-157). It is not part of the
@@ -182,6 +184,11 @@ export default function DashboardClient() {
             </p>
           </div>
           <nav className={styles.headerActions} aria-label="Your lists">
+            {/* left of Bookmarks: draws the share card and downloads "Atlas Post Card.png" */}
+            <button type="button" className={styles.pillBtn} onClick={downloadCard} disabled={cardBusy} title={POST_CARD_HINT}>
+              <Icon><path d="M12 3v12M7 10l5 5 5-5M5 21h14" /></Icon>
+              <span className={styles.pillText}><span>{cardBusy ? 'Creating...' : 'Post your card'}</span></span>
+            </button>
             <Link href="/bookmarks" className={styles.pillBtn}>
               <Icon><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" /></Icon>
               <span className={styles.pillText}><span>Bookmarks</span></span>

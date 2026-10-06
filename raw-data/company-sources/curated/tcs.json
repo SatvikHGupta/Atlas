@@ -9,7 +9,7 @@
  ],
  "roleGuidance": {
   "Ninja": {
-   "dsaDepth": "Light — Foundation section only (numerical, verbal, reasoning); no coding interview typically required",
+   "dsaDepth": "Light - Foundation section only (numerical, verbal, reasoning); no coding interview typically required",
    "rounds": [
     "TCS NQT: Foundation section (75 min, 65 questions, no negative marking)",
     "Technical interview (brief, resume/basics)",
@@ -21,7 +21,7 @@
    "focusPatterns": null
   },
   "Digital": {
-   "dsaDepth": "Moderate — Foundation plus Advanced (quant, reasoning, coding) sections",
+   "dsaDepth": "Moderate - Foundation plus Advanced (quant, reasoning, coding) sections",
    "rounds": [
     "TCS NQT: Foundation + Advanced sections (115 more minutes: advanced quant, reasoning, coding)",
     "Technical interview (more depth than Ninja)",
@@ -34,7 +34,7 @@
    "focusPatterns": null
   },
   "Prime": {
-   "dsaDepth": "Moderate–Heavy — top NQT band, at least one fully solved Advanced coding problem, project-focused interview",
+   "dsaDepth": "Moderate–Heavy - top NQT band, at least one fully solved Advanced coding problem, project-focused interview",
    "rounds": [
     "TCS NQT: Foundation + Advanced, with a fully-solved Advanced coding problem expected",
     "Extended technical interview including an AI/data project review",

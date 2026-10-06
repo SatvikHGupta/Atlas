@@ -1,8 +1,9 @@
 'use client';
 
 import { nameHue } from '../../lib/nameHue.js';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { logoCandidates } from '../../lib/companyLogos.js';
+import { readCachedLogo, writeCachedLogo, loadLogoDataUrl } from '../../lib/logoCache.js';
 import styles from './CompanyBadge.module.css';
 
 function initials(name) {
@@ -19,15 +20,38 @@ export { nameHue }; // re-exported so existing imports keep working
 // company's own data (registry.json -> index.json / companies/<id>.json), not a name-keyed lookup - see
 // lib/companyLogos.js for why. Shared between the companies list cards and the company detail header.
 export default function CompanyBadge({ name, domain, logo, size = 40 }) {
-  const candidates = useMemo(
-    () => [...(logo ? [logo] : []), ...logoCandidates(domain, size * 2)],
-    [logo, domain, size],
-  );
+  const px = size * 2;
+  const remote = useMemo(() => logoCandidates(domain, px), [domain, px]);
+  const candidates = useMemo(() => [...(logo ? [logo] : []), ...remote], [logo, remote]);
+  const key = domain ? `${domain}@${px}` : null;
+
+  // Remote logos are saved in the visitor's browser (lib/logoCache.js), so each one is requested from Logo.dev once.
+  //   'checking' = looking in localStorage / fetching once (initials badge shows meanwhile)
+  //   'ready'    = showing the saved copy        'img' = plain <img> chain (local file, or saving was not possible)
+  const [phase, setPhase] = useState(logo || !remote.length ? 'img' : 'checking');
+  const [savedUrl, setSavedUrl] = useState(null);
   const [attempt, setAttempt] = useState(0);
+
+  useEffect(() => {
+    if (phase !== 'checking' || !key) return undefined;
+    let cancelled = false;
+    const hit = readCachedLogo(key);
+    if (hit) { setSavedUrl(hit); setPhase('ready'); return undefined; }
+    (async () => {
+      for (const url of remote) {
+        const data = await loadLogoDataUrl(url);
+        if (cancelled) return;
+        if (data) { writeCachedLogo(key, data); setSavedUrl(data); setPhase('ready'); return; }
+      }
+      if (!cancelled) setPhase('img'); // CORS or storage not available here: use the normal <img> chain
+    })();
+    return () => { cancelled = true; };
+  }, [phase, key, remote]);
+
   const hue = nameHue(name);
-  const url = candidates[attempt];
+  const url = phase === 'ready' ? savedUrl : phase === 'img' ? candidates[attempt] : null;
   const showLogo = Boolean(url);
-  const isLocal = Boolean(logo) && attempt === 0;   // local PNGs are pre-padded, so they fill the tile; remote ones need the inset
+  const isLocal = Boolean(logo) && phase === 'img' && attempt === 0; // local PNGs are pre-padded, so they fill the tile; remote ones need the inset
 
   return (
     <span

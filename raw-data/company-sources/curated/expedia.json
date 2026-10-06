@@ -8,28 +8,28 @@
  ],
  "roleGuidance": {
   "SDE I": {
-   "dsaDepth": "Moderate — an online assessment (2 string/substring problems, 75 min) then a 3-round onsite mixing behavioral, OOP design, and coding",
+   "dsaDepth": "Moderate - an online assessment (2 string/substring problems, 75 min) then a 3-round onsite mixing behavioral, OOP design, and coding",
    "rounds": [
     "Online assessment: 2 coding questions (string manipulation/substrings), 75 minutes",
-    "Round 1 — Behavioral: background and motivation, often with a junior engineer",
-    "Round 2 — Data structures and OOP design: a design-flavored coding problem (e.g. hotel-bookings max-occupancy)",
-    "Round 3 — \"Problem solving\" (actually coding): a further LeetCode-style problem"
+    "Round 1 - Behavioral: background and motivation, often with a junior engineer",
+    "Round 2 - Data structures and OOP design: a design-flavored coding problem (e.g. hotel-bookings max-occupancy)",
+    "Round 3 - \"Problem solving\" (actually coding): a further LeetCode-style problem"
    ],
    "extraTopics": [
-    "LeetCode-easy-to-medium pattern recognition (Valid Parentheses, anagrams, palindrome variants are commonly reported) — the bar rewards speed and clarity over obscure algorithms",
+    "LeetCode-easy-to-medium pattern recognition (Valid Parentheses, anagrams, palindrome variants are commonly reported) - the bar rewards speed and clarity over obscure algorithms",
     "OOP design thinking applied to a travel-domain problem (bookings, hotels)"
    ],
    "focusPatterns": null
   },
   "SDE II / Senior": {
-   "dsaDepth": "Moderate — 2 coding rounds plus a discussion-based system design round and a behavioral/hiring-manager conversation",
+   "dsaDepth": "Moderate - 2 coding rounds plus a discussion-based system design round and a behavioral/hiring-manager conversation",
    "rounds": [
     "Online assessment",
     "Technical round with an engineer",
     "Onsite: 2 medium-difficulty coding rounds, 1 discussion-based system design round (e.g. a notification service, with many follow-up questions rather than one deep prompt), 1 hiring-manager/behavioral round"
    ],
    "extraTopics": [
-    "Discussion-based system design — interviewers keep extending follow-ups rather than staying on a single narrow prompt",
+    "Discussion-based system design - interviewers keep extending follow-ups rather than staying on a single narrow prompt",
     "Clear articulation of technical decisions and trade-offs"
    ],
    "focusPatterns": null

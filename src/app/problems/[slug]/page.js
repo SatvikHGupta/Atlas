@@ -28,13 +28,13 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }) {
   params = await params;
   const problem = getProblemBundle(params.slug);
-  if (!problem) return { title: 'Problem not found - Atlas' };
+  if (!problem) return { title: 'Problem not found' };
 
   const topics = (problem.topics || []).slice(0, 3).join(', ');
   return {
     // BUG-10: duplicate imports point search engines at one original page
     alternates: canonicalAlternates(routes.problem(params.slug)),
-    title: `${problem.title} - Atlas`,
+    title: problem.title,
     description: problem.explanation_short
       ? problem.explanation_short.slice(0, 155)
       : `${problem.title}${topics ? ` - ${topics}` : ''}. Worked explanation and solutions in JavaScript, C++, Java, and Python.`,

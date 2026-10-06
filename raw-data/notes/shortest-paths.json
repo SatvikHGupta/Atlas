@@ -7,7 +7,7 @@
     {
       "type": "intro",
       "title": "What are Shortest Path Algorithms?",
-      "content": "Shortest path in an **unweighted** graph is BFS — each edge has cost 1. Add weights and BFS fails: a path with more hops can be shorter if those hops have tiny weights.\n\n**Dijkstra's algorithm**: O((V+E) log V) with a priority queue. Greedy — always extend the cheapest known path next. Works only with non-negative weights. Used in navigation systems, network routing, game pathfinding.\n\n**Bellman-Ford**: O(VE). Handles negative weights by relaxing all edges V-1 times. An extra pass detects negative cycles.\n\n**Floyd-Warshall**: O(V³). Computes all-pairs shortest paths. Practical only for small V (≤ ~500).\n\nChoose by: non-negative weights + single source → Dijkstra. Negative weights or cycle detection → Bellman-Ford. All pairs + small graph → Floyd-Warshall. Unweighted → BFS."
+      "content": "Shortest path in an **unweighted** graph is BFS - each edge has cost 1. Add weights and BFS fails: a path with more hops can be shorter if those hops have tiny weights.\n\n**Dijkstra's algorithm**: O((V+E) log V) with a priority queue. Greedy - always extend the cheapest known path next. Works only with non-negative weights. Used in navigation systems, network routing, game pathfinding.\n\n**Bellman-Ford**: O(VE). Handles negative weights by relaxing all edges V-1 times. An extra pass detects negative cycles.\n\n**Floyd-Warshall**: O(V³). Computes all-pairs shortest paths. Practical only for small V (≤ ~500).\n\nChoose by: non-negative weights + single source → Dijkstra. Negative weights or cycle detection → Bellman-Ford. All pairs + small graph → Floyd-Warshall. Unweighted → BFS."
     },
     {
       "type": "when_to_use",
@@ -26,7 +26,7 @@
     {
       "type": "concept",
       "title": "Dijkstra, Bellman-Ford, and Floyd-Warshall",
-      "content": "## Dijkstra's Algorithm\n\nInvariant: when a node is popped from the min-heap, its distance is final. Holds because all edge weights are non-negative.\n\n1. `dist[source]=0`, `dist[others]=Infinity`.\n2. Push `(0, source)` to min-heap.\n3. Pop `(d, node)`. If `d > dist[node]`, skip — stale entry.\n4. For each neighbor: if `dist[node]+w < dist[neighbor]`, update and push.\n\nThe stale-entry check is essential because we push updated distances without removing old entries.\n\n## Why Dijkstra Fails on Negative Weights\n\nThe invariant breaks — a future negative edge might give a shorter path to an already-settled node. Results are silently wrong.\n\n## Bellman-Ford\n\nFor each of V-1 iterations, relax every edge: if `dist[u]+w < dist[v]`, set `dist[v]=dist[u]+w`. Why V-1? Shortest path visits at most V-1 edges.\n\nNegative cycle detection: run a Vth iteration. If any distance still updates, a negative cycle is reachable.\n\n## Floyd-Warshall\n\n`dp[i][j] = min(dp[i][j], dp[i][k] + dp[k][j])` for each intermediate k. Init: `dp[i][i]=0`, direct edge weights, Infinity otherwise. O(V³).\n\n## K-Constrained Paths\n\nRun exactly K iterations of Bellman-Ford for shortest paths using at most K edges. Use a snapshot of dist at the start of each iteration to prevent chaining within one pass."
+      "content": "## Dijkstra's Algorithm\n\nInvariant: when a node is popped from the min-heap, its distance is final. Holds because all edge weights are non-negative.\n\n1. `dist[source]=0`, `dist[others]=Infinity`.\n2. Push `(0, source)` to min-heap.\n3. Pop `(d, node)`. If `d > dist[node]`, skip - stale entry.\n4. For each neighbor: if `dist[node]+w < dist[neighbor]`, update and push.\n\nThe stale-entry check is essential because we push updated distances without removing old entries.\n\n## Why Dijkstra Fails on Negative Weights\n\nThe invariant breaks - a future negative edge might give a shorter path to an already-settled node. Results are silently wrong.\n\n## Bellman-Ford\n\nFor each of V-1 iterations, relax every edge: if `dist[u]+w < dist[v]`, set `dist[v]=dist[u]+w`. Why V-1? Shortest path visits at most V-1 edges.\n\nNegative cycle detection: run a Vth iteration. If any distance still updates, a negative cycle is reachable.\n\n## Floyd-Warshall\n\n`dp[i][j] = min(dp[i][j], dp[i][k] + dp[k][j])` for each intermediate k. Init: `dp[i][i]=0`, direct edge weights, Infinity otherwise. O(V³).\n\n## K-Constrained Paths\n\nRun exactly K iterations of Bellman-Ford for shortest paths using at most K edges. Use a snapshot of dist at the start of each iteration to prevent chaining within one pass."
     },
     {
       "type": "concept",
@@ -75,11 +75,11 @@
       "type": "pitfalls",
       "title": "Common Mistakes",
       "items": [
-        "Using Dijkstra with negative weights — it gives silently wrong answers. The invariant that a popped node has its final distance breaks with negative edges.",
-        "Forgetting the stale-entry check in Dijkstra — without 'if d > dist[node] continue', stale heap entries cause nodes to be reprocessed with outdated distances.",
-        "Bellman-Ford K-step variant: not copying dist before each iteration — relaxations within one pass can chain beyond K edges. Use a snapshot of dist at iteration start.",
-        "Floyd-Warshall: initializing non-existent edges to 0 instead of Infinity — this implies free edges exist and corrupts all-pairs distances.",
-        "Not running the Vth Bellman-Ford iteration for negative cycle detection — skipping it returns wrong distances when a negative cycle is reachable from the source."
+        "Using Dijkstra with negative weights - it gives silently wrong answers. The invariant that a popped node has its final distance breaks with negative edges.",
+        "Forgetting the stale-entry check in Dijkstra - without 'if d > dist[node] continue', stale heap entries cause nodes to be reprocessed with outdated distances.",
+        "Bellman-Ford K-step variant: not copying dist before each iteration - relaxations within one pass can chain beyond K edges. Use a snapshot of dist at iteration start.",
+        "Floyd-Warshall: initializing non-existent edges to 0 instead of Infinity - this implies free edges exist and corrupts all-pairs distances.",
+        "Not running the Vth Bellman-Ford iteration for negative cycle detection - skipping it returns wrong distances when a negative cycle is reachable from the source."
       ]
     },
     {
@@ -91,28 +91,28 @@
           "slug": "network-delay-time",
           "difficulty": 5,
           "difficulty_label": "Medium",
-          "why": "Direct Dijkstra — find shortest time for signal to reach all nodes, then take the maximum shortest path."
+          "why": "Direct Dijkstra - find shortest time for signal to reach all nodes, then take the maximum shortest path."
         },
         {
           "title": "Path with Minimum Effort",
           "slug": "path-with-minimum-effort",
           "difficulty": 5,
           "difficulty_label": "Medium",
-          "why": "Modified Dijkstra where cost is max edge weight on path — tests adapting Dijkstra to a non-sum cost function on a grid."
+          "why": "Modified Dijkstra where cost is max edge weight on path - tests adapting Dijkstra to a non-sum cost function on a grid."
         },
         {
           "title": "Cheapest Flights Within K Stops",
           "slug": "cheapest-flights-within-k-stops",
           "difficulty": 5,
           "difficulty_label": "Medium",
-          "why": "K-iteration Bellman-Ford — tests the insight that K iterations give shortest paths with at most K edges, requiring snapshot-copy of dist."
+          "why": "K-iteration Bellman-Ford - tests the insight that K iterations give shortest paths with at most K edges, requiring snapshot-copy of dist."
         },
         {
           "title": "Find the City With the Smallest Number of Neighbors at a Threshold Distance",
           "slug": "find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance",
           "difficulty": 5,
           "difficulty_label": "Medium",
-          "why": "Floyd-Warshall all-pairs — compute distances between every city pair and count reachable cities within threshold."
+          "why": "Floyd-Warshall all-pairs - compute distances between every city pair and count reachable cities within threshold."
         }
       ]
     },

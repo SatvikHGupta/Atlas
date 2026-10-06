@@ -19,6 +19,8 @@ export const routes = {
   roadmapLevel: (level) => `/roadmap/${level}`,
   privacy: () => '/privacy',
   terms: () => '/terms',
+  about: () => '/about',
+  contact: () => '/contact',
 };
 
 /** Next.js `alternates` for a route: always the entity's own clean path, never the request URL (no query strings, no twins). */

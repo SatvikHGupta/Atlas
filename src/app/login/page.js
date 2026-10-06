@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import { FullPageLoader } from '../../components/ui/Loader/Loader.jsx';
 import LoginClient from './LoginClient.jsx';
 
-export const metadata = { title: 'Sign in - Atlas' };
+export const metadata = { title: 'Sign in' };
 
 export default function LoginPage() {
   // BUG FIX / dynamic count: every number in the marketing copy is computed from the real indexes here (nothing hand-typed, no "+" suffix on an exact count) - it moves on its own as the dataset grows, never needs editing.

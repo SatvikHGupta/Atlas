@@ -8,7 +8,7 @@
  ],
  "roleGuidance": {
   "MTS-1": {
-   "dsaDepth": "Moderate–Heavy — DSA plus CS fundamentals, often easier than other big-tech loops",
+   "dsaDepth": "Moderate–Heavy - DSA plus CS fundamentals, often easier than other big-tech loops",
    "rounds": [
     "HR phone screen (job profile and experience)",
     "Online coding test (in campus and many off-campus drives)",
@@ -27,7 +27,7 @@
    "notes": "Reports describe 4–5 interviews over 1–2 days for MTS-1; older campus loops were one coding round plus three technical interviews."
   },
   "MTS-2": {
-   "dsaDepth": "Heavy — 2 DSA problems per round, several technical rounds before a director round",
+   "dsaDepth": "Heavy - 2 DSA problems per round, several technical rounds before a director round",
    "rounds": [
     "Technical rounds focused on DSA (trie, tree traversal, sorted-array problems) and project depth",
     "Managerial round",

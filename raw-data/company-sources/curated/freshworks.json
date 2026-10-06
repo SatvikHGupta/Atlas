@@ -10,7 +10,7 @@
  ],
  "roleGuidance": {
   "Software Engineer": {
-   "dsaDepth": "Moderate — online assessment then technical rounds",
+   "dsaDepth": "Moderate - online assessment then technical rounds",
    "rounds": [
     "Screening, then online assessment (campus/CSG-style hiring)",
     "Technical / HR rounds"
@@ -22,7 +22,7 @@
    "notes": "Fresher hiring details are sparse in the cited sources."
   },
   "Senior SE (SSE)": {
-   "dsaDepth": "Moderate–Heavy — LeetCode-medium in one round, then LLD and HLD",
+   "dsaDepth": "Moderate–Heavy - LeetCode-medium in one round, then LLD and HLD",
    "rounds": [
     "Screening",
     "Round 1: DSA and problem solving (LeetCode medium)",
@@ -39,7 +39,7 @@
    "notes": "Reports mention both 3-round and 4-round variants; some loops are in-person only."
   },
   "Lead": {
-   "dsaDepth": "Moderate — DSA plus system design and managerial rounds",
+   "dsaDepth": "Moderate - DSA plus system design and managerial rounds",
    "rounds": [
     "Two technical rounds: DSA (Trie, heap) and system design (file system, document manager, log management)",
     "Managerial round",
@@ -52,7 +52,7 @@
    "focusPatterns": null
   },
   "SDET": {
-   "dsaDepth": "Moderate — automation-focused",
+   "dsaDepth": "Moderate - automation-focused",
    "rounds": [
     "HackerRank (3 questions, loops/collections)",
     "Manual testing round",

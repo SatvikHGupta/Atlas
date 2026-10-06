@@ -7,7 +7,7 @@
  ],
  "roleGuidance": {
   "Software Engineer": {
-   "dsaDepth": "Very Heavy — an on-site, multi-hour LeetCode marathon (often 5 problems spanning easy to hard, 2-3 hours, on a Codility-like platform) is the primary filter, followed by a 90-minute system-design-and-implementation interview",
+   "dsaDepth": "Very Heavy - an on-site, multi-hour LeetCode marathon (often 5 problems spanning easy to hard, 2-3 hours, on a Codility-like platform) is the primary filter, followed by a 90-minute system-design-and-implementation interview",
    "rounds": [
     "Application, sometimes via referral",
     "Online/Zoom informational event for some pipelines (introducing company groups and the process)",
@@ -15,7 +15,7 @@
     "A 90-minute technical interview with 2 engineers: a multi-part system-design-and-implementation question (e.g. building functions for URL routing rules: perfect match, prefix match, best-route finding)"
    ],
    "extraTopics": [
-    "Sustained performance across a genuinely long, hard on-site coding exam — 5 problems including 2 hard ones in one sitting is a heavier bar than most companies in this batch",
+    "Sustained performance across a genuinely long, hard on-site coding exam - 5 problems including 2 hard ones in one sitting is a heavier bar than most companies in this batch",
     "Multi-part system design that blends design AND actual implementation, not just a whiteboard discussion"
    ],
    "focusPatterns": null,
@@ -58,6 +58,6 @@
  ],
  "rolesAsOf": "2026-09",
  "rolesConfidence": "low",
- "rolesNotes": "Only two detailed reports were reviewed, both from Wix’s Tel Aviv office, but they independently agree on the distinctive long, hard on-site coding exam — a genuinely unusual format worth flagging even with limited sourcing.",
+ "rolesNotes": "Only two detailed reports were reviewed, both from Wix’s Tel Aviv office, but they independently agree on the distinctive long, hard on-site coding exam - a genuinely unusual format worth flagging even with limited sourcing.",
  "indiaNote": null
 }

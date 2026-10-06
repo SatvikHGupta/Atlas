@@ -7,7 +7,7 @@
  ],
  "roleGuidance": {
   "Software Engineer": {
-   "dsaDepth": "Heavy — 2 DSA rounds, then a design round and a \"focus\" round, with a Bar Raiser gate similar to Amazon’s model",
+   "dsaDepth": "Heavy - 2 DSA rounds, then a design round and a \"focus\" round, with a Bar Raiser gate similar to Amazon’s model",
    "rounds": [
     "Recruiter screen",
     "DSA round 1: algorithmic coding problem",
@@ -18,7 +18,7 @@
    ],
    "extraTopics": [
     "Passing 2 back-to-back pure-DSA rounds before design is even discussed",
-    "A distinct \"focus round\" format not common at most companies — expect deep, role-specific questioning beyond generic DSA/design"
+    "A distinct \"focus round\" format not common at most companies - expect deep, role-specific questioning beyond generic DSA/design"
    ],
    "focusPatterns": null
   }
@@ -52,6 +52,6 @@
  ],
  "rolesAsOf": "2026-09",
  "rolesConfidence": "low",
- "rolesNotes": "Only one source page was reviewed (aggregating a few independent reports). The Bar Raiser and \"focus round\" terminology mirror Amazon’s model closely, which may reflect hiring practices imported by ex-Amazon leadership at Coupang — worth confirming independently.",
+ "rolesNotes": "Only one source page was reviewed (aggregating a few independent reports). The Bar Raiser and \"focus round\" terminology mirror Amazon’s model closely, which may reflect hiring practices imported by ex-Amazon leadership at Coupang - worth confirming independently.",
  "indiaNote": null
 }

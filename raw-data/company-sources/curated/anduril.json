@@ -7,16 +7,16 @@
  ],
  "roleGuidance": {
   "Software Engineer": {
-   "dsaDepth": "Heavy — deliberately ambiguous, multi-phase coding prompts where extracting requirements IS part of the evaluation, plus genuine mission-alignment screening throughout, and a hard eligibility gate before any of it",
+   "dsaDepth": "Heavy - deliberately ambiguous, multi-phase coding prompts where extracting requirements IS part of the evaluation, plus genuine mission-alignment screening throughout, and a hard eligibility gate before any of it",
    "rounds": [
-    "Eligibility gate (before anything else): most roles require US person status under ITAR export-control regulations, and many require security-clearance eligibility — confirm this before investing time",
-    "Recruiter phone screen (30-60 min): technical background AND genuine motivation for working in the defense sector — evaluated here and re-checked in every later round, not just once",
-    "Technical phone screen (~60 min, HackerRand-style live coding): often an intentionally vague, multi-phase prompt (e.g. a circular-queue reader/writer to debug, or a Queue problem building on itself) — asking clarifying questions before coding is part of what’s being tested",
-    "Final round (4 back-to-back ~60 min sessions, same day): 2 coding rounds (graphs are the most commonly reported topic — BFS and traversal variants), 1 OOD/system-design round (real-time, failure-tolerant systems, sometimes tailored to Anduril’s defense domain), 1 behavioral conversation with a senior staff member",
+    "Eligibility gate (before anything else): most roles require US person status under ITAR export-control regulations, and many require security-clearance eligibility - confirm this before investing time",
+    "Recruiter phone screen (30-60 min): technical background AND genuine motivation for working in the defense sector - evaluated here and re-checked in every later round, not just once",
+    "Technical phone screen (~60 min, HackerRand-style live coding): often an intentionally vague, multi-phase prompt (e.g. a circular-queue reader/writer to debug, or a Queue problem building on itself) - asking clarifying questions before coding is part of what’s being tested",
+    "Final round (4 back-to-back ~60 min sessions, same day): 2 coding rounds (graphs are the most commonly reported topic - BFS and traversal variants), 1 OOD/system-design round (real-time, failure-tolerant systems, sometimes tailored to Anduril’s defense domain), 1 behavioral conversation with a senior staff member",
     "C++ memory-management and multithreading/concurrency questions reported for some systems-focused roles"
    ],
    "extraTopics": [
-    "Extracting requirements from a deliberately incomplete prompt BEFORE committing to a design — candidates who charge straight into code against imagined requirements are reported to fail a test they didn’t know was running",
+    "Extracting requirements from a deliberately incomplete prompt BEFORE committing to a design - candidates who charge straight into code against imagined requirements are reported to fail a test they didn’t know was running",
     "Sustained, genuine enthusiasm for defense-sector work, checked by multiple people across the process, not a single \"why us\" question",
     "C++ memory/concurrency fundamentals for systems roles (circular buffers, reader/writer patterns)"
    ],
@@ -74,6 +74,6 @@
  ],
  "rolesAsOf": "2026-09",
  "rolesConfidence": "medium",
- "rolesNotes": "The ambiguous-prompt evaluation method and the ITAR/clearance eligibility gate are corroborated across multiple independent sources and are genuinely distinctive to Anduril’s defense-sector context — this is not a generic big-tech loop.",
+ "rolesNotes": "The ambiguous-prompt evaluation method and the ITAR/clearance eligibility gate are corroborated across multiple independent sources and are genuinely distinctive to Anduril’s defense-sector context - this is not a generic big-tech loop.",
  "indiaNote": null
 }

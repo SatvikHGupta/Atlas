@@ -9,7 +9,7 @@
  ],
  "roleGuidance": {
   "Systems Engineer (SE)": {
-   "dsaDepth": "Light–Moderate — online assessment then a technical + HR round",
+   "dsaDepth": "Light–Moderate - online assessment then a technical + HR round",
    "rounds": [
     "Online assessment (aptitude, verbal, logical reasoning, basic coding)",
     "Technical interview (CS fundamentals, projects, DSA basics)",
@@ -22,7 +22,7 @@
    "focusPatterns": null
   },
   "Specialist Programmer (SP)": {
-   "dsaDepth": "Heavy — timed competitive-programming rounds (implementation-heavy DP/greedy/grid problems), then DSA and system-design interviews",
+   "dsaDepth": "Heavy - timed competitive-programming rounds (implementation-heavy DP/greedy/grid problems), then DSA and system-design interviews",
    "rounds": [
     "HackWithInfy or direct SP test: Round 1 (about 3 hrs, 3 problems: easy/medium/hard, implementation-heavy DP and modular arithmetic); Round 2 (offline, 4 problems: greedy, grid DP, state-transition DP)",
     "Interview: DSA (2 problems, medium–hard) plus a system-design question (e.g. \"design WhatsApp notifications at a high level\")",
@@ -36,7 +36,7 @@
    "focusPatterns": null
   },
   "Power Programmer (PP)": {
-   "dsaDepth": "Heavy — similar bar to SP with added emphasis on internal upskilling potential",
+   "dsaDepth": "Heavy - similar bar to SP with added emphasis on internal upskilling potential",
    "rounds": [
     "Coding rounds similar to SP",
     "Technical interview covering DSA, projects and system design"

@@ -7,15 +7,15 @@
  ],
  "roleGuidance": {
   "Site Reliability Engineer": {
-   "dsaDepth": "Moderate — a core-CS-fundamentals OA (OS, networking, aptitude) then resume-driven technical rounds and an HR round",
+   "dsaDepth": "Moderate - a core-CS-fundamentals OA (OS, networking, aptitude) then resume-driven technical rounds and an HR round",
    "rounds": [
-    "Round 1 — Online assessment: core CS concepts (OS, computer networks) plus general aptitude",
+    "Round 1 - Online assessment: core CS concepts (OS, computer networks) plus general aptitude",
     "Technical Round 1: resume-based and scenario-based questions",
     "Technical Round 2: follow-ups probing weaknesses identified in Round 1",
     "HR round: company fit and culture"
    ],
    "extraTopics": [
-    "Deep theory knowledge of virtualization, Linux commands, OS concepts and networking — SREs are client-facing and troubleshoot these areas directly",
+    "Deep theory knowledge of virtualization, Linux commands, OS concepts and networking - SREs are client-facing and troubleshoot these areas directly",
     "CPU scheduling algorithms and similar OS fundamentals came up explicitly in one report"
    ],
    "focusPatterns": null,
@@ -46,6 +46,6 @@
  ],
  "rolesAsOf": "2026-09",
  "rolesConfidence": "low",
- "rolesNotes": "Only one detailed report was reviewed, and it covers the SRE track specifically rather than general Software Engineer hiring — treat as indicative of one team’s process, not the whole company.",
+ "rolesNotes": "Only one detailed report was reviewed, and it covers the SRE track specifically rather than general Software Engineer hiring - treat as indicative of one team’s process, not the whole company.",
  "indiaNote": null
 }

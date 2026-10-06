@@ -7,7 +7,7 @@
  ],
  "roleGuidance": {
   "Software Engineer (India, campus)": {
-   "dsaDepth": "Moderate — OA combining DSA and SQL, then 2 technical rounds of pure DSA",
+   "dsaDepth": "Moderate - OA combining DSA and SQL, then 2 technical rounds of pure DSA",
    "rounds": [
     "Resume shortlisting",
     "Online assessment: DSA problem-solving questions plus SQL/database-management questions",
@@ -15,7 +15,7 @@
     "Technical interview round 2: 2 further DSA questions"
    ],
    "extraTopics": [
-    "SQL alongside DSA in the OA — a combination not every company tests at this stage",
+    "SQL alongside DSA in the OA - a combination not every company tests at this stage",
     "Consistent problem-solving performance across two back-to-back DSA-only technical rounds"
    ],
    "focusPatterns": null
@@ -50,6 +50,6 @@
  ],
  "rolesAsOf": "2026-09",
  "rolesConfidence": "low",
- "rolesNotes": "Only one detailed report was reviewed for this entry, and it covers entry-level campus hiring only — Senior/Staff-level process is not documented in the source reviewed.",
+ "rolesNotes": "Only one detailed report was reviewed for this entry, and it covers entry-level campus hiring only - Senior/Staff-level process is not documented in the source reviewed.",
  "indiaNote": "The only detailed report reviewed is from a Bengaluru campus drive."
 }

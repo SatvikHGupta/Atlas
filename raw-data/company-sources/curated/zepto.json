@@ -8,7 +8,7 @@
  ],
  "roleGuidance": {
   "SDE-1": {
-   "dsaDepth": "Heavy — an OA (MCQs + SQL + DSA) then 2 DSA rounds and a hiring-manager round with a live debugging exercise",
+   "dsaDepth": "Heavy - an OA (MCQs + SQL + DSA) then 2 DSA rounds and a hiring-manager round with a live debugging exercise",
    "rounds": [
     "Online assessment (90 min): 5 MCQs, 1 SQL question, 3 DSA questions",
     "Interview round 1: string manipulation plus a coin-change variant (return how many of each denomination is used), plus OS questions",
@@ -18,17 +18,17 @@
    ],
    "extraTopics": [
     "Live debugging and explaining code flow, not just fixing the bug",
-    "Time management — multiple reports mention running out of time mid-problem"
+    "Time management - multiple reports mention running out of time mid-problem"
    ],
    "focusPatterns": null,
-   "notes": "Other reports describe a similar loop with LLD/OOPs and Spring Boot weighted in for slightly more experienced candidates — Zepto is quick-commerce and moves fast, and interview format varies by hiring wave."
+   "notes": "Other reports describe a similar loop with LLD/OOPs and Spring Boot weighted in for slightly more experienced candidates - Zepto is quick-commerce and moves fast, and interview format varies by hiring wave."
   },
   "Staff Software Engineer (L6)": {
-   "dsaDepth": "Heavy — 2 HLD rounds plus 1 LLD round before a hiring-manager round that weighs scalability experience heavily",
+   "dsaDepth": "Heavy - 2 HLD rounds plus 1 LLD round before a hiring-manager round that weighs scalability experience heavily",
    "rounds": [
     "2 high-level design rounds",
     "1 low-level design round",
-    "Hiring-manager round, evaluated in STAR format, with explicit scrutiny of scalability experience — one candidate was rejected here specifically for insufficient scalability depth despite passing all technical rounds"
+    "Hiring-manager round, evaluated in STAR format, with explicit scrutiny of scalability experience - one candidate was rejected here specifically for insufficient scalability depth despite passing all technical rounds"
    ],
    "extraTopics": [
     "Scalability experience articulated in STAR format, not just technical HLD/LLD correctness",
@@ -54,7 +54,7 @@
    "level": "Staff / L6",
    "title": "Staff Software Engineer (L6)",
    "experience": "Senior",
-   "notes": "A distinct level naming — \"L6\" — appears for staff-level hires"
+   "notes": "A distinct level naming - \"L6\" - appears for staff-level hires"
   }
  ],
  "roleFamilies": [

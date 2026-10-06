@@ -8,21 +8,21 @@
  ],
  "roleGuidance": {
   "Software Engineer (junior–mid)": {
-   "dsaDepth": "Moderate — practical, non-puzzle coding (arrays/strings/hash-maps/data-processing) via a third-party interviewer, with reasoning-out-loud valued as much as the answer",
+   "dsaDepth": "Moderate - practical, non-puzzle coding (arrays/strings/hash-maps/data-processing) via a third-party interviewer, with reasoning-out-loud valued as much as the answer",
    "rounds": [
     "Recruiter screen (~30 min): background, stack, motivation, logistics",
-    "Technical screen (~60 min, live coding): for junior/mid roles often run via Karat (a third-party interview service); 2-3 practical problems (not puzzle-style) — arrays, strings, hash maps, data processing",
-    "Hiring-manager round (~60 min): project depth, decision-making, conflict handling — often gates whether the onsite happens",
+    "Technical screen (~60 min, live coding): for junior/mid roles often run via Karat (a third-party interview service); 2-3 practical problems (not puzzle-style) - arrays, strings, hash maps, data processing",
+    "Hiring-manager round (~60 min): project depth, decision-making, conflict handling - often gates whether the onsite happens",
     "Onsite loop (several interviews, 1-2 days): further coding, system design, behavioral, and MongoDB/database-specific questions (SQL vs NoSQL trade-offs are a recurring topic, unsurprisingly)"
    ],
    "extraTopics": [
-    "Narrating complexity and trade-offs out loud unprompted — several candidates note that an algorithmically correct answer still felt at risk if the reasoning wasn’t made explicit",
+    "Narrating complexity and trade-offs out loud unprompted - several candidates note that an algorithmically correct answer still felt at risk if the reasoning wasn’t made explicit",
     "Basic database/NoSQL fundamentals given the product domain"
    ],
    "focusPatterns": null
   },
   "Senior Software Engineer (SE3)": {
-   "dsaDepth": "Heavy — senior candidates code directly with a MongoDB engineer instead of the third-party screener, and the loop adds LLD/HLD",
+   "dsaDepth": "Heavy - senior candidates code directly with a MongoDB engineer instead of the third-party screener, and the loop adds LLD/HLD",
    "rounds": [
     "Similar recruiter/hiring-manager stages",
     "Technical screen with an actual MongoDB engineer (not Karat) for senior candidates",
@@ -40,7 +40,7 @@
  "extraProblems": [],
  "ladder": [
   { "level": "SE1 / SE2", "title": "Software Engineer 1, Software Engineer 2", "experience": "Entry–mid level" },
-  { "level": "SE3", "title": "Software Engineer 3", "experience": "Senior — the level most reports reference" },
+  { "level": "SE3", "title": "Software Engineer 3", "experience": "Senior - the level most reports reference" },
   { "level": "Staff+", "title": "Staff Software Engineer and above", "notes": "Not covered in depth by the cited sources" }
  ],
  "roleFamilies": [

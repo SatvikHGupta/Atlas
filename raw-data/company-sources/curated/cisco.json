@@ -8,21 +8,21 @@
  ],
  "roleGuidance": {
   "Software Engineer II": {
-   "dsaDepth": "Moderate — 3 technical rounds plus managerial and HR, leaning on core CS fundamentals (C, networking, OS) alongside DSA",
+   "dsaDepth": "Moderate - 3 technical rounds plus managerial and HR, leaning on core CS fundamentals (C, networking, OS) alongside DSA",
    "rounds": [
     "3 technical rounds: coding (linked list and other DSA), networking fundamentals, OS concepts, past-experience discussion",
     "1 managerial round",
     "2 HR rounds"
    ],
    "extraTopics": [
-    "Networking fundamentals — expected given Cisco’s core business",
+    "Networking fundamentals - expected given Cisco’s core business",
     "C-language proficiency and OS concepts alongside DSA"
    ],
    "focusPatterns": null,
    "notes": "One Bengaluru report describes this full loop completed in a single day (~5 hours) with a 95% reported pass rate for that cohort."
   },
   "Software Engineer IV (senior)": {
-   "dsaDepth": "Moderate — an HR screen, then a multi-stage onsite panel including engineering leadership",
+   "dsaDepth": "Moderate - an HR screen, then a multi-stage onsite panel including engineering leadership",
    "rounds": [
     "HR contact for screening",
     "Panel interviews with Director of Engineering, Hiring Manager, Senior Engineer, VP of Operations, and HR Manager (2+ engineers per round)",
@@ -76,6 +76,6 @@
  ],
  "rolesAsOf": "2026-09",
  "rolesConfidence": "low",
- "rolesNotes": "Only two detailed reports were reviewed (one entry-level, one senior), both from the same aggregator — treat as indicative of Cisco’s general pattern rather than broadly cross-verified.",
+ "rolesNotes": "Only two detailed reports were reviewed (one entry-level, one senior), both from the same aggregator - treat as indicative of Cisco’s general pattern rather than broadly cross-verified.",
  "indiaNote": "Reports reviewed are from Bengaluru and Pune Cisco offices."
 }

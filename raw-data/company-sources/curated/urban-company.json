@@ -7,7 +7,7 @@
  ],
  "roleGuidance": {
   "SDE-1": {
-   "dsaDepth": "Heavy — 2 to 3 Medium–Hard DSA problems in the OA, then LLD-focused interviews",
+   "dsaDepth": "Heavy - 2 to 3 Medium–Hard DSA problems in the OA, then LLD-focused interviews",
    "rounds": [
     "Pre-placement talk (campus drives), then an offline/online coding test: 2–3 medium–hard DSA problems in 90 minutes",
     "Interview 1 (LLD): e.g. a task manager or LRU-cache-style design, taken by an SDE-2",

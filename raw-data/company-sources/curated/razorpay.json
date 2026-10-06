@@ -8,7 +8,7 @@
  ],
  "roleGuidance": {
   "SDE-1": {
-   "dsaDepth": "Moderate — machine coding / LLD carries most weight; DSA is lighter",
+   "dsaDepth": "Moderate - machine coding / LLD carries most weight; DSA is lighter",
    "rounds": [
     "Technical phone screen (about 1.5 hr with a department head): past work plus 1 medium coding question",
     "Machine coding round (2.5 hr, e.g. in-memory database; demo required) or a 90-minute LLD round (e.g. photo-sharing app)",
@@ -23,7 +23,7 @@
    "focusPatterns": null
   },
   "SDE-2": {
-   "dsaDepth": "Moderate–Heavy — machine coding or LLD, then HLD, then hiring manager",
+   "dsaDepth": "Moderate–Heavy - machine coding or LLD, then HLD, then hiring manager",
    "rounds": [
     "LLD / machine coding round (e.g. rating system, in-memory SQL database)",
     "High-level design round (e.g. scheduler service with retries and callbacks, or a delivery platform)",

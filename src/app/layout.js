@@ -34,7 +34,8 @@ export function generateMetadata() {
   const description = `${total.toLocaleString()}+ problems across DSA and competitive programming, with worked explanations, multi-language solutions, and a guided roadmap.`;
 
   return {
-    title: 'Atlas: DSA & Competitive Programming Practice',
+    // every page sets just its own name (e.g. 'Terms') and this template makes it 'Terms | Atlas'; the home page sets { absolute: 'Atlas' }
+    title: { default: 'Atlas', template: '%s | Atlas' },
     description,
     metadataBase: new URL(SITE_URL), // SEO-03: same resolver as robots/sitemap/JSON-LD, so every host agrees
     // SEO-01 / ATLAS-BUG-009: './' is only the FALLBACK for private/noindex routes (login, settings...). Every public route sets

@@ -7,18 +7,18 @@
  ],
  "roleGuidance": {
   "P3 / P4 Senior": {
-   "dsaDepth": "Heavy — a bank of publicly-discoverable coding questions, own choice of language/IDE, plus system design and two \"values\" interviews",
+   "dsaDepth": "Heavy - a bank of publicly-discoverable coding questions, own choice of language/IDE, plus system design and two \"values\" interviews",
    "rounds": [
     "Recruiter call (~30 min)",
     "Technical phone screen (~1 hr, sometimes run by an external vendor like Karat)",
-    "Onsite/virtual loop (centralized — team matching happens AFTER the loop): 2 coding rounds (candidate’s own language and IDE), 1 system design round, 2 \"soft-skills\"/values interviews (\"tell me about a time...\")"
+    "Onsite/virtual loop (centralized - team matching happens AFTER the loop): 2 coding rounds (candidate’s own language and IDE), 1 system design round, 2 \"soft-skills\"/values interviews (\"tell me about a time...\")"
    ],
    "extraTopics": [
-    "Atlassian’s well-known \"values\" interviews — candidates report these can outweigh technical performance in the final decision",
+    "Atlassian’s well-known \"values\" interviews - candidates report these can outweigh technical performance in the final decision",
     "A full performance review only happens after every round is complete, so early strong feedback is not a reliable signal"
    ],
    "focusPatterns": null,
-   "notes": "Some loops add a distinct LLD-then-HLD-then-behavioral-then-manager sequence instead — composition varies by team/region."
+   "notes": "Some loops add a distinct LLD-then-HLD-then-behavioral-then-manager sequence instead - composition varies by team/region."
   }
  },
  "rolesStatus": "researched",
@@ -37,7 +37,7 @@
   {
    "level": "P4",
    "title": "Senior Software Engineer",
-   "experience": "Mid–senior — the level most reports reference"
+   "experience": "Mid–senior - the level most reports reference"
   },
   {
    "level": "P5",
@@ -86,6 +86,6 @@
  ],
  "rolesAsOf": "2026-09",
  "rolesConfidence": "medium",
- "rolesNotes": "P2-P6 level naming and the centralized loop structure (team matching after, not before, the loop) are corroborated across sources. Multiple candidates describe the \"values\" rounds as inconsistently applied — worth flagging as a known pain point, not just a formality.",
+ "rolesNotes": "P2-P6 level naming and the centralized loop structure (team matching after, not before, the loop) are corroborated across sources. Multiple candidates describe the \"values\" rounds as inconsistently applied - worth flagging as a known pain point, not just a formality.",
  "indiaNote": null
 }

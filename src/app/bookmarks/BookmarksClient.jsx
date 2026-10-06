@@ -13,6 +13,7 @@ import PageWrapper from '../../components/layout/PageWrapper/PageWrapper.jsx';
 import ProblemCard from '../../components/problem/ProblemCard/ProblemCard.jsx';
 import RatingPill from '../../components/cp/RatingPill/RatingPill.jsx';
 import { Loader } from '../../components/ui/Loader/Loader.jsx';
+import BackButton from '../../components/ui/BackButton/BackButton.jsx';
 import styles from './Bookmarks.module.css';
 
 // CP bookmarks link out to Codeforces, so they get their own small card instead of ProblemCard (which links to /problems/<slug>).
@@ -77,6 +78,7 @@ export default function BookmarksClient() {
   return (
     <PageWrapper>
       <div className={styles.wrapper}>
+        <BackButton fallback="/dashboard" />
         <div className={styles.header}>
           <h1>Bookmarks</h1>
           <p>

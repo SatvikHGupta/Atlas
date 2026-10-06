@@ -114,7 +114,11 @@ export default function CpProblemRow({ problem, status, solveCount, isBookmarked
           title={bookmarksLocked || (isBookmarked ? 'Remove bookmark' : 'Bookmark')}
           onClick={onBookmark}
         >{isBookmarked ? '\u2605' : '\u2606'}</button>
-        {url && <span className={styles.cfLink} aria-hidden="true">{'\u2197'} CF</span>}
+        {url && (
+          <a className={styles.cfLink} href={url} target="_blank" rel="noopener noreferrer" aria-label={`Open ${problem.title} on Codeforces`}>
+            {'\u2197'} CF
+          </a>
+        )}
       </div>
     </div>
   );

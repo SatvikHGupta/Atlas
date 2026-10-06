@@ -3,7 +3,7 @@ import { routes, canonicalAlternates } from '../../lib/routeIdentity.js';
 
 export const metadata = {
   alternates: canonicalAlternates(routes.privacy()),
-  title: 'Privacy - Atlas',
+  title: 'Privacy',
   description: 'What Atlas stores about you, where it is stored, and how to delete it.',
 };
 

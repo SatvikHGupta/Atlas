@@ -8,7 +8,7 @@
  ],
  "roleGuidance": {
   "MTS (fresher)": {
-   "dsaDepth": "Moderate — logic and implementation, not LeetCode-style; the programming rounds decide the outcome",
+   "dsaDepth": "Moderate - logic and implementation, not LeetCode-style; the programming rounds decide the outcome",
    "rounds": [
     "Round 1: written test (aptitude, output prediction, C-style programming MCQs)",
     "Round 2: programming round (simple programs: expression evaluation, string operations from an index, matrix and linked-list programs)",
@@ -25,7 +25,7 @@
    "notes": "Reports say most selections hinge on the two programming rounds."
   },
   "MTS (experienced)": {
-   "dsaDepth": "Team-specific — each team runs its own format",
+   "dsaDepth": "Team-specific - each team runs its own format",
    "rounds": [
     "Team-specific technical rounds, sometimes across two weekends",
     "Some candidates are offered a contract period first, then evaluated"

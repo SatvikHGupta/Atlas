@@ -1,10 +1,10 @@
 // Theme engine: validates mode + accent definitions and turns them into CSS custom properties. Pure functions, no
 // DOM, no framework - runs the same in Node (build, route handler, tests) and in the browser.
 //
-// A theme is a MODE (light | dark: backgrounds, text, borders, status colors, code blocks) plus an ACCENT (the brand
-// color) plus an optional partner colour (secondary) that defaults to the accent's own but can come from any accent, so
-// primaries and partners can be mixed and matched. The CSS has one block per mode, one per mode+accent pair (accent
-// tokens) and one per secondary (the --accent-2 override).
+// A theme is a MODE (light | dark: backgrounds, text, borders, status colors, code blocks) plus a PRIMARY colour (the
+// accent) plus an optional SECONDARY colour (gradients, glow). Primary and secondary are picked from the same palette
+// (src/themes/colors.js), so any colour can be either. The CSS has one block per mode, one per mode+primary pair
+// (accent tokens) and one per mode+secondary (the --accent-2 override, only applied when a secondary is chosen).
 import { DARK_TOKENS, LIGHT_TOKENS, MODE_DEFAULTS, INK, PAPER } from './theme-presets.js';
 
 // ---------------------------------------------------------------- the contract
@@ -12,11 +12,12 @@ export const MODE_REQUIRED_COLORS = ['background', 'surface', 'surfaceAlt', 'tex
 export const MODE_OPTIONAL_COLORS = [
   'textSecondary', 'surfaceHover', 'elevated', 'borderSubtle', 'borderStrong', 'cyan', 'emerald', 'rose', 'amber',
 ];
-export const ACCENT_REQUIRED_COLORS = ['primary', 'primaryHover', 'primaryLight'];
-export const ACCENT_OPTIONAL_COLORS = ['onPrimary', 'primarySubtle', 'primaryGlow'];
+export const ACCENT_REQUIRED_COLORS = ['primary', 'hover', 'link'];
+export const ACCENT_OPTIONAL_COLORS = ['onPrimary', 'subtle', 'glow'];
+export const COLOR_GROUPS = ['basic', 'extra'];
 export const CODE_KEYS = ['background', 'border', 'text'];
 const MODE_KEYS = ['id', 'name', 'description', 'shiki', 'colors', 'code'];
-const ACCENT_KEYS = ['id', 'name', 'description', 'aliases', 'secondary', 'dark', 'light'];
+const COLOR_KEYS = ['id', 'name', 'group', 'aliases', 'dark', 'light'];
 export const MODES = ['light', 'dark'];
 
 // Contrast floors (WCAG). Enforced for every mode+accent pair when the registry loads, so a bad color fails the build.
@@ -126,43 +127,40 @@ export function validateMode(def) {
   return errors;
 }
 
-/** Returns a list of human-readable problems for an accent definition (empty = valid). */
-export function validateAccent(def) {
+/** Returns a list of human-readable problems for a colour definition (empty = valid). */
+export function validateColor(def) {
   const errors = [];
-  if (!def || typeof def !== 'object') return ['accent definition is not an object'];
-  for (const key of Object.keys(def)) if (!ACCENT_KEYS.includes(key)) errors.push(`unknown field "${key}" (allowed: ${ACCENT_KEYS.join(', ')})`);
-  checkIdentity(errors, def);
+  if (!def || typeof def !== 'object') return ['colour definition is not an object'];
+  for (const key of Object.keys(def)) if (!COLOR_KEYS.includes(key)) errors.push(`unknown field "${key}" (allowed: ${COLOR_KEYS.join(', ')})`);
+  if (typeof def.id !== 'string' || !ID.test(def.id)) errors.push('id must be a lowercase machine id like "acidlime"');
+  if (typeof def.name !== 'string' || !def.name.trim()) errors.push('name must be a non-empty string');
+  if (!COLOR_GROUPS.includes(def.group)) errors.push(`group must be one of: ${COLOR_GROUPS.join(', ')}`);
   if (def.aliases !== undefined) {
     if (!Array.isArray(def.aliases) || def.aliases.some((a) => typeof a !== 'string' || !ID.test(a))) {
-      errors.push('aliases must be an array of old accent ids');
+      errors.push('aliases must be an array of old colour ids');
     }
   }
-  if (def.secondary !== undefined) {
-    const c = parseColor(def.secondary);
-    if (!c) errors.push(`secondary is not a valid color: ${JSON.stringify(def.secondary)} (use #rrggbb)`);
-    else if (c.a !== 1) errors.push('secondary must be opaque (no alpha)');
-  }
   for (const mode of MODES) {
-    checkColors(errors, mode, def[mode], ACCENT_REQUIRED_COLORS, ACCENT_OPTIONAL_COLORS, ['primary', 'primaryHover', 'primaryLight', 'onPrimary']);
+    checkColors(errors, mode, def[mode], ACCENT_REQUIRED_COLORS, ACCENT_OPTIONAL_COLORS, ['primary', 'hover', 'link', 'onPrimary']);
   }
   return errors;
 }
 
-/** Problems for one mode+accent pair: is the accent readable on this mode's surfaces? (Only call with valid inputs.) */
+/** Problems for one mode+colour pair: is the colour readable on this mode's surfaces as a primary? (Only call with valid inputs.) */
 export function validatePair(mode, accent) {
   const errors = [];
   const c = mode.colors;
   const a = accent[mode.id];
-  const label = `accent "${accent.id}" on ${mode.id}`;
+  const label = `colour "${accent.id}" on ${mode.id}`;
   const need = (what, fg, bg, min) => {
     const ratio = contrast(fg, bg);
     if (ratio < min) errors.push(`${label}: ${what} contrast is ${ratio.toFixed(2)}, needs at least ${min}`);
   };
   need('primary on background', a.primary, c.background, MIN_UI_CONTRAST);
   need('primary on surface', a.primary, c.surface, MIN_UI_CONTRAST);
-  // primaryLight is the accent used as TEXT (links, active tabs), so it has to meet the text floor.
-  need('primaryLight on background', a.primaryLight, c.background, MIN_TEXT_CONTRAST);
-  need('primaryLight on surface', a.primaryLight, c.surface, MIN_TEXT_CONTRAST);
+  // link is the colour used as TEXT (links, active tabs), so it has to meet the text floor.
+  need('link on background', a.link, c.background, MIN_TEXT_CONTRAST);
+  need('link on surface', a.link, c.surface, MIN_TEXT_CONTRAST);
   need('text on primary buttons', a.onPrimary ?? readableOn(a.primary), a.primary, MIN_TEXT_CONTRAST);
   return errors;
 }
@@ -250,34 +248,36 @@ export function resolveModeTokens(def) {
   };
 }
 
-/** Accent-dependent CSS custom properties for one accent in one mode. */
-export function resolveAccentTokens(mode, accent) {
-  const a = accent[mode.id];
+/** Primary-colour (accent) CSS custom properties for one colour in one mode. Without a secondary the partner is the primary itself, so gradients are flat. */
+export function resolveAccentTokens(mode, color) {
+  const a = color[mode.id];
   const d = MODE_DEFAULTS[mode.id];
   const primary = parseColor(a.primary);
-  // The accent's own partner colour; an accent without one falls back to its readable shade so it still has a gradient.
-  const partner = parseColor(accent.secondary ?? a.primaryLight);
   return {
     accent: norm(a.primary),
-    'accent-hover': norm(a.primaryHover),
-    'accent-light': norm(a.primaryLight),
-    'accent-subtle': norm(a.primarySubtle ?? toRgba(primary, d.subtleAlpha)),
-    'accent-glow': norm(a.primaryGlow ?? toRgba(primary, d.glowAlpha)),
+    'accent-hover': norm(a.hover),
+    'accent-light': norm(a.link),
+    'accent-subtle': norm(a.subtle ?? toRgba(primary, d.subtleAlpha)),
+    'accent-glow': norm(a.glow ?? toRgba(primary, d.glowAlpha)),
     'accent-rgb': toTriplet(primary),
     'accent-fg': norm(a.onPrimary ?? readableOn(a.primary)),
-    'accent-2': toHex(partner),
-    'accent-2-rgb': toTriplet(partner),
+    'accent-2': toHex(primary),
+    'accent-2-rgb': toTriplet(primary),
   };
 }
 
-/** The partner-colour override for one accent's secondary (same in both modes). Applied when <html data-secondary> is set. */
-export function resolveSecondaryTokens(accent) {
-  const partner = parseColor(accent.secondary ?? accent.dark.primaryLight);
+/** Secondary-colour override: the colour's primary shade for this mode. Applied when <html data-secondary> is set. */
+export function resolveSecondaryTokens(mode, color) {
+  const partner = parseColor(color[mode.id].primary);
   return { 'accent-2': toHex(partner), 'accent-2-rgb': toTriplet(partner) };
 }
 
-/** Every token for one mode+accent pair (used by the preview cards and tests). */
-export const resolveTokens = (mode, accent) => ({ ...resolveModeTokens(mode), ...resolveAccentTokens(mode, accent) });
+/** Every token for one mode + primary (+ optional secondary) combination (used by the preview panel and tests). */
+export const resolveTokens = (mode, accent, secondary = null) => ({
+  ...resolveModeTokens(mode),
+  ...resolveAccentTokens(mode, accent),
+  ...(secondary ? resolveSecondaryTokens(mode, secondary) : {}),
+});
 
 // ---------------------------------------------------------------- CSS output
 const declarations = (tokens) => Object.entries(tokens).map(([name, value]) => `  --${name}: ${value};`).join('\n');
@@ -299,9 +299,11 @@ export function buildThemeCss(modes, accents, defaultModeId, defaultAccentId) {
       blocks.push(`/* ${accent.name} on ${mode.name} */\n${isDefault ? `:root,\n${pair}` : pair} {\n${declarations(resolveAccentTokens(mode, accent))}\n}`);
     }
   }
-  // Partner-colour overrides come last: same specificity as the pair blocks above, so they win when data-secondary is set.
-  for (const accent of accents) {
-    blocks.push(`/* Partner colour from ${accent.name} */\nhtml[data-accent][data-secondary='${accent.id}'] {\n${declarations(resolveSecondaryTokens(accent))}\n}`);
+  // Secondary overrides come last: same specificity as the pair blocks above, so they win when data-secondary is set.
+  for (const mode of modes) {
+    for (const color of accents) {
+      blocks.push(`/* ${color.name} as secondary on ${mode.name} */\nhtml[data-mode='${mode.id}'][data-secondary='${color.id}'] {\n${declarations(resolveSecondaryTokens(mode, color))}\n}`);
+    }
   }
   return `/* Generated from src/themes/*.js by src/theme/theme-utils.js - edit the theme files, not this output. */\n\n${blocks.join('\n\n')}\n`;
 }

@@ -8,7 +8,7 @@
  ],
  "roleGuidance": {
   "Software Engineer": {
-   "dsaDepth": "Heavy — 2–3 coding rounds (LeetCode medium–hard: graphs, trees, intervals) drawn heavily from Bloomberg’s own tagged question pool",
+   "dsaDepth": "Heavy - 2–3 coding rounds (LeetCode medium–hard: graphs, trees, intervals) drawn heavily from Bloomberg’s own tagged question pool",
    "rounds": [
     "Recruiter screen (~30 min, motivation and background, no technical questions)",
     "Technical phone screen (~45 min, 1 coding problem from Bloomberg’s well-known tagged list)",
@@ -17,13 +17,13 @@
     "Recruiter wrap-up call"
    ],
    "extraTopics": [
-    "Sustained follow-up pressure after a working solution — defending trade-offs matters as much as reaching an answer",
+    "Sustained follow-up pressure after a working solution - defending trade-offs matters as much as reaching an answer",
     "Genuine interest in Bloomberg/fintech (\"why Bloomberg\" is asked repeatedly across rounds)"
    ],
    "focusPatterns": null
   },
   "Senior Software Engineer": {
-   "dsaDepth": "Heavy — same coding bar, system design round widely reported as the hardest part of the loop",
+   "dsaDepth": "Heavy - same coding bar, system design round widely reported as the hardest part of the loop",
    "rounds": [
     "Similar structure to entry-level, with system design weighted more heavily and deeper resume/leadership discussion"
    ],

@@ -7,16 +7,16 @@
  ],
  "roleGuidance": {
   "Software Engineer": {
-   "dsaDepth": "Heavy — standard LeetCode-style problems mixed with deliberately ambiguous, non-standard prompts that reward structuring ambiguity over memorized answers",
+   "dsaDepth": "Heavy - standard LeetCode-style problems mixed with deliberately ambiguous, non-standard prompts that reward structuring ambiguity over memorized answers",
    "rounds": [
     "Recruiter screen (~30 min): background, motivation, and (distinctively) comfort discussing Palantir’s work on civil-liberties-adjacent government/defense contracts",
     "Online assessment (for some pipelines): coding challenges testing analytical ability",
     "Technical phone screen(s) (45-90 min, 1-2 rounds): live coding plus algorithmic questions",
-    "Onsite/virtual loop (3-5 rounds, up to 3 hrs each): at least one coding round (DS&A), a system design round, a \"decomposition/learning\" round (an intentionally vague, open-ended problem — e.g. a Mars-base planning prompt or a broken-API debugging exercise — where interviewers give minimal guidance on purpose), and a behavioral round",
+    "Onsite/virtual loop (3-5 rounds, up to 3 hrs each): at least one coding round (DS&A), a system design round, a \"decomposition/learning\" round (an intentionally vague, open-ended problem - e.g. a Mars-base planning prompt or a broken-API debugging exercise - where interviewers give minimal guidance on purpose), and a behavioral round",
     "Hiring-manager screen / final round"
    ],
    "extraTopics": [
-    "Turning ambiguity into structure — this is explicitly what Palantir is reported to select for, more than polished right answers",
+    "Turning ambiguity into structure - this is explicitly what Palantir is reported to select for, more than polished right answers",
     "Being comfortable discussing civil liberties and government/defense work, which comes up as a genuine values-fit topic, not small talk"
    ],
    "focusPatterns": null,
@@ -79,6 +79,6 @@
  ],
  "rolesAsOf": "2026-09",
  "rolesConfidence": "medium",
- "rolesNotes": "The ambiguity-heavy \"decomposition and learning\" round and the emphasis on comfort with Palantir’s government/defense work are corroborated across many independent sources — this is a genuinely distinctive loop, not a generic big-tech pattern.",
+ "rolesNotes": "The ambiguity-heavy \"decomposition and learning\" round and the emphasis on comfort with Palantir’s government/defense work are corroborated across many independent sources - this is a genuinely distinctive loop, not a generic big-tech pattern.",
  "indiaNote": null
 }

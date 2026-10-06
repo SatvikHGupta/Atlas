@@ -35,14 +35,14 @@ Content is not fetched from a database or a monolithic JSON blob at request time
 raw-data/  (source datasets: problems, company data, tags)
     │
     ▼
-scripts/build-content.mjs   — reshapes raw data into per-page bundles
+scripts/build-content.mjs   - reshapes raw data into per-page bundles
     │
     ▼
-content/       — server-only bundles, read by page components at build time
-public/data/   — slim indexes, fetched client-side for filtering/search
+content/       - server-only bundles, read by page components at build time
+public/data/   - slim indexes, fetched client-side for filtering/search
     │
     ▼
-next build   — every page pre-rendered to static HTML
+next build   - every page pre-rendered to static HTML
 ```
 
 This means every problem, company, and pattern page ships as real, pre-rendered HTML with no client-side data fetching required to see content, and page weight stays small because only the code needed for the default view is embedded; alternate solution languages are fetched on demand from a static API route.
@@ -52,7 +52,7 @@ This means every problem, company, and pattern page ships as real, pre-rendered 
 ```
 atlas/
 ├── src/
-│   ├── app/                 App Router routes — each folder is a real URL
+│   ├── app/                 App Router routes - each folder is a real URL
 │   │   ├── problems/[slug]/     per-problem SSG page
 │   │   ├── companies/[id]/      per-company page
 │   │   ├── patterns/[slug]/     per-pattern page
@@ -66,7 +66,7 @@ atlas/
 │   ├── store/                Zustand stores
 │   ├── hooks/                 data + auth hooks
 │   ├── lib/
-│   │   ├── server/               content.server.js — the only file reading content/ at runtime
+│   │   ├── server/               content.server.js - the only file reading content/ at runtime
 │   │   └── ...                     filtering, sorting, structured data helpers
 │   └── styles/
 ├── scripts/
@@ -136,40 +136,46 @@ See `.env.example`. All Firebase variables are `NEXT_PUBLIC_*` because the Fireb
 
 ## Themes
 
-A theme is a **mode** plus an **accent** plus a **partner colour**. Settings > Appearance has three sections: Mode (Light
-or Dark), Accent (the brand colour) and Partner colour (the second colour in gradients, progress bars, the logo mark and
-the second background glow). Every accent works on both modes. The partner is Auto (the accent's own `secondary`) or the
-`secondary` of any other accent, so primaries and partners can be mixed and matched freely. Cards are previewed on the
-current selections. Code blocks follow the mode (dark page, dark code; light page, light code).
+A theme is a **mode** (Dark or Light), a **primary colour** (required) and a **secondary colour** (optional, "None" is
+the default). Settings > Appearance is a draft editor: a small preview panel at the top shows all three together, with
+Apply, Cancel and Reset to default under it, then three sections of small cards (a colour square, the colour's name and
+its hex). Nothing changes in the real app until Apply; Cancel drops the draft; Reset to default only fills the draft
+with the defaults (Dark, Atlas, no secondary), Apply still has to be pressed. Choices are saved on this device only.
 
-- `src/themes/modes.js` holds the two modes: backgrounds, surfaces, text, borders, status colors and code-block colors.
-- `src/themes/<accent>.js` is one accent: `primary`, `primaryHover` and `primaryLight` for `dark` and for `light`, plus an
-  optional `secondary` hex (the partner colour, no contrast rule because it is decoration, never text).
-- `src/themes/index.js` is the master registry. Nothing else lists modes or accents: the CSS (`/themes.css`), the
-  Appearance page and its previews, the pre-paint script that prevents a theme flash, and the saved-value validation
-  all read it.
+- Primary colour: buttons, links, focus rings, active tabs.
+- Secondary colour: gradients, progress bars, the logo mark and the second background glow. With None everything is
+  single-colour (the gradient is flat).
+- Code blocks follow the mode (dark page, dark code; light page, light code).
 
-Add an accent:
+The files:
 
-1. Copy `src/themes/frost.js` to `src/themes/sunset.js` and change `id`, `name`, `description`, `secondary` and the three
-   colors for both `dark` and `light`.
-2. Import it in `src/themes/index.js` and add it to `ACCENT_DEFINITIONS` (the only edit outside the new file).
-3. It appears under Settings > Appearance > Accent. Loading the registry (dev, build, `npm test`) fails if a color is
-   invalid or unreadable on either mode: `primary` needs 3:1 against the page, `primaryLight` (the accent used as text
-   in links and active tabs) and the text on primary buttons need 4.5:1. In light mode `primaryLight` is therefore a
-   darker shade, not a lighter one.
+- `src/themes/modes.js` holds the two modes: backgrounds, surfaces, text, borders, status colours and code-block colours.
+- `src/themes/colors.js` is the one palette, 16 colours (8 basic, 8 extra), each with a shade per mode. Primary and
+  secondary are both picked from it, so every colour can be either. The secondary uses the colour's `primary` shade
+  for the current mode.
+- `src/themes/index.js` is the master registry. Nothing else lists modes or colours: the CSS (`/themes.css`), the
+  Appearance page and its preview, the pre-paint script that prevents a theme flash, and the saved-value validation all
+  read it.
+
+Add a colour: open `src/themes/colors.js`, copy an entry, change `id`, `name`, `group` and the six shades (`primary`,
+`hover`, `link` for `dark` and for `light`). It appears as a primary and as a secondary option. Loading the registry
+(dev, build, `npm test`) fails if a shade is unreadable on either mode: `primary` needs 3:1 against the page, `link` (the
+colour used as text in links and active tabs) and the text on primary buttons need 4.5:1. In light mode `link` is
+therefore a darker shade, not a lighter one. The secondary is decoration, so it has no contrast rule.
 
 Everything not listed (hover surfaces, glow and subtle tints, shadows, `accent-fg`...) is derived automatically.
-Colors in components should always come from tokens (`var(--accent)`, `var(--accent-2)` / `var(--accent-gradient)` for the two-tone look, `rgba(var(--cyan-rgb), 0.1)`,
-`rgba(var(--error-rgb), 0.1)`, `var(--shadow-lg)`, `var(--code-bg)`, `hsl(<hue> 70% var(--hue-l))`), never from hex values.
+Colours in components should always come from tokens (`var(--accent)`, `var(--accent-2)` / `var(--accent-gradient)` for
+the two-tone look, `rgba(var(--cyan-rgb), 0.1)`, `rgba(var(--error-rgb), 0.1)`, `var(--shadow-lg)`, `var(--code-bg)`,
+`hsl(<hue> 70% var(--hue-l))`), never from hex values.
 
-Saved choices live in `localStorage` as `atlas-mode`, `atlas-accent` and `atlas-secondary` (absent means Auto). Visitors who saved a theme before this change
-(`atlas-theme`) are migrated once: atlas, ember and meadow become Dark plus that accent, frost and cream become Light plus
-that accent, mono becomes Light plus Frost. Keep accent ids stable; to rename or remove one without breaking visitors who
-saved it, keep the old id in `aliases: ['old-id']` on the accent that replaces it.
+Saved choices live in `localStorage` as `atlas-mode`, `atlas-accent` (the primary colour id) and `atlas-secondary` (the
+secondary colour id; absent means none). Values saved by earlier versions are migrated on read: old accent ids map to
+the closest colour through each colour's `aliases` (for example `synthwave` to Pink, `toxic` to Acid Lime, `frost` and
+`mono` to Blue), and the original single `atlas-theme` value maps to a mode plus a colour. Keep colour ids stable; to
+rename or remove one, keep the old id in `aliases: ['old-id']` on the colour that replaces it.
 
 Syntax highlighting is rendered at build time with both palettes (`--shiki-dark` and `--shiki-light`) in every block and
-`src/styles/global.css` picks the one that matches the mode, so switching mode recolors code with no rebuild.
+`src/styles/global.css` picks the one that matches the mode, so switching mode recolours code with no rebuild.
 
 ## Security notes
 

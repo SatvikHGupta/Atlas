@@ -9,33 +9,33 @@
  ],
  "roleGuidance": {
   "L3": {
-   "dsaDepth": "Heavy — verbal reasoning matters as much as correctness; easy–medium LeetCode across two coding rounds",
+   "dsaDepth": "Heavy - verbal reasoning matters as much as correctness; easy–medium LeetCode across two coding rounds",
    "rounds": [
     "Recruiter screen (~15–30 min)",
     "Technical phone screen (Coderpad/Collabedit, ~1 hr, 1–2 easy–medium problems: strings/arrays/binary search/trees) plus light behavioral",
     "Optional take-home or async assessment (2 LeetCode-style problems) for some pipelines",
     "Onsite/virtual loop (5–7 rounds): further coding, an SQL round, system design (told to keep it verbal, not whiteboard-heavy), hiring-manager/culture-fit conversation",
-    "Team matching (LinkedIn’s process is centralized — you interview before being matched to a team)"
+    "Team matching (LinkedIn’s process is centralized - you interview before being matched to a team)"
    ],
    "extraTopics": [
-    "Explaining your logic out loud clearly — interviewers are reported to value verbal reasoning over silently arriving at a correct answer",
+    "Explaining your logic out loud clearly - interviewers are reported to value verbal reasoning over silently arriving at a correct answer",
     "SQL, alongside DSA"
    ],
    "focusPatterns": null
   },
   "L4 Senior": {
-   "dsaDepth": "Heavy — same format, system design and past-work defense weighted more",
+   "dsaDepth": "Heavy - same format, system design and past-work defense weighted more",
    "rounds": [
     "Similar loop to L3 with a heavier system-design round and hiring-manager conversation that probes trade-offs on past projects in depth"
    ],
    "extraTopics": [
-    "System design (verbal, not whiteboard — several candidates report being told to put away diagrams)",
+    "System design (verbal, not whiteboard - several candidates report being told to put away diagrams)",
     "Defending past technical decisions in detail"
    ],
    "focusPatterns": null
   },
   "L5+ Staff": {
-   "dsaDepth": "Moderate — coding present, system design and technical leadership dominate",
+   "dsaDepth": "Moderate - coding present, system design and technical leadership dominate",
    "rounds": [
     "Coding round(s), a deeper system design round, and leadership/scope-focused conversations"
    ],

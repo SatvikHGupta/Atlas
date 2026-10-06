@@ -10,7 +10,7 @@ export function generateMetadata() {
   const { canonicalPatternCount, visiblePatternCount, topicOnlyCount } = patternCounts(getPatternIndex(), getAllPatternIndexRows());
   return {
     alternates: canonicalAlternates(routes.patterns()),
-    title: `DSA Patterns (${visiblePatternCount}) - Atlas`,
+    title: 'Patterns',
     description: `${canonicalPatternCount} interview patterns ranked by how many companies ask them, plus ${topicOnlyCount} more topic pages - each with a ready practice set.`,
   };
 }
@@ -20,14 +20,14 @@ export function generateMetadata() {
 // CompanyBrowser.jsx on /companies). All interactive logic lives in PatternBrowser.jsx.
 export default function PatternsPage() {
   const patterns = getAllPatternIndexRows(); // BUG-22: includes sidebar topics that have no company data
-  const { canonicalPatternCount, visiblePatternCount } = patternCounts(getPatternIndex(), patterns);
+  const { visiblePatternCount } = patternCounts(getPatternIndex(), patterns);
 
   return (
     <div className={styles.page}>
       <div className={styles.headerGlow} aria-hidden="true" />
       <header className={styles.header}>
         <h1>Patterns Companies Ask</h1>
-        <p className={styles.subtitle}>{visiblePatternCount} patterns - {canonicalPatternCount} ranked by how many companies ask them, the rest from problem topics</p>
+        <p className={styles.subtitle}>{visiblePatternCount} patterns ranked by how many companies ask them, the rest from problem topics</p>
       </header>
 
       <PatternBrowser patterns={patterns} />

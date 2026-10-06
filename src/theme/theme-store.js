@@ -2,7 +2,7 @@
 // source of truth (what the CSS reads and what the init script sets before paint); localStorage holds the two ids
 // between visits; React reads the store through useSyncExternalStore. All three are kept in step here.
 import {
-  MODE_IDS, ACCENT_IDS, DEFAULT_MODE_ID, DEFAULT_ACCENT_ID, parseModeId, parseAccentId, resolveTheme,
+  MODE_IDS, COLOR_IDS, DEFAULT_MODE_ID, DEFAULT_ACCENT_ID, parseModeId, parseColorId, resolveTheme,
 } from '../themes/index.js';
 import { MODE_STORAGE_KEY, ACCENT_STORAGE_KEY, SECONDARY_STORAGE_KEY, LEGACY_STORAGE_KEY } from './theme-storage.js';
 
@@ -66,8 +66,8 @@ export function createThemeStore({
   };
   const getSnapshot = () => snapshotFor(
     parseModeId(attr('data-mode')) ?? defaultMode,
-    parseAccentId(attr('data-accent')) ?? defaultAccent,
-    parseAccentId(attr('data-secondary')),
+    parseColorId(attr('data-accent')) ?? defaultAccent,
+    parseColorId(attr('data-secondary')),
   );
   // Server render and the hydration pass always see the default, React then re-renders with the real value.
   const getServerSnapshot = () => snapshotFor(defaultMode, defaultAccent, null);
@@ -101,19 +101,36 @@ export function createThemeStore({
 
   /** Select an accent: validate, apply immediately, persist the id only. Returns false for an unknown id. */
   function setAccent(id) {
-    if (!ACCENT_IDS.includes(id)) return false;
+    if (!COLOR_IDS.includes(id)) return false;
     applyAccent(id);
     write(keys.accent, id);
     notify();
     return true;
   }
 
-  /** Select a partner colour (an accent id), or null for Auto. Validate, apply, persist. Returns false for an unknown id. */
+  /** Select a secondary colour (a colour id), or null for none. Validate, apply, persist. Returns false for an unknown id. */
   function setSecondary(id) {
-    if (id !== null && !ACCENT_IDS.includes(id)) return false;
+    if (id !== null && !COLOR_IDS.includes(id)) return false;
     applySecondary(id);
     if (id === null) remove(keys.secondary);
     else write(keys.secondary, id);
+    notify();
+    return true;
+  }
+
+  /** Commit a whole draft at once ({mode, accent, secondary}): validate, apply, persist, notify once. False if any id is unknown. */
+  function apply(next) {
+    const mode = parseModeId(next?.mode);
+    const accent = parseColorId(next?.accent);
+    const secondary = next?.secondary == null ? null : parseColorId(next.secondary);
+    if (!mode || !accent || (next?.secondary != null && !secondary)) return false;
+    applyMode(mode);
+    applyAccent(accent);
+    applySecondary(secondary);
+    write(keys.mode, mode);
+    write(keys.accent, accent);
+    if (secondary) write(keys.secondary, secondary);
+    else remove(keys.secondary);
     notify();
     return true;
   }
@@ -142,7 +159,7 @@ export function createThemeStore({
     return next;
   }
 
-  return { subscribe, getSnapshot, getServerSnapshot, setMode, setAccent, setSecondary, sync };
+  return { subscribe, getSnapshot, getServerSnapshot, setMode, setAccent, setSecondary, apply, sync };
 }
 
 let singleton = null;

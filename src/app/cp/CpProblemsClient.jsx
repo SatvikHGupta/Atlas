@@ -7,12 +7,13 @@ import { useProgress } from '../../hooks/useProgress.js';
 import { useBookmarks } from '../../hooks/useBookmarks.js';
 import { personalGate } from '../../lib/resourceState.js';
 import { applyStatusFilter } from '../../lib/problems.filter.js';
-import { matchesRatingBand, matchesCpSearch, getCpCodes, filterByTopics } from '../../lib/codeforces.utils.js';
+import { matchesRatingBands, matchesCpSearch, getCpCodes, filterByTopics } from '../../lib/codeforces.utils.js';
 import { getDisplayRating } from '../../lib/cpRating.js';
+import { getCfUrl } from '../../lib/codeforces.utils.js';
+import { useUIStore } from '../../store/ui.store.js';
 import PageWrapper from '../../components/layout/PageWrapper/PageWrapper.jsx';
 import TopicFilter from '../../components/cp/TopicFilter/TopicFilter.jsx';
 import RatingBandFilter from '../../components/cp/RatingBandFilter/RatingBandFilter.jsx';
-import RandomProblemButton from '../../components/cp/RandomProblemButton/RandomProblemButton.jsx';
 import CpProblemRow from '../../components/cp/CpProblemRow/CpProblemRow.jsx';
 import styles from './CpProblems.module.css';
 
@@ -56,7 +57,7 @@ export default function CpProblemsClient() {
   const [search, setSearch] = useState(''); // debounced value the filters actually use
   const [statusFilter, setStatusFilter] = useState('');
   const [selectedTopics, setSelectedTopics] = useState([]);
-  const [ratingBand, setRatingBand] = useState(null);
+  const [ratingBands, setRatingBands] = useState([]); // multi-select: array of band keys
   const [sort, setSort] = useState('frequency');
 
   const { data: allProblems, isLoading, isError, refetch } = useCpIndex();
@@ -107,8 +108,7 @@ export default function CpProblemsClient() {
     return problemsWithRating.filter((p) => matchesCpSearch(p, search));
   }, [problemsWithRating, search]);
 
-  // topic (multi) + status filter - this is also exactly what RandomProblemButton's rating-band
-  // dropdown draws from, since that override intentionally ignores the rating chip but keeps everything else
+  // topic (multi) + status filter, before the rating chip is applied
   const filteredWithoutRating = useMemo(() => {
     let list = filterByTopics(searchFiltered, selectedTopics); // includes the exclusive "Untagged" option
     // never run a personal filter against an unloaded/failed map: it would return wrong rows (BUG-002/003)
@@ -117,9 +117,20 @@ export default function CpProblemsClient() {
   }, [searchFiltered, selectedTopics, statusFilter, progressMap, bookmarkedIds, personalGateState]);
 
   const visibleProblems = useMemo(() => {
-    const list = filteredWithoutRating.filter((p) => matchesRatingBand(p._cfRating, ratingBand));
+    const list = filteredWithoutRating.filter((p) => matchesRatingBands(p._cfRating, ratingBands));
     return sortCpProblems(list, sort);
-  }, [filteredWithoutRating, ratingBand, sort]);
+  }, [filteredWithoutRating, ratingBands, sort]);
+
+  const addToast = useUIStore((s) => s.addToast);
+
+  // Random: one problem picked from exactly what the count pill shows (search, topics, status, rating, all applied).
+  // Separate from the DSA page's Random button, this one only ever draws from CP problems and opens Codeforces.
+  const openRandom = () => {
+    if (visibleProblems.length === 0) { addToast('No problems match to pick from', 'error'); return; }
+    const pick = visibleProblems[Math.floor(Math.random() * visibleProblems.length)];
+    const url = getCfUrl(pick);
+    if (url) window.open(url, '_blank', 'noopener,noreferrer');
+  };
 
   const total = visibleProblems.length;
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
@@ -136,7 +147,10 @@ export default function CpProblemsClient() {
   const resetToFirstPage = () => setPage(1);
   const handleSetStatus = (val) => { setStatusFilter((s) => (s === val ? '' : val)); resetToFirstPage(); };
   const handleTopics = (val) => { setSelectedTopics(val); resetToFirstPage(); };
-  const handleRatingBand = (val) => { setRatingBand(val); resetToFirstPage(); };
+  const handleRatingBand = (val) => { setRatingBands(val); resetToFirstPage(); };
+  // red X: clears topics, rating bands and the progress chip together (the search box is left alone)
+  const anyFilter = selectedTopics.length > 0 || ratingBands.length > 0 || statusFilter !== '';
+  const clearAll = () => { setSelectedTopics([]); setRatingBands([]); setStatusFilter(''); resetToFirstPage(); };
 
   const commitJump = () => {
     const n = parseInt(jumpValue, 10);
@@ -169,19 +183,23 @@ export default function CpProblemsClient() {
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
             />
-            <RandomProblemButton visibleProblems={visibleProblems} filteredWithoutRating={filteredWithoutRating} />
           </div>
 
           {/* one panel, three labelled groups, so every control has an obvious place */}
           <div className={styles.filterPanel}>
             <div className={styles.filterGroup}>
-              <span className={styles.groupLabel}>Topic and order</span>
+              <span className={styles.groupLabel}>Topics</span>
               <div className={styles.groupBody}>
-                <div className={styles.filterRow}>
+                <div className={styles.topicRow}>
                   <TopicFilter allProblems={problemsWithRating} selected={selectedTopics} onChange={handleTopics} />
-                  <select className={styles.sortSelect} aria-label="Sort problems" value={sort} onChange={(e) => { setSort(e.target.value); resetToFirstPage(); }}>
-                    {SORT_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
-                  </select>
+                  {/* fixed-width slot so the topics do not shift when the button appears */}
+                  <span className={styles.clearSlot}>
+                    {anyFilter && (
+                      <button type="button" className={styles.clearAll} onClick={clearAll} title="Clear all filters" aria-label="Clear all filters">
+                        <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>
+                      </button>
+                    )}
+                  </span>
                 </div>
               </div>
             </div>
@@ -189,28 +207,41 @@ export default function CpProblemsClient() {
             <div className={styles.filterGroup}>
               <span className={styles.groupLabel}>Rating</span>
               <div className={styles.groupBody}>
-                <RatingBandFilter active={ratingBand} onChange={handleRatingBand} />
+                <RatingBandFilter active={ratingBands} onChange={handleRatingBand} />
               </div>
             </div>
 
             <div className={styles.filterGroup}>
               <span className={styles.groupLabel}>My progress</span>
               <div className={styles.groupBody}>
-          <div className={styles.statusChips}>
-            {STATUS_FILTERS.map(({ val, label }) => (
-              <button
-                key={val}
-                className={styles.statusChip}
-                data-val={val}
-                data-active={statusFilter === val}
-                onClick={() => handleSetStatus(val)}
-                disabled={chipLocked(val)}
-                title={chipLocked(val) || undefined}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
+                <div className={styles.progressRow}>
+                  <div className={styles.statusChips}>
+                    {STATUS_FILTERS.map(({ val, label }) => (
+                      <button
+                        key={val}
+                        className={styles.statusChip}
+                        data-val={val}
+                        data-active={statusFilter === val}
+                        onClick={() => handleSetStatus(val)}
+                        disabled={chipLocked(val)}
+                        title={chipLocked(val) || undefined}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                  <div className={styles.progressRight}>
+                    <button type="button" className={styles.randomBtn} onClick={openRandom} title="Open a random CP problem from the current filters">
+                      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <path d="M2 4.5h2.2c1.6 0 2.5.8 3.4 2.2l1.1 1.6c.9 1.4 1.8 2.2 3.4 2.2H14M2 11.5h2.2c1 0 1.7-.3 2.3-.9M14 4.5h-1.9c-1 0-1.7.3-2.3.9M12.5 2.5 14.5 4.5l-2 2M12.5 9.5l2 2-2 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      Random
+                    </button>
+                    <select className={styles.sortSelect} aria-label="Sort problems" value={sort} onChange={(e) => { setSort(e.target.value); resetToFirstPage(); }}>
+                      {SORT_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+                    </select>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

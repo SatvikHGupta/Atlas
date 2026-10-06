@@ -9,7 +9,7 @@
  ],
  "roleGuidance": {
   "SDE-1": {
-   "dsaDepth": "Moderate — 1–2 Medium DSA problems per round",
+   "dsaDepth": "Moderate - 1–2 Medium DSA problems per round",
    "rounds": [
     "Assignment or online coding round (60–90 min, 1–2 medium problems)",
     "Technical round(s): further DSA, OS/DBMS basics",
@@ -22,7 +22,7 @@
    "focusPatterns": null
   },
   "SDE-2": {
-   "dsaDepth": "Moderate — DSA plus system design; Java/Kotlin and threading depth expected",
+   "dsaDepth": "Moderate - DSA plus system design; Java/Kotlin and threading depth expected",
    "rounds": [
     "Coding round(s): 1–2 medium problems (data structures, string/array)",
     "System design round (LLD and/or HLD)"
@@ -34,7 +34,7 @@
    "focusPatterns": null
   },
   "SDE-3": {
-   "dsaDepth": "Heavy — machine coding plus HLD, then a managerial round",
+   "dsaDepth": "Heavy - machine coding plus HLD, then a managerial round",
    "rounds": [
     "Round 1: online test (MCQs + 2 coding problems)",
     "Round 2: machine coding (about 1.5 hr, e.g. a payment aggregator with multiple gateway modules, proper design patterns and running code)",

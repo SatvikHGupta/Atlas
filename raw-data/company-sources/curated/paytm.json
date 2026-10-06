@@ -8,7 +8,7 @@
  ],
  "roleGuidance": {
   "SDE-1": {
-   "dsaDepth": "Heavy — 3 DSA problems in the first round (arrays, linked list/LRU, DFS/islands)",
+   "dsaDepth": "Heavy - 3 DSA problems in the first round (arrays, linked list/LRU, DFS/islands)",
    "rounds": [
     "Online coding round (45–70 min, 3 problems; C/C++/Java/Python)",
     "Technical round with core CS fundamentals (OS, DBMS, networks) and project discussion",
@@ -21,7 +21,7 @@
    "focusPatterns": null
   },
   "SDE-2": {
-   "dsaDepth": "Moderate–Heavy — some loops are DSA-first, others system-design-heavy",
+   "dsaDepth": "Moderate–Heavy - some loops are DSA-first, others system-design-heavy",
    "rounds": [
     "Online assessment (HackerRank, about 63 min: 2 coding questions + 6 MCQs)",
     "Round 1: technical + system design + LLD (e.g. travel-booking service, ETA feature)",

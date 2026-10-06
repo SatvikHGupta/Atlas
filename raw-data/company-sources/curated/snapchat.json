@@ -8,30 +8,30 @@
  ],
  "roleGuidance": {
   "L3": {
-   "dsaDepth": "Heavy — straightforward DSA-pattern rounds, no system design yet",
+   "dsaDepth": "Heavy - straightforward DSA-pattern rounds, no system design yet",
    "rounds": [
     "Recruiter call",
     "1 DSA coding screen (HackerRank, Snap’s tool)",
     "Onsite: 3 rounds, all DSA-focused (~3 hours total)"
    ],
    "extraTopics": [
-    "Standard LeetCode-style DSA patterns — reports describe this level’s loop as \"pretty straightforward\""
+    "Standard LeetCode-style DSA patterns - reports describe this level’s loop as \"pretty straightforward\""
    ],
    "focusPatterns": null
   },
   "L4 and Senior (L5+)": {
-   "dsaDepth": "Heavy — fully centralized loop (team matching happens after, not before), with dedicated \"Decider\" interviewers evaluating culture fit throughout every round rather than in one dedicated round",
+   "dsaDepth": "Heavy - fully centralized loop (team matching happens after, not before), with dedicated \"Decider\" interviewers evaluating culture fit throughout every round rather than in one dedicated round",
    "rounds": [
     "Recruiter call (~1 hr)",
     "Technical phone screen (~1 hr): DSA via HackerRank, occasional light behavioral questions",
-    "Onsite (~6 hrs, 6 rounds): 4 coding rounds (speed matters as much as a working solution), 1 system design round tied to an actual Snapchat feature/product, a Q&A session — some reports add a lunch/culture conversation and a round with an Engineering Director"
+    "Onsite (~6 hrs, 6 rounds): 4 coding rounds (speed matters as much as a working solution), 1 system design round tied to an actual Snapchat feature/product, a Q&A session - some reports add a lunch/culture conversation and a round with an Engineering Director"
    ],
    "extraTopics": [
-    "Snap’s \"Decider\" interviewers (Snap’s equivalent of Amazon’s Bar Raiser) evaluate against 3 values: \"We are Kind\", \"We are Smart\", \"We are Creative\" — spread across every round, not one dedicated behavioral interview",
+    "Snap’s \"Decider\" interviewers (Snap’s equivalent of Amazon’s Bar Raiser) evaluate against 3 values: \"We are Kind\", \"We are Smart\", \"We are Creative\" - spread across every round, not one dedicated behavioral interview",
     "System design tied to real Snapchat products (e.g. a messaging recommendation system, a Snapchat feature interface) rather than a generic prompt"
    ],
    "focusPatterns": null,
-   "notes": "Interviews are held in a separate building from where engineers actually work, for feature-privacy reasons — several candidates note this limits getting a feel for the culture."
+   "notes": "Interviews are held in a separate building from where engineers actually work, for feature-privacy reasons - several candidates note this limits getting a feel for the culture."
   }
  },
  "rolesStatus": "researched",

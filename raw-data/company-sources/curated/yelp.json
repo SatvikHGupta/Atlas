@@ -7,7 +7,7 @@
  ],
  "roleGuidance": {
   "Software Engineer": {
-   "dsaDepth": "Moderate — a HackerRank-style OA then 2-3 back-to-back technical interviews, one often with a manager rather than only peer engineers",
+   "dsaDepth": "Moderate - a HackerRank-style OA then 2-3 back-to-back technical interviews, one often with a manager rather than only peer engineers",
    "rounds": [
     "Recruiter/co-op screen for some pipelines",
     "HackerRank coding challenge",
@@ -51,6 +51,6 @@
  ],
  "rolesAsOf": "2026-09",
  "rolesConfidence": "low",
- "rolesNotes": "Only one source page was reviewed (aggregating several independent candidate reports) — treat the loop shape as one documented pattern, not broadly cross-verified. Level naming beyond \"Software Engineer\" is not confirmed by the source reviewed.",
+ "rolesNotes": "Only one source page was reviewed (aggregating several independent candidate reports) - treat the loop shape as one documented pattern, not broadly cross-verified. Level naming beyond \"Software Engineer\" is not confirmed by the source reviewed.",
  "indiaNote": null
 }

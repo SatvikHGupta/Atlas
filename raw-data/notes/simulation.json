@@ -7,7 +7,7 @@
     {
       "type": "intro",
       "title": "What is Simulation?",
-      "content": "Simulation problems ask you to implement exactly what the problem describes — step by step, no clever algorithm required. The challenge is correctness under edge cases, not finding a smarter approach.\n\nSimulation appears constantly in competitive programming and in interviews as 'design' or 'implement this game' problems. Game of Life, robot navigation, spiral traversal, and snake game are all simulation — the algorithm is the problem statement.\n\nCritical judgment call: **when is direct simulation within the time limit?** n ≤ 10³ and steps ≤ 10³ → O(10⁶) — fine. Steps can be 10⁹ → need a shortcut. Most common shortcut: **cycle detection**. Finite state must eventually cycle. Find cycle length L, skip full cycles, simulate only the remainder.\n\nRecognizing when to simulate vs when to optimize is a meta-skill that comes from practice."
+      "content": "Simulation problems ask you to implement exactly what the problem describes - step by step, no clever algorithm required. The challenge is correctness under edge cases, not finding a smarter approach.\n\nSimulation appears constantly in competitive programming and in interviews as 'design' or 'implement this game' problems. Game of Life, robot navigation, spiral traversal, and snake game are all simulation - the algorithm is the problem statement.\n\nCritical judgment call: **when is direct simulation within the time limit?** n ≤ 10³ and steps ≤ 10³ → O(10⁶) - fine. Steps can be 10⁹ → need a shortcut. Most common shortcut: **cycle detection**. Finite state must eventually cycle. Find cycle length L, skip full cycles, simulate only the remainder.\n\nRecognizing when to simulate vs when to optimize is a meta-skill that comes from practice."
     },
     {
       "type": "when_to_use",
@@ -26,7 +26,7 @@
     {
       "type": "concept",
       "title": "Cycle Detection, Direction Arrays, and Event-Driven Simulation",
-      "content": "## When to Simulate Directly\n\nn ≤ 10³ and steps ≤ 10³: O(10⁶) — simulate freely. n ≤ 10⁴ and steps ≤ 10⁴: O(10⁸) — borderline. Steps ≤ 10⁹: must find a shortcut.\n\n## Cycle Detection\n\n1. Store visited states: `{ serializedState → stepIndex }`.\n2. At each step, serialize current state.\n3. If seen before: `cycleLen = currentStep - seen[state]`.\n4. Remaining steps after cycle start: `(totalSteps - cycleStart) % cycleLen`.\n5. Simulate that many more steps.\n\n## Direction Arrays\n\n```\ndirs = [[0,1],[1,0],[0,-1],[-1,0]]  // right, down, left, up\ndirIdx = 0\n```\nTurn right: `(dirIdx+1)%4`. Turn left: `(dirIdx+3)%4`. Move: `[r+dirs[dirIdx][0], c+dirs[dirIdx][1]]`.\n\n## State Mutation Hazard (Game of Life)\n\nWhen all cells update simultaneously, reading an already-updated neighbor corrupts results. Use a copy of the current state for reads, write to a separate buffer. Or encode both states in the cell value.\n\n## Event-Driven Simulation\n\nOnly process steps where something changes. Reduces O(T) to O(E) where T is total time span and E is number of events."
+      "content": "## When to Simulate Directly\n\nn ≤ 10³ and steps ≤ 10³: O(10⁶) - simulate freely. n ≤ 10⁴ and steps ≤ 10⁴: O(10⁸) - borderline. Steps ≤ 10⁹: must find a shortcut.\n\n## Cycle Detection\n\n1. Store visited states: `{ serializedState → stepIndex }`.\n2. At each step, serialize current state.\n3. If seen before: `cycleLen = currentStep - seen[state]`.\n4. Remaining steps after cycle start: `(totalSteps - cycleStart) % cycleLen`.\n5. Simulate that many more steps.\n\n## Direction Arrays\n\n```\ndirs = [[0,1],[1,0],[0,-1],[-1,0]]  // right, down, left, up\ndirIdx = 0\n```\nTurn right: `(dirIdx+1)%4`. Turn left: `(dirIdx+3)%4`. Move: `[r+dirs[dirIdx][0], c+dirs[dirIdx][1]]`.\n\n## State Mutation Hazard (Game of Life)\n\nWhen all cells update simultaneously, reading an already-updated neighbor corrupts results. Use a copy of the current state for reads, write to a separate buffer. Or encode both states in the cell value.\n\n## Event-Driven Simulation\n\nOnly process steps where something changes. Reduces O(T) to O(E) where T is total time span and E is number of events."
     },
     {
       "type": "concept",
@@ -46,7 +46,7 @@
       "items": [
         {
           "name": "Parallel State Update (Game of Life)",
-          "description": "All cells update simultaneously based on current state. Must read from old state and write to new — never mix. Use a copy or encode old and new state in the same cell value using different bits.",
+          "description": "All cells update simultaneously based on current state. Must read from old state and write to new - never mix. Use a copy or encode old and new state in the same cell value using different bits.",
           "example_problem": "Game of Life",
           "example_slug": "game-of-life"
         },
@@ -78,7 +78,7 @@
         "Mutating state while reading it in parallel-update problems (Game of Life): writing grid[r][c]=newVal before all neighbors are processed reads the new value for cells that should use the old. Always read from a copy.",
         "Turn-left using dirIdx-1: gives -1 when dirIdx is 0, which wraps to wrong index. Use (dirIdx+3)%4.",
         "Boundary check after moving instead of before: compute new position, validate it, then update. Stepping to an invalid position first causes index-out-of-bounds errors.",
-        "Cycle detection serialization: JSON.stringify works but is slow for large states. Custom hash improves performance. Ensure serialization is injective — different states must produce different strings.",
+        "Cycle detection serialization: JSON.stringify works but is slow for large states. Custom hash improves performance. Ensure serialization is injective - different states must produce different strings.",
         "Not applying cycle detection when step count is large: if k=10^9 but state space is 10^4, simulating all k steps causes TLE when the cycle is guaranteed to appear before 10^4 steps."
       ]
     },
@@ -91,28 +91,28 @@
           "slug": "game-of-life",
           "difficulty": 5,
           "difficulty_label": "Medium",
-          "why": "Parallel state update — tests simultaneous-update pattern where old state must be preserved for all cells before any new state is written."
+          "why": "Parallel state update - tests simultaneous-update pattern where old state must be preserved for all cells before any new state is written."
         },
         {
           "title": "Robot Bounded in Circle",
           "slug": "robot-bounded-in-circle",
           "difficulty": 5,
           "difficulty_label": "Medium",
-          "why": "Direction array + cycle reasoning — simulate one cycle and check position and direction to determine boundedness."
+          "why": "Direction array + cycle reasoning - simulate one cycle and check position and direction to determine boundedness."
         },
         {
           "title": "Spiral Matrix",
           "slug": "spiral-matrix",
           "difficulty": 5,
           "difficulty_label": "Medium",
-          "why": "Boundary-peeling simulation — tests four shrinking boundaries and edge cases where only one row or column remains."
+          "why": "Boundary-peeling simulation - tests four shrinking boundaries and edge cases where only one row or column remains."
         },
         {
           "title": "Walking Robot Simulation",
           "slug": "walking-robot-simulation",
           "difficulty": 5,
           "difficulty_label": "Medium",
-          "why": "Direction array + obstacle hash set — combines grid movement with O(1) collision detection using a set of obstacle coordinates."
+          "why": "Direction array + obstacle hash set - combines grid movement with O(1) collision detection using a set of obstacle coordinates."
         }
       ]
     },

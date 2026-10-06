@@ -56,7 +56,7 @@ function Pagination({ page, totalPages, onPageChange }) {
   );
 }
 
-export default function ProblemList({ problems, isLoading, total, page, limit, onPageChange }) {
+export default function ProblemList({ problems, isLoading, total, page, limit, onPageChange, onRandom }) {
   const { bookmarkedIds, toggleBookmark } = useBookmarks();
   const { progressMap } = useProgress();
 
@@ -81,7 +81,22 @@ export default function ProblemList({ problems, isLoading, total, page, limit, o
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.count}>{total?.toLocaleString()} problems</div>
+      <div className={styles.countRow}>
+        <div className={styles.count}>{total?.toLocaleString()} problems</div>
+        {onRandom && (
+          <button
+            type="button"
+            className={styles.randomBtn}
+            onClick={onRandom}
+            title="Open a random problem from the current filters"
+          >
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M2 4.5h2.2c1.6 0 2.5.8 3.4 2.2l1.1 1.6c.9 1.4 1.8 2.2 3.4 2.2H14M2 11.5h2.2c1 0 1.7-.3 2.3-.9M14 4.5h-1.9c-1 0-1.7.3-2.3.9M12.5 2.5 14.5 4.5l-2 2M12.5 9.5l2 2-2 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            Random
+          </button>
+        )}
+      </div>
 
       {/* PERF-05: the AnimatePresence that wrapped this grid had no keyed child, so it never animated anything */}
       <div className={styles.grid}>

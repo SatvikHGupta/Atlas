@@ -70,6 +70,8 @@
   transition: border-color 0.15s ease, background 0.15s ease;
 }
 .pillBtn:hover, .pillBtn:focus-visible { border-color: var(--accent); background: var(--bg-card-hover); outline: none; }
+button.pillBtn { font: inherit; cursor: pointer; text-align: left; }
+.pillBtn:disabled { opacity: 0.6; cursor: progress; }
 .pillIcon { color: var(--accent-light); flex-shrink: 0; }
 .pillText { display: flex; flex-direction: column; line-height: 1.25; }
 .pillSub { font-size: 0.72rem; font-weight: 400; color: var(--text-muted); }
@@ -175,7 +177,8 @@
 .heatmap { display: flex; flex-direction: column; gap: var(--space-3); }
 .heatHead { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
 .heatTotal { font-size: 0.86rem; color: var(--text-secondary); }
-.heatScroll { overflow-x: auto; padding-bottom: 2px; }
+.heatScroll { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
+.heatScroll::-webkit-scrollbar { display: none; }
 .heatGrid {
   display: grid;
   grid-template-columns: 30px repeat(var(--cols), minmax(0, 1fr));

@@ -6,7 +6,7 @@ import { routes, absoluteUrl, isCanonicalTwin } from '../lib/routeIdentity.js';
 // Single sitemap.xml - the URL count (problems + patterns + companies + notes + roadmap + statics) stays far below Google's 50,000 URLs-per-file / 50MB limit, so there's no need for Next's multi-file generateSitemaps() split. Revisit only if the dataset grows an order of magnitude. Every URL comes from a canonical index (BUG-166), never from files found on disk.
 // BUG-164: no lastModified anywhere. A build-time "now" would tell crawlers every page changed on every deploy; omitting it is honest until real per-page timestamps exist.
 export default function sitemap() {
-  const staticPaths = [routes.home(), routes.problems(), routes.cp(), routes.companies(), routes.patterns(), routes.notes(), routes.roadmap(), routes.privacy(), routes.terms()];
+  const staticPaths = [routes.home(), routes.problems(), routes.cp(), routes.companies(), routes.patterns(), routes.notes(), routes.roadmap(), routes.privacy(), routes.terms(), routes.about(), routes.contact()];
   const statics = staticPaths.map((path) => ({
     url: absoluteUrl(SITE_URL, path),
     changeFrequency: path === '/' ? 'daily' : 'weekly',

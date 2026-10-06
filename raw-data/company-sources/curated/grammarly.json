@@ -7,9 +7,9 @@
  ],
  "roleGuidance": {
   "Software Engineer": {
-   "dsaDepth": "Heavy — LeetCode-medium-to-hard problems delivered as much through open discussion of trade-offs as through pure correctness, in a long, structured 5-round loop",
+   "dsaDepth": "Heavy - LeetCode-medium-to-hard problems delivered as much through open discussion of trade-offs as through pure correctness, in a long, structured 5-round loop",
    "rounds": [
-    "Recruiter call (~30 min): motivation, role fit, logistics — Grammarly is explicit about remote-first expectations and relocation up front",
+    "Recruiter call (~30 min): motivation, role fit, logistics - Grammarly is explicit about remote-first expectations and relocation up front",
     "Coding screen (~1 hr): LeetCode-medium algorithmic problems under time pressure",
     "System design round: distributed systems and architecture trade-offs at scale",
     "Onsite coding round (part of a ~5.5 hr onsite): LeetCode-hard, debugging, code clarity and edge cases (a rate limiter and a graph-deep-copy-on-a-whiteboard are both reported)",
@@ -17,12 +17,12 @@
     "Manager and/or culture-values round (Grammarly’s \"EAGER\" values framework)"
    ],
    "extraTopics": [
-    "Explaining trade-offs and complexity out loud, even more than reaching a fast answer — several candidates note the interviewers listen for clarity and structure over memorized patterns",
-    "Connecting technical decisions to real product impact — a recurring, explicitly product-minded evaluation lens",
+    "Explaining trade-offs and complexity out loud, even more than reaching a fast answer - several candidates note the interviewers listen for clarity and structure over memorized patterns",
+    "Connecting technical decisions to real product impact - a recurring, explicitly product-minded evaluation lens",
     "A referral reportedly guarantees a callback here, more reliably than at many other companies"
    ],
    "focusPatterns": null,
-   "notes": "Reported pass rate is around 33-45% in the US pipeline (Taro-aggregated data) — a genuinely selective loop, not a formality."
+   "notes": "Reported pass rate is around 33-45% in the US pipeline (Taro-aggregated data) - a genuinely selective loop, not a formality."
   }
  },
  "rolesStatus": "researched",

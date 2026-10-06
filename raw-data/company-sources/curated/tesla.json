@@ -7,22 +7,22 @@
  ],
  "roleGuidance": {
   "Software Engineer": {
-   "dsaDepth": "Heavy — a genuinely unusual order (hiring-manager call BEFORE any technical evaluation), first-principles depth-probing on fundamentals, and for final rounds a written \"Evidence of Excellence\" submission",
+   "dsaDepth": "Heavy - a genuinely unusual order (hiring-manager call BEFORE any technical evaluation), first-principles depth-probing on fundamentals, and for final rounds a written \"Evidence of Excellence\" submission",
    "rounds": [
     "Recruiter screen (20-30 min)",
-    "Hiring-manager call (30-45 min) — distinctively comes BEFORE any technical round, assessing team fit and technical depth at a conversational level",
+    "Hiring-manager call (30-45 min) - distinctively comes BEFORE any technical round, assessing team fit and technical depth at a conversational level",
     "Online assessment (85-90 min, Codility/HackerRank, ~3 problems, easy-medium, under time pressure)",
     "Technical screen (~60 min live coding): practical problem solving, explicitly including catching your own bugs, not just reaching a working answer",
     "Panel rounds (3-5 rounds, 45-60 min each): coding (LeetCode-medium, strings/arrays common), system design, first-principles depth (language internals, memory, architecture, and for some teams physics-adjacent reasoning), and behavioral, sometimes closing with a senior-leadership round",
     "Evidence of Excellence (final rounds, increasingly common): a 1-2 page WRITTEN submission describing your single most significant technical achievement, evaluated for impact, ownership and complexity"
    ],
    "extraTopics": [
-    "First-principles depth-probing — interviewers push into how things actually work (memory, architecture, sometimes physics-adjacent reasoning for hardware-adjacent teams), not just correctness",
+    "First-principles depth-probing - interviewers push into how things actually work (memory, architecture, sometimes physics-adjacent reasoning for hardware-adjacent teams), not just correctness",
     "Writing, not just talking, about your best work for the Evidence of Excellence submission",
-    "Team variance is large — Autopilot, vehicle firmware, energy, manufacturing systems and internal-tools teams run meaningfully different loops"
+    "Team variance is large - Autopilot, vehicle firmware, energy, manufacturing systems and internal-tools teams run meaningfully different loops"
    ],
    "focusPatterns": null,
-   "notes": "Overall difficulty is rated 3.9/5 on Glassdoor — comparable to Google/Meta but with a different texture (less exotic algorithms, more depth-probing and pressure tolerance). Total process length is reported around 34 days on average, though individual reports range from 2 weeks to 3 months."
+   "notes": "Overall difficulty is rated 3.9/5 on Glassdoor - comparable to Google/Meta but with a different texture (less exotic algorithms, more depth-probing and pressure tolerance). Total process length is reported around 34 days on average, though individual reports range from 2 weeks to 3 months."
   }
  },
  "rolesStatus": "researched",

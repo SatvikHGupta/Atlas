@@ -88,6 +88,12 @@ export function formatTopicLabel(topic) {
     .join(' ');
 }
 
+/** Multi-select version: true when no band is picked, or the rating falls in ANY of the picked bands. */
+export function matchesRatingBands(rating, bandKeys) {
+  if (!bandKeys || bandKeys.length === 0) return true;
+  return bandKeys.some((k) => matchesRatingBand(rating, k));
+}
+
 /** True if `rating` falls within filter band `bandKey` (see RATING_BANDS). 'unrated' matches null ratings. */
 export function matchesRatingBand(rating, bandKey) {
   if (!bandKey) return true;

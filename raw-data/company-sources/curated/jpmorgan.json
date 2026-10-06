@@ -9,7 +9,7 @@
  ],
  "roleGuidance": {
   "Analyst": {
-   "dsaDepth": "Moderate — online assessment (medium–hard LeetCode-style, string/greedy) then a variable-length loop",
+   "dsaDepth": "Moderate - online assessment (medium–hard LeetCode-style, string/greedy) then a variable-length loop",
    "rounds": [
     "Online assessment (HackerRank-style, 1–2 hrs, easy–medium coding plus aptitude)",
     "Technical/code-pair round (live HackerRank or pair programming; questions escalate from syntax to HashMap internals, dependency injection)",
@@ -25,7 +25,7 @@
    "notes": "India campus hiring often runs through \"Code for Good\", a hackathon-based recruiting track."
   },
   "Associate": {
-   "dsaDepth": "Moderate–Heavy — similar loop with more system design and ownership framing",
+   "dsaDepth": "Moderate–Heavy - similar loop with more system design and ownership framing",
    "rounds": [
     "Recruiter screen",
     "Coding/pair-programming round(s)",
@@ -38,7 +38,7 @@
    "focusPatterns": null
   },
   "VP and above": {
-   "dsaDepth": "Light–Moderate — architecture and leadership dominate",
+   "dsaDepth": "Light–Moderate - architecture and leadership dominate",
    "rounds": [
     "Fewer pure-coding rounds; system design, architecture, and technical leadership discussion"
    ],

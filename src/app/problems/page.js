@@ -9,7 +9,7 @@ export function generateMetadata() {
   const count = getDsaIndex().length;
   return {
     alternates: canonicalAlternates(routes.problems()),
-    title: `DSA Problems (${count.toLocaleString()}) - Atlas`,
+    title: 'DSA Problems',
     description: `Browse ${count.toLocaleString()} data structures and algorithms problems with worked explanations and solutions in JavaScript, C++, Java, and Python.`,
   };
 }

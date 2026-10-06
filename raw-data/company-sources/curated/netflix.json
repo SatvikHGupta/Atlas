@@ -9,7 +9,7 @@
  ],
  "roleGuidance": {
   "L4": {
-   "dsaDepth": "Heavy — algorithmic coding plus architectural thinking even at mid-level, since Netflix hires few juniors",
+   "dsaDepth": "Heavy - algorithmic coding plus architectural thinking even at mid-level, since Netflix hires few juniors",
    "rounds": [
     "Recruiter screen",
     "Technical screen(s): live coding, data structures and algorithms",
@@ -23,7 +23,7 @@
    "focusPatterns": null
   },
   "L5 Senior": {
-   "dsaDepth": "Heavy — coding plus full system design; this is the level most candidates are actually evaluated against",
+   "dsaDepth": "Heavy - coding plus full system design; this is the level most candidates are actually evaluated against",
    "rounds": [
     "Recruiter screen",
     "Technical screen(s)",
@@ -36,7 +36,7 @@
    "focusPatterns": null
   },
   "L6 Staff": {
-   "dsaDepth": "Moderate — technical scope and organisational impact weigh more than raw coding speed",
+   "dsaDepth": "Moderate - technical scope and organisational impact weigh more than raw coding speed",
    "rounds": [
     "Similar loop shifted toward staff-level scope: architecture, mentorship, cross-team influence"
    ],
@@ -54,7 +54,7 @@
    "level": "L3",
    "title": "Software Engineer (entry)",
    "experience": "0–2 yrs",
-   "notes": "Netflix hires very few at this level — rarely uses junior titles"
+   "notes": "Netflix hires very few at this level - rarely uses junior titles"
   },
   {
    "level": "L4",

@@ -7,18 +7,18 @@
  ],
  "roleGuidance": {
   "Software Engineer (new grad/campus)": {
-   "dsaDepth": "Moderate — an OA for freshers, then 1-3 technical rounds mixing coding with genuinely deep OS/CS-fundamentals and C/C++ pointer/memory questions, plus real project-defense pressure",
+   "dsaDepth": "Moderate - an OA for freshers, then 1-3 technical rounds mixing coding with genuinely deep OS/CS-fundamentals and C/C++ pointer/memory questions, plus real project-defense pressure",
    "rounds": [
     "Resume screening",
-    "Online assessment (new grads/interns): 60-90 min, ~2 problems, easy-medium (arrays, strings, basic logic) — experienced hires often skip straight to the recruiter",
+    "Online assessment (new grads/interns): 60-90 min, ~2 problems, easy-medium (arrays, strings, basic logic) - experienced hires often skip straight to the recruiter",
     "Recruiter/HR phone screen (~30-45 min): background, motivation, salary expectations",
-    "Technical screen/interview(s) (45-110 min each, 1-3 rounds): live coding (arrays, linked lists, recursion, bit manipulation, trees) in C/C++/Python/Java, PLUS a strong emphasis on OS, computer organization, caching, synchronization, pointers/memory management, DBMS, Linux, networking and OOP — genuinely deep for a \"software\" role given Intel’s hardware-adjacent culture",
+    "Technical screen/interview(s) (45-110 min each, 1-3 rounds): live coding (arrays, linked lists, recursion, bit manipulation, trees) in C/C++/Python/Java, PLUS a strong emphasis on OS, computer organization, caching, synchronization, pointers/memory management, DBMS, Linux, networking and OOP - genuinely deep for a \"software\" role given Intel’s hardware-adjacent culture",
     "Project defense: interviewers push hard for specifics (dataset sources, preprocessing choices, architecture decisions, exact project timeline), not just bullet-point summaries",
     "Closing manager round (~30 min): fit and career direction",
     "Behavioral/HR round"
    ],
    "extraTopics": [
-    "Real depth on OS/computer-organization/memory topics, not just DSA — this shows up repeatedly and is more emphasized than at typical product companies",
+    "Real depth on OS/computer-organization/memory topics, not just DSA - this shows up repeatedly and is more emphasized than at typical product companies",
     "Defending project specifics in detail: dataset choices, why a particular database or architecture was picked, exact timelines",
     "C/C++ pointer and bit-manipulation fluency, reflecting Intel’s hardware-adjacent software culture"
    ],

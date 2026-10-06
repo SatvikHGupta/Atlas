@@ -4,8 +4,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
 const DEFAULT_FILTERS = {
-  topic:         '',
-  pattern:       '',
+  topics:        [], // selected patterns, a problem must carry all of them
   difficulty:    '',
   status:        '',
   sort:          'frequency',
@@ -24,7 +23,10 @@ export function sanitizePersistedFilters(persisted) {
   const out = { ...DEFAULT_FILTERS };
   const src = persisted && typeof persisted === 'object' ? persisted : {};
   for (const key of Object.keys(DEFAULT_FILTERS)) {
-    if (key in src && typeof src[key] === typeof DEFAULT_FILTERS[key]) out[key] = src[key];
+    const fallback = DEFAULT_FILTERS[key];
+    if (!(key in src)) continue;
+    if (Array.isArray(fallback)) { if (Array.isArray(src[key]) && src[key].every((v) => typeof v === 'string')) out[key] = src[key]; }
+    else if (typeof src[key] === typeof fallback) out[key] = src[key];
   }
   return out;
 }
@@ -60,8 +62,7 @@ export const useFilterStore = create(
 
       partialize: (state) => ({
         filters: {
-          topic:         state.filters.topic,
-          pattern:       state.filters.pattern,
+          topics:        state.filters.topics,
           difficulty:    state.filters.difficulty,
           status:        state.filters.status,
           sort:          state.filters.sort,

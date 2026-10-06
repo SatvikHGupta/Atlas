@@ -55,38 +55,34 @@
 
 .right { display: flex; align-items: center; gap: var(--space-3); margin-left: auto; }
 
-.userArea { display: flex; align-items: center; gap: var(--space-3); }
-
-/* Gear is the dominant shape here; the profile picture sits inside the gear's own open center circle rather than as a small badge on top of the avatar. */
-.avatarLink {
+/* Gear is always 40px and always the last item, so its position is identical signed in or out. */
+.gearLink {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
   flex-shrink: 0;
+  border-radius: 50%;
 }
+.gearLink:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .navGear {
+  grid-area: 1 / 1;
   color: var(--text-muted);
   transition: color var(--transition-fast);
 }
-.avatarLink:hover .navGear { color: var(--accent-light); }
+.gearLink:hover .navGear { color: var(--accent-light); }
 
-/* Sized/positioned to land inside the gear SVG's r=5 circle on a 24-wide viewBox (~14px at a 34px icon). */
+/* 16px inside the gear's centre circle (inner edge is about 15.5px across at 40px). Sits under the gear stroke so the ring stays intact. */
 .avatarInGear {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 14px;
-  height: 14px;
+  grid-area: 1 / 1;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   background: var(--bg-elevated);
 }
 
@@ -94,56 +90,46 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: top left;
+  object-position: center; /* was top left, which pushed the face off centre */
+  display: block;
 }
 
 .avatarFallback {
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   background: var(--accent-subtle);
   color: var(--accent-light);
-  font-size: 0.55rem;
+  font-size: 0.6rem;
   font-weight: 700;
+  line-height: 1;
 }
 
-.signedOutArea { display: flex; align-items: center; gap: var(--space-3); }
-
-.gearBtn {
-  display: flex;
+/* Sign in and Sign out share one size so the layout does not jump. CHANGE THIS: width */
+.authBtn {
+  width: 88px;
+  height: 34px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
   border-radius: var(--radius-md);
-  color: var(--text-muted);
-  transition: color var(--transition-fast), background var(--transition-fast);
-}
-.gearBtn:hover { color: var(--text-primary); background: var(--bg-elevated); }
-
-.signInBtn {
-  padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
   font-size: 0.85rem;
   font-weight: 500;
-  background: var(--accent);
-  color: var(--accent-fg);
-  transition: background var(--transition-fast), transform var(--transition-fast);
-  white-space: nowrap;
-}
-
-.signInBtn:hover { background: var(--accent-hover); transform: translateY(-1px); }
-
-.signOutBtn {
-  font-size: 0.82rem;
   color: var(--text-muted);
-  transition: color var(--transition-fast);
+  background: transparent;
   white-space: nowrap;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
 }
+.authBtn:hover { color: var(--diff-expert); border-color: var(--diff-expert); }
 
-.signOutBtn:hover { color: var(--diff-expert); }
+.signIn {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-fg);
+}
+.signIn:hover { background: var(--accent-hover); border-color: var(--accent-hover); color: var(--accent-fg); }
 
 /* ── MOBILE ─────────────────────────────────────── */
 @media (max-width: 768px) {
@@ -158,8 +144,6 @@
 
   .logoText { font-size: 1.1rem; }
 
-  .signOutBtn { display: none; }
-
-  /* on mobile, sign out lives in the bottom nav "More" sheet */
-  .userArea { gap: var(--space-2); }
+  /* on mobile, sign out lives in the bottom nav "More" sheet, so only Sign in shows (gear stays last) */
+  .authBtn:not(.signIn) { display: none; }
 }

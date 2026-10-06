@@ -23,10 +23,10 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }) {
   params = await params;
   const note = getNoteContent(params.slug);
-  if (!note) return { title: 'Note not found - Atlas' };
+  if (!note) return { title: 'Note not found' };
   return {
     alternates: canonicalAlternates(routes.note(params.slug)),
-    title: `${note.topic} - Atlas Notes`,
+    title: note.topic,
     description: `In-depth DSA study guide: ${note.topic}.${note.estimated_read ? ` ~${note.estimated_read} read.` : ''}`,
   };
 }

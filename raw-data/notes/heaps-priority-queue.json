@@ -7,7 +7,7 @@
     {
       "type": "intro",
       "title": "What is a Heap?",
-      "content": "A heap is a complete binary tree satisfying the **heap property**: in a min-heap every parent is ≤ its children, so the root always holds the minimum. In a max-heap every parent is ≥ its children.\n\nThe complete binary tree structure lets a heap be stored in an array without pointers. Node at index `i` has left child `2i+1`, right child `2i+2`, parent `Math.floor((i-1)/2)`.\n\nHeaps power **priority queues** — dequeue always returns the highest-priority item. When the problem says 'always give me the cheapest/fastest/most frequent next item', you want a heap.\n\nJS has no built-in heap. Implement a min-heap from scratch (~25 lines) or simulate with a sorted array for small n. Sorted array gives O(n) insert vs O(log n) for a real heap.\n\nThree canonical patterns: **Top K elements** (min-heap of size K), **Merge K sorted lists** (heap with one entry per list), **Median of a stream** (two-heap split)."
+      "content": "A heap is a complete binary tree satisfying the **heap property**: in a min-heap every parent is ≤ its children, so the root always holds the minimum. In a max-heap every parent is ≥ its children.\n\nThe complete binary tree structure lets a heap be stored in an array without pointers. Node at index `i` has left child `2i+1`, right child `2i+2`, parent `Math.floor((i-1)/2)`.\n\nHeaps power **priority queues** - dequeue always returns the highest-priority item. When the problem says 'always give me the cheapest/fastest/most frequent next item', you want a heap.\n\nJS has no built-in heap. Implement a min-heap from scratch (~25 lines) or simulate with a sorted array for small n. Sorted array gives O(n) insert vs O(log n) for a real heap.\n\nThree canonical patterns: **Top K elements** (min-heap of size K), **Merge K sorted lists** (heap with one entry per list), **Median of a stream** (two-heap split)."
     },
     {
       "type": "when_to_use",
@@ -27,7 +27,7 @@
     {
       "type": "concept",
       "title": "Heap Structure and Core Operations",
-      "content": "## Array Index Math\n\nParent of i: `Math.floor((i-1)/2)`. Left child: `2i+1`. Right child: `2i+2`.\n\n## Insert — Bubble Up\n\nAppend element, compare with parent, swap if out of order, repeat until heap property holds. O(log n).\n\n## Extract Min — Bubble Down\n\nSwap root with last element, remove last, bubble down new root: swap with smaller child, repeat. O(log n).\n\n## Build Heap in O(n)\n\nFloyd's heapify: call bubbleDown on every non-leaf from `Math.floor(n/2)-1` down to 0. O(n) due to geometric series of work per level.\n\n## Top K Pattern\n\nMin-heap of size K: push each element, if size > K pop the minimum. After all elements, heap contains the K largest. O(n log K).\n\n## K-Way Merge\n\nMin-heap with one entry per list storing `(value, listIndex, position)`. Extract min → add to result → push next from that list. O(N log K)."
+      "content": "## Array Index Math\n\nParent of i: `Math.floor((i-1)/2)`. Left child: `2i+1`. Right child: `2i+2`.\n\n## Insert - Bubble Up\n\nAppend element, compare with parent, swap if out of order, repeat until heap property holds. O(log n).\n\n## Extract Min - Bubble Down\n\nSwap root with last element, remove last, bubble down new root: swap with smaller child, repeat. O(log n).\n\n## Build Heap in O(n)\n\nFloyd's heapify: call bubbleDown on every non-leaf from `Math.floor(n/2)-1` down to 0. O(n) due to geometric series of work per level.\n\n## Top K Pattern\n\nMin-heap of size K: push each element, if size > K pop the minimum. After all elements, heap contains the K largest. O(n log K).\n\n## K-Way Merge\n\nMin-heap with one entry per list storing `(value, listIndex, position)`. Extract min → add to result → push next from that list. O(N log K)."
     },
     {
       "type": "concept",
@@ -82,9 +82,9 @@
       "type": "pitfalls",
       "title": "Common Mistakes",
       "items": [
-        "Using a min-heap for 'top K largest' seems backward but is correct — you evict the smallest, keeping the K largest. A max-heap of size K would require draining the whole heap at the end.",
-        "JS has no built-in heap — a sorted array gives O(n) insert, turning O(n log K) into O(n^2). Fine for n < 1000, catastrophic for n = 10^6.",
-        "Forgetting n < K edge case — when the array has fewer than K elements, return all of them.",
+        "Using a min-heap for 'top K largest' seems backward but is correct - you evict the smallest, keeping the K largest. A max-heap of size K would require draining the whole heap at the end.",
+        "JS has no built-in heap - a sorted array gives O(n) insert, turning O(n log K) into O(n^2). Fine for n < 1000, catastrophic for n = 10^6.",
+        "Forgetting n < K edge case - when the array has fewer than K elements, return all of them.",
         "Floyd's heapify is O(n); inserting n elements one-by-one is O(n log n). Use heapify only when the full array is known upfront.",
         "Parent index off-by-one: Math.floor((i-1)/2) not Math.floor(i/2) for 0-indexed arrays."
       ]
@@ -98,28 +98,28 @@
           "slug": "kth-largest-element-in-an-array",
           "difficulty": 5,
           "difficulty_label": "Medium",
-          "why": "Direct min-heap of size K — tests understanding of why a min-heap finds K largest elements."
+          "why": "Direct min-heap of size K - tests understanding of why a min-heap finds K largest elements."
         },
         {
           "title": "Merge K Sorted Lists",
           "slug": "merge-k-sorted-lists",
           "difficulty": 8,
           "difficulty_label": "Hard",
-          "why": "K-way merge — tests storing tuple entries and managing multiple list pointers in the heap."
+          "why": "K-way merge - tests storing tuple entries and managing multiple list pointers in the heap."
         },
         {
           "title": "Find Median from Data Stream",
           "slug": "find-median-from-data-stream",
           "difficulty": 8,
           "difficulty_label": "Hard",
-          "why": "Two-heap median — tests splitting data into lower/upper halves with balanced sizes."
+          "why": "Two-heap median - tests splitting data into lower/upper halves with balanced sizes."
         },
         {
           "title": "Top K Frequent Elements",
           "slug": "top-k-frequent-elements",
           "difficulty": 5,
           "difficulty_label": "Medium",
-          "why": "Frequency map combined with custom comparator heap — tests composing heap with preprocessing."
+          "why": "Frequency map combined with custom comparator heap - tests composing heap with preprocessing."
         }
       ]
     },

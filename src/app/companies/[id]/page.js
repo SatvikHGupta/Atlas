@@ -15,10 +15,10 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }) {
   params = await params;
   const data = getCompanyDetail(params.id);
-  if (!data) return { title: 'Company not found - Atlas' };
+  if (!data) return { title: 'Company not found' };
   return {
     alternates: canonicalAlternates(routes.company(params.id)),
-    title: `${data.name} Interview Questions & Patterns - Atlas`,
+    title: `${data.name} Questions`, // becomes "Google Questions | Atlas"
     description: `${data.problemCount ?? data.problems?.length ?? 0} interview problems tracked for ${data.name}, broken down by role and DSA pattern.`,
   };
 }

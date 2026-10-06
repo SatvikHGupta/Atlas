@@ -8,7 +8,7 @@
  ],
  "roleGuidance": {
   "SDE-1": {
-   "dsaDepth": "Moderate–Heavy — DSA-heavy, Medium to Hard",
+   "dsaDepth": "Moderate–Heavy - DSA-heavy, Medium to Hard",
    "rounds": [
     "Online assessment (about 3 DS/algo problems)",
     "2 DSA rounds (2 problems each)",
@@ -22,7 +22,7 @@
    "focusPatterns": null
   },
   "SDE-2": {
-   "dsaDepth": "Heavy — DSA plus machine coding and system design",
+   "dsaDepth": "Heavy - DSA plus machine coding and system design",
    "rounds": [
     "Online coding round (medium)",
     "Machine coding / low-level design (e.g. snake-and-ladder in 60 min, modular and demoable)",

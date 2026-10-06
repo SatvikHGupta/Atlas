@@ -8,7 +8,7 @@
  ],
  "roleGuidance": {
   "Technology Analyst": {
-   "dsaDepth": "Moderate — online coding test then technical + HR rounds, standard investment-bank format",
+   "dsaDepth": "Moderate - online coding test then technical + HR rounds, standard investment-bank format",
    "rounds": [
     "Online assessment (coding, 1–2 problems, plus aptitude/logical sections)",
     "Technical interview(s): DSA plus CS fundamentals (OOP, DBMS)",
@@ -22,7 +22,7 @@
    "notes": "This entry follows the standard investment-bank campus format also seen at Goldman Sachs and JPMorgan; no Morgan-Stanley-specific report was reviewed in depth for this ladder."
   },
   "Technology Associate": {
-   "dsaDepth": "Moderate — coding plus system/low-level design",
+   "dsaDepth": "Moderate - coding plus system/low-level design",
    "rounds": [
     "Technical round(s): coding and design",
     "Behavioral/HR round"

@@ -1,9 +1,10 @@
 // Pure URL <-> filter helpers for the Problems page. Author: Satvik Hemant Gupta
-// BUG-105: q, topic, pattern, difficulty, sort and page live in the URL.
+// BUG-105: q, topic (repeatable), difficulty, sort and page live in the URL.
 // Personal status filters (solved, attempted, bookmarked) never do.
 
 const VALID_SORTS = ['frequency', 'difficulty_asc', 'difficulty_desc', 'title_asc'];
 const MAX_TEXT = 100;
+const MAX_TOPICS = 12;
 
 // Accepts a URLSearchParams, a query string, or a plain object.
 function toParams(input) {
@@ -26,11 +27,9 @@ export function parseFilterParams(input) {
   const q = cleanText(p.get('q'));
   if (q) out.search = q;
 
-  const topic = cleanText(p.get('topic'));
-  if (topic) out.topic = topic;
-
-  const pattern = cleanText(p.get('pattern'));
-  if (pattern) out.pattern = pattern;
+  // ?topic=Array&topic=Math, a single ?topic=Array still works
+  const topics = [...new Set((p.getAll ? p.getAll('topic') : []).map(cleanText).filter(Boolean))].slice(0, MAX_TOPICS);
+  if (topics.length) out.topics = topics;
 
   const diff = Number(p.get('difficulty'));
   if (Number.isInteger(diff) && diff >= 1 && diff <= 10) out.difficulty = diff;
@@ -50,8 +49,7 @@ export function parseFilterParams(input) {
 export function buildFilterQuery(filters = {}) {
   const p = new URLSearchParams();
   if (filters.search) p.set('q', String(filters.search));
-  if (filters.topic) p.set('topic', filters.topic);
-  if (filters.pattern) p.set('pattern', filters.pattern);
+  for (const t of filters.topics || []) p.append('topic', t);
   if (filters.difficulty !== '' && filters.difficulty != null) {
     p.set('difficulty', String(filters.difficulty));
   }
@@ -72,6 +70,6 @@ export function mergeFilterQuery(currentSearch, filters) {
     if (!MANAGED_KEYS.includes(k)) next.append(k, v);
   }
   const mine = new URLSearchParams(buildFilterQuery(filters));
-  for (const [k, v] of mine.entries()) next.set(k, v);
+  for (const [k, v] of mine.entries()) next.append(k, v);
   return next.toString();
 }

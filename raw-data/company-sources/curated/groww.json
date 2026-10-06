@@ -8,7 +8,7 @@
  ],
  "roleGuidance": {
   "SDE-1": {
-   "dsaDepth": "Moderate — 2 to 3 DSA rounds, an assignment round appears in some loops",
+   "dsaDepth": "Moderate - 2 to 3 DSA rounds, an assignment round appears in some loops",
    "rounds": [
     "Referral or application, then an HR call",
     "Assignment round (take-home, about 24 hrs) in some loops",
@@ -22,7 +22,7 @@
    "focusPatterns": null
   },
   "SDE-2": {
-   "dsaDepth": "Heavy — DSA plus machine coding and system/HLD design",
+   "dsaDepth": "Heavy - DSA plus machine coding and system/HLD design",
    "rounds": [
     "Round 1: 1–2 DSA problems (medium–hard: linked list, tree, graph)",
     "Round 2: machine coding (e.g. an expense-sharing app like Splitwise, full class design and APIs)",

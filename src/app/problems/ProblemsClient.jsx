@@ -51,7 +51,7 @@ export default function ProblemsClient() {
     const currentUrl = current ? `${pathname}?${current}` : pathname;
     if (next !== currentUrl) router.replace(next, { scroll: false });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters.search, filters.topic, filters.pattern, filters.difficulty, filters.sort, filters.page]);
+  }, [filters.search, (filters.topics || []).join('\u0001'), filters.difficulty, filters.sort, filters.page]);
 
   const limit = filters.limit || 50;
 
@@ -65,8 +65,8 @@ export default function ProblemsClient() {
   const isLoading = indexLoading || gate === 'loading';
   const retryPersonal = () => { retryProgress?.(); retryBookmarks?.(); };
 
-  const { pageItems, total, page } = useMemo(() => {
-    if (!allProblems) return { pageItems: [], total: 0, page: 1 };
+  const { pageItems, total, page, slugs } = useMemo(() => {
+    if (!allProblems) return { pageItems: [], total: 0, page: 1, slugs: [] };
 
     let list = applyFilters(allProblems, { ...filters, mode: 'dsa' });
     if (!personalFailed) list = applyStatusFilter(list, filters.status, progressMap, bookmarkedIds);
@@ -77,7 +77,8 @@ export default function ProblemsClient() {
     // on a now-empty page.
     const clamped = clampPage(filters.page, total, limit);
     const offset = (clamped - 1) * limit;
-    return { pageItems: list.slice(offset, offset + limit), total, page: clamped };
+    // slugs = every problem the current filters return, used by Random
+    return { pageItems: list.slice(offset, offset + limit), total, page: clamped, slugs: list.map((p) => p.slug) };
   }, [allProblems, filters, progressMap, bookmarkedIds, limit, personalFailed]);
 
   useEffect(() => {
@@ -85,7 +86,13 @@ export default function ProblemsClient() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
-  const activeCount = [filters.topic, filters.pattern, filters.difficulty, filters.status].filter(Boolean).length;
+  // Random: opens one problem picked from the filtered list (same list as the count pill)
+  const openRandom = () => {
+    if (slugs.length === 0) return;
+    router.push(`/problems/${slugs[Math.floor(Math.random() * slugs.length)]}`);
+  };
+
+  const activeCount = [filters.topics?.length, filters.difficulty, filters.status].filter(Boolean).length;
 
   return (
     <>
@@ -128,6 +135,7 @@ export default function ProblemsClient() {
               page={page}
               limit={limit}
               onPageChange={setPage}
+              onRandom={openRandom}
             />
           )}
         </PageWrapper>
