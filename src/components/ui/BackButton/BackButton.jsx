@@ -14,7 +14,7 @@ export default function BackButton({ fallback = '/' }) {
       origin: window.location.origin,
     });
     if (safe) router.back();
-    else router.push(fallback); // opened directly (no earlier page of ours to return to)
+    else router.push(fallback);
   };
   return (
     <button type="button" className={styles.back} onClick={goBack}>

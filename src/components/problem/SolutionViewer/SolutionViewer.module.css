@@ -119,9 +119,11 @@
   min-width: 44px;
 }
 
-.copyBtn:hover:not(:disabled) {
-  color: var(--text-primary);
-  border-color: var(--accent);
+@media (hover: hover) {
+  .copyBtn:hover:not(:disabled) {
+    color: var(--text-primary);
+    border-color: var(--accent);
+  }
 }
 
 .copyBtn:disabled {
@@ -139,7 +141,6 @@
   max-width: 100%;
 }
 
-/* Shiki output (pre-rendered at build time, see SolutionViewer.jsx) - override its inline background/theme so it matches this card rather than showing its own theme's page background. */
 .codeInner pre,
 .codeInner code {
   max-width: 100%;
@@ -157,10 +158,10 @@
   /* cap code block height on mobile- user scrolls within the block */
   .codeInner {
     max-height: 55vh;
+    max-height: 55dvh;
     overflow-y: auto;
     overflow-x: auto;
   }
-  /* ensure long lines scroll horizontally instead of wrapping/clipping */
   .codeInner pre {
     white-space: pre !important;
     word-break: normal !important;
@@ -215,7 +216,9 @@
   min-height: 40px;
 }
 
-.revealBtn:hover { opacity: 0.85; }
+@media (hover: hover) {
+  .revealBtn:hover { opacity: 0.85; }
+}
 
 .noCode {
   padding: 2rem;
@@ -261,8 +264,6 @@
   }
 }
 
-
-/* --- appended: functional classes from an earlier merge round the theme-fix predates --- */
 .caveatDot {
   display: inline-block;
   width: 5px;
@@ -288,9 +289,6 @@
   margin: 0 0 var(--space-2);
 }
 
-/* BUG-110: verification badge next to each variant tab. Uses existing
-   semantic tokens (--solved/--attempted/--diff-expert/--text-muted) rather
-   than new colours - theme colours belong to a different account. */
 .checkBadge {
   display: inline-flex;
   align-items: center;
@@ -309,8 +307,6 @@
 
 .checkBadge[data-tone='neutral'] { color: var(--text-muted); }
 
-/* visually hidden below 900px but still available to screen readers
-   (unlike display:none, which title="" attributes don't reliably announce) */
 .checkBadgeText {
   position: absolute;
   width: 1px;

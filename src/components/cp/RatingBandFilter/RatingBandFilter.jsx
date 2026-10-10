@@ -1,8 +1,7 @@
 import { RATING_BANDS } from '../../../lib/codeforces.utils.js';
 import styles from './RatingBandFilter.module.css';
 
-// Multi-select: `active` is an array of band keys, clicking a chip adds or removes it. A problem matches if its
-// rating is in ANY picked band (so 1200-1399 + 1400-1599 together read as "1200 to 1599").
+// Multi-select: `active` is an array of band keys
 export default function RatingBandFilter({ active = [], onChange }) {
   const toggle = (key) => onChange(active.includes(key) ? active.filter((k) => k !== key) : [...active, key]);
   return (

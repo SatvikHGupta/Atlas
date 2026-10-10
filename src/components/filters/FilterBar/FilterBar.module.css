@@ -6,6 +6,7 @@
   flex-shrink: 0;
   background: var(--bg-secondary);
   border-right: 1px solid var(--border);
+  height: calc(100vh - var(--navbar-height));
   height: calc(100dvh - var(--navbar-height));
   overflow-y: auto;
   position: sticky;
@@ -62,7 +63,9 @@
   font-family: inherit;
   min-height: 28px;
 }
-.clearAll:hover { background: rgba(var(--error-rgb), 0.15); }
+@media (hover: hover) {
+  .clearAll:hover { background: rgba(var(--error-rgb), 0.15); }
+}
 
 .section { border-bottom: 1px solid var(--border); }
 
@@ -79,7 +82,9 @@
   transition: background 0.12s;
   min-height: 44px;
 }
-.sectionHeader:hover { background: var(--surface-hover); }
+@media (hover: hover) {
+  .sectionHeader:hover { background: var(--surface-hover); }
+}
 
 .sectionLabel {
   font-size: 0.72rem;
@@ -233,10 +238,12 @@
 .statusChip[data-val="attempted"][data-active="true"] { background: var(--attempted-bg); border-color: var(--attempted); color: var(--attempted); }
 .statusChip[data-val="unsolved"][data-active="true"]  { background: color-mix(in srgb, var(--text-muted) 12%, transparent); border-color: var(--text-muted); color: var(--text-secondary); }
 .statusChip[data-val="bookmarked"][data-active="true"]{ background: var(--warning-bg); border-color: var(--warning); color: var(--warning); }
-.statusChip:hover:not([data-active="true"]):not(:disabled) { border-color: var(--border-strong); color: var(--text-secondary); }
+@media (hover: hover) {
+  .statusChip:hover:not([data-active="true"]):not(:disabled) { border-color: var(--border-strong); color: var(--text-secondary); }
+}
 .statusChip:disabled { opacity: 0.45; cursor: not-allowed; }
 
-/* ---- MOBILE: hide desktop sidebar, but NOT when in drawer ---- */
+/* MOBILE: hide desktop sidebar, but NOT when in drawer */
 @media (max-width: 768px) {
   /* only hide the sidebar version, not the drawer version */
   .bar:not([data-in-drawer='true']) {
@@ -255,13 +262,13 @@
   transition: opacity var(--transition-fast);
   align-self: center;
 }
-.showMoreBtn:hover {
-  opacity: 1;
+@media (hover: hover) {
+  .showMoreBtn:hover {
+    opacity: 1;
+  }
 }
 
-
-/* --- appended: functional classes from an earlier merge round the theme-fix predates --- */
-/* BUG-102: explanatory note when personal status filters are disabled */
+/* explanatory note when personal status filters are disabled */
 .statusHint {
   font-size: 0.72rem;
   color: var(--text-muted);

@@ -26,9 +26,6 @@
   padding: var(--space-4);
 }
 
-/* BUG-027/028: SkeletonCard.jsx and Loader.jsx's SkeletonDetail reference classes (.card/.titleLine/.metaRow/.badge/.tag/.companyRow/.company and
-   .detail/.detailTitle/.detailMeta/.detailBlock) that never existed here - these skeletons rendered as invisible, unstyled empty divs. The shimmer
-   block below (previously named .skeletonCard/.skeletonLine, unused by any component) is repurposed under the names the JSX actually uses. */
 .shimmer {
   background: linear-gradient(90deg, var(--bg-elevated) 25%, var(--bg-card-hover) 50%, var(--bg-elevated) 75%);
   background-size: 200% 100%;
@@ -55,7 +52,6 @@
 .companyRow { display: flex; gap: var(--space-2); margin-top: var(--space-1); }
 .company { composes: shimmer; height: 22px; width: 72px; border-radius: var(--radius-sm); }
 
-/* Loader.jsx's SkeletonDetail (problem/solution detail-page loading state) */
 .detail {
   display: flex;
   flex-direction: column;
@@ -72,8 +68,6 @@
   .spinner { width: 30px; height: 30px; border-width: 2.5px; }
 }
 
-
-/* --- appended: functional classes from an earlier merge round the theme-fix predates --- */
 .skeletonCard {
   background: var(--bg-card);
   border: 1px solid var(--border);

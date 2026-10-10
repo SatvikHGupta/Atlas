@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Offline | Atlas</title>
+<style>
+  :root { color-scheme: dark light; --bg: #07070b; --card: #12121a; --text: #f2f2f7; --muted: #9a9ab0; --line: rgba(255,255,255,0.12); --accent: #a78bfa; }
+  @media (prefers-color-scheme: light) { :root { --bg: #f8f9fb; --card: #fff; --text: #111827; --muted: #5b6475; --line: rgba(17,24,39,0.12); --accent: #6d28d9; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100dvh; display: grid; place-items: center; padding: 24px; padding-top: calc(24px + env(safe-area-inset-top)); padding-bottom: calc(24px + env(safe-area-inset-bottom)); background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; line-height: 1.5; }
+  main { width: 100%; max-width: 420px; text-align: center; }
+  h1 { margin: 0 0 8px; font-size: 1.5rem; }
+  p { margin: 0 0 24px; color: var(--muted); }
+  .row { display: grid; gap: 10px; }
+  a, button { display: block; padding: 14px 16px; min-height: 48px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--text); font: inherit; font-weight: 600; text-decoration: none; cursor: pointer; }
+  button { background: var(--accent); border-color: var(--accent); color: #fff; }
+</style>
+</head>
+<body>
+<main>
+  <h1>You are offline</h1>
+  <p>This page has not been saved on this device yet. Pages you have already opened still work.</p>
+  <div class="row">
+    <button type="button" onclick="location.reload()">Try again</button>
+    <a href="/bookmarks">Bookmarks</a>
+    <a href="/notes">Notes</a>
+    <a href="/roadmap">Roadmap</a>
+  </div>
+</main>
+</body>
+</html>

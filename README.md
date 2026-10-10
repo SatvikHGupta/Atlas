@@ -1,124 +1,181 @@
 # Atlas
 
-A DSA and competitive programming interview-prep platform built on Next.js. Atlas indexes 3,100+ LeetCode-style problems and 10,500+ Codeforces problems, each with topic tags, difficulty, explanations, and multi-language solutions, alongside company-wise "asked at" question banks, pattern-based practice sets, and a guided roadmap.
+Atlas is a DSA and competitive programming interview-preparation platform built with **Next.js**.
 
-Every content page is statically generated at build time from a pre-processed dataset, not fetched and filtered in the browser, which is what makes the site fast and fully indexable by search engines.
+It contains **3,100+ LeetCode-style problems** and **10,500+ Codeforces problems**, with topic tags, difficulty, explanations, multi-language solutions, company-wise interview questions, pattern-based practice, notes, and a guided roadmap.
+
+Content is pre-processed and generated at build time, allowing Atlas pages to be served as pre-rendered HTML instead of loading the full dataset in the browser.
+
+---
 
 ## Features
 
-- **Problems** – full DSA problem bank with difficulty, topics, patterns, and syntax-highlighted solutions in JavaScript, Python, C++, and Java, each with a brute-force and optimal variant
-- **Competitive Programming** – a separate Codeforces-sourced problem list
-- **Companies** – per-company interview pages showing pattern frequency, role-specific guides, and every problem asked there, cross-linked back to each problem's own "Asked at" section
-- **Patterns** – technique-based practice sets (two pointers, DP on trees, sliding window, etc.)
-- **Notes** – written explanations for core algorithms and patterns
-- **Roadmap** – a structured, leveled path through the problem set
-- **Accounts** – Google sign-in via Firebase, with solved/bookmarked progress synced per user
-- **Dashboard, Bookmarks, History** – personal progress views for signed-in users
+- **Problems** - DSA problems with difficulty, topics, patterns, explanations, and solutions in JavaScript, Python, C++, and Java.
+- **Competitive Programming** - Codeforces problem collection.
+- **Companies** - Company-wise interview questions and patterns.
+- **Patterns** - Pattern-based practice sets.
+- **Notes** - Algorithm and DSA explanations.
+- **Roadmap** - Structured learning path.
+- **Accounts** - Google sign-in with Firebase.
+- **Progress** - Dashboard, bookmarks, and history.
+- **PWA** - Installable app experience with optional offline support.
+- **Mobile UI** - Responsive phone layout with bottom navigation and mobile sheets.
+
+---
 
 ## Tech Stack
 
-| Layer | Technology |
+| Area | Technology |
 |---|---|
-| Framework | Next.js 16 (App Router), React 19 |
-| Auth & Database | Firebase Auth, Firestore |
+| Framework | Next.js 16, React 19 |
+| Authentication & Database | Firebase Auth, Firestore |
 | State | Zustand, TanStack Query |
-| Code highlighting | Shiki (build-time) |
-| Markdown | marked + allowlist sanitizer (`src/lib/sanitizeHtml.js`) |
+| Code Highlighting | Shiki |
+| Markdown | marked + sanitizer |
 | Animation | Motion |
 | Testing | Vitest |
+| PWA | Web Manifest + Service Worker |
+
+---
 
 ## Architecture
 
-Content is not fetched from a database or a monolithic JSON blob at request time. It's precomputed once, at build time:
+Atlas uses a build-time content pipeline.
 
-```
-raw-data/  (source datasets: problems, company data, tags)
+```text
+raw-data/
     │
     ▼
-scripts/build-content.mjs   - reshapes raw data into per-page bundles
+scripts/build-content.mjs
     │
-    ▼
-content/       - server-only bundles, read by page components at build time
-public/data/   - slim indexes, fetched client-side for filtering/search
+    ├──► content/
+    │    Server-side page data
     │
-    ▼
-next build   - every page pre-rendered to static HTML
+    └──► public/data/
+         Client-side indexes
+              │
+              ▼
+          next build
+              │
+              ▼
+       Pre-rendered pages
 ```
 
-This means every problem, company, and pattern page ships as real, pre-rendered HTML with no client-side data fetching required to see content, and page weight stays small because only the code needed for the default view is embedded; alternate solution languages are fetched on demand from a static API route.
+The main source datasets live in `raw-data/`.
+
+`scripts/build-content.mjs` converts them into the generated `content/` and `public/data/` structures used by the application.
+
+This keeps large datasets out of the browser while allowing pages to be statically generated and indexed by search engines.
+
+---
 
 ## Project Structure
 
-```
+```text
 atlas/
 ├── src/
-│   ├── app/                 App Router routes - each folder is a real URL
-│   │   ├── problems/[slug]/     per-problem SSG page
-│   │   ├── companies/[id]/      per-company page
-│   │   ├── patterns/[slug]/     per-pattern page
-│   │   ├── notes/[slug]/        note reader
-│   │   ├── roadmap/[level]/     roadmap levels
-│   │   ├── dashboard/ bookmarks/ history/ login/
-│   │   ├── api/solutions/[slug]/  lazy-loaded solution variants
-│   │   ├── sitemap.js robots.js
-│   ├── components/          UI components, grouped by feature
-│   ├── services/            Firebase + Firestore integration
-│   ├── store/                Zustand stores
-│   ├── hooks/                 data + auth hooks
-│   ├── lib/
-│   │   ├── server/               content.server.js - the only file reading content/ at runtime
-│   │   └── ...                     filtering, sorting, structured data helpers
-│   └── styles/
+│   ├── app/              # Next.js routes
+│   ├── components/       # UI components
+│   ├── hooks/            # React hooks
+│   ├── lib/              # Utilities and helpers
+│   ├── services/         # Firebase / Firestore
+│   ├── store/            # Zustand state
+│   ├── styles/           # Global styles
+│   └── themes/           # Theme system
+│
 ├── scripts/
-│   ├── build-content.mjs         builds content/ + public/data/ from raw-data/
-│   ├── build-companies.mjs       builds raw-data/company-problems/ from company-sources/
-│   └── validate-content.mjs      checks every content invariant
-├── raw-data/                 source datasets (problems, company sources, tags)
-├── content/                  generated at build time, gitignored
-├── public/data/               generated at build time, gitignored
-└── data/                     small static lookup files (slug redirects, id aliases)
+│   ├── build-content.mjs
+│   ├── build-companies.mjs
+│   └── validate-content.mjs
+│
+├── raw-data/             # Source datasets
+├── content/              # Generated build-time content
+├── public/
+│   ├── data/             # Generated client indexes
+│   ├── site.webmanifest
+│   ├── sw.js
+│   ├── sw-config.json
+│   ├── offline.html
+│   └── icon-*.png
+│
+├── data/                 # Static lookup data
+└── .env.example
 ```
+
+`content/` and `public/data/` are generated during the build process.
+
+---
 
 ## Getting Started
 
-**Prerequisites:** Node.js 20+, a Firebase project with Auth and Firestore enabled.
+### Requirements
+
+- Node.js 20+
+- Firebase project
+- Firebase Authentication enabled
+- Firestore enabled
+
+### Installation
 
 ```bash
 git clone <repo-url>
 cd atlas
 npm install
 cp .env.example .env.local
-# fill in your Firebase web config in .env.local
-npm run build   # builds content from raw-data/, then builds the site
+```
+
+Configure the required environment variables in `.env.local`.
+
+Build Atlas:
+
+```bash
+npm run build
+```
+
+Start the production server:
+
+```bash
 npm start
 ```
 
-For local development:
+### Development
 
 ```bash
 npm run dev
 ```
 
-> `npm run dev` needs `content/` populated at least once for content pages to render. Run `npm run build:content` after any change to `raw-data/`.
+If `content/` has not been generated yet, run:
 
-## Available Scripts
+```bash
+npm run build:content
+```
+
+Run this again whenever the source data in `raw-data/` changes.
+
+---
+
+## Scripts
 
 | Command | Description |
 |---|---|
-| `npm run dev` | Start the development server |
-| `npm run build` | Generate content, then build the production site |
-| `npm start` | Serve the production build |
-| `npm run build:content` | Regenerate `content/` and `public/data/` from `raw-data/` only |
-| `npm run build:companies` | Rebuild `raw-data/company-problems/` from the company sources |
-| `npm run validate` | Check every content invariant (counts, links, redirects, roadmap coverage, tags) |
-| `npm run lint` | ESLint |
-| `npm test` | Run the test suite once (the Firestore rules suite is skipped without the emulator) |
-| `npm run test:rules` | Run the Firestore rules tests in the emulator (needs Java and `firebase-tools`) |
+| `npm run dev` | Start development server |
+| `npm run build` | Build content and production application |
+| `npm start` | Start production server |
+| `npm run build:content` | Regenerate content and client indexes |
+| `npm run build:companies` | Rebuild company problem data |
+| `npm run validate` | Validate generated content |
+| `npm run lint` | Run ESLint |
+| `npm test` | Run tests |
+| `npm run test:rules` | Run Firestore rules tests |
 | `npm run test:watch` | Run tests in watch mode |
+
+---
 
 ## Environment Variables
 
-See `.env.example`. All Firebase variables are `NEXT_PUBLIC_*` because the Firebase JS SDK is client-side by design; access control is enforced through Firestore security rules, not by hiding these values.
+See `.env.example` for the complete configuration.
+
+### Required
 
 | Variable | Description |
 |---|---|
@@ -126,69 +183,244 @@ See `.env.example`. All Firebase variables are `NEXT_PUBLIC_*` because the Fireb
 | `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | Firebase Auth domain |
 | `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | Firebase project ID |
 | `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` | Firebase storage bucket |
-| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | Firebase Cloud Messaging sender ID |
-| `NEXT_PUBLIC_FIREBASE_APP_ID` | Firebase app ID |
-| `NEXT_PUBLIC_SITE_URL` | Canonical site URL, used for metadata and sitemap generation |
-| `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | Optional. reCAPTCHA v3 key that switches Firebase App Check on |
-| `NEXT_PUBLIC_CONTACT_EMAIL` | Optional. Contact address shown on `/privacy` |
-| `NEXT_PUBLIC_LOGO_DEV_TOKEN` | Optional. Logo.dev token for company logos |
-| `NEXT_PUBLIC_FIREBASE_AUTH_PROXY` | Optional. Set to `1` to proxy Firebase's `/__/auth/*` helper through this site (see below) |
+| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | Firebase Messaging sender ID |
+| `NEXT_PUBLIC_FIREBASE_APP_ID` | Firebase application ID |
+| `NEXT_PUBLIC_SITE_URL` | Canonical site URL |
 
-## Themes
+### Optional
 
-A theme is a **mode** (Dark or Light), a **primary colour** (required) and a **secondary colour** (optional, "None" is
-the default). Settings > Appearance is a draft editor: a small preview panel at the top shows all three together, with
-Apply, Cancel and Reset to default under it, then three sections of small cards (a colour square, the colour's name and
-its hex). Nothing changes in the real app until Apply; Cancel drops the draft; Reset to default only fills the draft
-with the defaults (Dark, Atlas, no secondary), Apply still has to be pressed. Choices are saved on this device only.
+| Variable | Description |
+|---|---|
+| `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | Enables Firebase App Check with reCAPTCHA v3 |
+| `NEXT_PUBLIC_CONTACT_EMAIL` | Contact address shown on `/privacy` |
+| `NEXT_PUBLIC_LOGO_DEV_TOKEN` | Logo.dev token for company logos |
+| `NEXT_PUBLIC_FIREBASE_AUTH_PROXY` | Set to `1` for Firebase auth proxy support |
+| `NEXT_PUBLIC_ENABLE_SW` | Set to `1` to enable the service worker |
 
-- Primary colour: buttons, links, focus rings, active tabs.
-- Secondary colour: gradients, progress bars, the logo mark and the second background glow. With None everything is
-  single-colour (the gradient is flat).
-- Code blocks follow the mode (dark page, dark code; light page, light code).
+---
 
-The files:
+# Mobile & PWA
 
-- `src/themes/modes.js` holds the two modes: backgrounds, surfaces, text, borders, status colours and code-block colours.
-- `src/themes/colors.js` is the one palette, 16 colours (8 basic, 8 extra), each with a shade per mode. Primary and
-  secondary are both picked from it, so every colour can be either. The secondary uses the colour's `primary` shade
-  for the current mode.
-- `src/themes/index.js` is the master registry. Nothing else lists modes or colours: the CSS (`/themes.css`), the
-  Appearance page and its preview, the pre-paint script that prevents a theme flash, and the saved-value validation all
-  read it.
+Atlas uses the same codebase on desktop and mobile. There is no separate mobile application or mobile codebase.
 
-Add a colour: open `src/themes/colors.js`, copy an entry, change `id`, `name`, `group` and the six shades (`primary`,
-`hover`, `link` for `dark` and for `light`). It appears as a primary and as a secondary option. Loading the registry
-(dev, build, `npm test`) fails if a shade is unreadable on either mode: `primary` needs 3:1 against the page, `link` (the
-colour used as text in links and active tabs) and the text on primary buttons need 4.5:1. In light mode `link` is
-therefore a darker shade, not a lighter one. The secondary is decoration, so it has no contrast rule.
+Phone-specific UI starts at **768px**.
 
-Everything not listed (hover surfaces, glow and subtle tints, shadows, `accent-fg`...) is derived automatically.
-Colours in components should always come from tokens (`var(--accent)`, `var(--accent-2)` / `var(--accent-gradient)` for
-the two-tone look, `rgba(var(--cyan-rgb), 0.1)`, `rgba(var(--error-rgb), 0.1)`, `var(--shadow-lg)`, `var(--code-bg)`,
-`hsl(<hue> 70% var(--hue-l))`), never from hex values.
+### Main mobile files
 
-Saved choices live in `localStorage` as `atlas-mode`, `atlas-accent` (the primary colour id) and `atlas-secondary` (the
-secondary colour id; absent means none). Values saved by earlier versions are migrated on read: old accent ids map to
-the closest colour through each colour's `aliases` (for example `synthwave` to Pink, `toxic` to Acid Lime, `frost` and
-`mono` to Blue), and the original single `atlas-theme` value maps to a mode plus a colour. Keep colour ids stable; to
-rename or remove one, keep the old id in `aliases: ['old-id']` on the colour that replaces it.
+| Area | Location |
+|---|---|
+| Responsive phone detection | `src/hooks/useIsPhone.js` |
+| Bottom navigation | `src/components/layout/BottomNav/` |
+| Bottom sheets | `src/components/ui/BottomSheet/` |
+| Filter sheets | `src/components/ui/FilterDrawer/` |
+| Install prompt | `src/hooks/useInstallPrompt.js` |
+| PWA utilities | `src/lib/pwa.js` |
+| Service worker | `public/sw.js` |
+| Offline page | `public/offline.html` |
+| Manifest | `public/site.webmanifest` |
+| App icons | `public/icon-*.png` |
+| Post-card sharing | `src/lib/postCardDownload.js` |
 
-Syntax highlighting is rendered at build time with both palettes (`--shiki-dark` and `--shiki-light`) in every block and
-`src/styles/global.css` picks the one that matches the mode, so switching mode recolours code with no rebuild.
+---
 
-## Security notes
+## Service Worker
 
-- **Headers:** `next.config.mjs` sets nosniff, frame denial, referrer policy, HSTS and a minimal enforced CSP. A fuller CSP ships as `Content-Security-Policy-Report-Only`: watch the browser console for violations before promoting it.
-- **Firestore rules:** deploy `firestore.rules` with the app and run `npm run test:rules` first. The rules cap the items map and type-check the profile doc.
-- **App Check:** set `NEXT_PUBLIC_RECAPTCHA_SITE_KEY`, register the web app under Firebase Console, App Check, then enforce it for Firestore once the metrics look healthy.
-- **Sign-in on Safari/Chrome with a custom domain:** popup/redirect sign-in is most reliable when `authDomain` is your own domain. Set `NEXT_PUBLIC_FIREBASE_AUTH_PROXY=1`, set `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` to your site's host, and add `https://<your-host>/__/auth/handler` to the OAuth client's authorised redirect URIs.
-- **Privacy:** `/privacy` and `/terms` describe what the code does today. Review them for the regions you serve and update the date when data handling changes.
+The service worker is disabled by default.
 
-## Deployment
+Enable it with:
 
-Atlas is built to deploy on any Node-capable host (Vercel, Railway). `npm run build` must run with network access, since `next/font/google` fetches font files at build time. No other external services are required at build time; `raw-data/` is the only input `build:content` needs.
+```env
+NEXT_PUBLIC_ENABLE_SW=1
+```
 
-## License
+After setting the variable, redeploy the application.
 
-Author: Satvik Hemant Gupta
+Service workers require **HTTPS**. Use a Vercel deployment, HTTPS tunnel, or:
+
+```bash
+next dev --experimental-https
+```
+
+### Testing Offline Support
+
+1. Enable the service worker.
+2. Open Atlas over HTTPS.
+3. Visit several pages.
+4. Enable airplane mode.
+5. Reopen Atlas.
+6. Verify cached pages and the offline page.
+
+### Disabling the Service Worker
+
+Either remove:
+
+```env
+NEXT_PUBLIC_ENABLE_SW
+```
+
+or set:
+
+```json
+{
+  "disabled": true
+}
+```
+
+in:
+
+```text
+public/sw-config.json
+```
+
+### Updating Caches
+
+When changing cached resources or service-worker behavior, bump `VERSION` in:
+
+```text
+public/sw.js
+```
+
+Users will receive the new version through Atlas's update prompt.
+
+---
+
+## Mobile Authentication
+
+Some mobile environments cannot reliably use authentication popups, including installed iOS PWAs and many in-app browsers.
+
+Atlas therefore uses redirect authentication where required.
+
+For custom domains and Safari, configure:
+
+```env
+NEXT_PUBLIC_FIREBASE_AUTH_PROXY=1
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=<your-domain>
+```
+
+The OAuth redirect URI should include:
+
+```text
+https://<your-domain>/_/auth/handler
+```
+
+---
+
+# Themes
+
+Atlas supports **Dark** and **Light** modes with configurable primary and optional secondary colours.
+
+The theme system is centralized in:
+
+```text
+src/themes/
+├── modes.js
+├── colors.js
+└── index.js
+```
+
+`index.js` acts as the master registry used by the theme system and Appearance settings.
+
+Theme selections are stored locally using:
+
+```text
+atlas-mode
+atlas-accent
+atlas-secondary
+```
+
+Components should use theme tokens such as:
+
+```css
+var(--accent)
+var(--accent-2)
+var(--accent-gradient)
+var(--code-bg)
+var(--shadow-lg)
+```
+
+rather than hard-coded colour values.
+
+Code highlighting supports both theme modes through build-time Shiki palettes, allowing code blocks to change with the active theme without rebuilding.
+
+---
+
+# Security
+
+Atlas includes security headers through `next.config.mjs`, including:
+
+- HSTS
+- Referrer Policy
+- `X-Content-Type-Options`
+- Frame protection
+- Content Security Policy
+
+Firestore access is controlled through `firestore.rules`.
+
+Before deploying Firestore rule changes:
+
+```bash
+npm run test:rules
+```
+
+Firebase App Check can optionally be enabled using:
+
+```env
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY=<your-key>
+```
+
+Review `/privacy` and `/terms` whenever application data handling changes.
+
+---
+
+# Deployment
+
+Atlas can be deployed to any Node.js-compatible hosting platform.
+
+For production:
+
+```bash
+npm run build
+npm start
+```
+
+The build requires network access because `next/font/google` downloads fonts during the build.
+
+Vercel is supported and works well with the Next.js application and PWA setup.
+
+---
+
+# Testing
+
+Run the main test suite:
+
+```bash
+npm test
+```
+
+Run linting:
+
+```bash
+npm run lint
+```
+
+Validate generated content:
+
+```bash
+npm run validate
+```
+
+For Firestore rules:
+
+```bash
+npm run test:rules
+```
+
+For mobile changes, also test the application using **Lighthouse Mobile** and a real Android/iOS device where possible.
+
+---
+
+# License
+
+See the repository for licensing information.
+
+**Author:** Satvik Hemant Gupta

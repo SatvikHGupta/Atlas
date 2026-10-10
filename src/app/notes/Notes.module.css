@@ -6,7 +6,7 @@
   flex-direction: column;
   gap: 2.5rem;
   width: 100%;
-  overflow-x: hidden; /* prevent card title overflow from blowing layout */
+  overflow-x: hidden;
   box-sizing: border-box;
 }
 
@@ -69,7 +69,7 @@
 }
 
 .card {
-  min-width: 0; /* allows grid cell to shrink below content size */
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 0.625rem;
@@ -82,10 +82,12 @@
   cursor: pointer;
 }
 
-.card:hover:not([data-unavailable='true']) {
-  border-color: var(--accent);
-  background: rgba(var(--accent-rgb), 0.06);
-  transform: translateY(-1px);
+@media (hover: hover) {
+  .card:hover:not([data-unavailable='true']) {
+    border-color: var(--accent);
+    background: rgba(var(--accent-rgb), 0.06);
+    transform: translateY(-1px);
+  }
 }
 
 .card[data-unavailable='true'] {
@@ -115,7 +117,6 @@
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--text-primary);
-  /* 2 lines max- long titles like "2D Dynamic Programming" fit without cutoff */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -148,9 +149,11 @@
   transition: color 0.15s;
   gap: 4px;
 }
-.backBtn:hover { color: var(--text-secondary); }
+@media (hover: hover) {
+  .backBtn:hover { color: var(--text-secondary); }
+}
 
-/* ---- mobile ---- */
+/* mobile */
 @media (max-width: 768px) {
   .wrapper {
     padding: var(--space-3) var(--space-3);
@@ -164,7 +167,6 @@
     margin-left: 0;
     margin-top: 4px;
   }
-  /* 2 columns on mobile- 160px fits comfortably at 360px with 12px padding each side */
   .topicsGrid {
     grid-template-columns: 1fr 1fr;
     gap: 0.4rem;

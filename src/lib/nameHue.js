@@ -1,4 +1,4 @@
-// Stable hue (0-359) from a name, used for the monogram badges and pattern/topic accents (one copy, MNT-02).
+// Stable hue (0-359) from a name
 export function nameHue(name) {
   let hash = 0;
   const text = String(name || '');

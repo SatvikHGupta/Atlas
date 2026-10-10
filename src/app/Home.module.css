@@ -1,350 +1,92 @@
-/* ─── page shell ─── */
+/* Home - route-map look. Colours come from theme tokens so every mode/accent works */
 .page {
-  min-height: calc(100dvh - var(--navbar-height));
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: clamp(2.5rem, 6vw, 5rem) var(--space-8) var(--space-12);
-  gap: clamp(3rem, 6vw, 5rem);
-  max-width: 1120px;
-  margin: 0 auto;
+  --pad: clamp(20px, 4.4vw, 56px);
+  /* sections and rules span the whole screen; their content stays inside 1280px */
+  --gutter: max(var(--pad), calc((100% - 1280px) / 2 + var(--pad)));
   width: 100%;
-}
-
-/* ─── hero ─── */
-.hero {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-10);
-  width: 100%;
-  position: relative;
-}
-
-.heroGlow {
-  position: absolute;
-  top: -60px;
-  left: -10%;
-  width: 70%;
-  height: 340px;
-  background: radial-gradient(ellipse at center top, rgba(var(--accent-rgb), 0.16) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.heroText {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-5);
-  max-width: 640px;
-  position: relative;
-  z-index: 1;
-}
-
-.heroTitle {
-  font-size: clamp(2.1rem, 4.4vw, 3.1rem);
-  font-weight: 800;
-  line-height: 1.16;
-  letter-spacing: -0.03em;
   color: var(--text-primary);
+  overflow-x: clip;
 }
 
-.heroSub {
-  font-size: 1.02rem;
-  color: var(--text-muted);
-  line-height: 1.75;
-  max-width: 52ch;
+.hero { padding: clamp(36px, 5vw, 64px) var(--gutter) 24px; }
+.kicker { margin: 0 0 20px; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent-light); }
+.title { margin: 0; font-size: clamp(52px, 9.4vw, 120px); line-height: 0.92; letter-spacing: -0.04em; font-weight: 800; text-transform: uppercase; }
+/* outline text: stroke is painted first and the fill covers its inner half, which hides the
+   overlap lines variable-font glyphs would otherwise show (G, R, N). Fill = page background. */
+.outline { color: var(--bg-primary); -webkit-text-stroke: 4px var(--text-primary); paint-order: stroke fill; stroke-linejoin: round; }
+.accentWord { color: var(--accent-light); }
+.sub { margin: 28px 0 36px; max-width: 600px; font-size: clamp(1rem, 1.7vw, 1.35rem); line-height: 1.5; color: var(--text-secondary); }
+.ctaRow { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
+
+.cta, .finalCta {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 60px; padding: 0 32px;
+  font-weight: 800; font-size: 1.05rem; text-decoration: none; border-radius: 0;
+  background: var(--accent); color: var(--accent-fg); border: 2px solid var(--text-primary); box-shadow: 6px 6px 0 var(--text-primary);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
+.cta:focus-visible, .finalCta:focus-visible, .ctaLink:focus-visible { outline: 2px solid var(--accent-light); outline-offset: 4px; }
+@media (hover: hover) { .cta:hover, .finalCta:hover { transform: translate(3px, 3px); box-shadow: 3px 3px 0 var(--text-primary); } }
+.ctaLink { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent-light); }
 
-.heroCta {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-  margin-top: var(--space-2);
+/* route: two sizes, CSS picks one */
+.routeWrap { padding: 24px var(--gutter) 56px; overflow: hidden; }
+.routeDesk { display: block; width: 100%; height: auto; aspect-ratio: 1168 / 200; }
+.routeMob { display: none; width: 100%; height: auto; aspect-ratio: 350 / 130; }
+.routeLine { fill: none; stroke: var(--accent-light); stroke-width: 3; stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 2.6s ease-out forwards; }
+.sq { fill: var(--bg-primary); stroke: var(--accent-light); stroke-width: 3; }
+.sqStart { fill: var(--accent); stroke: var(--accent); stroke-width: 3; }
+.sqEnd { fill: var(--warning); stroke: var(--warning); stroke-width: 3; }
+.routeText { fill: var(--text-primary); font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@media (max-width: 640px) { .routeDesk { display: none; } .routeMob { display: block; } }
+
+.ticker { background: var(--accent); color: var(--accent-fg); border-block: 2px solid var(--text-primary); overflow: hidden; height: 56px; display: flex; align-items: center; }
+.tickerTrack { display: flex; width: max-content; animation: scroll 40s linear infinite; font-family: var(--font-mono); font-weight: 700; font-size: 1rem; white-space: nowrap; letter-spacing: 0.04em; }
+.tickerGroup { display: flex; }
+.tickerItem { padding: 0 28px; }
+@keyframes scroll { to { transform: translateX(-50%); } }
+
+.section { padding: clamp(56px, 7.5vw, 96px) var(--gutter); }
+.ruled { border-top: 2px solid var(--border); }
+.label { margin: 0; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent-light); }
+.h2 { margin: 12px 0 16px; font-size: clamp(36px, 5vw, 64px); line-height: 1; letter-spacing: -0.03em; text-transform: uppercase; font-weight: 800; }
+.body { margin: 0; max-width: 520px; font-size: 1.1rem; line-height: 1.6; color: var(--text-secondary); }
+.split { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(28px, 4.4vw, 56px); align-items: center; }
+.splitDemo { min-width: 0; }
+.accentText { color: var(--accent-light); }
+
+.statGrid { margin-top: 32px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.stat { padding: 24px; border: 2px solid var(--text-primary); background: var(--bg-card); }
+.statNum { font-size: clamp(72px, 8.8vw, 112px); font-weight: 800; line-height: 0.9; letter-spacing: -0.04em; color: var(--accent-light); }
+.statLabel { margin-top: 12px; font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; }
+.statSub { margin-top: 6px; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); }
+
+.levels { margin-top: 32px; display: grid; gap: 16px; }
+.level { display: flex; align-items: center; gap: 24px; padding: 20px 24px; border: 2px solid var(--text-primary); background: var(--bg-card); }
+.levelNum { font-size: 56px; line-height: 1; font-weight: 800; color: var(--accent-light); }
+.levelTag { margin: 0 0 6px; color: inherit; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; }
+.levelTitle { margin: 0; color: inherit; font-size: 1.2rem; font-weight: 700; }
+.levelCount { margin-left: auto; font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-secondary); white-space: nowrap; }
+.levelLocked { border-style: dashed; color: var(--text-secondary); background: repeating-linear-gradient(135deg, var(--bg-card) 0 10px, var(--bg-elevated) 10px 20px); }
+.levelLocked .levelNum { color: var(--text-muted); }
+
+.trust { margin: 0 var(--gutter); padding: 16px 20px; border: 2px dashed var(--border-strong); font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.7; color: var(--text-secondary); }
+.trust b { color: var(--text-primary); }
+
+.final { margin-top: 56px; padding: clamp(48px, 5.6vw, 72px) var(--gutter) clamp(64px, 7.5vw, 96px); background: var(--accent); color: var(--accent-fg); }
+.finalTitle { margin: 0 0 32px; color: var(--accent-fg); font-size: clamp(44px, 7.5vw, 96px); line-height: 0.95; letter-spacing: -0.04em; font-weight: 800; text-transform: uppercase; }
+.finalCta { background: var(--accent-fg); color: var(--accent); border-color: var(--accent-fg); box-shadow: 6px 6px 0 var(--bg-primary); }
+
+@media (max-width: 900px) {
+  .split { grid-template-columns: 1fr; }
+  .splitDemo { order: 2; }
+  .statGrid { grid-template-columns: 1fr; gap: 16px; }
+  .level { gap: 16px; padding: 16px; }
+  .levelNum { font-size: 40px; }
+  .levelCount { display: none; }
+  .cta { width: 100%; }
 }
-
-/* ─── the route map: the roadmap drawn as an actual trail, not a stat block - see lib/routeMap.js and app/page.js for how the path/points are generated from ROADMAP_LEVELS ─── */
-.routeMap {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-}
-
-.routeSvg {
-  width: 100%;
-  height: auto;
-  overflow: visible;
-}
-
-.routeLine {
-  stroke: var(--border-strong);
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-dasharray: 2400;
-  stroke-dashoffset: 2400;
-  animation: draw-route 1.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
-  animation-delay: 0.15s;
-}
-
-@keyframes draw-route {
-  to { stroke-dashoffset: 0; }
-}
-
-.routeStop {
-  opacity: 0;
-  animation: stop-in 0.45s ease forwards;
-  animation-delay: var(--stop-delay);
-}
-
-@keyframes stop-in {
-  from { opacity: 0; transform: scale(0.6); }
-  to   { opacity: 1; transform: scale(1); }
-}
-
-.routeDot {
-  fill: var(--bg-primary);
-  stroke: var(--accent-light);
-  stroke-width: 2.5;
-  transform-box: fill-box;
-  transform-origin: center;
-}
-.routeDot[data-first='true'] {
-  fill: var(--accent);
-  stroke: var(--accent-light);
-}
-
-.routeLabel {
-  font-family: var(--font-mono, 'JetBrains Mono', monospace);
-  font-size: 13px;
-  fill: var(--text-secondary);
-}
-
-/* ─── buttons ─── */
-.ctaPrimary {
-  display: inline-flex;
-  align-items: center;
-  padding: 11px 26px;
-  border-radius: var(--radius-md);
-  background: var(--accent);
-  color: var(--accent-fg);
-  font-size: 0.9rem;
-  font-weight: 600;
-  font-family: inherit;
-  cursor: pointer;
-  border: none;
-  transition: background 0.15s, box-shadow 0.15s, transform 0.12s;
-}
-.ctaPrimary:hover {
-  background: var(--accent-hover);
-  box-shadow: 0 0 24px var(--accent-glow);
-  transform: translateY(-1px);
-}
-.ctaPrimary:active { transform: translateY(0); }
-
-.ctaSecondary {
-  display: inline-flex;
-  align-items: center;
-  padding: 11px 24px;
-  border-radius: var(--radius-md);
-  background: transparent;
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-  border: 1px solid var(--border);
-  transition: border-color 0.15s, color 0.15s, background 0.15s;
-}
-.ctaSecondary:hover {
-  border-color: var(--border-strong);
-  color: var(--text-primary);
-  background: var(--bg-card);
-}
-
-/* ─── stats grid ─── */
-.statsGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  width: 100%;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  border: 1px solid var(--border);
-  gap: 1px;
-  background: var(--border);
-}
-
-.statCell {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  padding: var(--space-6) var(--space-4);
-  background: var(--bg-card);
-  transition: background 0.18s;
-  position: relative;
-}
-.statCell:hover { background: var(--bg-card-hover); }
-.statCell::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 20%; right: 20%;
-  height: 1px;
-  background: var(--accent);
-  opacity: 0;
-  transition: opacity 0.2s;
-  box-shadow: 0 0 12px var(--accent-glow);
-}
-.statCell:hover::before { opacity: 1; }
-
-.statValue {
-  font-size: clamp(1.3rem, 2.5vw, 1.7rem);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  color: var(--accent-light);
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-}
-
-.statLabel {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  text-align: center;
-}
-
-/* ─── features ─── */
-.featuresSection {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-5);
-  width: 100%;
-}
-
-.featuresGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-4);
-}
-
-.featureCard {
-  padding: var(--space-6);
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  transition: border-color 0.2s, background 0.2s;
-  position: relative;
-  overflow: hidden;
-}
-.featureCard:hover {
-  border-color: rgba(var(--accent-rgb), 0.35);
-  background: var(--bg-card-hover);
-}
-.featureCard::after {
-  content: '';
-  position: absolute;
-  left: 0; top: 20%; bottom: 20%;
-  width: 2px;
-  background: var(--accent);
-  border-radius: 0 2px 2px 0;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-.featureCard:hover::after { opacity: 1; }
-
-.featureIcon {
-  font-size: 1.3rem;
-  color: var(--accent-light);
-  line-height: 1;
-}
-
-.featureTitle {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  letter-spacing: -0.01em;
-}
-
-.featureDesc {
-  font-size: 0.86rem;
-  color: var(--text-muted);
-  line-height: 1.65;
-}
-
-/* ─── footer strip ─── */
-.footerStrip {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-5);
-  padding: var(--space-8);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background: var(--bg-card);
-  width: 100%;
-}
-
-.footerLine {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  letter-spacing: -0.01em;
-}
-
-.footerLineGroup {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.footerNote {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-}
-
-/* ─── desktop: hero splits into two columns once there's room ─── */
-@media (min-width: 860px) {
-  .hero {
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-    align-items: center;
-  }
-}
-
-/* ─── mobile ─── */
-@media (max-width: 768px) {
-  .page {
-    padding: var(--space-6) var(--space-4) var(--space-6);
-    gap: clamp(2rem, 5vw, 3rem);
-    padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom) + 24px);
-  }
-
-  .heroGlow { width: 100%; left: 0; }
-
-  .heroSub { font-size: 0.93rem; }
-
-  .heroCta {
-    flex-direction: column;
-    align-items: stretch;
-    width: 100%;
-  }
-  .ctaPrimary, .ctaSecondary { justify-content: center; }
-
-  .routeLabel { font-size: 11px; }
-
-  .statsGrid { grid-template-columns: repeat(2, 1fr); }
-  .statCell { padding: var(--space-5) var(--space-3); }
-
-  .featuresGrid { grid-template-columns: 1fr; }
-  .featureCard { padding: var(--space-5); }
-
-  .footerStrip { flex-direction: column; align-items: stretch; text-align: center; }
-  .footerLineGroup { align-items: center; }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .routeLine { animation: none; stroke-dashoffset: 0; }
-  .routeStop { animation: none; opacity: 1; }
-  .ctaPrimary:hover { transform: none; box-shadow: none; }
+  .tickerTrack { animation: none; }
 }

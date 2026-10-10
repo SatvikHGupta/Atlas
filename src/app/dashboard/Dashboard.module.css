@@ -1,8 +1,4 @@
-/* Dashboard. One 12-column grid, one Card look, fixed chart heights: nothing is uneven by accident.
-   Every colour is a theme token, so all modes and accents work without a single hard-coded value.
-   Author: Satvik Hemant Gupta */
-
-/* ─── page + states ─────────────────────────────────────────────── */
+/* page + states */
 .page {
   max-width: 1180px;
   margin: 0 auto;
@@ -35,7 +31,10 @@
   font: inherit;
   cursor: pointer;
 }
-.retryBtn:hover, .retryBtn:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+.retryBtn:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+@media (hover: hover) {
+  .retryBtn:hover { border-color: var(--accent); color: var(--accent); outline: none; }
+}
 
 .srOnly {
   position: absolute;
@@ -49,7 +48,7 @@
   border: 0;
 }
 
-/* ─── header ────────────────────────────────────────────────────── */
+/* header */
 .header { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-4); flex-wrap: wrap; }
 .greeting { margin: 0; font-size: clamp(1.7rem, 3.2vw, 2.2rem); font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary); }
 .greetingSub { margin: 6px 0 0; font-size: 0.98rem; color: var(--text-secondary); }
@@ -69,12 +68,16 @@
   text-decoration: none;
   transition: border-color 0.15s ease, background 0.15s ease;
 }
-.pillBtn:hover, .pillBtn:focus-visible { border-color: var(--accent); background: var(--bg-card-hover); outline: none; }
+.pillBtn:focus-visible { border-color: var(--accent); background: var(--bg-card-hover); outline: none; }
+@media (hover: hover) {
+  .pillBtn:hover { border-color: var(--accent); background: var(--bg-card-hover); outline: none; }
+}
 button.pillBtn { font: inherit; cursor: pointer; text-align: left; }
 .pillBtn:disabled { opacity: 0.6; cursor: progress; }
 .pillIcon { color: var(--accent-light); flex-shrink: 0; }
 .pillText { display: flex; flex-direction: column; line-height: 1.25; }
 .pillSub { font-size: 0.72rem; font-weight: 400; color: var(--text-muted); }
+.labelShort { display: none; }
 .pillCount {
   min-width: 24px;
   padding: 1px 8px;
@@ -86,7 +89,7 @@ button.pillBtn { font: inherit; cursor: pointer; text-align: left; }
   font-variant-numeric: tabular-nums;
 }
 
-/* ─── grid + card ───────────────────────────────────────────────── */
+/* grid + card */
 .grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--space-4); align-items: stretch; }
 .span3 { grid-column: span 3; min-width: 0; display: flex; }
 .span5 { grid-column: span 5; }
@@ -109,9 +112,12 @@ button.pillBtn { font: inherit; cursor: pointer; text-align: left; }
 .cardSub { margin: 3px 0 0; font-size: 0.8rem; color: var(--text-muted); }
 .empty { margin: 0; padding: var(--space-4) 0; font-size: 0.88rem; color: var(--text-muted); }
 .textLink { font-size: 0.82rem; font-weight: 600; color: var(--accent-light); text-decoration: none; }
-.textLink:hover, .textLink:focus-visible { text-decoration: underline; outline: none; }
+.textLink:focus-visible { text-decoration: underline; outline: none; }
+@media (hover: hover) {
+  .textLink:hover { text-decoration: underline; outline: none; }
+}
 
-/* ─── KPI cards ─────────────────────────────────────────────────── */
+/* KPI cards */
 .kpi { gap: 6px; padding: var(--space-4) var(--space-5); min-height: 158px; }
 .kpiLabel { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-muted); }
 .kpiValueRow { display: flex; align-items: baseline; gap: 8px; }
@@ -126,7 +132,7 @@ button.pillBtn { font: inherit; cursor: pointer; text-align: left; }
 .dayDot[data-solved] { background: var(--accent); border-color: var(--accent); }
 .dayDot[data-today] { box-shadow: 0 0 0 2px var(--bg-card), 0 0 0 3.5px var(--accent-light); }
 
-/* ─── shared bits ───────────────────────────────────────────────── */
+/* shared bits */
 .chartBox { position: relative; min-width: 0; width: 100%; }
 .chartBox canvas { display: block; max-width: 100%; }
 .chartFallback { margin: var(--space-2) 0 0; font-size: 0.8rem; color: var(--text-muted); }
@@ -151,7 +157,9 @@ button.pillBtn { font: inherit; cursor: pointer; text-align: left; }
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
 }
-.rangeBtn:hover:not(:disabled) { color: var(--text-primary); }
+@media (hover: hover) {
+  .rangeBtn:hover:not(:disabled) { color: var(--text-primary); }
+}
 .rangeBtn[aria-pressed='true'] { background: var(--bg-card); color: var(--text-primary); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25); }
 .rangeBtn:disabled { opacity: 0.4; cursor: not-allowed; }
 .rangeBtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
@@ -168,12 +176,18 @@ button.pillBtn { font: inherit; cursor: pointer; text-align: left; }
   transition: background 0.15s ease, border-color 0.15s ease;
 }
 .primaryBtn { background: var(--accent); border: 1px solid var(--accent); color: var(--accent-fg); }
-.primaryBtn:hover, .primaryBtn:focus-visible { background: var(--accent-hover); outline: none; }
+.primaryBtn:focus-visible { background: var(--accent-hover); outline: none; }
+@media (hover: hover) {
+  .primaryBtn:hover { background: var(--accent-hover); outline: none; }
+}
 .secondaryBtn { background: transparent; border: 1px solid var(--border); color: var(--text-primary); }
-.secondaryBtn:hover, .secondaryBtn:focus-visible { border-color: var(--accent); outline: none; }
+.secondaryBtn:focus-visible { border-color: var(--accent); outline: none; }
+@media (hover: hover) {
+  .secondaryBtn:hover { border-color: var(--accent); outline: none; }
+}
 .welcomeActions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 
-/* ─── heatmap ───────────────────────────────────────────────────── */
+/* heatmap */
 .heatmap { display: flex; flex-direction: column; gap: var(--space-3); }
 .heatHead { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
 .heatTotal { font-size: 0.86rem; color: var(--text-secondary); }
@@ -195,11 +209,13 @@ button.pillBtn { font: inherit; cursor: pointer; text-align: left; }
 .heatCell[data-level='3'] { background: rgba(var(--accent-rgb), 0.75); }
 .heatCell[data-level='4'] { background: var(--accent); }
 .heatCell[data-future] { background: transparent; }
-.heatCell:hover:not([data-future]) { outline: 1.5px solid var(--text-muted); outline-offset: 0; }
+@media (hover: hover) {
+  .heatCell:hover:not([data-future]) { outline: 1.5px solid var(--text-muted); outline-offset: 0; }
+}
 .heatLegend { display: flex; justify-content: flex-end; align-items: center; gap: 4px; font-size: 0.7rem; color: var(--text-muted); }
 .heatLegend .heatCell { width: 12px; aspect-ratio: auto; height: 12px; }
 
-/* ─── difficulty ────────────────────────────────────────────────── */
+/* difficulty */
 .diffLayout { display: flex; align-items: center; gap: var(--space-5); }
 .diffChart { flex: 0 0 170px; min-width: 0; }
 .diffLegend { list-style: none; margin: 0; padding: 0; flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--space-3); }
@@ -210,7 +226,7 @@ button.pillBtn { font: inherit; cursor: pointer; text-align: left; }
 .diffCount { font-size: 0.86rem; font-weight: 650; color: var(--text-primary); font-variant-numeric: tabular-nums; }
 .diffOf { font-weight: 400; color: var(--text-muted); }
 
-/* ─── topics ────────────────────────────────────────────────────── */
+/* topics */
 .insights { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--border); }
 .insight { min-width: 0; }
 .insightTitle { margin: 0 0 8px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-muted); }
@@ -218,7 +234,7 @@ button.pillBtn { font: inherit; cursor: pointer; text-align: left; }
 .insightChip { padding: 4px 10px; border: 1px solid var(--border); border-radius: 999px; background: var(--bg-elevated); font-size: 0.78rem; color: var(--text-secondary); }
 .insightChip b { color: var(--text-primary); font-variant-numeric: tabular-nums; }
 
-/* ─── roadmap ───────────────────────────────────────────────────── */
+/* roadmap */
 .roadmap { display: flex; flex-direction: column; gap: var(--space-4); }
 .roadmapTop { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); }
 .roadmapOverall { font-size: 0.84rem; color: var(--text-secondary); }
@@ -238,7 +254,10 @@ button.pillBtn { font: inherit; cursor: pointer; text-align: left; }
   text-decoration: none;
   transition: border-color 0.15s ease, transform 0.15s ease;
 }
-.step:hover, .step:focus-visible { border-color: var(--accent); transform: translateY(-1px); outline: none; }
+.step:focus-visible { border-color: var(--accent); transform: translateY(-1px); outline: none; }
+@media (hover: hover) {
+  .step:hover { border-color: var(--accent); transform: translateY(-1px); outline: none; }
+}
 .step[data-state='done'] { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
 .step[data-state='current'] { background: var(--bg-card); border-color: var(--accent); color: var(--accent-light); box-shadow: 0 0 0 3px var(--accent-subtle); }
 .step[data-state='open'] { border-color: var(--accent); color: var(--text-primary); }
@@ -261,7 +280,7 @@ button.pillBtn { font: inherit; cursor: pointer; text-align: left; }
 .lockHint { margin: 0; font-size: 0.78rem; line-height: 1.5; color: var(--text-muted); }
 .levelBlock .primaryBtn { align-self: flex-start; }
 
-/* ─── recent solves ─────────────────────────────────────────────── */
+/* recent solves */
 .recentList { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
 .recentRow {
   display: grid;
@@ -275,12 +294,15 @@ button.pillBtn { font: inherit; cursor: pointer; text-align: left; }
   text-decoration: none;
   transition: border-color 0.15s ease, background 0.15s ease;
 }
-.recentRow:hover, .recentRow:focus-visible { border-color: var(--accent); outline: none; }
+.recentRow:focus-visible { border-color: var(--accent); outline: none; }
+@media (hover: hover) {
+  .recentRow:hover { border-color: var(--accent); outline: none; }
+}
 .recentTitle { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.9rem; font-weight: 550; color: var(--text-primary); }
 .recentTag { font-size: 0.74rem; font-weight: 600; }
 .recentWhen { min-width: 58px; text-align: right; font-size: 0.74rem; color: var(--text-muted); font-variant-numeric: tabular-nums; }
 
-/* ─── responsive ────────────────────────────────────────────────── */
+/* responsive */
 @media (max-width: 1000px) {
   .span5, .span7 { grid-column: span 12; }
   .span3 { grid-column: span 6; }
@@ -296,7 +318,10 @@ button.pillBtn { font: inherit; cursor: pointer; text-align: left; }
   .recentRow { grid-template-columns: minmax(0, 1fr) auto; }
   .recentTag { display: none; }
   .headerActions { width: 100%; }
-  .pillBtn { flex: 1; }
+  .pillBtn { flex: 1; justify-content: center; padding: 9px 10px; gap: 8px; min-width: 0; }
+  /* phone: short labels only ("Card", "History"), no "last solved" line */
+  .labelFull, .hideOnPhone { display: none; }
+  .labelShort { display: inline; }
 }
 @media (prefers-reduced-motion: reduce) {
   .barFill, .step, .pillBtn, .recentRow { transition: none; }

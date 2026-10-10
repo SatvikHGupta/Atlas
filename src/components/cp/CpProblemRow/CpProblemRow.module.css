@@ -1,5 +1,4 @@
 .row {
-  /* three fixed lanes: [difficulty + rating + title] [topic tags] [actions]. Every row lines up with the one above it. */
   display: grid;
   grid-template-columns: minmax(0, 1fr) 200px auto;
   align-items: center;
@@ -9,7 +8,9 @@
   transition: all 0.12s;
   gap: 0.75rem;
 }
-.row:hover { background: var(--bg-card); border-color: var(--border); }
+@media (hover: hover) {
+  .row:hover { background: var(--bg-card); border-color: var(--border); }
+}
 .row[data-status='solved']    { border-left: 2px solid var(--solved); }
 .row[data-status='attempted'] { border-left: 2px solid var(--attempted); }
 
@@ -21,7 +22,8 @@
   cursor: pointer;
 }
 
-/* difficulty + rating in fixed-width cells, so the titles start at the same x on every row */
+.diffWrap { display: contents; }
+
 .badges {
   display: grid;
   grid-template-columns: 84px 66px;
@@ -68,7 +70,6 @@
   justify-content: flex-end;
   gap: 0.4rem;
   min-width: 0;
-  /* no overflow:hidden here - the "+N" mappings popover opens from this lane and must not be clipped */
 }
 .rowTags .topicTag { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 
@@ -104,7 +105,9 @@
   flex-shrink: 0;
   transition: background 0.12s, color 0.12s;
 }
-.cfLink:hover { background: var(--accent); color: var(--accent-fg); }
+@media (hover: hover) {
+  .cfLink:hover { background: var(--accent); color: var(--accent-fg); }
+}
 .cfLink:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .markBtn {
@@ -127,20 +130,22 @@
 }
 .markBtn[data-type='solved'][data-active='true']    { background: var(--solved-bg); border-color: var(--solved); color: var(--solved); }
 .markBtn[data-type='attempted'][data-active='true'] { background: var(--attempted-bg); border-color: var(--attempted); color: var(--attempted); }
-/* bookmark star: yellow once saved, like the tick goes green. CHANGE THIS: star colour */
 .markBtn[data-type='bookmark'][data-active='true']  { background: rgba(250, 204, 21, 0.14); border-color: #facc15; color: #facc15; }
-.markBtn:hover:not([data-active='true'])            { border-color: var(--border-strong); color: var(--text-secondary); }
+@media (hover: hover) {
+  .markBtn:hover:not([data-active='true'])            { border-color: var(--border-strong); color: var(--text-secondary); }
+}
 
 @media (max-width: 768px) {
-  /* narrow screens: title line on top, buttons underneath; tags are dropped (they are on the problem anyway) */
   .row { grid-template-columns: minmax(0, 1fr) auto; row-gap: 0.4rem; }
   .rowTags { display: none; }
   .rowTitle { font-size: 0.82rem; }
-  .badges { grid-template-columns: 76px 58px; }
+  /* phone: rating + name + the 3 mark buttons only (the whole row already opens Codeforces) */
+  .diffWrap, .codeDesktop, .cfDesktop { display: none; }
+  .badges { grid-template-columns: 58px; }
   .markBtn  { width: 36px; height: 36px; }
 }
 
-/* ---- appended (handoff 3): real anchor row + "+N" mappings popover ---- */
+/* appended (handoff 3): real anchor row + "+N" mappings popover */
 .rowLink {
   text-decoration: none;
   color: inherit;
@@ -192,4 +197,6 @@
   text-decoration: none;
   color: var(--text-primary);
 }
-.variantsItem:hover { background: var(--bg-elevated); }
+@media (hover: hover) {
+  .variantsItem:hover { background: var(--bg-elevated); }
+}

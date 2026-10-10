@@ -1,7 +1,6 @@
 'use client';
 
-// RES-01: last-resort boundary for errors in the root layout itself. It replaces the whole document, so it must
-// render <html>/<body> and cannot rely on the app's CSS or theme variables.
+// last-resort boundary for errors in the root layout itself
 export default function GlobalError({ reset }) {
   return (
     <html lang="en">

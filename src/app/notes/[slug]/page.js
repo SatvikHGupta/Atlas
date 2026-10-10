@@ -12,10 +12,9 @@ import PageWrapper from '../../../components/layout/PageWrapper/PageWrapper.jsx'
 import FlashCard from '../../../components/notes/FlashCard.jsx';
 import styles from './NoteReader.module.css';
 
-// BUG-125: only slugs in NOTES_TOPICS_INDEX exist, anything else is a 404.
 export const dynamicParams = false;
 
-// Only indexed slugs (each confirmed to have a content/notes/<slug>.json file) get a page - add a topic and its file and it appears on the next build automatically.
+// Only indexed slugs (each confirmed to have a content/notes/<slug>.json file)
 export function generateStaticParams() {
   return Array.from(getAvailableNoteSlugs()).map((slug) => ({ slug }));
 }
@@ -31,7 +30,7 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// BUG-149, 150: note Markdown goes through renderNoteMarkdown (lib/server/notesMarkdown.server.js): raw HTML is escaped, only http/https/mailto/#/relative URLs are emitted, and every code fence is Shiki-highlighted. No client JS or new dependency.
+// note Markdown goes through renderNoteMarkdown
 export default async function NoteReaderPage({ params }) {
   params = await params;
   const note = getNoteContent(params.slug);
@@ -44,8 +43,6 @@ export default async function NoteReaderPage({ params }) {
       _codeHtml: section.type === 'template' && section.code
         ? await highlightCode(section.code, section.language || 'javascript')
         : null,
-      // "problems" items only carry title/slug/difficulty/why - askedAt company data lives on the
-      // problem's own content bundle, resolved here so FlashCard stays a plain presentational component.
       _resolvedProblems: section.type === 'problems' && section.items?.length
         ? section.items.map((p) => {
             const bundle = getProblemBundle(p.slug);

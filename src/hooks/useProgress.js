@@ -31,9 +31,6 @@ export const useProgress = () => {
   const requireAuth = useRequireAuth();
 
   const progressList = useMemo(
-    // problems removed from Atlas (constants/retiredProblems.js) stay in the user's saved data but are not counted or listed:
-    // otherwise Profile says 20 solved while Dashboard/History show fewer, and an id nobody can resolve makes the Dashboard
-    // download the 6 MB CP index just to look for it.
     () => Object.entries(progressItems).filter(([id]) => !isRetiredId(id)).map(([canonical_id, v]) => ({ canonical_id, ...v })),
     [progressItems]
   );
@@ -46,23 +43,19 @@ export const useProgress = () => {
   const totalSolved = useMemo(() => progressList.filter((p) => p.status === 'solved').length, [progressList]);
   const totalAttempted = useMemo(() => progressList.filter((p) => p.status === 'attempted').length, [progressList]);
 
-  // shared pre-flight for every progress mutation. Returns { uid, ctx } or null.
   const preflight = async (id, debounceKey, isNewEntryCheck) => {
     if (!(await requireAuth())) return null;
     const s = useAuthStore.getState();
     const uid = s.user.uid;
-    if (s.accountBusy) return null; // account deletion in progress, no new writes
+    if (s.accountBusy) return null;
     if (debounceKey && isDebounced(`${uid}:${debounceKey}`)) return null;
-    // QUOTA GUARD: don't even attempt a call that's already known to fail - see progressDegraded in auth.store.js
     if (s.progressDegraded) { addToast(LIMITED_MSG, 'error'); return null; }
-    // ATLAS-BUG-002: a FAILED load is not "still loading" and must never be treated as empty progress
     if (s.progressLoadFailed) {
       addToast('Your progress could not be loaded - retrying', 'error');
       s.retryLoads();
       return null;
     }
     if (!s.progressReady) { addToast('Still loading your progress, try again in a moment', 'info'); return null; }
-    // BUG-067: never let the user run into a cryptic Firestore size error
     if (isNewEntryCheck && !s.progressItems[id] && capacityLevel(s.progressCapacity.usedBytes) === 'full') {
       addToast('Tracking limit reached - reset some progress to track new problems', 'error');
       return null;
@@ -72,7 +65,7 @@ export const useProgress = () => {
 
   const reportFailure = (err, ctx, failMessage) => {
     console.error('[useProgress] write failed', err);
-    if (!shouldApply(useAuthStore.getState(), ctx)) return; // user changed, nothing to tell
+    if (!shouldApply(useAuthStore.getState(), ctx)) return;
     if (isQuotaExhausted(err)) {
       useAuthStore.getState().setDegraded('progress', true);
       addToast(LIMITED_MSG, 'error');
@@ -81,22 +74,17 @@ export const useProgress = () => {
     }
   };
 
-  // opts.roadmapProblem (contract C2): the unlock check runs ONLY when true
   const setStatus = async (id, status, opts = {}) => {
     const pre = await preflight(id, `${id}:${status}`, true);
     if (!pre) return;
     const { uid, ctx } = pre;
 
-    // ATLAS-BUG-001: solved -> attempted is not a legal transition. Cheap local check; the transaction in
-    // markProgress re-checks against the server copy, which is the real authority.
     if (!isAllowedTransition(useAuthStore.getState().progressItems[id]?.status, status)) {
       addToast(SOLVED_LOCKED_MSG, 'info');
       return;
     }
 
     try {
-      // BUG-049/050: one queue per user, so write order == click order. The
-      // freshest local entry is read INSIDE the task, not captured at click.
       const outcome = await progressQueue.enqueue(uid, async () => {
         if (!shouldApply(useAuthStore.getState(), ctx)) return { dropped: true };
         const prev = useAuthStore.getState().progressItems[id] || null;
@@ -105,17 +93,15 @@ export const useProgress = () => {
       if (outcome.dropped || !shouldApply(useAuthStore.getState(), ctx)) return;
 
       const store = useAuthStore.getState();
-      store.setDegraded('progress', false); // a write just succeeded
-      // optimistic: we already have the exact new entry from the write itself, no need to re-read it
+      store.setDegraded('progress', false);
       if (outcome.entry) store.setProgressItem(uid, id, outcome.entry);
-      if (outcome.blocked) addToast(SOLVED_LOCKED_MSG, 'info'); // the server already had it as solved, UI is now synced to that
+      if (outcome.blocked) addToast(SOLVED_LOCKED_MSG, 'info');
       if (outcome.skipped) return;
     } catch (err) {
       reportFailure(err, ctx, 'Failed to update progress');
       return;
     }
 
-    // BUG-058/059/192: the write already succeeded. The unlock check is separate, so an index failure can never report "Failed to update", and only roadmap solves pay for the DSA index.
     if (status !== 'solved' || opts.roadmapProblem !== true) return;
     try {
       const allProblems = await getDsaIndex();
@@ -158,12 +144,10 @@ export const useProgress = () => {
     progressList,
     progressMap,
     isLoading: isAuthenticatedNow ? !progressReady && !progressLoadFailed : false,
-    loadError: isAuthenticatedNow && progressLoadFailed, // C2
-    retry: retryLoads, // C2
-    // ATLAS-BUG-002: 'signed-out' | 'loading' | 'failed' | 'ready' - consumers must branch on this, not on list length
+    loadError: isAuthenticatedNow && progressLoadFailed,
+    retry: retryLoads,
     state: resourceState({ authed: isAuthenticatedNow, ready: progressReady, failed: progressLoadFailed }),
     isReady: isAuthenticatedNow && progressReady && !progressLoadFailed,
-    // ATLAS-BUG-016: progress controls disable on THIS flag. firestoreDegraded (either resource) is for global messaging only.
     degraded: progressDegraded,
     firestoreDegraded,
     totalSolved,

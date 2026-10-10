@@ -1,7 +1,6 @@
 // Single source of truth for the public site URL. Author: Satvik Hemant Gupta
 
-// Pure resolver so tests can pass a fake env. Throws in production when no
-// real URL is configured (BUG-167). Localhost is for development only.
+// Pure resolver so tests can pass a fake env
 export function resolveSiteUrl(env) {
   const explicit = env.NEXT_PUBLIC_SITE_URL;
   if (explicit) return explicit.replace(/\/+$/, '');
@@ -10,7 +9,6 @@ export function resolveSiteUrl(env) {
   if (vercel)
     return `https://${vercel.replace(/^https?:\/\//, '')}`.replace(/\/+$/, '');
 
-  // Any production run (build or start) without a URL is a config error.
   if (env.NODE_ENV === 'production') {
     throw new Error(
       'NEXT_PUBLIC_SITE_URL is required in production ' +

@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { formatTopicLabel, getCpTopics, UNTAGGED_TOPIC } from '../../../lib/codeforces.utils.js';
 import styles from './TopicFilter.module.css';
 
-// All topics at once, most common first, laid out in two rows that scroll sideways. Multi-select like the rating chips.
+// All topics at once, most common first
 export default function TopicFilter({ allProblems, selected, onChange }) {
   const topics = useMemo(() => {
     const counts = new Map();
@@ -16,7 +16,6 @@ export default function TopicFilter({ allProblems, selected, onChange }) {
     return untagged > 0 ? [[UNTAGGED_TOPIC, untagged], ...sorted] : sorted;
   }, [allProblems]);
 
-  // Untagged is exclusive: a row cannot be both "Graphs" and topic-less, so picking one side clears the other.
   const toggle = (topic) => {
     if (selected.includes(topic)) return onChange(selected.filter((t) => t !== topic));
     if (topic === UNTAGGED_TOPIC) return onChange([UNTAGGED_TOPIC]);

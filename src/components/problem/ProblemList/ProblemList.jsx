@@ -5,8 +5,6 @@ import { useBookmarks } from '../../../hooks/useBookmarks.js';
 import { useProgress } from '../../../hooks/useProgress.js';
 import styles from './ProblemList.module.css';
 
-// useBookmarks and useProgress are called ONCE here, not per card. progressMap and bookmarkedIds are memoized inside their hooks so they only rebuild when the underlying data actually changes.
-
 function Pagination({ page, totalPages, onPageChange }) {
   const [inputVal, setInputVal] = useState('');
 
@@ -98,7 +96,6 @@ export default function ProblemList({ problems, isLoading, total, page, limit, o
         )}
       </div>
 
-      {/* PERF-05: the AnimatePresence that wrapped this grid had no keyed child, so it never animated anything */}
       <div className={styles.grid}>
         {problems.map((p) => (
           <ProblemCard

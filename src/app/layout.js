@@ -7,12 +7,13 @@ import Providers from '../components/layout/Providers.jsx';
 import Navbar from '../components/layout/Navbar/Navbar.jsx';
 import BottomNav from '../components/layout/BottomNav/BottomNav.jsx';
 import ToastContainer from '../components/ui/Toast/ToastContainer.jsx';
+import ThemeColorSync from '../components/layout/ThemeColorSync.jsx';
+import ServiceWorkerRegister from '../components/pwa/ServiceWorkerRegister.jsx';
 import { getDsaIndex, getCpIndex } from '../lib/server/content.server.js';
 import { SITE_URL } from '../lib/siteUrl.js';
 import { THEME_INIT_SCRIPT } from '../theme/theme-storage.js';
 import { THEME_CSS_HREF } from '../theme/theme-css.js';
 
-// BUG FIX: --font-sans/--font-mono in theme.css named these two families from the start, but nothing ever actually loaded them - every page on the site has been silently rendering in the browser's system font this whole time. next/font self-hosts both (no external request, no layout-shift flash) and exposes them as the exact CSS variables theme.css already expects, so this is the only change needed anywhere.
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
   weight: ['500', '600', '700', '800'],
@@ -26,7 +27,20 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 });
 
-// Counts are read from the actual built data, never hand-typed - add a problem, a CP row, whatever, and this line is correct on the next build with no code change. See lib/server/content.server.js.
+// Phone viewport: edge-to-edge (safe-area insets become real), zoom stays enabled for accessibility
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  minimumScale: 1, // pinch-zoom IN stays allowed; zooming OUT below 100% (which exposes side gaps) is not
+  viewportFit: 'cover',
+  colorScheme: 'dark light',
+  themeColor: [
+    { media: '(prefers-color-scheme: dark)', color: '#07070b' },
+    { media: '(prefers-color-scheme: light)', color: '#f8f9fb' },
+  ],
+};
+
+// Counts are read from the actual built data
 export function generateMetadata() {
   const dsaCount = getDsaIndex().length;
   const cpCount = getCpIndex().length;
@@ -34,14 +48,14 @@ export function generateMetadata() {
   const description = `${total.toLocaleString()}+ problems across DSA and competitive programming, with worked explanations, multi-language solutions, and a guided roadmap.`;
 
   return {
-    // every page sets just its own name (e.g. 'Terms') and this template makes it 'Terms | Atlas'; the home page sets { absolute: 'Atlas' }
     title: { default: 'Atlas', template: '%s | Atlas' },
     description,
-    metadataBase: new URL(SITE_URL), // SEO-03: same resolver as robots/sitemap/JSON-LD, so every host agrees
-    // SEO-01 / ATLAS-BUG-009: './' is only the FALLBACK for private/noindex routes (login, settings...). Every public route sets
-    // its own canonical from lib/routeIdentity.js in its own metadata, so twins and ?query variants never rely on this.
+    metadataBase: new URL(SITE_URL),
     alternates: { canonical: './' },
     manifest: '/site.webmanifest',
+    appleWebApp: { capable: true, title: 'Atlas', statusBarStyle: 'default' },
+    formatDetection: { telephone: false },
+    other: { 'apple-mobile-web-app-capable': 'yes' }, // Next only writes the newer mobile-web-app-capable tag
     icons: {
       icon: [
         { url: '/favicon.svg', type: 'image/svg+xml' },
@@ -67,12 +81,9 @@ export function generateMetadata() {
 
 export default function RootLayout({ children }) {
   return (
-    // suppressHydrationWarning: the inline script below sets data-mode and data-accent on <html> before React hydrates, so the
-    // attribute is expected to differ from the server HTML. It only silences this one element, not its children.
     <html lang="en" className={`${plusJakarta.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
-        {/* Both are render-blocking and in <head>: the inline script sets data-mode and data-accent before first paint, the stylesheet carries the CSS variables of every registered mode and accent. (React hoists the precedence link above the script in the output; either order is fine.) */}
         <link rel="stylesheet" href={THEME_CSS_HREF} precedence="themes" />
       </head>
       <body>
@@ -81,6 +92,8 @@ export default function RootLayout({ children }) {
           <main>{children}</main>
           <BottomNav />
           <ToastContainer />
+          <ThemeColorSync />
+          <ServiceWorkerRegister />
         </Providers>
       </body>
     </html>

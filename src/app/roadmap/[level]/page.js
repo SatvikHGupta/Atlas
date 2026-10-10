@@ -4,10 +4,9 @@ import { parseLevelParam } from '../../../lib/roadmap.js';
 import RoadmapLevelClient from './RoadmapLevelClient.jsx';
 import { routes, canonicalAlternates } from '../../../lib/routeIdentity.js';
 
-// BUG-097/142: only the levels generated below exist; anything else is a real 404 instead of an empty page.
 export const dynamicParams = false;
 
-// Levels come from the actual ROADMAP_LEVELS constant - add a level there and it gets a route on the next build, no route file changes needed.
+// Levels come from the actual ROADMAP_LEVELS constant
 export function generateStaticParams() {
   return ROADMAP_LEVELS.map((l) => ({ level: String(l.level) }));
 }
@@ -25,7 +24,7 @@ export async function generateMetadata({ params }) {
 
 export default async function RoadmapLevelPage({ params }) {
   params = await params;
-  const levelNum = parseLevelParam(params.level); // rejects 1abc, 999, foo, 01, -1, 1.5
+  const levelNum = parseLevelParam(params.level);
   if (levelNum === null) notFound();
   return <RoadmapLevelClient levelNum={levelNum} />;
 }

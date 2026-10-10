@@ -1,25 +1,14 @@
-// Persistence + the pre-paint init script. The ONLY place the localStorage keys are defined.
+// Persistence + the pre-paint init script
 import {
   MODE_IDS, COLOR_IDS, COLOR_ALIASES, LEGACY_THEMES, DEFAULT_MODE_ID, DEFAULT_ACCENT_ID,
 } from '../themes/index.js';
 
 export const MODE_STORAGE_KEY = 'atlas-mode';
 export const ACCENT_STORAGE_KEY = 'atlas-accent';
-// Partner colour: the id of the accent whose secondary is used. Absent means Auto (the active accent's own).
 export const SECONDARY_STORAGE_KEY = 'atlas-secondary';
-// Before modes and accents existed one value held the whole theme. It is read once, migrated, then removed.
 export const LEGACY_STORAGE_KEY = 'atlas-theme';
 
-/**
- * Inline script that runs before first paint (and before React) so a saved theme never flashes: it reads the saved
- * mode, primary and secondary colour, validates them against the registry, sets <html data-mode data-accent data-secondary>, migrates an old
- * single-value theme and repairs bad stored values. Everything it needs is serialized from the registry at render
- * time, so it can never disagree with the theme list.
- *
- * It must stay inline and render-blocking. next/script "beforeInteractive" is queued by the client runtime in the
- * App Router, which would bring the flash back. Keep the logic identical to resolveTheme() - the registry tests run
- * both against the same inputs.
- */
+// Inline script that runs before first paint
 export function buildThemeInitScript({
   modes = MODE_IDS,
   accents = COLOR_IDS,

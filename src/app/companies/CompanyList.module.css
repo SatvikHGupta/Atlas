@@ -1,5 +1,3 @@
-/* Companies page module - hue-tinted cards with a gradient-ring monogram badge and a cursor-follow spotlight. */
-
 .page {
   max-width: 1080px;
   margin: 0 auto;
@@ -13,9 +11,6 @@
   left: -10%;
   width: 70%;
   height: 340px;
-  /* THEME-SAFETY FIX: was a hardcoded purple rgba(124,58,237,...) that stayed purple under every theme, incl. the
-     orange/blue/emerald ones. --accent-glow is already an rgba tied to the active theme's accent, so this now
-     re-tints itself automatically when the theme swaps - no code change needed on either side. */
   background: radial-gradient(ellipse at center top, var(--accent-glow) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
@@ -46,7 +41,7 @@
   margin: 0;
 }
 
-/* ─── controls ─── */
+/* controls */
 .controls {
   display: flex;
   flex-wrap: wrap;
@@ -85,10 +80,9 @@
   cursor: pointer;
   transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
 }
-.chip:hover { color: var(--text-primary); border-color: var(--border-strong); }
-/* THEME-SAFETY FIX: was a hardcoded #fff - fine today because every accent is mid-tone-or-darker, but not derived
-   from the theme. var(--bg-primary) reads as near-black on dark themes and near-white on light ones, which is
-   exactly the contrast an accent-colored chip needs regardless of which of the 6 themes is active. */
+@media (hover: hover) {
+  .chip:hover { color: var(--text-primary); border-color: var(--border-strong); }
+}
 .chipActive { color: var(--accent-fg); background: var(--accent); border-color: var(--accent); }
 
 .regionChips { display: flex; gap: 8px; }
@@ -119,7 +113,7 @@
   font-size: 0.92rem;
 }
 
-/* ─── card grid ─── */
+/* card grid */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
@@ -147,23 +141,23 @@
   content: '';
   position: absolute;
   inset: 0;
-  /* THEME-SAFETY FIX: was a hardcoded white glow (rgba(255,255,255,0.08)) meant to lighten a dark card on hover.
-     On a light theme the card is already white/near-white, so a white-on-white glow is invisible - hover feedback
-     would silently disappear the moment a light theme (Frost/Cream/Mono) goes live. --accent-subtle is already an
-     alpha-blended accent tint that reads correctly against both dark and light --bg-card values. */
   background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), var(--accent-subtle), transparent 65%);
   opacity: 0;
   transition: opacity 0.25s ease;
   pointer-events: none;
   z-index: 0;
 }
-.card:hover::before { opacity: 1; }
+@media (hover: hover) {
+  .card:hover::before { opacity: 1; }
+}
 .card > * { position: relative; z-index: 1; }
 
-.card:hover {
-  border-color: var(--border-strong);
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-2px);
+@media (hover: hover) {
+  .card:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
 }
 .cardTier1 { border-top: 2px solid var(--card-hue-strong, var(--accent)); }
 

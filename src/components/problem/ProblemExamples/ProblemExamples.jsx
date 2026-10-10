@@ -3,9 +3,6 @@
 import { useState } from 'react';
 import styles from './ProblemExamples.module.css';
 
-/* Examples (input/output/explanation) used to sit open above the explanation. They are now a collapsed dropdown placed
-   right under "Original problem statement", because they belong with the raw problem text and no longer push the
-   explanation and solutions down the page. Closed by default; the content is already in the page HTML (no fetch). */
 export default function ProblemExamples({ examples }) {
   const [open, setOpen] = useState(false);
   if (!examples?.length) return null;

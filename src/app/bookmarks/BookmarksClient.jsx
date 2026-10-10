@@ -16,7 +16,7 @@ import { Loader } from '../../components/ui/Loader/Loader.jsx';
 import BackButton from '../../components/ui/BackButton/BackButton.jsx';
 import styles from './Bookmarks.module.css';
 
-// CP bookmarks link out to Codeforces, so they get their own small card instead of ProblemCard (which links to /problems/<slug>).
+// CP bookmarks link out to Codeforces
 function CpBookmarkCard({ problem, onBookmark }) {
   const url = getCfUrl(problem);
   const code = getPrimaryMapping(problem)?.platform_id || null;
@@ -57,7 +57,6 @@ export default function BookmarksClient() {
 
   const ids = useMemo(() => bookmarks.map((b) => b.canonical_id), [bookmarks]);
 
-  // The CP index is about 6 MB: only fetch it when some bookmark is not a DSA problem.
   const cpNeeded = useMemo(() => needsCpIndex(ids, dsaIndex), [ids, dsaIndex]);
   const { data: cpIndex, isLoading: cpLoading, isError: cpError, refetch: refetchCp } = useCpIndex({ enabled: cpNeeded });
 
@@ -66,11 +65,9 @@ export default function BookmarksClient() {
   if (!authLoading && !isAuthenticated) return null;
 
   const isLoading = authLoading || bookmarksLoading || dsaLoading || (cpNeeded && cpLoading);
-  // ATLAS-BUG-002: a FAILED bookmarks read must show an error + retry, never the "no bookmarks yet" empty state
   const isError = !!bookmarksError || dsaError || (cpNeeded && cpError);
   const retry = () => { if (bookmarksError) retryBookmarks?.(); if (dsaError) refetchDsa(); if (cpError) refetchCp(); };
 
-  // BUG-041: the number is the store count, the same population the Dashboard and profile show.
   const total = bookmarks.length;
   const dsaCount = items.filter((i) => i.kind === 'dsa').length;
   const cpCount = items.length - dsaCount;

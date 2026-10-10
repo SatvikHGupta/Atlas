@@ -14,8 +14,7 @@ export default function ProgressRing({ value = 0, total = 100, size = 100, label
 
   useEffect(() => {
     if (!fillRef.current) return;
-    
-    
+
     fillRef.current.style.transition = 'none';
     fillRef.current.style.strokeDashoffset = CIRCUMFERENCE;
 

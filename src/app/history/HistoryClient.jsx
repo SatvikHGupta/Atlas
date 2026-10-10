@@ -18,7 +18,7 @@ import { Loader } from '../../components/ui/Loader/Loader.jsx';
 import BackButton from '../../components/ui/BackButton/BackButton.jsx';
 import styles from './History.module.css';
 
-// BUG-061: `dayKey` is already a LOCAL "YYYY-MM-DD" key (lib/dates.js), so it is parsed by hand, not via new Date(string) which is UTC.
+// `dayKey` is already a LOCAL "YYYY-MM-DD" key
 function formatDayHeading(dayKey) {
   if (dayKey === null) return 'Earlier';
   const today = todayKey();
@@ -40,7 +40,6 @@ export default function HistoryClient() {
 
   const ids = useMemo(() => progressList.map((p) => p.canonical_id), [progressList]);
 
-  // The CP index is about 6 MB: only fetch it when some entry is not a DSA problem.
   const cpNeeded = useMemo(() => needsCpIndex(ids, dsaIndex), [ids, dsaIndex]);
   const { data: cpIndex, isLoading: cpLoading, isError: cpError, refetch: refetchCp } = useCpIndex({ enabled: cpNeeded });
 
@@ -49,7 +48,6 @@ export default function HistoryClient() {
     return { resolvedById: new Map(items.map((i) => [i.id, i])), unresolvedCount: unresolved.length };
   }, [ids, dsaIndex, cpIndex]);
 
-  // BUG-042/161/061: DSA and CP entries, grouped by the viewer's local day. Ids in neither index are counted, not dropped silently.
   const groupedByDay = useMemo(() => {
     const entries = progressList.filter((p) => resolvedById.has(p.canonical_id));
     return groupByLocalDay(entries, (p) => p.updated_at);
@@ -70,7 +68,6 @@ export default function HistoryClient() {
       <div className={styles.wrapper}>
         <BackButton fallback="/dashboard" />
         <div className={styles.header}>
-          {/* BUG-160: progress is one current record per problem, not an event log, so say exactly that. */}
           <h1>Recent activity</h1>
           <p>
             The latest status of every problem you have marked solved or attempted (DSA and CP), most recent first.
@@ -119,7 +116,6 @@ export default function HistoryClient() {
                     );
                     const key = `${entry.canonical_id}-${entry.updated_at}`;
                     const cpUrl = kind === 'cp' ? getCfUrl(problem) : null;
-                    // DSA rows open the problem page, CP rows open the external Codeforces problem.
                     if (kind === 'dsa') {
                       return <Link key={key} href={`/problems/${problem.slug}`} className={styles.entryRow}>{rowBody}</Link>;
                     }

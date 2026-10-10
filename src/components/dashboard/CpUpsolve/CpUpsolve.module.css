@@ -43,7 +43,9 @@
   color: var(--text-primary);
   transition: border-color var(--transition-fast), background var(--transition-fast);
 }
-.row:hover { border-color: var(--border-strong); background: var(--bg-card-hover); }
+@media (hover: hover) {
+  .row:hover { border-color: var(--border-strong); background: var(--bg-card-hover); }
+}
 
 .title {
   flex: 1;

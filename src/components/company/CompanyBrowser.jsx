@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'motion/react';
 import CompanyBadge, { nameHue } from './CompanyBadge.jsx';
+import ResponsiveSelect from '../ui/Dropdown/ResponsiveSelect.jsx';
 import styles from '../../app/companies/CompanyList.module.css';
 
 const TIERS = [
@@ -47,16 +48,14 @@ function roleChips(roles, max = 3) {
   return { shown, rest };
 }
 
-// Cursor-follow spotlight (--mx/--my), same trick as PatternCard.jsx.
+// Cursor-follow spotlight (--mx/--my), same trick as PatternCard.jsx
 function handleMove(e) {
   const r = e.currentTarget.getBoundingClientRect();
   e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`);
   e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`);
 }
 
-// REBUILD: added the region filter (India/Global - the data has always had this, nothing in the UI used it) and a
-// sort control (pool size / tier / name); logos now come from each company's own `domain` field instead of a
-// name-keyed lookup (see CompanyBadge.jsx). Filtering/sorting stay client-side since the whole index is a few KB.
+// added the region filter
 export default function CompanyBrowser({ companies }) {
   const [query, setQuery] = useState('');
   const [tiers, setTiers] = useState([]);
@@ -107,14 +106,14 @@ export default function CompanyBrowser({ companies }) {
             </button>
           ))}
         </div>
-        <select
-          className={styles.sortSelect}
+        <ResponsiveSelect
+          nativeClassName={styles.sortSelect}
+          ariaLabel="Sort companies"
           value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
-          aria-label="Sort companies"
-        >
-          {SORTS.map((s) => <option key={s.value} value={s.value}>Sort: {s.label}</option>)}
-        </select>
+          onChange={setSortBy}
+          align="right"
+          options={SORTS.map((s) => ({ value: s.value, label: `Sort: ${s.label}` }))}
+        />
       </div>
 
       <div className={styles.resultCount}>{visible.length} of {companies.length} companies</div>

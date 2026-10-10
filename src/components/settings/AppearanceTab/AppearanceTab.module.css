@@ -17,7 +17,6 @@
   flex-direction: column;
   gap: 10px;
   padding: 10px;
-  /* fixed dark grey (not themed) so the panel stands out from the page in both modes. CHANGE THIS: panel colour */
   background: #26272f;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-lg);
@@ -41,9 +40,14 @@
 .actions button:disabled { opacity: 0.45; cursor: not-allowed; }
 
 .apply { color: var(--accent-fg); background: var(--accent); border: 1px solid var(--accent); }
-.apply:not(:disabled):hover { background: var(--accent-hover); }
+@media (hover: hover) {
+  .apply:not(:disabled):hover { background: var(--accent-hover); }
+}
 .cancel, .reset { color: #ececf2; background: transparent; border: 1px solid rgba(255, 255, 255, 0.24); }
-.cancel:not(:disabled):hover, .reset:not(:disabled):hover { border-color: rgba(255, 255, 255, 0.5); }
+@media (hover: hover) {
+  .cancel:not(:disabled):hover,
+  .reset:not(:disabled):hover { border-color: rgba(255, 255, 255, 0.5); }
+}
 .reset { font-weight: 500 !important; }
 
 .group { display: flex; flex-direction: column; gap: 10px; }

@@ -7,7 +7,7 @@ import { Loader } from '../../components/ui/Loader/Loader.jsx';
 import { defaultSectionSlug, settingsPath } from '../../constants/settingsSections.js';
 import styles from './Settings.module.css';
 
-// Signed-in visitors land on Profile, signed-out on Appearance (the only page that works without an account).
+// Signed-in visitors land on Profile
 export default function SettingsIndexClient() {
   const { isAuthenticated, loading } = useAuth();
   const router = useRouter();

@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion } from 'motion/react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '../../hooks/useAuth.js';
 import { safeInternalPath } from '../../lib/safeRedirect.js';
 import { authErrorMessage } from '../../lib/authErrors.js';
+import { isInAppBrowser } from '../../lib/pwa.js';
 import styles from './Login.module.css';
 
 function GoogleIcon() {
@@ -20,27 +20,42 @@ function GoogleIcon() {
   );
 }
 
-const PATHS = [
-  { step: '01', label: 'Pick a problem' },
-  { step: '02', label: 'Read the breakdown' },
-  { step: '03', label: 'Check the solution' },
-  { step: '04', label: 'Mark it solved' },
-];
+// heading follows the page the visitor came from; a generic one otherwise
+function headingFor(from) {
+  if (from.startsWith('/dashboard')) return ['See your', 'dashboard.'];
+  if (from.startsWith('/bookmarks')) return ['Open your', 'bookmarks.'];
+  if (from.startsWith('/history')) return ['See your', 'history.'];
+  return ['Keep your', 'place.'];
+}
 
-// en-US on purpose: the server and the browser must format the same way or hydration mismatches
-const fmt = (n) => Number(n).toLocaleString('en-US');
+// fixed pattern so server and browser render the same cells
+const CELLS = Array.from({ length: 130 }, (_, i) => ((i * 7) % 11 === 0 ? 'hi' : (i * 5) % 13 === 0 ? 'mid' : 'lo'));
+const SLOW_MS = 8000;
 
-export default function LoginClient({ dsaCount, cpCount, notesCount }) {
+export default function LoginClient() {
   const { isAuthenticated, loading, authError, signInWithGoogle } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
-  // BUG-078: ?from= is user-controlled, only same-site paths get through
   const from = safeInternalPath(searchParams.get('from'));
   const [message, setMessage] = useState(null);
   const [busy, setBusy] = useState(false);
+  const [slow, setSlow] = useState(false);
+  const [inApp, setInApp] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-  // BUG-079: a failed sign-in shows a real message. A popup the user closed
-  // themselves shows nothing and does NOT redirect (BUG-080).
+  useEffect(() => { setInApp(isInAppBrowser()); }, []);
+
+  // after a few seconds of "Opening Google..." offer a way out
+  useEffect(() => {
+    if (!busy) { setSlow(false); return undefined; }
+    const t = setTimeout(() => setSlow(true), SLOW_MS);
+    return () => clearTimeout(t);
+  }, [busy]);
+
+  useEffect(() => {
+    if (!loading && isAuthenticated) router.replace(from);
+  }, [loading, isAuthenticated, from, router]);
+
   async function handleSignIn() {
     setMessage(null);
     setBusy(true);
@@ -52,105 +67,64 @@ export default function LoginClient({ dsaCount, cpCount, notesCount }) {
       setBusy(false);
     }
   }
-  const shownMessage = message || (authError ? authErrorMessage(authError.code) : null);
 
-  useEffect(() => {
-    if (!loading && isAuthenticated) router.replace(from);
-  }, [loading, isAuthenticated, from, router]);
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+    } catch {
+      setCopied(false);
+    }
+  }
+
+  const shownMessage = message || (authError ? authErrorMessage(authError.code) : null);
+  const [lineA, lineB] = headingFor(from);
 
   if (!loading && isAuthenticated) return null;
 
   return (
     <div className={styles.page}>
-      <motion.div
-        className={styles.left}
-        initial={{ opacity: 0, x: -24 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
-      >
-        <div className={styles.brand}>
-          <span className={styles.brandIcon}>◈</span>
-          <span className={styles.brandName}>Atlas</span>
-        </div>
-
-        <div className={styles.leftContent}>
-          <div className={styles.leftTop}>
-            <h1 className={styles.leftTitle}>
-              Your route through the problems, saved to you.
-            </h1>
-            <p className={styles.leftSub}>
-              {fmt(dsaCount + cpCount)} problems from LeetCode, Codeforces, and CSES, plus {fmt(notesCount)} study
-              notes, each one explained instead of just answered. Sign in once and what you&apos;ve
-              solved, attempted, and bookmarked follows you to any device.
-            </p>
+      <div className={styles.left} aria-hidden="true">
+        <div>
+          <div className={styles.leftTitle}>Back to<br />the map.</div>
+          <div className={styles.heat}>
+            {CELLS.map((c, i) => <i key={i} data-level={c} />)}
           </div>
-
-          <div className={styles.flowList}>
-            {PATHS.map((p, i) => (
-              <motion.div
-                key={p.step}
-                className={styles.flowItem}
-                initial={{ opacity: 0, x: -12 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.25 + i * 0.08, duration: 0.38 }}
-              >
-                <span className={styles.flowStep}>{p.step}</span>
-                <span className={styles.flowConnector} />
-                <span className={styles.flowLabel}>{p.label}</span>
-              </motion.div>
-            ))}
-          </div>
+          <p className={styles.leftLine}>0 day streak // 0 solved // your move</p>
         </div>
-
-        <div className={styles.glow} aria-hidden="true" />
-      </motion.div>
+      </div>
 
       <div className={styles.right}>
-        <motion.div
-          className={styles.card}
-          initial={{ opacity: 0, y: 20, scale: 0.97 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-        >
-          <div className={styles.mobileBrand}>
-            <span className={styles.brandIcon}>◈</span>
-            <span className={styles.brandName}>Atlas</span>
-          </div>
+        <div className={styles.card}>
+          <p className={styles.kicker}>// <span className={styles.kickerMobile}>Back to the map</span><span className={styles.kickerDesk}>Sign in</span></p>
+          <h1 className={styles.cardTitle}>{lineA}<br />{lineB}</h1>
+          <p className={styles.cardSub}>Solved, attempted and bookmarked problems follow you to any device. Free, no card.</p>
 
-          <div className={styles.cardHeader}>
-            <h2 className={styles.cardTitle}>Sign in to continue</h2>
-            <p className={styles.cardSub}>Progress is tied to your account and synced across devices.</p>
-          </div>
+          {inApp && (
+            <div className={styles.notice} role="note">
+              <p>Google sign-in is blocked inside this app&apos;s browser. Open this page in Chrome or Safari.</p>
+              <button type="button" className={styles.noticeBtn} onClick={copyLink}>{copied ? 'Link copied' : 'Copy link'}</button>
+            </div>
+          )}
 
-          <button
-            className={`${styles.googleBtn} ${busy ? styles.googleBtnBusy : ''}`}
-            onClick={handleSignIn}
-            disabled={loading || busy}
-          >
-            <span className={styles.googleIconWrap}><GoogleIcon /></span>
+          <button className={styles.googleBtn} onClick={handleSignIn} disabled={loading || busy} aria-busy={busy}>
+            <GoogleIcon />
             <span>{busy ? 'Opening Google...' : 'Continue with Google'}</span>
           </button>
 
+          {slow && (
+            <p className={styles.slow} role="status">
+              Taking long? <button type="button" className={styles.linkBtn} onClick={() => { setBusy(false); handleSignIn(); }}>Try again</button>
+            </p>
+          )}
           {shownMessage && <p className={styles.signInError} role="alert">{shownMessage}</p>}
 
-          <div className={styles.divider}>
-            <span className={styles.dividerLine} />
-            <span className={styles.dividerText}>free, no card needed</span>
-            <span className={styles.dividerLine} />
-          </div>
-
-          <ul className={styles.perks}>
-            <li>Track solved, attempted, and bookmarked problems</li>
-            <li>Unlock Atlas Roadmap levels as you progress</li>
-            <li>Dashboard with streaks, charts, and topic stats</li>
-          </ul>
+          <Link href="/problems" className={styles.skip}>Not now, keep browsing &rarr;</Link>
 
           <p className={styles.legal}>
-            By signing in you agree to the <Link href="/terms">terms</Link> and use this platform responsibly. See the <Link href="/privacy">privacy page</Link>.
-            <br />
-            <span className={styles.legalAi}>Note: solutions are AI-generated and may contain errors- verify before relying on them.</span>
+            By continuing you agree to the <Link href="/terms">terms</Link> and <Link href="/privacy">privacy</Link>.
           </p>
-        </motion.div>
+        </div>
       </div>
     </div>
   );

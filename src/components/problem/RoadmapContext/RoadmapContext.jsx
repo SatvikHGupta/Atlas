@@ -1,13 +1,7 @@
 import Link from 'next/link';
 import styles from './RoadmapContext.module.css';
 
-/* Point 5 of the data audit: is_atlas_roadmap/roadmap_level/roadmap_topic/roadmap_order are fully
-   populated for the ~2% of problems that are roadmap-curated, and none of it ever reached the detail
-   page - no indication a problem is part of the roadmap at all, no sense of where it sits, no way to
-   move to the next one without going back to the roadmap page itself. `context` is the result of
-   content.server.js's getRoadmapContext() - null for the ~98% of problems this doesn't apply to, in
-   which case this renders nothing. Scoped deliberately narrow: this only touches the problem detail
-   page, not the /roadmap pages themselves (that's a different account's work right now). */
+// Point 5 of the data audit
 export default function RoadmapContext({ context }) {
   if (!context) return null;
   const { levelName, level, position, total, prev, next } = context;

@@ -16,11 +16,9 @@
   --attempted:    #f97316;
   --attempted-bg: rgba(249, 115, 22, 0.08);
 
-  /* Text that sits ON a solved/attempted filled button. Dark on the bright dark-theme greens/oranges; light themes override these to white because their status colors are darkened for text contrast. */
   --solved-fg:    #0a0a0f;
   --attempted-fg: #0a0a0f;
 
-  /* Generic status tokens (BUG-026). Same hues in every theme by convention - red means error everywhere - so they live here, not in the per-theme files. */
   --cyan-fg:    #0a0a0f;
   --danger-fg:  #0a0a0f;
 
@@ -33,10 +31,8 @@
   --danger:     var(--error);
   --danger-bg:  var(--error-bg);
 
-  /* Modal/drawer scrims are always a dark dim, whatever the mode. Code block colors (--code-*) are per mode now, see src/themes/modes.js. */
   --overlay:     rgba(0, 0, 0, 0.6);
 
-  /* These reference per-theme tokens, so they re-tint automatically when the theme changes. */
   --focus-ring:    0 0 0 3px var(--accent-glow);
   --surface-hover: var(--bg-elevated);
 

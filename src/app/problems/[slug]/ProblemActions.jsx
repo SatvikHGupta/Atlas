@@ -10,8 +10,6 @@ import styles from './ProblemDetail.module.css';
 
 export function BackButton() {
   const router = useRouter();
-  // BUG-143: only trust router.back() when there is a same-origin history
-  // entry to go to; otherwise a direct-entry visitor lands on /problems.
   const handleBack = () => {
     const safe = typeof window !== 'undefined' && shouldUseHistoryBack({
       historyLength: window.history.length,
@@ -25,7 +23,7 @@ export function BackButton() {
 }
 
 export function BookmarkButton({ canonicalId }) {
-  const { isBookmarked, toggleBookmark, degraded: bookmarksDegraded } = useBookmarks(); // ATLAS-BUG-016
+  const { isBookmarked, toggleBookmark, degraded: bookmarksDegraded } = useBookmarks();
   const bookmarked = isBookmarked(canonicalId);
   return (
     <button
@@ -46,13 +44,9 @@ export function BookmarkButton({ canonicalId }) {
 }
 
 export function ProgressButtons({ canonicalId }) {
-  const { getStatus, markSolved, markAttempted, resetProgress, degraded: progressDegraded } = useProgress(); // ATLAS-BUG-016
+  const { getStatus, markSolved, markAttempted, resetProgress, degraded: progressDegraded } = useProgress();
   const status = getStatus(canonicalId);
   const degradedTitle = 'Service temporarily limited - resets at midnight PT';
-  // page.js (owned by another worker) only passes canonicalId, so the
-  // roadmap flag is looked up from the already-cached DSA index rather than
-  // requiring a prop change there. Contract C2: the roadmap unlock check
-  // only runs for roadmap problems.
   const { data: allProblems } = useDsaIndex();
   const isRoadmapProblem = useMemo(
     () => !!allProblems?.find((p) => p.canonical_id === canonicalId)?.is_atlas_roadmap,

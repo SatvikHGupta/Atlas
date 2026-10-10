@@ -3,11 +3,7 @@
 import { useRef } from 'react';
 import styles from './SwatchGroup.module.css';
 
-// One group of small selectable cards (a radio group): a colour square, the colour's name and its hex under the name.
-// Keyboard: Tab enters the group, arrow keys move AND select (the choice is only a draft until Apply), Space/Enter
-// select. Selection never relies on colour alone: the selected card also gets a thick border and a check mark.
-// items: [{ id, name, hex }]; hex === null renders the "none" card (a crossed-out square). An item { heading } renders a
-// small full-width label between cards (presentational, not a radio).
+// One group of small selectable cards
 export default function SwatchGroup({ label, items, value, onChange }) {
   const ref = useRef(null);
   const radios = items.filter((item) => !item.heading);

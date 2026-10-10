@@ -18,7 +18,6 @@ export default function ProfileTab() {
   const { user } = useAuth();
   const { totalSolved, totalAttempted, state: progressState, retry: retryProgress } = useProgress();
   const { bookmarks, state: bookmarksState, retry: retryBookmarks } = useBookmarks();
-  // ATLAS-BUG-002: '...' while loading and '-' when a read failed, so a failure is never shown as a real 0
   const failed = progressState === 'failed' || bookmarksState === 'failed';
   const retryAll = () => { if (progressState === 'failed') retryProgress?.(); if (bookmarksState === 'failed') retryBookmarks?.(); };
   const joined = memberSince(user);
@@ -38,7 +37,6 @@ export default function ProfileTab() {
           <span className={styles.email}>{user?.email}</span>
           {joined && <span className={styles.joined}>On Atlas since {joined}</span>}
         </div>
-        {/* right side, level with the three profile lines */}
         <button type="button" className={styles.cardBtn} onClick={downloadCard} disabled={cardBusy} title={POST_CARD_HINT}>
           {cardBusy ? 'Creating...' : 'Post your card'}
         </button>

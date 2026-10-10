@@ -7,8 +7,6 @@ import styles from './ToastContainer.module.css';
 export default function ToastContainer() {
   const { toasts, removeToast } = useUIStore();
 
-  // BUG-012: always-mounted named live region; errors escalate to role=alert.
-  // Focus is never moved.
   return (
     <div
       className={styles.container}

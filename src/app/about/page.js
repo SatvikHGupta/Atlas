@@ -1,4 +1,4 @@
-// About Atlas page. Same shell as /terms and /privacy. Author: Satvik Hemant Gupta
+// About Atlas page. Author: Satvik Hemant Gupta
 import Link from 'next/link';
 import LegalPage from '../../components/legal/LegalPage.jsx';
 import { routes, canonicalAlternates } from '../../lib/routeIdentity.js';
@@ -10,7 +10,7 @@ export const metadata = {
   description: 'What Atlas is, what is inside it, and who builds it.',
 };
 
-// the numbers come from the same indexes the rest of the site uses, so this page never goes stale
+// the numbers come from the same indexes the rest of the site uses
 export default function AboutPage() {
   const dsa = getDsaIndex().filter((p) => p.should_generate !== false).length;
   const companies = getCompanyIndex().length;

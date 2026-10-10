@@ -5,7 +5,6 @@ import { routes, canonicalAlternates } from '../../../lib/routeIdentity.js';
 import JsonLd from '../../../components/JsonLd.jsx';
 import CompanyDetailClient from '../../../components/company/CompanyDetailClient.jsx';
 
-// BUG-125: only ids in the company index exist, anything else is a 404.
 export const dynamicParams = false;
 
 export function generateStaticParams() {
@@ -18,7 +17,7 @@ export async function generateMetadata({ params }) {
   if (!data) return { title: 'Company not found' };
   return {
     alternates: canonicalAlternates(routes.company(params.id)),
-    title: `${data.name} Questions`, // becomes "Google Questions | Atlas"
+    title: `${data.name} Questions`,
     description: `${data.problemCount ?? data.problems?.length ?? 0} interview problems tracked for ${data.name}, broken down by role and DSA pattern.`,
   };
 }

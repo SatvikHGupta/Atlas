@@ -10,6 +10,4 @@
 }
 .logo { width: 65%; height: 65%; object-fit: contain; }
 
-/* local PNGs from scripts/one-time/build-logos.mjs are already trimmed+padded to a square, so - unlike the
-   65% inset .logo needs for a raw remote favicon/mark - they should fill the whole tile */
 .logoLocal { width: 100%; height: 100%; object-fit: contain; border-radius: inherit; }

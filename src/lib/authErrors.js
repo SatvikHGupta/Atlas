@@ -1,8 +1,5 @@
-// Maps Firebase sign-in error codes to friendly messages and fallbacks.
-// Author: Satvik Hemant Gupta
+// Maps Firebase sign-in error codes to friendly messages and fallbacks. Author: Satvik Hemant Gupta
 
-// BUG-080: redirect is only for genuine "popups do not work here" cases.
-// Closing the popup yourself must never start a redirect login.
 const REDIRECT_FALLBACK_CODES = [
   'auth/popup-blocked',
   'auth/operation-not-supported-in-this-environment',
@@ -12,7 +9,7 @@ export function shouldFallbackToRedirect(code) {
   return REDIRECT_FALLBACK_CODES.includes(code);
 }
 
-// BUG-079: null means "say nothing" (the user closed the popup on purpose).
+// null means "say nothing" (the user closed the popup on purpose)
 export function authErrorMessage(code) {
   switch (code) {
     case 'auth/popup-closed-by-user':

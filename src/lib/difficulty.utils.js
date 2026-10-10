@@ -20,8 +20,7 @@ export const getDifficultyBg = (score) =>
 export const getDifficultyLabel = (score) =>
   DIFFICULTY_MAP[score]?.label || 'Unknown';
 
-// BUG-08: ONE coarse bucketing for dashboard, share images and structured data. It collapses the 5 badge labels:
-// Beginner+Easy (1-4) -> Easy, Medium (5-6), Hard (7-8), Expert (9-10). Unknown/null -> null.
+// ONE coarse bucketing for dashboard, share images and structured data
 export const getDifficultyBucket = (score) => {
   if (score == null || Number.isNaN(Number(score))) return null;
   if (score <= 4) return 'Easy';

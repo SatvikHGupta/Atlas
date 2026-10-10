@@ -1,5 +1,3 @@
-/* position:relative lives on the ROW (not the +N pill) so the hover list can open BELOW the whole row, aligned to its left
-   edge and never wider than it - it can no longer run off the top or the right edge of the screen. */
 .row { position: relative; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 
 .chip {
@@ -14,7 +12,9 @@
   text-decoration: none;
   transition: color 0.15s ease, background 0.15s ease;
 }
-.chip:hover { color: var(--text-primary); background: var(--bg-card-hover); }
+@media (hover: hover) {
+  .chip:hover { color: var(--text-primary); background: var(--bg-card-hover); }
+}
 
 .more {
   position: static;
@@ -44,6 +44,8 @@
   max-width: min(440px, 100%);
   z-index: 20;
 }
-.more:hover .tooltip,
 .more:focus-visible .tooltip { display: block; }
+@media (hover: hover) {
+  .more:hover .tooltip { display: block; }
+}
 .more:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

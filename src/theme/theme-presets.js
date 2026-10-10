@@ -1,10 +1,6 @@
-// Mode-level defaults. A theme only supplies its own colors; everything that is the same for every dark theme or
-// every light theme lives here, once. 
+// Mode-level defaults
 
-// Dark is the baseline: the difficulty/solved/attempted tokens in styles/theme.css are already tuned for dark
-// surfaces, so a dark theme does not need to re-state them.
 export const DARK_TOKENS = {
-  // Notes level colors (0-9). Dark values equal NOTE_LEVEL_COLORS in src/lib/noteLevels.js (a test keeps them in sync).
   'level-0': '#6c63ff',
   'level-1': '#22c55e',
   'level-2': '#f97316',
@@ -15,12 +11,10 @@ export const DARK_TOKENS = {
   'level-7': '#14b8a6',
   'level-8': '#94a3b8',
   'level-9': '#ef4444',
-  // Lightness for hue-generated colors (territory bars, company/pattern cards): fills, and text on a surface.
   'hue-l': '58%',
   'hue-text-l': '70%',
 };
 
-// Light surfaces need darker status colors to stay readable as text on white (BUG-018/019).
 export const LIGHT_TOKENS = {
   'diff-beginner': '#166534',
   'diff-easy': '#0f766e',
@@ -38,7 +32,6 @@ export const LIGHT_TOKENS = {
   'cyan-fg': '#ffffff',
   'danger-fg': '#ffffff',
   'attempted-fg': '#ffffff',
-  // Same hues as dark, darkened so level badges and labels stay readable on white.
   'level-0': '#4f46e5',
   'level-1': '#15803d',
   'level-2': '#c2410c',
@@ -53,13 +46,12 @@ export const LIGHT_TOKENS = {
   'hue-text-l': '30%',
 };
 
-// Used when a mode does not define its own value for an optional color.
 export const MODE_DEFAULTS = {
   dark: {
     accents: { cyan: '#22d3ee', emerald: '#34d399', rose: '#fb7185', amber: '#fbbf24' },
     subtleAlpha: 0.12,
     glowAlpha: 0.3,
-    statusBgAlpha: 0.08, // --solved-bg
+    statusBgAlpha: 0.08,
     shadowAlpha: [0.4, 0.5, 0.6],
     glowAlphas: [0.14, 0.08],
   },
@@ -73,5 +65,5 @@ export const MODE_DEFAULTS = {
   },
 };
 
-export const INK = '#0a0a0f'; // text color placed on a bright primary in dark themes
+export const INK = '#0a0a0f';
 export const PAPER = '#ffffff';

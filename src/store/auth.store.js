@@ -17,17 +17,7 @@ import {
   estimateItemsBytes, estimateEntryBytes, capacityLevel, LIMIT_BYTES,
 } from '../lib/progressEntry.js';
 
-/* COST FIX (read-quota pass): progress/bookmarks used to be onSnapshot listeners, which re-bill a read every
-   time the user's own write changes the doc (see firestore.js comment). Now it's a one-time getDoc per
-   session, cached in localStorage for CACHE_STALE_MS so a refresh/new-tab within that window costs 0 reads,
-   and every local write updates both the store and the cache directly (optimistic - no round trip needed to
-   know our own new state). Trade-off: a second open tab, or a write from another device, won't be reflected
-   here until the cache goes stale or the page reloads - acceptable for a solo-use progress tracker, and a
-   real reload always gets fresh-enough data via the cache TTL anyway. */
-
-/* SESSION GUARD (BUG-055/056/057/176): every async continuation captures { uid, session } when it starts and re-checks it with shouldApply() before touching the store, a cache, a degraded flag or a toast. authSession bumps on every sign-in, sign-out and user switch, so a slow fetch for user A can never land on user B. The four item setters also take the initiating uid as first argument and do nothing if it is not the current user. */
-
-const RETRY_DELAYS_MS = [1000, 3000]; // BUG-064: two automatic retries, then wait for `online` or retry()
+const RETRY_DELAYS_MS = [1000, 3000];
 const KINDS = {
   progress: {
     items: 'progressItems', ready: 'progressReady', failed: 'progressLoadFailed',
@@ -47,11 +37,10 @@ function getStorage() {
   try {
     return typeof window !== 'undefined' ? window.localStorage : null;
   } catch {
-    return null; // some browsers throw just for touching localStorage
+    return null;
   }
 }
 
-// BUG-070: write-behind. One stringify + setItem per ~250 ms, not per click.
 const cacheWriter = createCacheWriter({ getStorage });
 
 if (typeof window !== 'undefined') {
@@ -63,7 +52,7 @@ if (typeof window !== 'undefined') {
 
 const emptyCapacity = () => ({ usedBytes: 0, limitBytes: LIMIT_BYTES });
 
-// firestoreDegraded stays a boolean for existing consumers: true if either resource is degraded
+// firestoreDegraded stays a boolean for existing consumers
 const degradedFlags = (d) => ({
   degraded: d,
   progressDegraded: d.progress,
@@ -92,7 +81,7 @@ function adjustCapacity(capacity, id, prevEntry, nextEntry) {
 }
 
 export const useAuthStore = create((set, get) => {
-  const waits = new Set(); // pending retry back-offs, cancelled on session end
+  const waits = new Set();
   const warned = { progress: false, bookmarks: false };
 
   const alive = (ctx) => shouldApply(get(), ctx);
@@ -115,7 +104,6 @@ export const useAuthStore = create((set, get) => {
     set(degradedFlags(d));
   }
 
-  // one warning per session per resource when usage crosses the warn level
   function noteCapacity(kind) {
     const k = KINDS[kind];
     if (warned[kind] || capacityLevel(get()[k.capacity].usedBytes) === 'ok') return;
@@ -123,7 +111,6 @@ export const useAuthStore = create((set, get) => {
     useUIStore.getState().addToast(k.warnToast, 'info');
   }
 
-  // tears down everything tied to a user that is going away (BUG-055, 062)
   function endUserSession(uid) {
     if (!uid) return;
     cancelWaits();
@@ -143,12 +130,10 @@ export const useAuthStore = create((set, get) => {
       [k.failed]: false,
       [k.capacity]: { usedBytes: estimateItemsBytes(items), limitBytes: LIMIT_BYTES },
     });
-    // BUG-05: only a server read says what is really persisted. A (possibly stale) cache must not feed the
-    // "net-zero" skip in the bookmark queue, otherwise removing a bookmark the cache never knew about is dropped.
     if (kind === 'bookmarks' && !fromCache) bookmarkQueue.setPersisted(ctx.uid, items);
     if (!fromCache) {
       cacheWriter.schedule(kind, ctx.uid, items, { fromServer: true });
-      setDegraded(kind, false); // only THIS resource's flag (BUG-062/063)
+      setDegraded(kind, false);
     }
     noteCapacity(kind);
   }
@@ -162,8 +147,6 @@ export const useAuthStore = create((set, get) => {
     useUIStore.getState().addToast(k.loadToast, 'error');
   }
 
-  // BUG-064: a failed load is NOT "ready with empty data". Two automatic
-  // retries with back-off, then it waits for the `online` event or retry().
   async function loadResource(kind, ctx, { allowCache = true } = {}) {
     const k = KINDS[kind];
     if (allowCache) {
@@ -188,15 +171,11 @@ export const useAuthStore = create((set, get) => {
   return {
     user: null,
     loading: true,
-    // C4: false until the first Firebase auth resolution. Consumers must treat undefined as ready (s.authReady !== false).
     authReady: false,
-    // C4: bumps on every sign-in, sign-out and user switch
     authSession: 0,
-    authError: null, // set when a redirect sign-in comes back with an error (BUG-079)
+    authError: null,
     ...emptyUserState(),
-    // QUOTA GUARD: set true the moment a Firestore call for that resource fails with 'resource-exhausted' (the daily read/write cap is actually hit - see firestore.js isQuotaExhausted()). UI reads this to disable write-triggering buttons so people aren't clicking into calls that will just fail - sign-in/out stays enabled since Firebase Auth isn't part of this quota at all. Cleared on the next SUCCESSFUL call for THAT resource (BUG-062/063), not on a timer - correctness over guessing when the Pacific-midnight reset actually landed.
     setDegraded,
-    // kept for existing callers: sets both resources
     setAccountBusy: (busy) => set({ accountBusy: busy }),
     clearAuthError: () => set({ authError: null }),
 
@@ -220,13 +199,12 @@ export const useAuthStore = create((set, get) => {
           return;
         }
 
-        // same user announced again: nothing to reload
         if (prev && prev.uid === firebaseUser.uid) {
           set({ user: firebaseUser, loading: false, authReady: true });
           return;
         }
 
-        if (prev) endUserSession(prev.uid); // user switch
+        if (prev) endUserSession(prev.uid);
         const session = get().authSession + 1;
         set({
           ...emptyUserState(), user: firebaseUser, loading: false, authReady: true,
@@ -237,7 +215,6 @@ export const useAuthStore = create((set, get) => {
         loadResource('progress', ctx);
         loadResource('bookmarks', ctx);
 
-        // ATLAS-BUG-013: an account whose deletion is pending must not get an empty profile re-created on sign-in
         if (deletionMarker.has(ctx.uid)) return;
         try {
           await syncUserProfile(
@@ -249,7 +226,6 @@ export const useAuthStore = create((set, get) => {
         }
       });
 
-      // BUG-064: coming back online retries anything that failed to load
       const onOnline = () => get().retryLoads();
       if (typeof window !== 'undefined') window.addEventListener('online', onOnline);
 
@@ -259,7 +235,6 @@ export const useAuthStore = create((set, get) => {
       };
     },
 
-    // manual / online retry for loads that gave up (contract C2 retry())
     retryLoads: () => {
       const state = get();
       if (!state.user) return;
@@ -267,13 +242,11 @@ export const useAuthStore = create((set, get) => {
       for (const kind of Object.keys(KINDS)) {
         const k = KINDS[kind];
         if (!state[k.failed]) continue;
-        set({ [k.failed]: false }); // shows the loading state again, blocks duplicate retries
+        set({ [k.failed]: false });
         loadResource(kind, ctx, { allowCache: false });
       }
     },
 
-    // ATLAS-BUG-004: local state can no longer be trusted (a write failed and the server baseline is unknown), so drop
-    // it and re-read from the SERVER, bypassing the cache. The loading state shows until the read lands.
     reloadFromServer: (kind) => {
       const state = get();
       const k = KINDS[kind];
@@ -283,7 +256,6 @@ export const useAuthStore = create((set, get) => {
       loadResource(kind, ctx, { allowCache: false });
     },
 
-    // optimistic local update after a successful progress write - no extra read needed, we already know the value
     setProgressItem: (uid, canonicalId, entry) => {
       const { user, progressItems, progressCapacity } = get();
       if (!user || user.uid !== uid) return;
@@ -329,7 +301,6 @@ export const useAuthStore = create((set, get) => {
       cacheWriter.schedule('bookmarks', uid, items);
     },
 
-    // BUG-043: a failed bookmark flush puts the store AND cache back to what Firestore really holds. `previous` is Map(id -> persisted entry | null).
     rollbackBookmarks: (uid, previous) => {
       const { user, bookmarkItems } = get();
       if (!user || user.uid !== uid) return;
@@ -345,7 +316,6 @@ export const useAuthStore = create((set, get) => {
       cacheWriter.schedule('bookmarks', uid, items);
     },
 
-    // BUG-051/052/053: reset-all clears the store and the cache, so nothing stale is left to compute from
     clearProgress: (uid) => {
       const { user } = get();
       if (!user || user.uid !== uid) return;
@@ -354,7 +324,6 @@ export const useAuthStore = create((set, get) => {
       warned.progress = false;
     },
 
-    // BUG-075: wipe every local trace of this user's data (used by account deletion)
     clearAllLocalUserData: (uid) => {
       const { user } = get();
       if (!user || user.uid !== uid) return;
@@ -364,7 +333,6 @@ export const useAuthStore = create((set, get) => {
       });
     },
 
-    // BUG-079: never throws, so click handlers cannot blow up. Returns { ok, error?, redirected? }.
     signInWithGoogle: async () => {
       set({ authError: null });
       try {
@@ -374,7 +342,6 @@ export const useAuthStore = create((set, get) => {
       }
     },
 
-    // same cleanup as a real sign-out, without calling Firebase (account deletion ends the session by itself)
     signOutLocal: (uid) => {
       if (get().user?.uid !== uid) return;
       endUserSession(uid);
@@ -384,17 +351,17 @@ export const useAuthStore = create((set, get) => {
     signOut: async () => {
       const uid = get().user?.uid;
       if (uid) {
-        await flushAllBookmarksNow(); // land any still-queued bookmark write before the auth token is revoked
-        await progressQueue.whenIdle(uid); // and any progress write already in flight
+        await flushAllBookmarksNow();
+        await progressQueue.whenIdle(uid);
       }
       await signOutUser();
       if (uid) get().signOutLocal(uid);
-      await clearFirestoreLocalData(); // SEC-11: no copy of the account's docs left on this device
+      await clearFirestoreLocalData();
     },
   };
 });
 
-// BUG-081: protected actions must not decide "logged out" before Firebase has answered. Resolves true as soon as auth is ready, false if it never resolves within timeoutMs. Tolerates authReady === undefined (treated as ready).
+// protected actions must not decide "logged out" before Firebase has answered
 export function whenAuthReady(timeoutMs = 8000) {
   if (useAuthStore.getState().authReady !== false) return Promise.resolve(true);
   return new Promise((resolve) => {
@@ -412,17 +379,14 @@ export function whenAuthReady(timeoutMs = 8000) {
   });
 }
 
-// BUG-043/044/046 + BUG-25: ONE handler set for the whole app. It lives here (not in a hook module) so it is
-// registered as soon as the store exists, even if a bookmark flush fires before any component imported useBookmarks.
 const LIMITED_MSG = 'Service temporarily limited - resets at midnight PT';
 bookmarkQueue.setHandlers({
   onFailure: ({ uid, previous, error }) => {
     const store = useAuthStore.getState();
-    if (store.user?.uid !== uid) return; // user changed while the write was in flight
-    // ATLAS-BUG-004: ids whose server state we never learned cannot be rolled back, only re-read
+    if (store.user?.uid !== uid) return;
     const known = new Map([...previous].filter(([, v]) => v !== UNKNOWN_BASELINE));
     if (known.size !== previous.size) store.reloadFromServer('bookmarks');
-    if (known.size > 0) store.rollbackBookmarks(uid, known); // star goes back to what the server has
+    if (known.size > 0) store.rollbackBookmarks(uid, known);
     console.error('[auth] bookmark flush failed', error);
     if (isQuotaExhausted(error)) {
       store.setDegraded('bookmarks', true);
@@ -434,6 +398,6 @@ bookmarkQueue.setHandlers({
   onSuccess: ({ uid }) => {
     const store = useAuthStore.getState();
     if (store.user?.uid !== uid) return;
-    store.setDegraded('bookmarks', false); // this batch landed, bookmarks are not degraded anymore
+    store.setDegraded('bookmarks', false);
   },
 });

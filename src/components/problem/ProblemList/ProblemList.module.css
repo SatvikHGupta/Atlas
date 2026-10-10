@@ -36,7 +36,9 @@
   transition: background var(--transition-fast), color var(--transition-fast);
 }
 .randomBtn svg { width: 13px; height: 13px; }
-.randomBtn:hover { background: var(--accent); color: var(--accent-fg); }
+@media (hover: hover) {
+  .randomBtn:hover { background: var(--accent); color: var(--accent-fg); }
+}
 .randomBtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .grid {
@@ -76,7 +78,9 @@
   cursor: pointer;
   transition: all var(--transition-fast);
 }
-.pageBtn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+@media (hover: hover) {
+  .pageBtn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+}
 .pageBtn:disabled { opacity: 0.3; cursor: not-allowed; }
 
 .pageCenter {
@@ -112,14 +116,14 @@
 .pageInput:focus { border-color: var(--accent); }
 .pageInput::placeholder { color: var(--text-muted); font-size: 0.72rem; }
 
-/* ---- mobile ---- */
+/* mobile */
 @media (max-width: 768px) {
   .wrapper {
     padding: 0 var(--space-3) var(--space-3);
     gap: var(--space-3);
   }
   .countRow {
-    margin-top: var(--space-3); /* breathing room below search bar */
+    margin-top: var(--space-3);
   }
   .grid {
     grid-template-columns: 1fr;

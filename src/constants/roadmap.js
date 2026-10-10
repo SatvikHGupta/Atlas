@@ -1,11 +1,4 @@
-/* Roadmap levels - a curated SUBSET of NOTES_TOPICS_INDEX (52 of 64 topics), ordered by learning
-   dependency and selected using real companiesSeenIn data from raw-data/company-problems/patterns/.
-   Excluded on purpose (niche/CP-only/orthogonal tracks, not part of the core interview sequence):
-   sqrt-decomposition, mos-algorithm, eulerian-path, lca-binary-lifting, mst, sparse-table,
-   game-theory, bipartite-matching-max-flow, math-cp, misc-advanced-techniques,
-   search-and-number-theory-extras, javascript-for-dsa - all still fully documented in /notes,
-   just not gated behind the roadmap's unlock chain. topicSlugs match NOTES_TOPICS_INDEX slugs
-   directly (not display-name strings) - see lib/roadmap.js for the matching logic. */
+// Roadmap levels - a curated SUBSET of NOTES_TOPICS_INDEX
 export const UNLOCK_THRESHOLD = 5;
 
 export const ROADMAP_LEVELS = [
@@ -13,9 +6,6 @@ export const ROADMAP_LEVELS = [
     level: 0,
     title: "Foundations",
     description: "By completing this level, you'll be able to reason about time and space complexity confidently and use the basic math (palindromes, reversing, primes, GCD) that shows up in almost every problem.",
-    // "loops-patterns" was removed from the roadmap: its only problems were Pattern Printing 1 and 2, which have no question link
-    // anywhere (see src/constants/retiredProblems.js). Its NOTE still exists (constants/notes.js); only the roadmap topic is gone.
-    // Do not re-add it unless problems are tagged for it, the build's auto-fill would otherwise pull unrelated problems from later levels.
     topicSlugs: ["time-space-complexity", "basic-math"],
   },
   {

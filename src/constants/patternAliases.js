@@ -1,8 +1,6 @@
-// Pattern name aliases and slug resolver (contract C7). Author: Satvik Hemant Gupta
+// Pattern name aliases and slug resolver (contract ). Author: Satvik Hemant Gupta
 import { patternSlug } from '../lib/patternSlug.js';
 
-// BUG-139: problem pattern names that differ from the canonical pattern slug.
-// Every target was checked against the real pattern index.
 export const PATTERN_ALIASES = {
   'String Manipulation': 'string',
   Hashing: 'hash-table',
@@ -16,8 +14,7 @@ export const PATTERN_ALIASES = {
   'Fenwick Tree': 'binary-indexed-tree',
 };
 
-// Resolve a pattern name to an existing pattern page slug, or null.
-// Order: exact slug match, then alias, else null (render a plain tag).
+// Resolve a pattern name to an existing pattern page slug, or null
 export function resolvePatternSlug(name, validSlugs) {
   const slugs = validSlugs instanceof Set ? validSlugs : new Set(validSlugs);
   const direct = patternSlug(name);

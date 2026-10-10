@@ -4,7 +4,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
 const DEFAULT_FILTERS = {
-  topics:        [], // selected patterns, a problem must carry all of them
+  topics:        [],
   difficulty:    '',
   status:        '',
   sort:          'frequency',
@@ -13,12 +13,9 @@ const DEFAULT_FILTERS = {
   limit:         50,
 };
 
-// ATLAS-BUG-017: v3 removes `roadmap_level`. It was persisted but had no visible control, so an old value could
-// silently hide problems with no way for the user to see or clear it. Version bump + whitelist (below) mean an
-// obsolete key in an old session can never reach the filter state again.
 const STORE_VERSION = 3;
 
-/** Keep only keys that exist in DEFAULT_FILTERS, with the right primitive type. Pure, exported for tests. */
+// Keep only keys that exist in DEFAULT_FILTERS, with the right primitive type
 export function sanitizePersistedFilters(persisted) {
   const out = { ...DEFAULT_FILTERS };
   const src = persisted && typeof persisted === 'object' ? persisted : {};
@@ -31,7 +28,6 @@ export function sanitizePersistedFilters(persisted) {
   return out;
 }
 
-// Next.js renders this module on the server too (for the initial HTML) - sessionStorage doesn't exist there. A no-op storage keeps `persist` happy during SSR; the real sessionStorage takes over once hydrated in the browser.
 const noopStorage = { getItem: () => null, setItem: () => {}, removeItem: () => {} };
 const storage = () => (typeof window !== 'undefined' ? window.sessionStorage : noopStorage);
 
@@ -39,7 +35,7 @@ export const useFilterStore = create(
   persist(
     (set) => ({
       filters: { ...DEFAULT_FILTERS },
-      hydrated: false, // true once sessionStorage rehydration has run (BUG-105)
+      hydrated: false,
 
       setFilter: (key, value) =>
         set((state) => ({ filters: { ...state.filters, [key]: value, page: 1 } })),
@@ -47,7 +43,6 @@ export const useFilterStore = create(
       setPage: (page) =>
         set((state) => ({ filters: { ...state.filters, page } })),
 
-      // BUG-105: apply several keys at once (URL init) without forcing page 1
       patchFilters: (patch) =>
         set((state) => ({ filters: { ...state.filters, ...patch } })),
 
@@ -58,7 +53,7 @@ export const useFilterStore = create(
       name:    'atlas-filters',
       version: STORE_VERSION,
       storage: createJSONStorage(storage),
-      skipHydration: true, // hydrate manually client-side (see FilterBar) to avoid SSR/client mismatch
+      skipHydration: true,
 
       partialize: (state) => ({
         filters: {
@@ -72,12 +67,10 @@ export const useFilterStore = create(
         },
       }),
 
-      // old sessions (version < 3) may carry roadmap_level: drop it instead of carrying it forward
       migrate: (persisted) => ({ ...(persisted || {}), filters: sanitizePersistedFilters(persisted?.filters) }),
 
       merge: (persisted, current) => ({
         ...current,
-        // BUG-099: persisted is undefined on a first visit; guard so hydration finishes
         filters: sanitizePersistedFilters(persisted?.filters),
       }),
 

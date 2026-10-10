@@ -16,7 +16,9 @@
   text-decoration: none;
   font-weight: 600;
 }
-.breadcrumbLink:hover { text-decoration: underline; }
+@media (hover: hover) {
+  .breadcrumbLink:hover { text-decoration: underline; }
+}
 
 .sep { color: var(--text-muted); }
 
@@ -44,7 +46,9 @@
   transition: border-color var(--transition-fast), background var(--transition-fast);
   min-width: 0;
 }
-.navLink:hover { border-color: var(--border-strong); background: var(--bg-card-hover); }
+@media (hover: hover) {
+  .navLink:hover { border-color: var(--border-strong); background: var(--bg-card-hover); }
+}
 .navLink[data-dir='next'] { justify-content: flex-end; text-align: right; }
 
 .navArrow {

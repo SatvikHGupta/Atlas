@@ -1,5 +1,4 @@
-// Loads Chart.js on demand and registers ONLY what the dashboard draws (bar, line, doughnut, radar), so the library is a
-// separate chunk fetched when the dashboard opens and nothing else on the site pays for it. Author: Satvik Hemant Gupta
+// Loads Chart.js on demand and registers ONLY what the dashboard draws. Author: Satvik Hemant Gupta
 let loading = null;
 
 export function loadChart() {
@@ -11,7 +10,7 @@ export function loadChart() {
         m.CategoryScale, m.LinearScale, m.Tooltip, m.Legend, m.Filler,
       );
       return m.Chart;
-    }).catch((error) => { loading = null; throw error; }); // a failed download can be retried on the next mount
+    }).catch((error) => { loading = null; throw error; });
   }
   return loading;
 }

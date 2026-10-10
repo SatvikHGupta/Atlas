@@ -17,7 +17,7 @@ export function buildPostCardData({ user, stats, allProblems, progressList }) {
   return {
     name: user?.displayName?.trim() || user?.email?.split('@')[0] || 'Atlas learner',
     since: sinceOf(user),
-    photo: user?.photoURL || null, // loaded as an image by postCardDownload.js, letter shown if it can not be used
+    photo: user?.photoURL || null,
     dsa: stats.dsa.solved,
     cp: stats.cp.solved,
     streak: stats.activity.current_streak,

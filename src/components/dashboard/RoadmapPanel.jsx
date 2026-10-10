@@ -1,9 +1,6 @@
 import Link from 'next/link';
 import styles from '../../app/dashboard/Dashboard.module.css';
 
-// Compact roadmap for the dashboard: every level as one small node (done / current / locked), then ONLY the current level in
-// detail and the single next lock. Twelve full cards, mostly locked, were the old page's loudest and least useful block.
-// `view` is lib/dashboardData.js roadmapView(). Author: Satvik Hemant Gupta
 const STATE_WORD = { done: 'complete', current: 'in progress', open: 'open', locked: 'locked' };
 
 export default function RoadmapPanel({ view }) {

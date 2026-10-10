@@ -12,7 +12,6 @@ import styles from './Roadmap.module.css';
 
 const TOPIC_NAME_BY_SLUG = Object.fromEntries(NOTES_TOPICS_INDEX.map((t) => [t.slug, t.topic]));
 
-// BUG-094: skeleton until the index AND (when signed in) progress are ready, so locked state never flashes.
 function RoadmapSkeleton() {
   return (
     <PageWrapper>
@@ -25,10 +24,8 @@ function RoadmapSkeleton() {
 
 export default function RoadmapClient() {
   const { data, isReady, isError, refetch } = useRoadmap();
-  // empty topics / levels are removed from what is shown (lib/roadmap.js visibleRoadmap); unlock logic is unaffected
   const levels = visibleRoadmap(data || []);
 
-  // The roadmap must never silently render empty.
   if (isError) {
     return (
       <PageWrapper>
@@ -92,7 +89,6 @@ export default function RoadmapClient() {
                       </>
                     );
 
-                    // BUG-088: chips of a locked level are not links.
                     return level.isUnlocked ? (
                       <Link key={topic.slug} href={`/roadmap/${level.level}`} className={styles.topicChip}>
                         {chip}
@@ -106,7 +102,6 @@ export default function RoadmapClient() {
                 {level.isUnlocked ? (
                   <Link href={`/roadmap/${level.level}`} className={styles.goBtn}>View Problems →</Link>
                 ) : (
-                  // BUG-087/088: a locked level is not a link, it says what to finish first.
                   <p className={styles.lockHint}>{hint}</p>
                 )}
               </motion.div>

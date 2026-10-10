@@ -47,7 +47,9 @@
   justify-content: center;
 }
 
-.clear:hover { color: var(--text-primary); }
+@media (hover: hover) {
+  .clear:hover { color: var(--text-primary); }
+}
 
 @media (min-width: 769px) {
   .input {

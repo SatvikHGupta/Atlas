@@ -12,8 +12,7 @@ import styles from './ProblemCard.module.css';
 const HIDDEN_TAGS = new Set(['Union-Find', 'union-find', 'Union Find']);
 
 const ProblemCard = memo(function ProblemCard({ problem, isBookmarked, status, onBookmark }) {
-  const bookmarksDegraded = useAuthStore((s) => s.bookmarksDegraded); // ATLAS-BUG-016: bookmark star depends on the BOOKMARKS quota only
-  // BUG-005: the button is no longer inside the link, so no preventDefault
+  const bookmarksDegraded = useAuthStore((s) => s.bookmarksDegraded);
   const handleBookmark = () => {
     if (bookmarksDegraded) return;
     onBookmark(problem.canonical_id);
@@ -26,12 +25,9 @@ const ProblemCard = memo(function ProblemCard({ problem, isBookmarked, status, o
   const diffColor = getDifficultyColor(problem.difficulty);
   const diffBg    = getDifficultyBg(problem.difficulty);
   const platform  = getPrimaryPlatform(problem);
-  // frequency_score is 0 for 97.9% of DSA problems (measured directly) - only the ~2% that have a real
-  // value get this badge at all, so it reads as a genuine signal rather than noise on every card.
   const hasFrequency = problem.frequency_score > 0;
 
   return (
-    // BUG-005: article with a stretched title link; bookmark is a sibling
     <motion.article
       className={styles.card}
       layout
@@ -64,7 +60,6 @@ const ProblemCard = memo(function ProblemCard({ problem, isBookmarked, status, o
               {status === 'solved' ? 'Solved: ' : 'Attempted: '}
             </span>
           )}
-          {/* BUG-005/008: title link + bookmark button are siblings, not nested */}
           <Link href={`/problems/${problem.slug}`} className={styles.titleLink}>
             {problem.title}
           </Link>

@@ -44,7 +44,9 @@
   font-weight: 650;
   cursor: pointer;
 }
-.signInBtn:hover { background: var(--accent-hover); }
+@media (hover: hover) {
+  .signInBtn:hover { background: var(--accent-hover); }
+}
 
 @media (max-width: 720px) {
   .layout { grid-template-columns: 1fr; }

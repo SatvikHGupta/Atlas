@@ -1,7 +1,6 @@
 import styles from '../../app/companies/[id]/CompanyDetail.module.css';
 
-// Levels & roles: the company's engineering ladder. Role families, notes and sources moved to CompanyFootnotes (page bottom).
-// Renders nothing until a company has researched ladder data.
+// Levels & roles: the company's engineering ladder
 export default function LadderSection({ data }) {
   const ladder = data.ladder || [];
   if (!ladder.length) return null;

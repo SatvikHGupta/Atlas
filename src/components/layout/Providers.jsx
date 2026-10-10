@@ -12,7 +12,7 @@ export default function Providers({ children }) {
   }));
 
   useHydrateFilters();
-  useSignedOutStatusGuard(); // BUG-102/103
+  useSignedOutStatusGuard();
 
   useEffect(() => {
     const unsub = useAuthStore.getState().init();
@@ -21,7 +21,6 @@ export default function Providers({ children }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* BUG-162: honour prefers-reduced-motion for all Motion animations */}
       <MotionConfig reducedMotion="user">
         {children}
       </MotionConfig>

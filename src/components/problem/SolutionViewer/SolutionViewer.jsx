@@ -9,16 +9,13 @@ import styles from './SolutionViewer.module.css';
 
 const LANGUAGES = [
   { key: 'javascript', label: 'JavaScript', checkPrefix: 'js' },
-  { key: 'cpp',        label: 'C/C++' },       // no checks data exists for cpp/java (measured across a
-  { key: 'java',       label: 'Java' },        // 400-problem sample) - checkPrefix stays undefined for
-  { key: 'python',     label: 'Python', checkPrefix: 'py' }, // these, so they never show a signal either way
+  { key: 'cpp',        label: 'C/C++' },
+  { key: 'java',       label: 'Java' },
+  { key: 'python',     label: 'Python', checkPrefix: 'py' },
 ];
 const VARIANTS = [{ key: 'algo', label: 'Algorithm' }, { key: 'optimal', label: 'Optimal' }];
 
-/* PERFORMANCE FIX: this used to receive the FULL 4-language x 2-variant `solutions` object as a prop. Since this is a 'use client' component, Next.js has to serialize whatever it's given into the page's hydration payload - so all 8 pre-highlighted code blocks were shipped on every single problem page, even though only one is ever visible at first paint. Measuring actual built page sizes (not just "the build succeeded") found this was 98% of the heaviest pages' weight. Now this only ever receives `defaultSolution` (javascript/algo, tiny, server-rendered instantly - no fetch, no loading state, matches what the old version showed anyway since that was the default tab) plus `slug`. The other 7 blocks are fetched from a small pre-built static endpoint (see app/api/solutions/[slug]/route.js) exactly once, only if a visitor actually clicks a different language or variant tab - and cached after that first fetch, so switching tabs a second time is instant. */
 export default function SolutionViewer({ slug, defaultSolution, checks }) {
-  // BUG-111/C5: checks tells us which JS/Python combos are missing; C++/Java
-  // have no check data so they're assumed available until proven otherwise.
   const getCheckStatus = (langKey, variantKey) => {
     const meta = LANGUAGES.find((l) => l.key === langKey);
     if (!meta?.checkPrefix || !checks) return undefined;
@@ -45,10 +42,8 @@ export default function SolutionViewer({ slug, defaultSolution, checks }) {
   const [activeVariant, setActiveVariant] = useState(initialPick.variant);
   const [copied, setCopied]               = useState(false);
   const [copyError, setCopyError]         = useState(false);
-  // BUG-114: keyed by language:variant, not variant alone, so revealing one
-  // solution never affects the reveal state of another language's same variant.
   const [revealed, setRevealed]           = useState({});
-  const [fullSolutions, setFullSolutions] = useState(null); // filled in lazily, only if needed
+  const [fullSolutions, setFullSolutions] = useState(null);
   const [loading, setLoading]             = useState(false);
   const [loadError, setLoadError]         = useState(false);
 
@@ -63,7 +58,6 @@ export default function SolutionViewer({ slug, defaultSolution, checks }) {
   const currentCodeHtml = isDefaultTab
     ? defaultSolution?.codeHtml
     : (activeVariant === 'algo' ? langData.algoCodeHtml : langData.optimalCodeHtml);
-  // SEC-07: never inject fetched HTML as-is, only the tags/attributes a syntax highlighter produces survive
   const safeCodeHtml = useMemo(() => sanitizeHtml(currentCodeHtml, 'code'), [currentCodeHtml]);
   const currentComplexity = isDefaultTab
     ? defaultSolution?.complexity
@@ -73,7 +67,6 @@ export default function SolutionViewer({ slug, defaultSolution, checks }) {
   const revealKey = `${activeLang}:${activeVariant}`;
   const isRevealed = !!revealed[revealKey];
 
-  // true if EITHER variant for this language has a non-healthy check - used for the tab dot
   const langHasCaveat = (lang) => {
     if (!lang.checkPrefix || !checks) return false;
     return VARIANTS.some((v) => verificationLabel(checks[`${lang.checkPrefix}_${v.key}`]).tone !== 'ok');
@@ -103,12 +96,11 @@ export default function SolutionViewer({ slug, defaultSolution, checks }) {
   };
 
   const selectLang = (key) => {
-    // BUG-14: keep the current variant only if the new language has it, otherwise land on one that exists
     const keep = availableMap[`${key}:${activeVariant}`] !== false;
     const nextVariant = keep ? activeVariant : (VARIANTS.find((v) => availableMap[`${key}:${v.key}`] !== false)?.key ?? activeVariant);
     setActiveLang(key);
     setActiveVariant(nextVariant);
-    setCopyError(false); // LINT-06: reset here instead of in an effect
+    setCopyError(false);
     maybeLoad(key, nextVariant);
   };
   const selectVariant = (key) => {
@@ -119,8 +111,6 @@ export default function SolutionViewer({ slug, defaultSolution, checks }) {
 
   const handleReveal = () => setRevealed((prev) => ({ ...prev, [revealKey]: true }));
 
-  // BUG-115: never fail silently - fall back to a hidden textarea + execCommand,
-  // and show an inline message if both paths fail.
   const handleCopy = async () => {
     if (!currentCode || !isRevealed) return;
     setCopyError(false);
@@ -282,7 +272,6 @@ export default function SolutionViewer({ slug, defaultSolution, checks }) {
                   pointerEvents: isRevealed ? 'auto' : 'none',
                   transition: 'filter 0.3s ease',
                 }}
-                // Pre-highlighted at build time (see file doc comment) and re-sanitized above (SEC-07).
                 dangerouslySetInnerHTML={{ __html: safeCodeHtml }}
               />
             </div>

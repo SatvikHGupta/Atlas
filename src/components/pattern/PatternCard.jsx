@@ -4,19 +4,14 @@ import { nameHue } from '../../lib/nameHue.js';
 import Link from 'next/link';
 import styles from '../../app/patterns/PatternList.module.css';
 
-// Cursor-follow spotlight (--mx/--my) - a small client component just for this, so the page above stays a plain server component.
+// Cursor-follow spotlight (--mx/--my)
 function handleMove(e) {
   const r = e.currentTarget.getBoundingClientRect();
   e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`);
   e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`);
 }
 
-
-// `noteSlug` is the destination for the 📘 badge (undefined when this pattern has no note). The
-// card is a <div> now, not a <Link> - the whole-card click target is a "stretched link" (an
-// invisible <Link> covering the card via inset:0) so the note badge can be its OWN real, separately
-// clickable <Link> sitting on top of it - two <a> tags can't nest, but they can sit as CSS-stacked
-// siblings, which is what this is.
+// `noteSlug` is the destination for the 📘 badge
 export default function PatternCard({ pattern: p, maxCompanies, rank, noteSlug }) {
   const noSet = p.practiceCount === 0;
   const isFeatured = typeof rank === 'number';

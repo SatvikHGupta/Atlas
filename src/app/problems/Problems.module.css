@@ -1,6 +1,7 @@
 /* desktop layout: sidebar + content side by side */
 .layout {
   display: flex;
+  min-height: calc(100vh - var(--navbar-height));
   min-height: calc(100dvh - var(--navbar-height));
 }
 
@@ -19,7 +20,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 12px 10px; /* bottom padding creates gap between search bar and content */
+    padding: 10px 12px 10px;
     position: sticky;
     top: var(--navbar-height);
     z-index: 50;
@@ -36,7 +37,7 @@
     align-items: center;
     gap: 5px;
     padding: 0 12px;
-    height: 40px;
+    min-height: 44px;
     border-radius: var(--radius-md);
     border: 1px solid var(--border);
     background: var(--bg-card);

@@ -2,8 +2,6 @@
 
 import { create } from 'zustand';
 
-// BUG FIX: sidebarOpen/toggleSidebar/setSidebar were dead code in the old app (state existed, nothing read it) - dropped rather than ported.
-// Monotonic id: Date.now() collided when two toasts were added in the same millisecond (duplicate React keys).
 let nextToastId = 1;
 
 export const useUIStore = create((set) => ({

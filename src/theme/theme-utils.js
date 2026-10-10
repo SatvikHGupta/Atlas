@@ -1,13 +1,6 @@
-// Theme engine: validates mode + accent definitions and turns them into CSS custom properties. Pure functions, no
-// DOM, no framework - runs the same in Node (build, route handler, tests) and in the browser.
-//
-// A theme is a MODE (light | dark: backgrounds, text, borders, status colors, code blocks) plus a PRIMARY colour (the
-// accent) plus an optional SECONDARY colour (gradients, glow). Primary and secondary are picked from the same palette
-// (src/themes/colors.js), so any colour can be either. The CSS has one block per mode, one per mode+primary pair
-// (accent tokens) and one per mode+secondary (the --accent-2 override, only applied when a secondary is chosen).
+// Theme engine: validates mode + accent definitions and turns them into CSS custom properties
 import { DARK_TOKENS, LIGHT_TOKENS, MODE_DEFAULTS, INK, PAPER } from './theme-presets.js';
 
-// ---------------------------------------------------------------- the contract
 export const MODE_REQUIRED_COLORS = ['background', 'surface', 'surfaceAlt', 'text', 'textMuted', 'border', 'success', 'warning', 'danger'];
 export const MODE_OPTIONAL_COLORS = [
   'textSecondary', 'surfaceHover', 'elevated', 'borderSubtle', 'borderStrong', 'cyan', 'emerald', 'rose', 'amber',
@@ -20,15 +13,13 @@ const MODE_KEYS = ['id', 'name', 'description', 'shiki', 'colors', 'code'];
 const COLOR_KEYS = ['id', 'name', 'group', 'aliases', 'dark', 'light'];
 export const MODES = ['light', 'dark'];
 
-// Contrast floors (WCAG). Enforced for every mode+accent pair when the registry loads, so a bad color fails the build.
-export const MIN_TEXT_CONTRAST = 4.5; // text on its surface
-export const MIN_UI_CONTRAST = 3; // a filled accent against the page
+export const MIN_TEXT_CONTRAST = 4.5;
+export const MIN_UI_CONTRAST = 3;
 
-// ---------------------------------------------------------------- color math
 const HEX = /^#([0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
 const RGB = /^rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*(\d*\.?\d+)\s*)?\)$/i;
 
-/** Parses #rgb / #rgba / #rrggbb / #rrggbbaa / rgb() / rgba(). Returns {r,g,b,a} or null. */
+// Parses #rgb / #rgba / #rrggbb / #rrggbbaa / rgb / rgba
 export function parseColor(input) {
   if (typeof input !== 'string') return null;
   const value = input.trim();
@@ -55,7 +46,7 @@ const fmtAlpha = (a) => String(Math.round(a * 1000) / 1000);
 export const toRgba = ({ r, g, b }, a) => `rgba(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}, ${fmtAlpha(a)})`;
 export const toTriplet = ({ r, g, b }) => `${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}`;
 
-/** Blend two colors; t = share of `b` (0..1). Returns an opaque #rrggbb. */
+// Blend two colors; t = share of `b` (0..1)
 export function mix(a, b, t) {
   const x = parseColor(a);
   const y = parseColor(b);
@@ -70,15 +61,14 @@ export function luminance(color) {
   const { r, g, b } = parseColor(color);
   return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
 }
-/** WCAG contrast ratio (1..21). */
+// WCAG contrast ratio (1..21)
 export function contrast(a, b) {
   const [hi, lo] = [luminance(a), luminance(b)].sort((p, q) => q - p);
   return (hi + 0.05) / (lo + 0.05);
 }
-/** Whichever of white / near-black reads better on `background`. */
+// Whichever of white / near-black reads better on `background`
 export const readableOn = (background) => (contrast(PAPER, background) >= contrast(INK, background) ? PAPER : INK);
 
-// ---------------------------------------------------------------- validation
 const ID = /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/;
 const checkColors = (errors, label, obj, required, optional, opaque) => {
   if (!obj || typeof obj !== 'object') {
@@ -102,7 +92,7 @@ const checkIdentity = (errors, def) => {
   if (typeof def.description !== 'string' || !def.description.trim()) errors.push('description must be a non-empty string');
 };
 
-/** Returns a list of human-readable problems for a mode definition (empty = valid). */
+// Returns a list of human-readable problems for a mode definition
 export function validateMode(def) {
   const errors = [];
   if (!def || typeof def !== 'object') return ['mode definition is not an object'];
@@ -127,7 +117,7 @@ export function validateMode(def) {
   return errors;
 }
 
-/** Returns a list of human-readable problems for a colour definition (empty = valid). */
+// Returns a list of human-readable problems for a colour definition
 export function validateColor(def) {
   const errors = [];
   if (!def || typeof def !== 'object') return ['colour definition is not an object'];
@@ -146,7 +136,7 @@ export function validateColor(def) {
   return errors;
 }
 
-/** Problems for one mode+colour pair: is the colour readable on this mode's surfaces as a primary? (Only call with valid inputs.) */
+// Problems for one mode+colour pair
 export function validatePair(mode, accent) {
   const errors = [];
   const c = mode.colors;
@@ -158,25 +148,24 @@ export function validatePair(mode, accent) {
   };
   need('primary on background', a.primary, c.background, MIN_UI_CONTRAST);
   need('primary on surface', a.primary, c.surface, MIN_UI_CONTRAST);
-  // link is the colour used as TEXT (links, active tabs), so it has to meet the text floor.
   need('link on background', a.link, c.background, MIN_TEXT_CONTRAST);
   need('link on surface', a.link, c.surface, MIN_TEXT_CONTRAST);
   need('text on primary buttons', a.onPrimary ?? readableOn(a.primary), a.primary, MIN_TEXT_CONTRAST);
   return errors;
 }
 
-// ---------------------------------------------------------------- derivation
+// derivation
 const scaleAlpha = (color, factor) => {
   const c = parseColor(color);
   return toRgba(c, Math.min(1, c.a * factor));
 };
-// Readable, normalized form of any accepted color (hex stays hex, rgba stays rgba).
+// Readable, normalized form of any accepted color
 const norm = (value) => {
   const c = parseColor(value);
   return c.a === 1 && String(value).trim().startsWith('#') ? toHex(c) : toRgba(c, c.a);
 };
 
-/** Mode-level CSS custom properties (name without the leading --). Nothing here depends on the accent. */
+// Mode-level CSS custom properties (name without the leading --)
 export function resolveModeTokens(def) {
   const c = def.colors;
   const d = MODE_DEFAULTS[def.id];
@@ -223,11 +212,9 @@ export function resolveModeTokens(def) {
     'shadow-lg': `0 8px 32px rgba(${shadowRgb}, ${fmtAlpha(aLg)})`,
     'shadow-accent': '0 4px 24px var(--accent-glow)',
 
-    // Two-tone helpers built from variables, so they follow whichever accent and partner colour is active.
     'accent-gradient': 'linear-gradient(135deg, var(--accent), var(--accent-2))',
     'body-glow': `radial-gradient(at 0% 0%, rgba(var(--accent-rgb), ${d.glowAlphas[0]}) 0, transparent 60%), radial-gradient(at 100% 100%, rgba(var(--accent-2-rgb), ${d.glowAlphas[1]}) 0, transparent 55%)`,
 
-    // The semantic status colors from the contract. solved follows success so "done" always looks like "success".
     success: norm(c.success),
     'success-bg': toRgba(success, 0.1),
     warning: norm(c.warning),
@@ -238,7 +225,6 @@ export function resolveModeTokens(def) {
     solved: norm(c.success),
     'solved-bg': toRgba(success, d.statusBgAlpha),
 
-    // Code blocks follow the mode (see the --shiki-* variables that src/styles/global.css maps onto syntax colors).
     'code-bg': norm(def.code.background),
     'code-border': norm(def.code.border),
     'code-text': norm(def.code.text),
@@ -248,7 +234,7 @@ export function resolveModeTokens(def) {
   };
 }
 
-/** Primary-colour (accent) CSS custom properties for one colour in one mode. Without a secondary the partner is the primary itself, so gradients are flat. */
+// Primary-colour (accent) CSS custom properties for one colour in one mode
 export function resolveAccentTokens(mode, color) {
   const a = color[mode.id];
   const d = MODE_DEFAULTS[mode.id];
@@ -266,26 +252,23 @@ export function resolveAccentTokens(mode, color) {
   };
 }
 
-/** Secondary-colour override: the colour's primary shade for this mode. Applied when <html data-secondary> is set. */
+// Secondary-colour override: the colour's primary shade for this mode
 export function resolveSecondaryTokens(mode, color) {
   const partner = parseColor(color[mode.id].primary);
   return { 'accent-2': toHex(partner), 'accent-2-rgb': toTriplet(partner) };
 }
 
-/** Every token for one mode + primary (+ optional secondary) combination (used by the preview panel and tests). */
+// Every token for one mode + primary
 export const resolveTokens = (mode, accent, secondary = null) => ({
   ...resolveModeTokens(mode),
   ...resolveAccentTokens(mode, accent),
   ...(secondary ? resolveSecondaryTokens(mode, secondary) : {}),
 });
 
-// ---------------------------------------------------------------- CSS output
+// CSS output
 const declarations = (tokens) => Object.entries(tokens).map(([name, value]) => `  --${name}: ${value};`).join('\n');
 
-/**
- * One rule per mode (mode tokens) and one per mode+accent pair (accent tokens). The default mode answers to :root and
- * the default pair to :root too, so the page is never unstyled.
- */
+// One rule per mode (mode tokens) and one per mode+accent pair (accent tokens)
 export function buildThemeCss(modes, accents, defaultModeId, defaultAccentId) {
   const blocks = [];
   for (const mode of modes) {
@@ -299,7 +282,6 @@ export function buildThemeCss(modes, accents, defaultModeId, defaultAccentId) {
       blocks.push(`/* ${accent.name} on ${mode.name} */\n${isDefault ? `:root,\n${pair}` : pair} {\n${declarations(resolveAccentTokens(mode, accent))}\n}`);
     }
   }
-  // Secondary overrides come last: same specificity as the pair blocks above, so they win when data-secondary is set.
   for (const mode of modes) {
     for (const color of accents) {
       blocks.push(`/* ${color.name} as secondary on ${mode.name} */\nhtml[data-mode='${mode.id}'][data-secondary='${color.id}'] {\n${declarations(resolveSecondaryTokens(mode, color))}\n}`);
@@ -308,7 +290,6 @@ export function buildThemeCss(modes, accents, defaultModeId, defaultAccentId) {
   return `/* Generated from src/themes/*.js by src/theme/theme-utils.js - edit the theme files, not this output. */\n\n${blocks.join('\n\n')}\n`;
 }
 
-/** Short, stable fingerprint used to version the stylesheet URL (FNV-1a, base 36). */
 export function fingerprint(text) {
   let h = 0x811c9dc5;
   for (let i = 0; i < text.length; i += 1) {

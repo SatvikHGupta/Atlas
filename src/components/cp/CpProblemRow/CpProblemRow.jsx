@@ -7,19 +7,14 @@ import DifficultyBadge from '../../problem/DifficultyBadge/DifficultyBadge.jsx';
 import RatingPill from '../RatingPill/RatingPill.jsx';
 import styles from './CpProblemRow.module.css';
 
-// `problem` is expected to already carry `_cfRating` (precomputed once in CpProblemsClient - see its
-// doc comment - rather than re-deriving it here on every render for all 10,518 rows).
-// ATLAS-BUG-003/016: progressLocked / bookmarksLocked come from the parent (not ready, failed, or quota-degraded for THAT resource).
-// Locked buttons are disabled with a reason instead of firing and bouncing off a toast.
+// `problem` is expected to already carry `_cfRating`
 export default function CpProblemRow({ problem, status, solveCount, isBookmarked, onSolved, onAttempted, onReset, onBookmark, progressLocked = null, bookmarksLocked = null }) {
   const url = getCfUrl(problem);
   const cfPlatforms = getAllCfPlatforms(problem);
   const extraVariants = cfPlatforms.length - 1;
-  // BUG-038: code, rating and link all come from the same primary mapping
   const problemCode = getPrimaryMapping(problem)?.platform_id || null;
   const rating = problem._cfRating !== undefined ? problem._cfRating : getDisplayRating(problem);
 
-  // BUG-039: the "+N" control is a native <details>, so Enter/Space and focus work without custom key code.
   const variantsRef = useRef(null);
   const [variantsOpen, setVariantsOpen] = useState(false);
   useEffect(() => {
@@ -42,11 +37,11 @@ export default function CpProblemRow({ problem, status, solveCount, isBookmarked
   const mainContent = (
     <>
       <span className={styles.badges}>
-        <DifficultyBadge score={problem.difficulty} />
+        <span className={styles.diffWrap}><DifficultyBadge score={problem.difficulty} /></span>
         <RatingPill rating={rating} />
       </span>
       <span className={styles.rowTitle}>{problem.title}</span>
-      {problemCode && <span className={styles.problemCode}>{problemCode}</span>}
+      {problemCode && <span className={`${styles.problemCode} ${styles.codeDesktop}`}>{problemCode}</span>}
       {solveCount > 1 && (
         <span className={styles.solveCount} title={`Marked solved ${solveCount} times`}>{'\u00d7'}{solveCount}</span>
       )}
@@ -55,8 +50,6 @@ export default function CpProblemRow({ problem, status, solveCount, isBookmarked
 
   return (
     <div className={styles.row} data-status={status || ''}>
-      {/* BUG-006/007: a real anchor gives native Enter, open-in-new-tab and context menu. The buttons below are
-          siblings of it, never nested inside, so no stopPropagation is needed. */}
       {url ? (
         <a className={`${styles.rowMain} ${styles.rowLink}`} href={url} target="_blank" rel="noopener noreferrer">
           {mainContent}
@@ -115,7 +108,7 @@ export default function CpProblemRow({ problem, status, solveCount, isBookmarked
           onClick={onBookmark}
         >{isBookmarked ? '\u2605' : '\u2606'}</button>
         {url && (
-          <a className={styles.cfLink} href={url} target="_blank" rel="noopener noreferrer" aria-label={`Open ${problem.title} on Codeforces`}>
+          <a className={`${styles.cfLink} ${styles.cfDesktop}`} href={url} target="_blank" rel="noopener noreferrer" aria-label={`Open ${problem.title} on Codeforces`}>
             {'\u2197'} CF
           </a>
         )}

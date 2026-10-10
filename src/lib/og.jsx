@@ -1,4 +1,4 @@
-// Shared layout for every dynamic OG image (problems/companies/patterns/ notes). next/og's ImageResponse only supports a constrained subset of CSS (flexbox, no grid), so this stays deliberately simple: a dark card matching the site's theme tokens, a small accent-colored eyebrow label, a big title, an optional subtitle line, and the Atlas wordmark pinned to the bottom - one template, four call sites, each just passing different text (see each route's opengraph-image.jsx).
+// Shared layout for every dynamic OG image (problems/companies/patterns/ notes)
 export function ogTemplate({ eyebrow, title, subtitle, accent = '#7c3aed' }) {
   return (
     <div

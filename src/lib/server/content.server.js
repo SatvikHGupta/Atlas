@@ -1,4 +1,4 @@
-/* Server-only content access - fs reads against the content/ directory produced by scripts/build-content.mjs (Phase 0 data reshape). This is the ONLY place that knows the on-disk layout, mirroring the old dataClient.js's "single module owns the file paths" rule. Everything here runs at build time (generateStaticParams / a Server Component rendered during `next build`) - never shipped to the client, never fetched over the network. This is what replaces the old 66.7MB oc.json fetch-the-whole-file-for-one-problem pattern: one fs.readFileSync of a ~3KB per-problem file. */
+// Server-only content access - fs reads against the content/ directory produced
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROADMAP_LEVELS } from '../../constants/roadmap.js';
@@ -8,7 +8,7 @@ import { patternSlug } from '../patternSlug.js';
 import { isValidSlug } from '../slugValidation.js';
 import { getStarLevel } from '../noteLevels.js';
 
-// ATLAS_CONTENT_DIR lets tests and scripts point at a fixture folder.
+// ATLAS_CONTENT_DIR lets tests and scripts point at a fixture folder
 const contentDir = () => process.env.ATLAS_CONTENT_DIR || path.join(process.cwd(), 'content');
 
 let dsaIndexCache = null;
@@ -20,17 +20,13 @@ let companyIdSet = null;
 let patternSlugSet = null;
 let noteSlugCache = null;
 
-/** Test helper: forget every cached index so a new fixture folder is read. */
+// Test helper: forget every cached index so a new fixture folder is read
 export function resetContentCache() {
   dsaIndexCache = cpIndexCache = companyIndexCache = patternIndexCache = null;
   dsaSlugSet = companyIdSet = patternSlugSet = noteSlugCache = null;
 }
 
-// BUG-141: a route param must already be a canonical slug. Anything else
-// (uppercase, dots, slashes, spaces) is invalid and yields null, never a
-// "cleaned" slug that could match a different real page.
-// BUG-125: it must also exist in the canonical index, so an orphan file
-// left on disk can never be served.
+// a route param must already be a canonical slug
 function readContentJson(dir, slug, indexSet) {
   if (!isValidSlug(slug)) return null;
   if (!indexSet.has(slug)) return null;
@@ -53,12 +49,12 @@ export function getCpIndex() {
   return cpIndexCache;
 }
 
-/* Full 4-language/2-variant solutions object for one problem, lazily served via app/api/solutions/[slug]/route.js - kept out of the main problem bundle (see build-content.mjs's `defaultSolution` doc comment) so it's never eagerly embedded in the problem page's hydration payload. */
+// Full 4-language/2-variant solutions object for one problem
 export function getSolutions(slug) {
   return readContentJson('solutions', slug, getDsaSlugSet());
 }
 
-/** One full problem bundle, by slug. Returns null if it doesn't exist. */
+// One full problem bundle, by slug
 export function getProblemBundle(slug) {
   return readContentJson('problems', slug, getDsaSlugSet());
 }
@@ -68,7 +64,7 @@ function getDsaSlugSet() {
   return dsaSlugSet;
 }
 
-/** All slugs with a real bundle - used by generateStaticParams. */
+// All slugs with a real bundle - used by generateStaticParams
 export function getAllProblemSlugs() {
   return getDsaIndex().map((p) => p.slug);
 }
@@ -97,13 +93,7 @@ export function getPatternDetail(slug) {
   return readContentJson('patterns', slug, patternSlugSet);
 }
 
-/* Roadmap context for a problem detail page (point 5 of the problems-page data audit): is_atlas_roadmap/
-   roadmap_level/roadmap_topic/roadmap_order are fully populated in the index but nothing ever reads them
-   on the detail page - no "step N of M" indicator, no prev/next. This reads the already-cached DSA index
-   (no extra fs read) and returns this problem's siblings within the same level+topic, sorted by
-   roadmap_order, plus its position and prev/next neighbors. Returns null for the ~98% of problems that
-   aren't roadmap-curated - the section just doesn't render for those. Level names come from ROADMAP_LEVELS
-   (constants/roadmap.js), the single source of truth for the roadmap. */
+// Roadmap context for a problem detail page
 export function getRoadmapContext(problem) {
   if (!problem?.is_atlas_roadmap) return null;
 
@@ -115,7 +105,6 @@ export function getRoadmapContext(problem) {
   if (index === -1) return null;
 
   return {
-    // BUG-02: the roadmap's own level titles. LEVEL_NAMES is the older 10-entry NOTES naming and disagreed for 9 of 12 levels.
     levelName: ROADMAP_LEVELS.find((l) => l.level === problem.roadmap_level)?.title || `Level ${problem.roadmap_level}`,
     level: problem.roadmap_level,
     topic: problem.roadmap_topic,
@@ -126,7 +115,7 @@ export function getRoadmapContext(problem) {
   };
 }
 
-/** Notes: same shape as before (constants/notes.js + content/notes/<slug>.json). BUG-127, 128: the canonical list is NOTES_TOPICS_INDEX; files on disk only confirm it. An indexed note with no file throws (build failure), a stray file that is not indexed is ignored. */
+// Notes: same shape as before (constants/notes.js + content/notes/<slug>.json)
 export function getAvailableNoteSlugs() {
   if (noteSlugCache) return noteSlugCache;
   const dir = path.join(contentDir(), 'notes');
@@ -155,8 +144,7 @@ const LEVEL_NAMES = {
   9: 'Math & CP Extras',
 };
 
-/* BUG FIX / dynamic-count: `ready`/`total` are computed from NOTES_TOPICS_INDEX (canonical) confirmed against the files under content/notes/ - add a topic to the constant and its raw-data/notes file, and these numbers (and the whole /notes page) update on the next build with no code change anywhere. Never hand-typed. */
-// BUG-186: a notes level with no name is a build error, never a silent "Other".
+// / dynamic-count: `ready`/`total` are computed from NOTES_TOPICS_INDEX
 function noteLevelName(level) {
   const name = LEVEL_NAMES[level];
   if (!name) throw new Error(`NOTES_TOPICS_INDEX uses level ${level} but LEVEL_NAMES has no name for it`);
@@ -178,7 +166,6 @@ export function getNotesIndex() {
   }
 
   return {
-    // BUG-147: the starred (last) level, derived once from the index.
     starLevel: getStarLevel(NOTES_TOPICS_INDEX),
     levels: Object.values(byLevel).sort((a, b) => a.level - b.level),
     total: topics.length,
@@ -186,9 +173,6 @@ export function getNotesIndex() {
   };
 }
 
-
-/* Sidebar topics (DSA_TOPICS) that have no company-pipeline pattern page get a page built from the DSA index, so every
-   topic a user can filter by in the sidebar also has a working /patterns/<slug> page. Returns a pattern-page-shaped entry or null. */
 const TOPIC_PRACTICE_LIMIT = 30;
 export function getTopicPatternEntry(slug) {
   if (!isValidSlug(slug)) return null;
@@ -211,13 +195,13 @@ export function getTopicPatternEntry(slug) {
   return { pattern: name, slug, totalProblemsInPool: rows.length, companiesSeenIn: 0, practiceProblems };
 }
 
-/** Slugs of sidebar topics that need the fallback page above. */
+// Slugs of sidebar topics that need the fallback page above
 export function getTopicOnlyPatternSlugs() {
   const have = new Set(getPatternIndex().map((p) => p.slug));
   return DSA_TOPICS.map((t) => patternSlug(t)).filter((s) => !have.has(s) && getTopicPatternEntry(s));
 }
 
-/** Index rows for EVERY /patterns/<slug> page: the company-pipeline patterns plus the topic-only ones. */
+// Index rows for EVERY /patterns/<slug> page
 export function getAllPatternIndexRows() {
   const topicOnly = getTopicOnlyPatternSlugs().map((slug) => {
     const entry = getTopicPatternEntry(slug);

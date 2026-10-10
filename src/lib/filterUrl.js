@@ -1,16 +1,14 @@
 // Pure URL <-> filter helpers for the Problems page. Author: Satvik Hemant Gupta
-// BUG-105: q, topic (repeatable), difficulty, sort and page live in the URL.
-// Personal status filters (solved, attempted, bookmarked) never do.
 
 const VALID_SORTS = ['frequency', 'difficulty_asc', 'difficulty_desc', 'title_asc'];
 const MAX_TEXT = 100;
 const MAX_TOPICS = 12;
 
-// Accepts a URLSearchParams, a query string, or a plain object.
+// Accepts a URLSearchParams, a query string, or a plain object
 function toParams(input) {
   if (input instanceof URLSearchParams) return input;
   if (input && typeof input === 'object' && typeof input.get === 'function') {
-    return input; // ReadonlyURLSearchParams from next/navigation
+    return input;
   }
   if (typeof input === 'string') return new URLSearchParams(input);
   return new URLSearchParams(input || {});
@@ -18,8 +16,7 @@ function toParams(input) {
 
 const cleanText = (v) => (typeof v === 'string' ? v.trim().slice(0, MAX_TEXT) : '');
 
-// Returns ONLY the keys that were present and valid. Unknown keys and bad
-// values are ignored, so callers can safely spread the result over defaults.
+// Returns ONLY the keys that were present and valid
 export function parseFilterParams(input) {
   const p = toParams(input);
   const out = {};
@@ -27,7 +24,6 @@ export function parseFilterParams(input) {
   const q = cleanText(p.get('q'));
   if (q) out.search = q;
 
-  // ?topic=Array&topic=Math, a single ?topic=Array still works
   const topics = [...new Set((p.getAll ? p.getAll('topic') : []).map(cleanText).filter(Boolean))].slice(0, MAX_TOPICS);
   if (topics.length) out.topics = topics;
 
@@ -44,8 +40,7 @@ export function parseFilterParams(input) {
   return out;
 }
 
-// Serialise filters to a query string (no leading "?"). Defaults are omitted
-// to keep URLs short. Status is deliberately never written.
+// Serialise filters to a query string (no leading "?")
 export function buildFilterQuery(filters = {}) {
   const p = new URLSearchParams();
   if (filters.search) p.set('q', String(filters.search));
@@ -62,7 +57,7 @@ export function buildFilterQuery(filters = {}) {
 
 const MANAGED_KEYS = ['q', 'topic', 'pattern', 'difficulty', 'sort', 'page'];
 
-// Keeps any unrelated params (utm_*, etc.) and replaces the managed ones.
+// Keeps any unrelated params (utm_*, etc.) and replaces the managed ones
 export function mergeFilterQuery(currentSearch, filters) {
   const cur = toParams(currentSearch);
   const next = new URLSearchParams();

@@ -9,19 +9,19 @@ import CompanyLinks from './CompanyLinks.jsx';
 import CompanyFootnotes from './CompanyFootnotes.jsx';
 import CompanyBadge, { nameHue } from './CompanyBadge.jsx';
 import { patternSlug } from '../../lib/patternSlug.js';
+import ResponsiveSelect from '../ui/Dropdown/ResponsiveSelect.jsx';
 import styles from '../../app/companies/[id]/CompanyDetail.module.css';
 
 const ROLE_ALL = '__all__';
 const PATTERN_CHIPS_COLLAPSED = 10;
 
-// Cursor-follow spotlight (--mx/--my), same trick used on the list-page cards.
+// Cursor-follow spotlight (--mx/--my), same trick used on the list-page cards
 function handleMove(e) {
   const r = e.currentTarget.getBoundingClientRect();
   e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`);
   e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`);
 }
 
-// BUG FIX: was a client-state SPA with a modal practice set; now a real static route + /patterns/[slug] links, and the pattern chip wall collapses to top 10 with a "show more" toggle.
 export default function CompanyDetailClient({ data }) {
   const [role, setRole] = useState(ROLE_ALL);
   const [patternFilter, setPatternFilter] = useState(null);
@@ -47,7 +47,6 @@ export default function CompanyDetailClient({ data }) {
     }
     return [...rows].sort((a, b) => {
       if (sortBy === 'confidence' && a.confidenceTier !== b.confidenceTier) {
-        // BUG-15: explicit rank so the comparator is antisymmetric for any pair of tiers (A first, unknown last)
         const rank = (t) => (t === 'A' ? 0 : t === 'B' ? 1 : t === 'C' ? 2 : 3);
         return rank(a.confidenceTier) - rank(b.confidenceTier);
       }
@@ -185,10 +184,13 @@ export default function CompanyDetailClient({ data }) {
           )}
           <div className={styles.sort}>
             <label htmlFor="cp-sort-select">Sort</label>
-            <select id="cp-sort-select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-              <option value="frequency">Frequency</option>
-              <option value="confidence">Confidence</option>
-            </select>
+            <ResponsiveSelect
+              id="cp-sort-select"
+              ariaLabel="Sort"
+              value={sortBy}
+              onChange={setSortBy}
+              options={[{ value: 'frequency', label: 'Frequency' }, { value: 'confidence', label: 'Confidence' }]}
+            />
           </div>
         </div>
       </section>

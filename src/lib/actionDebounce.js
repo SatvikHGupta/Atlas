@@ -1,7 +1,5 @@
 // Tiny per-key debouncer whose memory stays bounded. Author: Satvik Hemant Gupta
 
-// BUG-072: old entries are pruned whenever a new key is inserted, so the map
-// cannot grow for the lifetime of the page.
 export function createDebouncer({ windowMs = 500, now = Date.now } = {}) {
   const lastAt = new Map();
   const pruneAfterMs = windowMs * 5;
@@ -12,7 +10,6 @@ export function createDebouncer({ windowMs = 500, now = Date.now } = {}) {
     }
   }
 
-  // true means "ignore this action, it repeated too fast"
   function isDebounced(key) {
     const time = now();
     const last = lastAt.get(key);

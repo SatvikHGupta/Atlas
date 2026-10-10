@@ -16,7 +16,6 @@ import SearchBar from '../../components/filters/SearchBar/SearchBar.jsx';
 import ProblemList from '../../components/problem/ProblemList/ProblemList.jsx';
 import styles from './Problems.module.css';
 
-/* BUG FIX (was: pagination-before-status-filter in the old Vite app - see lib/problems.filter.js's doc comment for the full story). The whole DSA slim index loads once here (~250KB gzip, cached by react-query - see useDsaIndex), then filters run in this exact order on the FULL array: metadata filters -> status filter (needs progressMap/bookmarkedIds, which is why it can't be baked into the static page) -> sort -> slice for the current page. There is no "ask a backend for page N" step to get out of order with the status filter, because there's no backend call at all - the fix is architectural, not a patched condition. */
 export default function ProblemsClient() {
   const { filters, setPage, patchFilters } = useFilters();
   const { progressMap, state: progressState, retry: retryProgress } = useProgress();
@@ -30,9 +29,6 @@ export default function ProblemsClient() {
   const hydrated = useFiltersHydrated();
   const appliedUrlRef = useRef(false);
 
-  // BUG-105: initialise from the URL first, then sessionStorage. We wait for
-  // sessionStorage rehydration to finish so the URL always wins over it, and
-  // only do this once per page load.
   useEffect(() => {
     if (!hydrated || appliedUrlRef.current) return;
     appliedUrlRef.current = true;
@@ -41,10 +37,8 @@ export default function ProblemsClient() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hydrated]);
 
-  // Mirror the shareable filters into the URL with router.replace (no
-  // history spam). Status is never written to the URL.
   useEffect(() => {
-    if (!appliedUrlRef.current) return; // wait for the initial URL read above
+    if (!appliedUrlRef.current) return;
     const query = mergeFilterQuery(searchParams, filters);
     const next = query ? `${pathname}?${query}` : pathname;
     const current = searchParams.toString();
@@ -55,11 +49,6 @@ export default function ProblemsClient() {
 
   const limit = filters.limit || 50;
 
-  // BUG-191: personal state only blocks the list when a status/bookmark
-  // filter is actually active - the public list renders as soon as the
-  // index is ready.
-  // ATLAS-BUG-002: loading and FAILED are different. A failed read must not run the status filter against an empty map
-  // (that makes "Unsolved" return everything and "Solved" return nothing).
   const gate = personalGate(filters.status, progressState, bookmarksState);
   const personalFailed = gate === 'failed';
   const isLoading = indexLoading || gate === 'loading';
@@ -73,11 +62,8 @@ export default function ProblemsClient() {
     list = applySort(list, filters.sort);
 
     const total = list.length;
-    // BUG-104: clamp so a filter/progress change can never strand the user
-    // on a now-empty page.
     const clamped = clampPage(filters.page, total, limit);
     const offset = (clamped - 1) * limit;
-    // slugs = every problem the current filters return, used by Random
     return { pageItems: list.slice(offset, offset + limit), total, page: clamped, slugs: list.map((p) => p.slug) };
   }, [allProblems, filters, progressMap, bookmarkedIds, limit, personalFailed]);
 
@@ -86,7 +72,6 @@ export default function ProblemsClient() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
-  // Random: opens one problem picked from the filtered list (same list as the count pill)
   const openRandom = () => {
     if (slugs.length === 0) return;
     router.push(`/problems/${slugs[Math.floor(Math.random() * slugs.length)]}`);

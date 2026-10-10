@@ -7,12 +7,7 @@ import { buildRoadmapWithCounts, enrichRoadmap } from '../lib/roadmap.js';
 import { getByRoadmapLevel } from '../lib/problems.filter.js';
 import { ROADMAP_LEVELS } from '../constants/roadmap.js';
 
-/*
-  BUG-094: the roadmap is only "ready" when the index is loaded AND (when signed in) progress is ready.
-  Rendering earlier shows every level locked for a moment. `isError` covers a failed index fetch or a
-  failed progress load, so the page never silently renders empty. `loadError` / `retry` come from
-  useProgress (contract C2); until that is merged they are undefined, which reads as "no error".
-*/
+// the roadmap is only "ready" when the index is loaded
 export const useRoadmap = () => {
   const { data: allProblems, isLoading: indexLoading, isError: indexError, refetch: refetchIndex } = useDsaIndex();
   const { progressMap, isLoading: progressLoading, loadError, retry } = useProgress();

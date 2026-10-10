@@ -1,11 +1,5 @@
-// Not a 1:1 slug match - one note often covers several patterns (e.g. "bfs-dfs" covers both the
-// Breadth-First-Search and Depth-First-Search patterns). Built by hand against the actual 64 files
-// in raw-data/notes/ - every value here MUST be one of those 64 slugs. Patterns with no confident
-// match (too broad, e.g. plain "Math" or "Dynamic Programming", or genuinely uncovered) are left out
-// on purpose rather than guessed - getAvailableNoteSlugs() in content.server.js is what actually
-// gates a link at build time, so a stale/renamed entry here just silently doesn't render, it can't 404.
+// Not a 1:1 slug match - one note often covers several patterns
 export const PATTERN_NOTE_MAP = {
-  // direct 1:1 matches
   'backtracking': 'backtracking',
   'binary-search': 'binary-search',
   'bit-manipulation': 'bit-manipulation',
@@ -27,7 +21,6 @@ export const PATTERN_NOTE_MAP = {
   'topological-sort': 'topological-sort',
   'two-pointers': 'two-pointers',
 
-  // data structures - several patterns share one broader note
   'breadth-first-search': 'bfs-dfs',
   'depth-first-search': 'bfs-dfs',
   'binary-search-tree': 'bst',
@@ -48,7 +41,6 @@ export const PATTERN_NOTE_MAP = {
   'k-d-tree': 'misc-advanced-techniques',
   'data-stream': 'misc-advanced-techniques',
 
-  // techniques / paradigms
   'greedy': 'greedy-algorithms',
   'divide-and-conquer': 'divide-conquer',
   'recursion': 'recursion-basics',
@@ -71,7 +63,6 @@ export const PATTERN_NOTE_MAP = {
   'reservoir-sampling': 'misc-advanced-techniques',
   'rejection-sampling': 'misc-advanced-techniques',
 
-  // sorting family -> one sorting note
   'sort': 'sorting-algorithms',
   'sorting': 'sorting-algorithms',
   'bubble-sort': 'sorting-algorithms',
@@ -84,7 +75,6 @@ export const PATTERN_NOTE_MAP = {
   'timsort': 'sorting-algorithms',
   'tournament-sort': 'sorting-algorithms',
 
-  // graphs - MST / shortest path / SCC / flow families
   'minimum-spanning-tree': 'mst',
   'kruskal-s-algorithm': 'mst',
   'prim-s-algorithm': 'mst',
@@ -120,7 +110,6 @@ export const PATTERN_NOTE_MAP = {
   'eulerian-graph': 'eulerian-path',
   'semi-eulerian-graph': 'eulerian-path',
 
-  // strings
   'string': 'string-manipulation',
   'string-matching': 'string-pattern-matching',
   'boyer-moore-string-search-algorithm': 'string-pattern-matching',
@@ -135,14 +124,11 @@ export const PATTERN_NOTE_MAP = {
   'aho-corasick-algorithm': 'string-algorithms-part-2',
   'lexicographically-minimal-string-rotation': 'string-algorithms-part-2',
 
-  // hashing
   'hash-table': 'hashing',
   'hash-function': 'hashing',
 
-  // arrays
   'array': '1d-arrays',
 
-  // number theory family
   'greatest-common-divisor': 'number-theory',
   'least-common-multiple': 'number-theory',
   'euclidean-algorithm': 'number-theory',
@@ -155,21 +141,18 @@ export const PATTERN_NOTE_MAP = {
   'fermat-s-little-theorem': 'number-theory',
   'b-zout-s-lemma': 'number-theory',
 
-  // math / combinatorics
   'math': 'basic-math',
   'linear-algebra': 'math-cp',
   'probability-and-statistics': 'math-cp',
   'inclusion-exclusion-principle': 'combinatorics',
   'pigeonhole-principle': 'combinatorics',
 
-  // game theory family
   'nim-game': 'game-theory',
   'sprague-grundy-theorem': 'game-theory',
   'impartial-game': 'game-theory',
   'zero-sum-game': 'game-theory',
   'minimax': 'game-theory',
 
-  // geometry family
   'convex-hull': 'geometry',
   'triangulation': 'geometry',
   'polygons': 'geometry',

@@ -1,7 +1,6 @@
 'use client';
 
-// Frame shared by every /settings/* page: heading, sidebar, content card and the sign-in gate. A page only renders its
-// own tab component; whether the visitor may see it is decided here from constants/settingsSections.js.
+// Frame shared by every /settings/* page: heading, sidebar, content card and the sign-in gate
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '../../hooks/useAuth.js';
 import PageWrapper from '../../components/layout/PageWrapper/PageWrapper.jsx';

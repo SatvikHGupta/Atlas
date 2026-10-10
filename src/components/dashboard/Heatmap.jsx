@@ -1,25 +1,28 @@
 'use client';
 
-// Solve calendar: one square per day, columns are weeks. It fills the width of its card (CSS grid, square cells) instead of
-// scrolling sideways, and it opens on 6 months on a phone, 12 on a desktop. Author: Satvik Hemant Gupta
-//
-// Month labels come from lib/dashboardData.js monthMarkers (never two labels closer than 3 columns, never the same month twice).
-// The grid is decorative for screen readers (role=img with a summary); the same activity is available as the weekly chart + table.
-import { useMemo, useState } from 'react';
+// Solve calendar: one square per day, columns are weeks. Author: Satvik Hemant Gupta
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useMediaQuery } from '../../hooks/useMediaQuery.js';
 import { HEATMAP_RANGES, sliceWeeks, monthMarkers, heatLevel } from '../../lib/dashboardData.js';
 import { formatDayKey } from './charts/chartConfigs.js';
 import styles from '../../app/dashboard/Dashboard.module.css';
 
 const RANGE_LABEL = { '3m': '3 months', '6m': '6 months', '12m': '12 months' };
-const DAY_LABEL = { 1: 'Mon', 3: 'Wed', 5: 'Fri' }; // rows: Sun=0 ... Sat=6
+const DAY_LABEL = { 1: 'Mon', 3: 'Wed', 5: 'Fri' };
 
 export default function Heatmap({ weeks }) {
   const narrow = useMediaQuery('(max-width: 640px)');
   const [picked, setPicked] = useState(null);
-  const range = picked ?? (narrow ? '6m' : '12m');
+  const scrollRef = useRef(null);
+  const range = picked ?? (narrow ? '3m' : '12m'); // phones start on 3 months
 
   const shown = useMemo(() => sliceWeeks(weeks, range), [weeks, range]);
+
+  // on a narrow screen the newest weeks matter most, so start scrolled to the right edge
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) el.scrollLeft = el.scrollWidth;
+  }, [shown]);
   const markers = useMemo(() => monthMarkers(shown), [shown]);
   const { max, total } = useMemo(() => {
     const days = shown.flat().filter((d) => !d.future);
@@ -39,7 +42,7 @@ export default function Heatmap({ weeks }) {
         </div>
       </div>
 
-      <div className={styles.heatScroll}>
+      <div className={styles.heatScroll} ref={scrollRef}>
         <div
           className={styles.heatGrid}
           style={{ '--cols': shown.length }}
@@ -48,7 +51,6 @@ export default function Heatmap({ weeks }) {
         >
           {markers.map((m) => {
             const span = Math.min(3, shown.length - m.col);
-            // a label in the last column(s) is end-aligned so it never pokes past the card edge (that made the scrollbar)
             return (
               <span key={m.col} className={styles.heatMonth} style={{ gridColumn: `${m.col + 2} / span ${span}`, gridRow: 1, justifySelf: span < 3 ? 'end' : undefined }}>{m.label}</span>
             );

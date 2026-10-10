@@ -9,9 +9,6 @@ export const metadata = {
 
 const CONTACT = process.env.NEXT_PUBLIC_CONTACT_EMAIL;
 
-/* SEC-12. This text describes what the code actually does today (checked against src/services/*). It is a plain-language
-   notice, not legal advice: have it reviewed for the regions you serve (India DPDP Act, EU GDPR, ...) and update the
-   date whenever data handling changes. */
 export default function PrivacyPage() {
   return (
     <LegalPage title="Privacy" updated="1 October 2026">

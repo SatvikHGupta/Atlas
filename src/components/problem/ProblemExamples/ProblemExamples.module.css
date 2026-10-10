@@ -20,7 +20,9 @@
   transition: color var(--transition-fast);
   text-align: left;
 }
-.toggle:hover { color: var(--text-secondary); }
+@media (hover: hover) {
+  .toggle:hover { color: var(--text-secondary); }
+}
 .toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
 .chevron { flex-shrink: 0; transition: transform 0.2s ease; }

@@ -1,5 +1,6 @@
 .page {
   min-height: calc(100vh - var(--navbar-height));
+  min-height: calc(100dvh - var(--navbar-height));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -36,4 +37,6 @@
   transition: background var(--transition-fast), transform var(--transition-fast);
 }
 
-.homeBtn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+@media (hover: hover) {
+  .homeBtn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+}

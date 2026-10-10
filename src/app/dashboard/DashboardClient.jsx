@@ -1,9 +1,5 @@
 'use client';
 
-// Personal dashboard, rebuilt from scratch. Everything on it is derived from data already in memory (progress list, DSA index,
-// CP index when needed, roadmap): zero extra Firestore reads. Numbers come from lib/dashboardData.js (unit-tested), charts are
-// Chart.js (lazy-loaded, theme-aware), layout is one 12-column grid with fixed chart heights so no card is uneven.
-// Author: Satvik Hemant Gupta
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -92,8 +88,6 @@ export default function DashboardClient() {
   const { download: downloadCard, busy: cardBusy } = usePostCard();
   const [topicView, setTopicView] = useState('bars');
 
-  // The CP index is about 6 MB: fetched only when some progress entry is not a DSA problem (BUG-157). It is not part of the
-  // loading gate, the CP card waits for it on its own.
   const cpNeeded = useMemo(() => needsCpIndex(progressList.map((p) => p.canonical_id), allProblems), [progressList, allProblems]);
   const { data: cpProblems, isLoading: cpLoading } = useCpIndex({ enabled: cpNeeded });
   const cpPending = cpNeeded && cpLoading;
@@ -102,7 +96,6 @@ export default function DashboardClient() {
     if (!authLoading && !isAuthenticated) router.replace('/login?from=/dashboard');
   }, [authLoading, isAuthenticated, router]);
 
-  // ---- everything below is derived, memoised, and tested in lib/dashboardData.js. All hooks stay above the early returns.
   const stats = useMemo(() => (allProblems ? getStats(progressList, allProblems, cpNeeded ? cpProblems : []) : null), [progressList, allProblems, cpProblems, cpNeeded]);
   const data = useMemo(() => {
     if (!stats || !allProblems) return null;
@@ -117,7 +110,7 @@ export default function DashboardClient() {
       week,
       weekly,
       cumulative,
-      sparkData: { values: cumulative },     // chart inputs keep a stable identity, so a chart only redraws when its data changed
+      sparkData: { values: cumulative },
       weekData: { days: week.days },
       strip: recentDaysStrip(sbd),
       heatWeeks: buildHeatmapWeeks(sbd, HEATMAP_WEEKS),
@@ -135,7 +128,6 @@ export default function DashboardClient() {
   const topicData = useMemo(() => (data ? { rows: data.topics } : null), [data]);
   const cpData = useMemo(() => ({ rows: cpBands }), [cpBands]);
 
-  // a failed index, progress or bookmarks read shows an error with Retry, never an endless spinner or a fake zero
   const hasError = !!indexError || !!loadError || !!bookmarksError;
   const handleRetry = () => {
     if (indexError) refetchIndex();
@@ -175,7 +167,6 @@ export default function DashboardClient() {
   return (
     <PageWrapper>
       <div className={styles.page}>
-        {/* ---------------------------------------------------------- header */}
         <header className={styles.header}>
           <div>
             <h1 className={styles.greeting}>{firstName ? `Hey, ${firstName}` : 'Your dashboard'}</h1>
@@ -184,10 +175,12 @@ export default function DashboardClient() {
             </p>
           </div>
           <nav className={styles.headerActions} aria-label="Your lists">
-            {/* left of Bookmarks: draws the share card and downloads "Atlas Post Card.png" */}
             <button type="button" className={styles.pillBtn} onClick={downloadCard} disabled={cardBusy} title={POST_CARD_HINT}>
               <Icon><path d="M12 3v12M7 10l5 5 5-5M5 21h14" /></Icon>
-              <span className={styles.pillText}><span>{cardBusy ? 'Creating...' : 'Post your card'}</span></span>
+              <span className={styles.pillText}>
+                <span className={styles.labelFull}>{cardBusy ? 'Creating...' : 'Post your card'}</span>
+                <span className={styles.labelShort}>{cardBusy ? '...' : 'Card'}</span>
+              </span>
             </button>
             <Link href="/bookmarks" className={styles.pillBtn}>
               <Icon><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" /></Icon>
@@ -198,14 +191,13 @@ export default function DashboardClient() {
               <Icon><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></Icon>
               <span className={styles.pillText}>
                 <span>History</span>
-                {data.lastSolved && <span className={styles.pillSub}>Last solved {relativeTime(data.lastSolved)}</span>}
+                {data.lastSolved && <span className={`${styles.pillSub} ${styles.hideOnPhone}`}>Last solved {relativeTime(data.lastSolved)}</span>}
               </span>
             </Link>
           </nav>
         </header>
 
         <div className={styles.grid}>
-          {/* ------------------------------------------------------------ KPIs */}
           <div className={styles.span3}>
             <Kpi label="DSA solved" value={dsa.solved} sub={`of ${data.dsaTotal} problems (${percentOfCatalogue(dsa.solved, data.dsaTotal)})${!cpPending && cp.solved > 0 ? `, plus ${cp.solved} CP` : ''}`}>
               {!isNew && (
@@ -251,7 +243,6 @@ export default function DashboardClient() {
             </>
           ) : (
             <>
-              {/* ------------------------------------------------------- activity */}
               <Card className={styles.span12} title="Activity" subtitle="Every solve counts here and in the streaks, DSA and CP together.">
                 <Heatmap weeks={data.heatWeeks} />
               </Card>
@@ -278,7 +269,6 @@ export default function DashboardClient() {
                 </div>
               </Card>
 
-              {/* --------------------------------------------------------- topics */}
               <Card
                 className={styles.span7}
                 title="Topics"
@@ -316,7 +306,6 @@ export default function DashboardClient() {
                 <RoadmapPanel view={roadmap} />
               </Card>
 
-              {/* ---------------------------------------------------------- recent */}
               <Card
                 className={showCp ? styles.span7 : styles.span12}
                 title="Recent solves"

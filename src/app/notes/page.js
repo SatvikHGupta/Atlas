@@ -5,7 +5,7 @@ import { levelColorVar, levelBadgeLabel } from '../../lib/noteLevels.js';
 import styles from './Notes.module.css';
 import { routes, canonicalAlternates } from '../../lib/routeIdentity.js';
 
-// ready/total come from getNotesIndex(), which counts the actual NOTES_TOPICS_INDEX entries against whichever files really exist under content/notes/ - add or remove topics/files and this is correct on the next build, nothing here is hand-typed.
+// ready/total come from getNotesIndex
 export function generateMetadata() {
   const index = getNotesIndex();
   return {
@@ -28,7 +28,6 @@ export default function NotesPage() {
         </p>
       </div>
 
-      {/* BUG-147/148/187: star level from the index, one explicit colour per level (levelColorVar throws instead of wrapping with %). */}
       {index.levels.map((level) => (
         <div key={level.level} className={styles.levelGroup}>
           <div className={styles.levelHeader}>

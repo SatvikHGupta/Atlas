@@ -1,8 +1,5 @@
 #!/usr/bin/env node
 // Validates the generated content against every invariant. Author: Satvik Hemant Gupta
-//
-// Run after `npm run build:content` (npm run build does this for you).
-// Exits non-zero when any invariant fails, so a bad build cannot ship.
 import fs from 'node:fs';
 import path from 'node:path';
 import { NOTES_TOPICS_INDEX } from '../src/constants/notes.js';
@@ -28,7 +25,7 @@ import { checkTagsGenerated } from './lib/tags-files.mjs';
 const CONTENT = path.resolve('content');
 const readJson = (...parts) =>
   JSON.parse(fs.readFileSync(path.join(...parts), 'utf8'));
-// Slugs of the *.json files in a folder, ignoring index.json.
+// Slugs of the *.json files in a folder, ignoring index.json
 const fileIds = (dir) =>
   fs
     .readdirSync(dir)
@@ -50,7 +47,6 @@ const dsaRedirects = readJson('data', 'slug-redirects.json');
 const cpRedirects = readJson('data', 'slug-redirects-cp.json');
 const dsaSlugs = dsaRows.map((r) => r.slug);
 
-// Per-problem facts from the bundle and solution files.
 const solutionRows = dsaRows.map((row) => {
   const bundle = readJson(CONTENT, 'problems', `${row.slug}.json`);
   const solutions = readJson(CONTENT, 'solutions', `${row.slug}.json`);
@@ -62,7 +58,6 @@ const solutionRows = dsaRows.map((row) => {
   };
 });
 
-// Note files: their own slug field must equal the filename.
 const noteFiles = fileIds(path.join(CONTENT, 'notes')).map((file) => ({
   file,
   slug: readJson(CONTENT, 'notes', `${file}.json`).slug,
@@ -127,7 +122,6 @@ const checks = [
   ['12 roadmap coverage', checkRoadmapCoverage({ dsaRows, levels: ROADMAP_LEVELS })],
 ];
 
-// 11. tags.generated.js must match what the build would generate.
 const tagsProblem = checkTagsGenerated(
   path.resolve('raw-data', 'tags'),
   path.join('src', 'constants', 'tags.generated.js'),
@@ -140,7 +134,6 @@ checks.push([
   },
 ]);
 
-// Print one line per invariant, then the details.
 for (const [name, result] of checks) {
   const status = result.failures.length ? 'FAIL' : 'ok  ';
   console.log(`${status} ${name}`);

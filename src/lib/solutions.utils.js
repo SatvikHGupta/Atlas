@@ -1,7 +1,5 @@
 // Pure helpers for the solution viewer. Author: Satvik Hemant Gupta
-// BUG-110/111/113: default pick, fallback order and verification labels.
 
-// Contract C5 order: JS algo, JS optimal, C++ algo, Python algo, Java algo.
 export const FALLBACK_ORDER = [
   { language: 'javascript', variant: 'algo' },
   { language: 'javascript', variant: 'optimal' },
@@ -10,9 +8,7 @@ export const FALLBACK_ORDER = [
   { language: 'java', variant: 'algo' },
 ];
 
-/* availableMap: { 'javascript:algo': true, ... } keyed `${language}:${variant}`.
-   Prefer the build's defaultSolution; else the first available fallback; else
-   null (nothing exists). */
+// availableMap: { 'javascript:algo': true,
 export function pickDefaultSolution(defaultSolution, availableMap = {}) {
   if (defaultSolution && defaultSolution.language && defaultSolution.variant) {
     return { language: defaultSolution.language, variant: defaultSolution.variant };
@@ -34,10 +30,10 @@ const LABELS = {
 };
 const NOT_VERIFIED = { text: 'Not verified', icon: '\u25CB', tone: 'neutral' };
 
-// status undefined/null (C++ and Java have no check data) -> neutral label.
+// status undefined/null (C++ and Java have no check data) -> neutral label
 export function verificationLabel(status) {
   return LABELS[status] || NOT_VERIFIED;
 }
 
-// A variant tab is disabled when the check says it is missing.
+// A variant tab is disabled when the check says it is missing
 export const isVariantMissing = (status) => status === 'missing';

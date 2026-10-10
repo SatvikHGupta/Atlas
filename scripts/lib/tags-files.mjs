@@ -8,20 +8,18 @@ import {
 } from './build-logic.mjs';
 import { withoutRetired } from '../../src/constants/retiredProblems.js';
 
-// Expected text of src/constants/tags.generated.js, from tags.ndjson alone.
-// Used by `--check` and by validate-content (invariant 11).
+// Expected text of src/constants/tags.generated.js, from tags.ndjson alone
 export function expectedTagsGenerated(tagsDir) {
   const taxonomy = JSON.parse(
     fs.readFileSync(path.join(tagsDir, 'tag-taxonomy.json'), 'utf8'),
   );
   const tagsFile = path.join(tagsDir, 'tags.ndjson');
-  // same retired filter the build applies, otherwise the committed file (built WITHOUT them) never matches this check
   const rows = withoutRetired(parseNdjson(fs.readFileSync(tagsFile, 'utf8'), tagsFile));
   const counts = countTopicUse(rows.map((r) => ({ topics_display: r.tags })));
   return renderTagsGenerated(taxonomy, counts);
 }
 
-// Returns null when the committed file matches, else a short reason.
+// Returns null when the committed file matches, else a short reason
 export function checkTagsGenerated(tagsDir, generatedFile) {
   if (!fs.existsSync(generatedFile)) return `${generatedFile} is missing`;
   const expected = expectedTagsGenerated(tagsDir);

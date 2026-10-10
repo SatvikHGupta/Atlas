@@ -1,14 +1,10 @@
-// One function per dashboard chart: (theme colours + prepared data) -> a plain Chart.js config object. No React, no DOM, no
-// Chart.js import, so each config is unit-tested and also smoke-tested against the real library. Author: Satvik Hemant Gupta
-//
-// Conventions: responsive inside a fixed-height box (maintainAspectRatio false), integer ticks for counts, nothing animated
-// beyond a short ease-out (the controller turns animation off entirely for prefers-reduced-motion), tooltips styled like cards.
+// One function per dashboard chart. Author: Satvik Hemant Gupta
 
 import { withAlpha, softColor } from './chartTheme.js';
 
 const ANIMATION = { duration: 650, easing: 'easeOutQuart' };
 
-/** "2026-09-28" -> "Mon, Sep 28" (parsed by hand so it is the LOCAL day, never UTC midnight). */
+// "2026-09-28" -> "Mon, Sep 28"
 export function formatDayKey(key) {
   const [y, m, d] = key.split('-').map(Number);
   return new Date(y, m - 1, d).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
@@ -58,9 +54,7 @@ const legendBottom = (theme) => ({
   labels: { color: theme.muted, usePointStyle: true, pointStyle: 'rectRounded', boxWidth: 9, boxHeight: 9, padding: 14 },
 });
 
-/* ---------------------------------------------------------------- weekly */
-
-/** 12 weekly bars; the current (unfinished) week is solid, the rest are softer. */
+// 12 weekly bars; the current (unfinished) week is solid, the rest are softer
 export function weeklyBarsConfig(theme, { labels, counts, currentIndex }) {
   const options = base(theme);
   options.scales = {
@@ -91,7 +85,7 @@ export function weeklyBarsConfig(theme, { labels, counts, currentIndex }) {
   };
 }
 
-/** The tiny cumulative-solves line inside the "Solved" KPI. No axes, no tooltip: it is a shape, not a table. */
+// The tiny cumulative-solves line inside the "Solved" KPI
 export function sparklineConfig(theme, { values }) {
   const options = base(theme);
   options.events = [];
@@ -116,7 +110,7 @@ export function sparklineConfig(theme, { values }) {
   };
 }
 
-/** Sun-Sat bars inside the "This week" KPI. Empty days keep a tiny stub so the week always reads as 7 slots. */
+// Sun-Sat bars inside the "This week" KPI
 export function weekDaysConfig(theme, { days }) {
   const options = base(theme);
   options.layout = { padding: { top: 2 } };
@@ -147,9 +141,6 @@ export function weekDaysConfig(theme, { days }) {
   };
 }
 
-/* ------------------------------------------------------------ difficulty */
-
-// Draws the total in the hole of the doughnut. Reads its text from options.plugins.centerText so it updates with the data.
 const centerText = {
   id: 'centerText',
   afterDatasetsDraw(chart, _args, opts) {
@@ -198,9 +189,7 @@ export function difficultyDoughnutConfig(theme, { rows }) {
   };
 }
 
-/* ---------------------------------------------------------------- topics */
-
-/** Horizontal stacked bars: solved + tried per topic, most active on top. The tooltip footer says how big the topic is. */
+// Horizontal stacked bars: solved + tried per topic, most active on top
 export function topicBarConfig(theme, { rows }) {
   const options = base(theme);
   options.indexAxis = 'y';
@@ -287,8 +276,6 @@ export function topicRadarConfig(theme, { rows }) {
     options,
   };
 }
-
-/* -------------------------------------------------------------------- CP */
 
 export function cpBandsConfig(theme, { rows }) {
   const options = base(theme);

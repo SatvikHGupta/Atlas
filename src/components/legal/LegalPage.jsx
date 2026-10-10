@@ -1,7 +1,7 @@
 import styles from './LegalPage.module.css';
 import BackButton from '../ui/BackButton/BackButton.jsx';
 
-// Shared shell for /privacy and /terms. Plain server component, no client JS.
+// Shared shell for /privacy and /terms
 export default function LegalPage({ title, updated, children }) {
   return (
     <article className={styles.page}>

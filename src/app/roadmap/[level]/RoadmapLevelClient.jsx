@@ -11,17 +11,14 @@ import { ROADMAP_LEVELS } from '../../../constants/roadmap.js';
 import { NOTES_TOPICS_INDEX } from '../../../constants/notes.js';
 import { Loader } from '../../../components/ui/Loader/Loader.jsx';
 import styles from './RoadmapLevel.module.css';
-import roadmapStyles from '../Roadmap.module.css'; // locked screen + error classes live next to the roadmap page
+import roadmapStyles from '../Roadmap.module.css';
 
-// Notes are the single source of truth for topic display names - roadmap_topic (on problems)
-// and topicSlugs (in ROADMAP_LEVELS) both store the note's slug, never a duplicated name string.
 const TOPIC_NAME_BY_SLUG = Object.fromEntries(NOTES_TOPICS_INDEX.map((t) => [t.slug, t.topic]));
 
 export default function RoadmapLevelClient({ levelNum }) {
   const { data: problemsData, isLoading: problemsLoading } = useRoadmapLevel(levelNum);
   const { data: levels, isReady, isError, refetch } = useRoadmap();
   const { getStatus, markSolved, markAttempted, resetProgress, state: progressState, degraded: progressDegraded } = useProgress();
-  // ATLAS-BUG-003/016: progress buttons wait for THIS resource (signed-out users stay enabled, they get the sign-in prompt)
   const progressLocked = progressState === 'loading' ? 'Loading your progress...'
     : progressState === 'failed' ? "Couldn't load your progress"
     : progressDegraded ? 'Service temporarily limited - resets at midnight PT' : null;
@@ -43,13 +40,10 @@ export default function RoadmapLevelClient({ levelNum }) {
     );
   }
 
-  // BUG-094: wait for the index and progress, otherwise an open level would flash as locked.
   if (!isReady || problemsLoading || !levelState) {
     return <PageWrapper><div className={styles.loading}><Loader size={32} /></div></PageWrapper>;
   }
 
-  // BUG-087: a locked level shows what is missing and never renders its problem list.
-  // This is a UI lock only: progress lives client-side, so it is not a security boundary.
   if (!levelState.isUnlocked) {
     return (
       <PageWrapper>
@@ -82,7 +76,6 @@ export default function RoadmapLevelClient({ levelNum }) {
     return acc;
   }, {});
 
-  // BUG-095: the last level has no next level to unlock.
   const progressLabel = levelState.isFinal
     ? `Final level - ${completeTopics}/${nonEmptyTopics.length} topics complete`
     : `${completeTopics}/${nonEmptyTopics.length} topics complete to unlock Level ${levelNum + 1}`;
@@ -148,7 +141,6 @@ export default function RoadmapLevelClient({ levelNum }) {
                         <button
                           className={styles.actionBtn}
                           data-active={status === 'solved'}
-                          // C2: only roadmap problems may trigger the unlock check
                           onClick={() => (status === 'solved' ? resetProgress(p.canonical_id) : markSolved(p.canonical_id, { roadmapProblem: true }))}
                           disabled={!!progressLocked}
                           title={progressLocked || (status === 'solved' ? 'Click to unmark' : 'Mark solved')}

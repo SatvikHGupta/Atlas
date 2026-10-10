@@ -1,10 +1,6 @@
 import { getPreviewVars } from '../../../theme/theme-preview.js';
 import styles from './PreviewPanel.module.css';
 
-// A miniature app painted with a DRAFT theme (mode + primary + secondary). The theme's variables are set inline on this
-// element only, so nothing outside the panel changes until the visitor presses Apply. Everything inside uses the same
-// token names as the real app (var(--accent), var(--accent-gradient)...), so what shows here is what Apply gives.
-// Decorative: hidden from assistive tech; the Appearance page announces the draft in text instead.
 const HEAT = [0, 25, 0, 55, 80, 35, 0, 60, 90, 20, 0, 45, 70, 30];
 
 export default function PreviewPanel({ mode, accent, secondary }) {

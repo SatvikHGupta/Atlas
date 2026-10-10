@@ -1,5 +1,3 @@
-/* Company detail page module (shared by CompanyDetailClient/ProblemRow/RoleGuide) - rows get a left accent bar by confidence tier. */
-
 .page {
   color: var(--text-primary);
   max-width: 1000px;
@@ -29,7 +27,9 @@
   margin-bottom: 24px;
   transition: color 0.15s ease;
 }
-.back:hover { color: var(--text-primary); }
+@media (hover: hover) {
+  .back:hover { color: var(--text-primary); }
+}
 
 .header { position: relative; z-index: 1; margin-bottom: 40px; }
 
@@ -79,7 +79,7 @@
 
 .state { color: var(--text-secondary); padding: 32px 4px; font-size: 0.92rem; }
 
-/* ─── pattern profile ("asks most from") ─── */
+/* pattern profile ("asks most from") */
 .profile { position: relative; z-index: 1; margin-bottom: 36px; }
 
 .profileBars {
@@ -104,17 +104,19 @@
   content: '';
   position: absolute;
   inset: 0;
-  /* THEME-SAFETY FIX: same white-on-white-card issue as CompanyList.module.css's .card::before - see that file's
-     comment. --accent-subtle tracks the active theme's accent instead of assuming a dark card. */
   background: radial-gradient(200px circle at var(--mx, 50%) var(--my, 50%), var(--accent-subtle), transparent 65%);
   opacity: 0;
   transition: opacity 0.25s ease;
   pointer-events: none;
   z-index: 0;
 }
-.profileBar:hover::before { opacity: 1; }
+@media (hover: hover) {
+  .profileBar:hover::before { opacity: 1; }
+}
 .profileBar > * { position: relative; z-index: 1; }
-.profileBar:hover { border-color: var(--border-strong); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+@media (hover: hover) {
+  .profileBar:hover { border-color: var(--border-strong); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+}
 
 .profileBarTop {
   display: flex;
@@ -129,7 +131,7 @@
 .profileTrack { height: 4px; background: var(--bg-elevated); border-radius: 2px; overflow: hidden; margin-top: 10px; }
 .profileFill { height: 100%; border-radius: 2px; }
 
-/* ─── role tabs ─── */
+/* role tabs */
 .tabsSection { margin-bottom: 36px; }
 
 .tabs {
@@ -151,10 +153,12 @@
   border-radius: 8px 8px 0 0;
   transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
 }
-.tab:hover { color: var(--text-primary); background: var(--bg-elevated); }
+@media (hover: hover) {
+  .tab:hover { color: var(--text-primary); background: var(--bg-elevated); }
+}
 .tabActive { color: var(--accent-light); border-bottom-color: var(--accent); background: var(--accent-subtle); }
 
-/* ─── role guide ─── */
+/* role guide */
 .roleGuide {
   position: relative;
   overflow: hidden;
@@ -221,9 +225,11 @@
   text-decoration: none;
   transition: border-color 0.15s ease, color 0.15s ease;
 }
-.rolePatternChip:hover { color: var(--text-primary); border-color: var(--border-strong); }
+@media (hover: hover) {
+  .rolePatternChip:hover { color: var(--text-primary); border-color: var(--border-strong); }
+}
 
-/* ─── filters + sort ─── */
+/* filters + sort */
 .filtersSection { margin-bottom: 36px; }
 
 .detailControls {
@@ -250,9 +256,9 @@
   cursor: pointer;
   transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
 }
-.chip:hover { color: var(--text-primary); border-color: var(--border-strong); }
-/* THEME-SAFETY FIX: see the identical note in CompanyList.module.css - var(--bg-primary) reads correctly against
-   var(--accent) under every theme; a hardcoded #fff doesn't. */
+@media (hover: hover) {
+  .chip:hover { color: var(--text-primary); border-color: var(--border-strong); }
+}
 .chipActive { color: var(--bg-primary); background: var(--accent); border-color: var(--accent); }
 
 .patternMore {
@@ -264,7 +270,9 @@
   font-size: 0.76rem;
   cursor: pointer;
 }
-.patternMore:hover { color: var(--text-secondary); border-color: var(--text-muted); }
+@media (hover: hover) {
+  .patternMore:hover { color: var(--text-secondary); border-color: var(--text-muted); }
+}
 
 .sort { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--text-secondary); }
 .sort select {
@@ -276,8 +284,8 @@
   font-size: 0.82rem;
 }
 
-/* ─── problem rows ─── */
-.problemList { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 12px; align-items: stretch; } /* every card the same height */
+/* problem rows */
+.problemList { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 12px; align-items: stretch; }
 @media (max-width: 800px) { .problemList { grid-template-columns: minmax(0, 1fr); } }
 
 .row {
@@ -290,14 +298,18 @@
   padding: 16px 18px;
   transition: border-color 0.15s ease;
 }
-.row:hover { border-color: var(--border-strong); }
+@media (hover: hover) {
+  .row:hover { border-color: var(--border-strong); }
+}
 .rowVerified { border-left-color: var(--accent); }
 .rowReported { border-left-color: var(--border-strong); }
 
 .rowMain { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
 
 .rowTitle { color: var(--text-primary); font-weight: 500; font-size: 0.96rem; text-decoration: none; }
-.rowTitle:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+@media (hover: hover) {
+  .rowTitle:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+}
 .rowTitleUnlinked { color: var(--text-secondary); cursor: default; }
 
 .unlinkedTag {
@@ -330,7 +342,7 @@
 .confidenceB { background: var(--bg-elevated); color: var(--text-secondary); }
 
 .rowPatterns { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-.row .sourceBtn { margin-top: auto; } /* source button always sits at the bottom edge */
+.row .sourceBtn { margin-top: auto; }
 .patternMore { color: var(--text-muted); }
 .patternPill {
   font-size: 0.74rem;
@@ -341,7 +353,9 @@
 }
 
 .sourceLink { font-size: 0.74rem; color: var(--text-muted); text-decoration: none; }
-.sourceLink:hover { color: var(--accent-light); }
+@media (hover: hover) {
+  .sourceLink:hover { color: var(--accent-light); }
+}
 
 .rolesPending {
   margin: -12px 0 36px;
@@ -359,14 +373,9 @@
   .detailControls { flex-direction: column; }
 }
 
-/* ---- Levels & roles (LadderSection.jsx) ---- */
+/* Levels & roles (LadderSection.jsx) */
 .ladderSection { margin-bottom: 36px; }
 .ladderTable { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--bg-card); }
-/* THEME/LAYOUT FIX: the level column was a fixed 72px, sized for short labels like "L3" or "Ninja". CSS grid's
-   fixed tracks don't shrink their content to fit - a longer label like "Experienced" (TCS's lateral-hire tier)
-   just overflowed straight into the title column with no wrap, which is the overlap seen in the reported screenshot.
-   minmax(..., max-content) lets the column grow to fit whatever label a given company's ladder actually uses,
-   without widening it for every row when most labels are short. */
 .ladderRow { display: grid; grid-template-columns: minmax(64px, max-content) minmax(160px, 1.4fr) minmax(90px, 0.8fr); gap: 8px 14px; align-items: baseline; padding: 10px 14px; border-top: 1px solid var(--border); }
 .ladderRow:first-child { border-top: 0; }
 .ladderLevel { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--company-hue-light, var(--accent-light)); white-space: nowrap; }
@@ -384,7 +393,6 @@
 .ladderUsed { color: var(--text-muted); }
 @media (max-width: 560px) { .ladderRow { grid-template-columns: minmax(52px, max-content) 1fr; } .ladderExp { grid-column: 2; } }
 
-/* ─── all outbound links, shown as buttons with label + host spelled out ─── */
 .linkRow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 .linkBtn {
   display: inline-flex;
@@ -399,11 +407,14 @@
   text-decoration: none;
   transition: border-color 0.15s ease, background 0.15s ease;
 }
-.linkBtn:hover, .linkBtn:focus-visible { border-color: var(--accent); background: var(--bg-card-hover); outline: none; }
+.linkBtn:focus-visible { border-color: var(--accent); background: var(--bg-card-hover); outline: none; }
+@media (hover: hover) {
+  .linkBtn:hover { border-color: var(--accent); background: var(--bg-card-hover); outline: none; }
+}
 .linkBtnLabel { font-size: 0.8rem; font-weight: 600; }
 .linkBtnHost { font-size: 0.72rem; color: var(--text-muted); overflow-wrap: anywhere; }
 
-/* ─── page-closing reference block ─── */
+/* page-closing reference block */
 .footnotes { margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 28px; }
 .footBlock { min-width: 0; }
 .sourceList { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
@@ -425,6 +436,9 @@
   text-decoration: none;
   transition: border-color 0.15s ease, color 0.15s ease;
 }
-a.sourceBtn:hover, a.sourceBtn:focus-visible { border-color: var(--accent); color: var(--accent-light); outline: none; }
+a.sourceBtn:focus-visible { border-color: var(--accent); color: var(--accent-light); outline: none; }
+@media (hover: hover) {
+  a.sourceBtn:hover { border-color: var(--accent); color: var(--accent-light); outline: none; }
+}
 .sourceBtnStatic { opacity: 0.75; cursor: default; }
 .sourceBtnLabel { font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.66rem; color: var(--text-muted); }

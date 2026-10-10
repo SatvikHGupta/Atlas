@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import CompanyChipRow from '../company/CompanyChipRow.jsx';
+import ResponsiveSelect from '../ui/Dropdown/ResponsiveSelect.jsx';
 import styles from '../../app/patterns/[slug]/PatternDetail.module.css';
 
 const DIFF_CLASS = { easy: 'diffEasy', medium: 'diffMedium', hard: 'diffHard' };
@@ -46,10 +47,13 @@ export default function PatternDetailClient({ problems, companyNames }) {
             </button>
           ))}
         </div>
-        <select className={styles.sortSelect} value={sortBy} onChange={(e) => setSortBy(e.target.value)} aria-label="Sort problems">
-          <option value="askedAt">Most asked first</option>
-          <option value="difficulty">Easiest first</option>
-        </select>
+        <ResponsiveSelect
+          nativeClassName={styles.sortSelect}
+          ariaLabel="Sort problems"
+          value={sortBy}
+          onChange={setSortBy}
+          options={[{ value: 'askedAt', label: 'Most asked first' }, { value: 'difficulty', label: 'Easiest first' }]}
+        />
       </div>
 
       <div className={styles.practiceList}>

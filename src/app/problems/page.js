@@ -4,7 +4,7 @@ import { getDsaIndex } from '../../lib/server/content.server.js';
 import ProblemsClient from './ProblemsClient.jsx';
 import { routes, canonicalAlternates } from '../../lib/routeIdentity.js';
 
-// Count is read from actual data, not hand-typed - see content.server.js.
+// Count is read from actual data, not hand-typed - see content.server.js
 export function generateMetadata() {
   const count = getDsaIndex().length;
   return {
@@ -14,8 +14,7 @@ export function generateMetadata() {
   };
 }
 
-// BUG-105: ProblemsClient reads useSearchParams to initialise filters from
-// the URL, which requires a Suspense boundary in the App Router.
+// ProblemsClient reads useSearchParams to initialise filters from the URL
 export default function ProblemsPage() {
   return (
     <Suspense fallback={<FullPageLoader />}>

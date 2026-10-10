@@ -8,7 +8,7 @@ import { useAuthStore } from '../../../store/auth.store.js';
 import { localDateKey } from '../../../lib/dates.js';
 import styles from './DataTab.module.css';
 
-// Builds the export in-memory and triggers a browser download - no server round-trip, no extra Firestore reads beyond what the page already has loaded.
+// Builds the export in-memory and triggers a browser download
 function downloadJson(filename, data) {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -27,7 +27,6 @@ export default function DataTab() {
   const bookmarksReady = useAuthStore((s) => s.bookmarksReady);
   const addToast = useUIStore((s) => s.addToast);
 
-  // BUG-174: never export a partial snapshot, wait until both are loaded
   const ready = !!user && progressReady && bookmarksReady;
   const failed = progressError || bookmarksError;
 

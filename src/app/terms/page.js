@@ -7,7 +7,7 @@ export const metadata = {
   description: 'The ground rules for using Atlas.',
 };
 
-// Plain-language terms, not legal advice - have them reviewed before relying on them.
+// Plain-language terms, not legal advice
 export default function TermsPage() {
   return (
     <LegalPage title="Terms of use" updated="1 October 2026">

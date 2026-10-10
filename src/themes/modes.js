@@ -1,12 +1,10 @@
-// MODES - the two base palettes (backgrounds, surfaces, text, borders, status colors, code blocks).
-// An accent (src/themes/<accent>.js) is layered on top of a mode, so a visitor picks Light/Dark AND an accent.
-// Edit a mode here and every accent follows; nothing else in the app lists colors.
+// MODES - the two base palettes (backgrounds, surfaces, text, borders, status colors, code blocks)
 
 export const dark = {
   id: 'dark',
   name: 'Dark',
   description: 'Near-black surfaces, easy on the eyes at night.',
-  shiki: 'github-dark-dimmed', // syntax theme for code blocks in this mode
+  shiki: 'github-dark-dimmed',
 
   colors: {
     background:    '#07070b',
@@ -19,7 +17,6 @@ export const dark = {
     warning:       '#f59e0b',
     danger:        '#ef4444',
 
-    // Optional fine-tuning (derived from the colors above when left out, see src/theme/theme-utils.js).
     textSecondary: '#a4a4b8',
     surfaceHover:  '#181824',
     elevated:      '#202030',
@@ -27,7 +24,6 @@ export const dark = {
     borderStrong:  'rgba(255, 255, 255, 0.15)',
   },
 
-  // Code blocks follow the mode: dark page, dark code; light page, light code.
   code: {
     background: '#0d0d14',
     border:     'rgba(255, 255, 255, 0.08)',
@@ -58,7 +54,7 @@ export const light = {
   },
 
   code: {
-    background: '#eceff3', // CHANGE THIS: light code block bg (was #f6f8fa)
+    background: '#eceff3', // light code block bg (was #f6f8fa)
     border:     'rgba(15, 23, 42, 0.14)',
     text:       '#24292f',
   },

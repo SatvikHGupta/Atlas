@@ -1,15 +1,10 @@
-// The one live "active theme" (mode + accent) for the browser. The DOM attributes <html data-mode data-accent> are the
-// source of truth (what the CSS reads and what the init script sets before paint); localStorage holds the two ids
-// between visits; React reads the store through useSyncExternalStore. All three are kept in step here.
+// The one live "active theme" (mode + accent) for the browser
 import {
   MODE_IDS, COLOR_IDS, DEFAULT_MODE_ID, DEFAULT_ACCENT_ID, parseModeId, parseColorId, resolveTheme,
 } from '../themes/index.js';
 import { MODE_STORAGE_KEY, ACCENT_STORAGE_KEY, SECONDARY_STORAGE_KEY, LEGACY_STORAGE_KEY } from './theme-storage.js';
 
-/**
- * @param {{doc?: Document, storage?: Storage, win?: Window, defaultMode?: string, defaultAccent?: string,
- *          keys?: {mode: string, accent: string, secondary: string, legacy: string}}} [env] everything is injectable so tests need no browser
- */
+// keys?: {mode: string, accent
 export function createThemeStore({
   doc = typeof document !== 'undefined' ? document : null,
   storage = null,
@@ -25,7 +20,7 @@ export function createThemeStore({
     try {
       return storage ?? win?.localStorage ?? null;
     } catch {
-      return null; // some browsers throw on access when storage is blocked
+      return null;
     }
   };
   const read = (key) => {
@@ -39,14 +34,12 @@ export function createThemeStore({
     try {
       getStorage()?.setItem(key, value);
     } catch {
-      // Private mode / quota: the theme still applies for this session through the DOM attributes.
     }
   };
   const remove = (key) => {
     try {
       getStorage()?.removeItem(key);
     } catch {
-      // nothing to do
     }
   };
   const attr = (name) => doc?.documentElement.getAttribute(name) ?? null;
@@ -57,7 +50,6 @@ export function createThemeStore({
     else doc?.documentElement.removeAttribute('data-secondary');
   };
 
-  // useSyncExternalStore needs the same object back while nothing changed, so snapshots are cached per pair.
   const snapshots = new Map();
   const snapshotFor = (mode, accent, secondary) => {
     const key = `${mode}|${accent}|${secondary ?? ''}`;
@@ -69,11 +61,10 @@ export function createThemeStore({
     parseColorId(attr('data-accent')) ?? defaultAccent,
     parseColorId(attr('data-secondary')),
   );
-  // Server render and the hydration pass always see the default, React then re-renders with the real value.
   const getServerSnapshot = () => snapshotFor(defaultMode, defaultAccent, null);
 
   function onStorage(event) {
-    if (event.key !== keys.mode && event.key !== keys.accent && event.key !== keys.secondary) return; // another tab changed the theme
+    if (event.key !== keys.mode && event.key !== keys.accent && event.key !== keys.secondary) return;
     const next = resolveTheme({ mode: read(keys.mode), accent: read(keys.accent), secondary: read(keys.secondary) });
     applyMode(next.mode);
     applyAccent(next.accent);
@@ -90,7 +81,6 @@ export function createThemeStore({
     };
   }
 
-  /** Select a mode: validate, apply immediately, persist the id only. Returns false for an unknown id. */
   function setMode(id) {
     if (!MODE_IDS.includes(id)) return false;
     applyMode(id);
@@ -99,7 +89,6 @@ export function createThemeStore({
     return true;
   }
 
-  /** Select an accent: validate, apply immediately, persist the id only. Returns false for an unknown id. */
   function setAccent(id) {
     if (!COLOR_IDS.includes(id)) return false;
     applyAccent(id);
@@ -108,7 +97,6 @@ export function createThemeStore({
     return true;
   }
 
-  /** Select a secondary colour (a colour id), or null for none. Validate, apply, persist. Returns false for an unknown id. */
   function setSecondary(id) {
     if (id !== null && !COLOR_IDS.includes(id)) return false;
     applySecondary(id);
@@ -118,7 +106,6 @@ export function createThemeStore({
     return true;
   }
 
-  /** Commit a whole draft at once ({mode, accent, secondary}): validate, apply, persist, notify once. False if any id is unknown. */
   function apply(next) {
     const mode = parseModeId(next?.mode);
     const accent = parseColorId(next?.accent);
@@ -135,10 +122,6 @@ export function createThemeStore({
     return true;
   }
 
-  /**
-   * Re-assert the invariant after hydration: DOM === resolved stored theme, and a stale stored value (removed accent,
-   * old alias, garbage, the pre-accent single "atlas-theme") is repaired. A no-op when everything already agrees.
-   */
   function sync() {
     const storedMode = read(keys.mode);
     const storedAccent = read(keys.accent);
@@ -163,7 +146,7 @@ export function createThemeStore({
 }
 
 let singleton = null;
-/** The app-wide store (browser only). */
+// The app-wide store (browser only)
 export function getThemeStore() {
   if (!singleton) singleton = createThemeStore();
   return singleton;

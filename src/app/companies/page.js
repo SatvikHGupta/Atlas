@@ -3,7 +3,7 @@ import CompanyBrowser from '../../components/company/CompanyBrowser.jsx';
 import styles from './CompanyList.module.css';
 import { routes, canonicalAlternates } from '../../lib/routeIdentity.js';
 
-// Count comes from the actual data file, correct on next build with no code change.
+// Count comes from the actual data file
 export function generateMetadata() {
   const count = getCompanyIndex().length;
   return {

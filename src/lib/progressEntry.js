@@ -1,10 +1,7 @@
-// Slim/expand helpers, size estimates and solve planning for progress and
-// bookmark entries. Pure, no Firebase imports. Author: Satvik Hemant Gupta
+// Slim/expand helpers, size estimates and solve planning for progress and bookmark entries. Author: Satvik Hemant Gupta
 
-// BUG-189: 'skipped' is not a status the UI can produce, so it is not valid.
 export const VALID_STATUSES = ['solved', 'attempted'];
 
-// BUG-067/068: a Firestore doc is capped at 1 MiB. Warn early, refuse late.
 export const WARN_BYTES = 700 * 1024;
 export const LIMIT_BYTES = 900 * 1024;
 const DOC_OVERHEAD_BYTES = 64;
@@ -25,8 +22,7 @@ function byteLength(str) {
   return encoder.encode(str).length;
 }
 
-// Firestore Timestamp (or Date, or {seconds}) -> ISO string. Strings pass
-// through so old docs and the local cache keep working (BUG-060).
+// Firestore Timestamp (or Date, or {seconds}) -> ISO string
 export function toIso(value) {
   if (value == null) return null;
   if (typeof value === 'string') return value;
@@ -43,7 +39,7 @@ export function toIso(value) {
   return null;
 }
 
-// Storage shape: no redundant inner canonical_id, no null fields.
+// Storage shape: no redundant inner canonical_id, no null fields
 export function slimEntry(entry) {
   const out = {};
   for (const [key, value] of Object.entries(entry || {})) {
@@ -53,9 +49,7 @@ export function slimEntry(entry) {
   return out;
 }
 
-// In-memory shape the rest of the app expects. Accepts the old shape (inner
-// canonical_id, explicit nulls) and the slim shape. Returns null for entries
-// that must be ignored (BUG-189: unknown status).
+// In-memory shape the rest of the app expects
 export function expandEntry(id, raw, kind = 'progress') {
   if (!raw || typeof raw !== 'object') return null;
   if (kind === 'progress') {
@@ -71,7 +65,7 @@ export function expandEntry(id, raw, kind = 'progress') {
   return { canonical_id: id, bookmarked_at: toIso(raw.bookmarked_at) };
 }
 
-// {key: rawEntry} -> {canonical_id: entry}. keyToId undoes key escaping.
+// {key: rawEntry} -> {canonical_id: entry}
 export function expandItemsMap(raw, kind = 'progress', keyToId = (k) => k) {
   const items = {};
   for (const [key, value] of Object.entries(raw || {})) {
@@ -100,19 +94,16 @@ export function estimateItemsBytes(items) {
   return total;
 }
 
-// 'ok' | 'warn' | 'full'. 'full' means NEW entries are refused.
+// 'ok' | 'warn' | 'full'
 export function capacityLevel(usedBytes) {
   if (usedBytes >= LIMIT_BYTES) return 'full';
   if (usedBytes >= WARN_BYTES) return 'warn';
   return 'ok';
 }
 
-// BUG-053/054: solve_count and first_solved_at come from the SERVER copy read
-// inside a transaction, never from a stale local snapshot. `sentinel` is
-// serverTimestamp() in production (any marker object in tests).
+// solve_count and first_solved_at come from the SERVER copy read inside
 export function planSolve(canonicalId, serverEntry, sentinel, nowIso) {
   if (serverEntry?.status === 'solved') {
-    // another device already solved it: nothing to write, just sync local
     return { changed: false, local: expandEntry(canonicalId, serverEntry) };
   }
   const solveCount = (Number(serverEntry?.solve_count) || 0) + 1;
@@ -135,11 +126,7 @@ export function planSolve(canonicalId, serverEntry, sentinel, nowIso) {
   };
 }
 
-// ATLAS-BUG-001: "attempted" must never overwrite "solved". Allowed transitions are none->attempted, none->solved,
-// attempted->solved, and removal (reset). solved->attempted is refused. The decision is made on the SERVER copy read
-// inside a transaction, so a stale local cache or a second device cannot slip a downgrade through.
-// Returns { changed:false, blocked:true, local } when the server already says solved, { changed:false, local } when it
-// is already attempted, otherwise { changed:true, write, local } (merge-write: first_solved_at / solve_count stay put).
+// "attempted" must never overwrite "solved"
 export function planAttempt(canonicalId, serverEntry, sentinel, nowIso) {
   if (serverEntry?.status === 'solved') {
     return { changed: false, blocked: true, local: expandEntry(canonicalId, serverEntry) };
@@ -161,16 +148,14 @@ export function planAttempt(canonicalId, serverEntry, sentinel, nowIso) {
   };
 }
 
-// Pure transition table used for the cheap local pre-check (the transaction above is the real authority).
+// Pure transition table used for the cheap local pre-check
 export function isAllowedTransition(fromStatus, toStatus) {
   if (!isValidStatus(toStatus)) return false;
   if (fromStatus === 'solved' && toStatus === 'attempted') return false;
   return true;
 }
 
-// BUG-11: 42 duplicate problems were merged into one canonical id (data/id-alias-map.json). Progress or bookmarks a
-// user saved under an old ("twin") id would otherwise look lost. Returns the [oldId, newId] pairs to move for this
-// raw items map: only when the old entry exists and the canonical one does not (an existing canonical entry wins).
+// 42 duplicate problems were merged into one canonical id
 export function planIdMoves(rawItems, twinToCanonical) {
   if (!rawItems || !twinToCanonical) return [];
   const moves = [];
@@ -180,7 +165,6 @@ export function planIdMoves(rawItems, twinToCanonical) {
   return moves;
 }
 
-/** Same map with the planned moves applied (old key removed, entry stored under the canonical key). */
 export function applyIdMoves(rawItems, moves) {
   if (!moves.length) return rawItems;
   const next = { ...rawItems };
@@ -191,9 +175,7 @@ export function applyIdMoves(rawItems, moves) {
   return next;
 }
 
-// ATLAS-BUG-012: Firestore rules cannot loop over map entries, so the per-entry schema is enforced HERE, at the one
-// place every write passes through, and again on read (expandEntry drops/clamps anything malformed). Both functions
-// return { ok:boolean, reason?:string }. `value` is the entry in storage shape (slim, timestamps may be sentinels).
+// Firestore rules cannot loop over map entries
 const isStamp = (v) => v == null || typeof v === 'string' || (typeof v === 'object' && v !== null);
 
 export function validateIdKey(id) {

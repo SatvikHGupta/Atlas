@@ -21,7 +21,9 @@
   touch-action: manipulation;
 }
 
-.chip:hover { border-color: var(--band-color); color: var(--band-color); }
+@media (hover: hover) {
+  .chip:hover { border-color: var(--band-color); color: var(--band-color); }
+}
 
 .chip[data-active='true'] {
   border-color: var(--band-color);

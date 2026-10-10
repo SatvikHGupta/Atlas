@@ -18,7 +18,9 @@
   cursor: pointer;
   transition: background var(--transition-fast), color var(--transition-fast);
 }
-.tab:hover { background: var(--bg-elevated); color: var(--text-primary); }
+@media (hover: hover) {
+  .tab:hover { background: var(--bg-elevated); color: var(--text-primary); }
+}
 .active { background: var(--accent-subtle); color: var(--accent-light); }
 
 .legalGroup {
@@ -42,7 +44,9 @@
   color: var(--text-secondary);
   transition: border-color var(--transition-fast), color var(--transition-fast), background var(--transition-fast);
 }
-.legalBtn:hover { border-color: var(--accent); color: var(--accent-light); background: var(--accent-subtle); }
+@media (hover: hover) {
+  .legalBtn:hover { border-color: var(--accent); color: var(--accent-light); background: var(--accent-subtle); }
+}
 
 @media (max-width: 720px) {
   .nav {

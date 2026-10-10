@@ -42,7 +42,9 @@
   white-space: nowrap;
 }
 
-.link:hover { color: var(--text-primary); }
+@media (hover: hover) {
+  .link:hover { color: var(--text-primary); }
+}
 .link[data-active='true'] { color: var(--text-primary); }
 
 .navIndicator {
@@ -55,7 +57,6 @@
 
 .right { display: flex; align-items: center; gap: var(--space-3); margin-left: auto; }
 
-/* Gear is always 40px and always the last item, so its position is identical signed in or out. */
 .gearLink {
   position: relative;
   display: grid;
@@ -72,9 +73,10 @@
   color: var(--text-muted);
   transition: color var(--transition-fast);
 }
-.gearLink:hover .navGear { color: var(--accent-light); }
+@media (hover: hover) {
+  .gearLink:hover .navGear { color: var(--accent-light); }
+}
 
-/* 16px inside the gear's centre circle (inner edge is about 15.5px across at 40px). Sits under the gear stroke so the ring stays intact. */
 .avatarInGear {
   grid-area: 1 / 1;
   width: 16px;
@@ -90,7 +92,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center; /* was top left, which pushed the face off centre */
+  object-position: center;
   display: block;
 }
 
@@ -106,7 +108,6 @@
   line-height: 1;
 }
 
-/* Sign in and Sign out share one size so the layout does not jump. CHANGE THIS: width */
 .authBtn {
   width: 88px;
   height: 34px;
@@ -122,28 +123,30 @@
   white-space: nowrap;
   transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
 }
-.authBtn:hover { color: var(--diff-expert); border-color: var(--diff-expert); }
+@media (hover: hover) {
+  .authBtn:hover { color: var(--diff-expert); border-color: var(--diff-expert); }
+}
 
 .signIn {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--accent-fg);
 }
-.signIn:hover { background: var(--accent-hover); border-color: var(--accent-hover); color: var(--accent-fg); }
+@media (hover: hover) {
+  .signIn:hover { background: var(--accent-hover); border-color: var(--accent-hover); color: var(--accent-fg); }
+}
 
-/* ── MOBILE ─────────────────────────────────────── */
+/* MOBILE */
 @media (max-width: 768px) {
   .nav {
     padding: 0 var(--mobile-padding);
   }
 
-  /* hide desktop nav links - components/layout/BottomNav (same constants/navLinks.js) owns navigation below 769px */
   .links {
     display: none;
   }
 
   .logoText { font-size: 1.1rem; }
 
-  /* on mobile, sign out lives in the bottom nav "More" sheet, so only Sign in shows (gear stays last) */
   .authBtn:not(.signIn) { display: none; }
 }

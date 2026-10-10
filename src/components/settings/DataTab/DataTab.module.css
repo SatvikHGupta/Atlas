@@ -18,16 +18,18 @@
   cursor: pointer;
   transition: background var(--transition-fast);
 }
-.exportBtn:hover { background: var(--accent-hover); }
+@media (hover: hover) {
+  .exportBtn:hover { background: var(--accent-hover); }
+}
 .exportBtn svg { width: 15px; height: 15px; }
 
 .note { margin: 0; font-size: 0.78rem; color: var(--text-muted); }
 
-
-/* --- appended: functional classes from an earlier merge round the theme-fix predates --- */
 .exportBtnDisabled { opacity: 0.5; cursor: not-allowed; }
 
-.exportBtnDisabled:hover { background: var(--accent); }
+@media (hover: hover) {
+  .exportBtnDisabled:hover { background: var(--accent); }
+}
 
 .exportWait { margin: 0; font-size: 0.8rem; color: var(--text-secondary); }
 

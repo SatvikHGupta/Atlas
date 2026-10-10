@@ -18,6 +18,7 @@
 .select:focus { outline: none; border-color: var(--accent); }
 
 @media (max-width: 768px) {
+  .phoneDrop { flex: 1; }
   .wrapper {
     width: 100%;
   }

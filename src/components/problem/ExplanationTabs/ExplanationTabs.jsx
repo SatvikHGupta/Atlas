@@ -10,8 +10,6 @@ marked.setOptions({ breaks: true, gfm: true });
 
 function renderMd(md) {
   if (!md) return '';
-  // SEC-06: the same allowlist sanitizer runs on the server and in the browser, so the statically rendered HTML is
-  // sanitized too (DOMPurify needs a DOM, so it only ever ran client-side and the prerendered markup was raw).
   return sanitizeHtml(marked.parse(md), 'markdown');
 }
 
@@ -25,7 +23,6 @@ export default function ExplanationTabs({ shortText, longText, longStatus }) {
 
   const tabs = [shortText || '', longText || ''];
 
-  // swipe gesture handlers
   const handleTouchStart = (e) => {
     dragStartX.current = e.touches[0].clientX;
   };
@@ -65,7 +62,6 @@ export default function ExplanationTabs({ shortText, longText, longStatus }) {
         ))}
       </div>
 
-      {/* DATA-01: 421 breakdowns were cut off during generation; say so instead of ending mid-sentence silently */}
       {longStatus === 'truncated' && activeTab === 1 && (
         <p className={styles.notice} role="note">
           This breakdown was cut off while it was being generated. The Quick Look tab has the complete summary.

@@ -72,7 +72,9 @@
   color: var(--text-primary);
   transition: border-color 0.15s ease;
 }
-.entryRow:hover { border-color: var(--border-strong); }
+@media (hover: hover) {
+  .entryRow:hover { border-color: var(--border-strong); }
+}
 
 .statusDot {
   width: 8px;
@@ -110,7 +112,7 @@
   .entryStatus { display: none; }
 }
 
-/* ---- appended (handoff 3): DSA/CP badge, unresolved note, error ---- */
+/* appended (handoff 3): DSA/CP badge, unresolved note, error */
 .kindBadge {
   padding: 1px 7px;
   border-radius: 999px;
@@ -145,4 +147,6 @@
   color: var(--text-primary);
   cursor: pointer;
 }
-.retryBtn:hover { border-color: var(--accent); color: var(--accent); }
+@media (hover: hover) {
+  .retryBtn:hover { border-color: var(--accent); color: var(--accent); }
+}

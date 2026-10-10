@@ -176,7 +176,7 @@
   font-weight: 600;
 }
 
-/* ---- mobile ---- */
+/* mobile */
 @media (max-width: 768px) {
   .tabBar {
     width: 100%;

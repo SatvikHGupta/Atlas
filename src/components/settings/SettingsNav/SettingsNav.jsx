@@ -1,7 +1,6 @@
 'use client';
 
-// Sidebar for the Settings pages. Real links (one URL per section), so the browser back button, deep links and
-// "open in new tab" all work. The list comes from constants/settingsSections.js. Author: Satvik Hemant Gupta
+// Sidebar for the Settings pages. Author: Satvik Hemant Gupta
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { SETTINGS_SECTIONS, settingsPath } from '../../../constants/settingsSections.js';
@@ -24,7 +23,6 @@ export default function SettingsNav() {
           </Link>
         );
       })}
-      {/* not settings pages, so plain buttons under the list */}
       <div className={styles.legalGroup}>
         <Link href="/terms" className={styles.legalBtn}>Terms</Link>
         <Link href="/privacy" className={styles.legalBtn}>Privacy</Link>

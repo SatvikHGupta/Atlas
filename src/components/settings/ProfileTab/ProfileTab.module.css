@@ -23,7 +23,9 @@
   cursor: pointer;
   transition: background var(--transition-fast), color var(--transition-fast);
 }
-.cardBtn:hover:not(:disabled) { background: var(--accent); color: var(--accent-fg); }
+@media (hover: hover) {
+  .cardBtn:hover:not(:disabled) { background: var(--accent); color: var(--accent-fg); }
+}
 .cardBtn:disabled { opacity: 0.6; cursor: progress; }
 .cardBtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
@@ -81,4 +83,6 @@
   text-decoration: none;
   font-weight: 600;
 }
-.dashboardLink:hover { text-decoration: underline; }
+@media (hover: hover) {
+  .dashboardLink:hover { text-decoration: underline; }
+}

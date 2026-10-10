@@ -16,11 +16,10 @@ const initialOf = (user) => (user.displayName || user.email || '?').trim()[0].to
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [photoBroken, setPhotoBroken] = useState(false); // photo URL failed to load, show the letter instead
+  const [photoBroken, setPhotoBroken] = useState(false);
   const { user, signInWithGoogle, signOut } = useAuth();
   const addToast = useUIStore((s) => s.addToast);
 
-  // BUG-07: surface sign-in failures (popup blocked, network...) instead of swallowing the result
   const handleSignIn = async () => {
     const result = await signInWithGoogle();
     if (result && result.ok === false) {
@@ -55,8 +54,6 @@ export default function Navbar() {
         ))}
       </div>
 
-      {/* Same markup for both states: the auth button has a fixed width and the 40px gear is always the last item,
-          so nothing moves when you sign in or out. */}
       <div className={styles.right}>
         {user ? (
           <button className={styles.authBtn} onClick={signOut}>Sign out</button>

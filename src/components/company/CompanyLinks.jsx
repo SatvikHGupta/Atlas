@@ -1,8 +1,7 @@
 import { toExternalUrl } from '../../lib/urlPolicy.js';
 import styles from '../../app/companies/[id]/CompanyDetail.module.css';
 
-// Every outbound link we hold for a company, as a visible button with its label AND host spelled out (nothing is truncated
-// or hidden behind an icon). Only http(s) URLs pass (urlPolicy), so a bad data value can never become a javascript: link.
+// Every outbound link we hold for a company
 function host(url) {
   try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return url; }
 }

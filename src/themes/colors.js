@@ -1,19 +1,6 @@
-// COLORS - the single colour palette. Every colour here can be picked as the PRIMARY (the accent: buttons, links, focus
-// rings) or as the SECONDARY (the partner: gradients, progress bars, logo mark, second background glow). Nothing else
-// lists colours; the Settings page, the CSS and the validation all read this file.
-//
-// A colour has one shade per mode (a colour that is readable on a dark page is too light for a white one):
-//   primary  the fill: buttons, toggles, active borders. As a secondary this is the shade that is used.
-//   hover    the same colour slightly deeper, for hover and pressed states.
-//   link     the colour used as TEXT (links, active tabs). In light mode it equals primary: text needs more contrast
-//            than a fill, so light-mode shades are darker.
-// The registry (index.js) checks every colour on both modes when it loads, so an unreadable colour fails the build.
-//
-// group: 'basic' (everyday colours) or 'extra' (rarer, more distinctive). Settings shows them in that order.
-// aliases: ids from earlier versions that should keep working (saved values map to this colour).
-// Add a colour: copy an entry, change id, name, group and the six shades, done.
+// COLORS - the single colour palette
 
-export const DEFAULT_PRIMARY_ID = 'atlas'; // the original Atlas violet
+export const DEFAULT_PRIMARY_ID = 'atlas';
 
 export const COLORS = [
   {

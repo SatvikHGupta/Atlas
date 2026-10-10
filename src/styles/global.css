@@ -10,13 +10,17 @@
 
 html {
   scroll-behavior: smooth;
-  /* BUG-020: makes native controls, scrollbars and autofill follow the active theme's light/dark scheme. */
   color-scheme: var(--theme-scheme, dark);
+  width: 100%;
+  max-width: 100%;
+  /* no sideways rubber-banding / swipe-nav, and keep text from being rescaled in landscape */
+  overscroll-behavior-x: none;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
   font-family: var(--font-sans);
-  /* BUG-013: page color and atmospheric glow come from the active theme (--body-glow is defined per theme), not from fixed Atlas-purple values. */
   background-color: var(--bg-primary);
   background-image: var(--body-glow, none);
   background-attachment: fixed;
@@ -24,10 +28,20 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh; /* fallback for browsers without dvh */
   min-height: 100dvh;
+  width: 100%;
+  max-width: 100%;
   /* prevent horizontal overflow on mobile */
   overflow-x: hidden;
+  /* landscape notches / rounded corners: keep content inside the safe area */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
+
+/* a flex/grid child with long content must be able to shrink, or it pushes the page wider than the screen */
+main { min-width: 0; max-width: 100%; }
+img, video { max-width: 100%; }
 
 a {
   color: inherit;
@@ -47,6 +61,13 @@ input, textarea, select {
   font-family: inherit;
   /* prevent iOS zoom on focus - font-size must be >= 16px */
   font-size: 16px;
+}
+
+/* phones: module classes set smaller sizes, so this must win or iOS zooms in on focus */
+@media (max-width: 768px) {
+  input:not([type='checkbox']):not([type='radio']):not([type='range']), select, textarea {
+    font-size: max(16px, 1em) !important;
+  }
 }
 
 /* remove iOS tap highlight flash */
@@ -69,7 +90,9 @@ input, textarea, select {
   ::-webkit-scrollbar { width: 5px; height: 5px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: var(--radius-full); }
+  @media (hover: hover){
   ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+}
 }
 
 /* hide scrollbar on mobile but keep scroll */
@@ -80,7 +103,6 @@ input, textarea, select {
 
 pre, code { font-family: var(--font-mono); }
 
-/* horizontal scroll utility - used for tag rows, chip rows on mobile */
 .scroll-x {
   display: flex;
   overflow-x: auto;
@@ -98,8 +120,6 @@ pre, code { font-family: var(--font-mono); }
   }
 }
 
-/* Code blocks follow the mode. Shiki writes both palettes as variables on every token (build time); the active mode
-   chooses one. The block background is the per-mode --code-bg token (src/themes/modes.js). */
 .shiki { background-color: var(--code-bg); }
 html[data-mode='dark'] .shiki,
 html[data-mode='dark'] .shiki span { color: var(--shiki-dark); }

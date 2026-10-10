@@ -7,11 +7,7 @@ import styles from './FlashCard.module.css';
 
 const DIFF_CLASS = { Easy: 'diffEasy', Medium: 'diffMedium', Hard: 'diffHard' };
 
-// One card per practice problem in a note's "problems" section. Front is deliberately just the
-// title + difficulty - no hint - so it works as an actual recall prompt ("could I solve this
-// blind?") before flipping to see the approach. `why` is the hand-written per-problem insight
-// already in the note data; `companies` comes from the problem's own content bundle (askedAt),
-// resolved server-side and passed in - this component stays presentational.
+// One card per practice problem in a note's "problems" section
 export default function FlashCard({ title, slug, difficultyLabel, why, href, companies }) {
   const [flipped, setFlipped] = useState(false);
   const diffKey = DIFF_CLASS[difficultyLabel] || '';

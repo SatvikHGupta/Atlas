@@ -21,7 +21,9 @@
   border-radius: var(--radius-md);
   padding: 6px 12px;
 }
-.backLink:hover { border-color: var(--border-strong); color: var(--text-secondary); }
+@media (hover: hover) {
+  .backLink:hover { border-color: var(--border-strong); color: var(--text-secondary); }
+}
 
 .header { display: flex; flex-direction: column; gap: 0.5rem; }
 
@@ -163,7 +165,9 @@
 }
 
 .variantLink { font-size: 0.75rem; color: var(--accent); text-decoration: none; }
-.variantLink:hover { text-decoration: underline; }
+@media (hover: hover) {
+  .variantLink:hover { text-decoration: underline; }
+}
 
 .pitfalls {
   list-style: none;
@@ -197,9 +201,11 @@
   text-decoration: none;
   transition: all 0.15s;
 }
-.progression:hover {
-  background: rgba(var(--accent-rgb),0.12);
-  border-color: var(--accent);
+@media (hover: hover) {
+  .progression:hover {
+    background: rgba(var(--accent-rgb),0.12);
+    border-color: var(--accent);
+  }
 }
 
 .progressionText {
@@ -250,12 +256,15 @@
   transition: border-color 0.15s, color 0.15s;
   gap: 4px;
 }
-.backBtn:hover { border-color: var(--border-strong); color: var(--text-secondary); }
+@media (hover: hover) {
+  .backBtn:hover { border-color: var(--border-strong); color: var(--text-secondary); }
+}
 
-/* ---- mobile ---- */
+/* mobile */
 @media (max-width: 768px) {
+  /* keep padding-bottom AFTER the shorthand and never re-set `padding` later in this file, or the last lines hide under the bottom nav */
   .wrapper {
-    padding: var(--space-4) var(--space-3);
+    padding: var(--space-5) var(--space-4);
     padding-bottom: calc(var(--bottom-nav-height, 60px) + env(safe-area-inset-bottom) + 16px);
     gap: 1.5rem;
   }
@@ -263,4 +272,11 @@
   .problems { grid-template-columns: 1fr; }
   .progression { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
   .progressionWhy { max-width: 100%; }
+}
+
+@media (max-width: 768px) {
+  .title { font-size: 1.6rem; }
+  .section { font-size: 1rem; line-height: 1.75; }
+  .templateBlock, .complexityExplain { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .problems { grid-template-columns: 1fr; }
 }

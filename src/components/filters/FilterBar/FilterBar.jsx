@@ -79,7 +79,6 @@ function DifficultySlider({ value, onChange }) {
   );
 }
 
-// Pattern chips (the /patterns page list). Multi-select: a problem must carry every selected pattern.
 const CHIPS_COLLAPSED = 24;
 
 function PatternSection({ filters, patchFilters }) {
@@ -93,7 +92,6 @@ function PatternSection({ filters, patchFilters }) {
   const selected = filters.topics || [];
   const searching = query.trim() !== '';
   let visible = expanded || searching ? matches : matches.slice(0, CHIPS_COLLAPSED);
-  // selected chips stay visible even below the collapsed cut-off
   const hidden = selected.filter((name) => !visible.some((c) => c.name === name));
   if (hidden.length) {
     visible = [...hidden.map((name) => chips.find((c) => c.name === name) || { name, count: 0 }), ...visible];
@@ -104,7 +102,6 @@ function PatternSection({ filters, patchFilters }) {
     patchFilters({ topics: next, page: 1 });
   };
 
-  // the pattern page link only makes sense for a single selection
   const pageSlug = selected.length === 1 && DSA_TOPICS.includes(selected[0]) ? patternSlug(selected[0]) : null;
 
   return (
@@ -143,13 +140,11 @@ function PatternSection({ filters, patchFilters }) {
   );
 }
 
-/* inDrawer prop - when true, renders inside the mobile FilterDrawer */
+// inDrawer prop - when true, renders inside the mobile FilterDrawer
 export default function FilterBar({ inDrawer = false }) {
   const { filters, setFilter, resetFilters, patchFilters } = useFilters();
   const isAuthed = useAuthStore((s) => !!s.user);
   const authResolved = useAuthStore((s) => isAuthResolved(s));
-  // BUG-102: signed-out users can't get useful results from these, so the
-  // options are disabled instead of silently returning "0 problems".
   const personalDisabled = authResolved && !isAuthed;
 
   const activeCount = [
@@ -170,14 +165,6 @@ export default function FilterBar({ inDrawer = false }) {
       </div>
 
       {!inDrawer && <SearchBar />}
-
-      {inDrawer && activeCount > 0 && (
-        <div style={{ padding: '0.75rem 1rem 0', display: 'flex', justifyContent: 'center' }}>
-          <button className={styles.clearAll} onClick={resetFilters}>
-            Clear {activeCount}
-          </button>
-        </div>
-      )}
 
       <Section label="Status" count={filters.status ? 1 : 0}>
         <div className={styles.statusChips}>

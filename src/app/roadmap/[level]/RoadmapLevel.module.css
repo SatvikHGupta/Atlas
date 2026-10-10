@@ -26,7 +26,9 @@
   display: inline-flex;
   align-items: center;
 }
-.back:hover { border-color: var(--border-strong); color: var(--text-secondary); }
+@media (hover: hover) {
+  .back:hover { border-color: var(--border-strong); color: var(--text-secondary); }
+}
 
 .header { display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap; }
 
@@ -105,7 +107,9 @@
   transition: border-color var(--transition-fast);
   cursor: pointer;
 }
-.row:hover { border-color: var(--border); }
+@media (hover: hover) {
+  .row:hover { border-color: var(--border); }
+}
 .row[data-status='solved']    { background: var(--solved-bg); }
 .row[data-status='attempted'] { background: var(--attempted-bg); }
 
@@ -120,7 +124,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.rowTitle:hover { color: var(--accent); }
+@media (hover: hover) {
+  .rowTitle:hover { color: var(--accent); }
+}
 
 .rowActions { display: flex; gap: var(--space-1); flex-shrink: 0; }
 
@@ -139,10 +145,12 @@
   cursor: pointer;
   font-family: inherit;
 }
-.actionBtn:hover { border-color: var(--accent); color: var(--accent); }
+@media (hover: hover) {
+  .actionBtn:hover { border-color: var(--accent); color: var(--accent); }
+}
 .actionBtn[data-active='true'] { background: var(--solved); border-color: var(--solved); color: var(--solved-fg); font-weight: 700; }
 
-/* ---- mobile ---- */
+/* mobile */
 @media (max-width: 768px) {
   .wrapper {
     padding: var(--space-4) var(--space-3);
@@ -155,7 +163,6 @@
   .actionBtn { width: 34px; height: 34px; }
 }
 
-/* the level's one-line goal under the title: readable measure, real spacing before whatever follows */
 .levelDescription {
   margin: var(--space-2) 0 var(--space-4);
   max-width: 68ch;

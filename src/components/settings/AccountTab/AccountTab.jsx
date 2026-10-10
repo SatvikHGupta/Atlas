@@ -56,7 +56,6 @@ export default function AccountTab() {
   const { resetAllProgress, deleteAccount } = useAccount();
   const [resetting, setResetting] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  // ATLAS-BUG-013: a previous deletion removed the data but not the sign-in account. Offer to finish it.
   const [pendingDeletion, setPendingDeletion] = useState(() => !!user?.uid && deletionMarker.has(user.uid));
 
   async function handleResetProgress() {
@@ -71,7 +70,6 @@ export default function AccountTab() {
     }
   }
 
-  // BUG-074: "deleted" is only shown after Firestore data AND the sign-in account are really gone
   async function handleDeleteAccount() {
     setDeleting(true);
     try {

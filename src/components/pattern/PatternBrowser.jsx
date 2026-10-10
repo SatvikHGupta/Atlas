@@ -9,10 +9,7 @@ import styles from '../../app/patterns/PatternList.module.css';
 
 const SECTION_COLLAPSED_COUNT = 12;
 
-// Search stays a PATTERN search - a hit never surfaces a problem, only the pattern it belongs to -
-// but the match itself checks the pattern name AND its practice-problem titles (from the `titles`
-// field build-companies.mjs now writes into patterns/index.json). So searching "palindrome" surfaces
-// the Manacher / Two Pointers pattern CARDS, not a "Longest Palindromic Substring" result row.
+// Search stays a PATTERN search
 function filterPatterns(patterns, { query, tiers }) {
   const q = query.trim().toLowerCase();
   return patterns.filter((p) => {
@@ -22,7 +19,7 @@ function filterPatterns(patterns, { query, tiers }) {
   });
 }
 
-// Fade-up stagger, same trick as CompanyBrowser.jsx - wraps PatternCard without touching it.
+// Fade-up stagger, same trick as CompanyBrowser.jsx
 function AnimatedCard({ pattern, maxCompanies, index, noteSlug }) {
   return (
     <motion.div
@@ -70,7 +67,6 @@ export default function PatternBrowser({ patterns }) {
 
   const visible = useMemo(() => filterPatterns(patterns, { query, tiers }), [patterns, query, tiers]);
 
-  // Default view only: top 3 overall get the bento row, then the rest split into tier sections.
   const sorted = useMemo(() => [...patterns].sort((a, b) => b.companiesSeenIn - a.companiesSeenIn), [patterns]);
   const featured = sorted.slice(0, 3);
   const featuredSlugs = new Set(featured.map((p) => p.slug));

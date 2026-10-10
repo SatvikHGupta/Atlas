@@ -6,10 +6,7 @@ import { getProblemBundle } from '../../../lib/server/content.server.js';
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 
-// Deliberately NOT statically pre-rendered for all 3,114 problems - an OG image is only ever fetched when a link actually gets shared, which is rare per-problem, so paying render cost for every single one at every build would be a bad trade (build time up, actual usage near zero). Rendered on first real request instead and cached by the host from there. Companies/patterns/notes (much smaller counts, ~250 total combined) ARE pre-rendered at build time - see their opengraph-image.jsx.
 export const dynamic = 'force-dynamic';
-
-// Rendered on demand (force-dynamic above), never prerendered; unknown slugs still get a plain fallback card.
 
 const difficultyLabel = (score) => getDifficultyBucket(score) ?? '';
 

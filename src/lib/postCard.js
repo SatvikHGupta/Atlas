@@ -1,5 +1,4 @@
-// Atlas Post Card (1080x1080): restrained, data-first dark card. Hairlines, one accent, real charts, no decoration for its own sake.
-// Pure canvas code, no imports and no DOM. fam = { sans, mono } font-family strings. Author: Satvik Hemant Gupta
+// Atlas Post Card (1080x1080): restrained, data-first dark card. Author: Satvik Hemant Gupta
 export const CARD_SIZE = 1080;
 const K = {
   bgTop: '#1d1142', bgBot: '#0f0828', panel: '#2b1d5e', text: '#f8f6ff', sub: '#d3cdf0', mute: '#a59bd0',
@@ -20,7 +19,6 @@ export function drawPostCard(ctx, d, fam) {
   const total = (d.dsa || 0) + (d.cp || 0);
   ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left';
 
-  // ---- ground: flat ink with a faint survey grid and crosshair ticks (a quiet nod to "Atlas", reads as texture not decoration)
   const bg = ctx.createLinearGradient(0, 0, 0, W); bg.addColorStop(0, K.bgTop); bg.addColorStop(1, K.bgBot); ctx.fillStyle = bg; ctx.fillRect(0, 0, W, W);
   for (let y = PAD; y < W; y += 72) {
     for (let x = PAD; x < W; x += 72) {
@@ -29,7 +27,6 @@ export function drawPostCard(ctx, d, fam) {
     }
   }
 
-  // ---- header
   const dx = PAD + 17, dy = 104;
   ctx.fillStyle = K.violetL; ctx.beginPath();
   ctx.moveTo(dx, dy - 17); ctx.lineTo(dx + 17, dy); ctx.lineTo(dx, dy + 17); ctx.lineTo(dx - 17, dy); ctx.closePath();
@@ -38,10 +35,8 @@ export function drawPostCard(ctx, d, fam) {
   if (d.since) label(`Since ${d.since}`, W - PAD, 106, K.mute, 'right', 17);
   line(PAD, 146, W - PAD, 146);
 
-  // ---- identity
   rect(PAD, 182, 76, 76, 20); ctx.fillStyle = K.panel; ctx.fill(); ctx.strokeStyle = K.hair; ctx.lineWidth = 1.5; ctx.stroke();
   if (d.avatar) {
-    // d.avatar is a loaded image; crop it to a centred square so faces never get squashed
     const iw = d.avatar.naturalWidth || d.avatar.width, ih = d.avatar.naturalHeight || d.avatar.height, m = Math.min(iw, ih);
     ctx.save(); rect(PAD, 182, 76, 76, 20); ctx.clip();
     ctx.drawImage(d.avatar, (iw - m) / 2, (ih - m) / 2, m, m, PAD, 182, 76, 76); ctx.restore();
@@ -55,7 +50,6 @@ export function drawPostCard(ctx, d, fam) {
   ctx.fillStyle = K.violet; ctx.beginPath(); ctx.arc(nx + 6, 243, 5, 0, Math.PI * 2); ctx.fill();
   ctx.textBaseline = 'middle'; label(rankFor(total), nx + 22, 243, K.sub, 'left', 17);
 
-  // ---- hero: the number, centred in the space left of the donut and level with the donut's centre
   const cx = W - PAD - 132, cy = 448, R = 126, r0 = 98;
   const zoneL = PAD, zoneR = cx - R - 48, zc = (zoneL + zoneR) / 2;
   const numStr = fmt(total); let hs = 300; ctx.font = sans(700, hs); ls(-8);
@@ -74,7 +68,6 @@ export function drawPostCard(ctx, d, fam) {
   }
   ctx.textAlign = 'center'; ctx.fillStyle = K.text; ctx.font = sans(700, 44); ctx.fillText('DSA', cx, cy + 6);
   label('By level', cx, cy + 36, K.mute, 'center', 15); ctx.textAlign = 'left';
-  // legend under the donut: two columns, counts right-aligned so 3-digit numbers never run past the margin
   rows.forEach((r, i) => {
     const cw2 = 128, lx = W - PAD - cw2 * 2 - 22 + (i % 2) * (cw2 + 22), ly = cy + R + 38 + Math.floor(i / 2) * 34;
     ctx.fillStyle = DIFF[r.name]; ctx.beginPath(); ctx.arc(lx + 6, ly, 6, 0, Math.PI * 2); ctx.fill();
@@ -82,7 +75,6 @@ export function drawPostCard(ctx, d, fam) {
     ctx.font = mono(600, 20); ctx.fillStyle = K.text; ctx.textAlign = 'right'; ctx.fillText(String(r.solved), lx + cw2, ly + 1); ctx.textAlign = 'left';
   });
 
-  // ---- stats: three columns on one hairline, no boxes
   const sy = 684, cw = (W - PAD * 2) / 3; ctx.textBaseline = 'alphabetic';
   line(PAD, sy, W - PAD, sy);
   [['DSA solved', fmt(d.dsa), ''], ['CP solved', fmt(d.cp), ''], ['Day streak', fmt(d.streak), `Best ${fmt(Math.max(d.best || 0, d.streak || 0))}`]].forEach((c, i) => {
@@ -94,7 +86,6 @@ export function drawPostCard(ctx, d, fam) {
     ctx.fillText(c[1], x, sy + 116);
   });
 
-  // ---- topics as a tiny bar chart (two columns)
   const ty = 846; line(PAD, ty, W - PAD, ty); label('Top topics', PAD, ty + 40);
   const tps = (d.topics || []).slice(0, 4), max = Math.max(1, ...tps.map((t) => t.solved)), colW = (W - PAD * 2 - 56) / 2;
   if (!tps.length) { ctx.font = sans(500, 24); ctx.fillStyle = K.mute; ctx.fillText('Solve a few problems and your strongest topics show up here.', PAD, ty + 94); }

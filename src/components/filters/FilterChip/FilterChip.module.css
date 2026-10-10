@@ -12,7 +12,9 @@
   touch-action: manipulation;
 }
 
-.chip:hover { border-color: var(--accent); color: var(--accent); }
+@media (hover: hover) {
+  .chip:hover { border-color: var(--accent); color: var(--accent); }
+}
 
 .chip[data-active='true'] {
   background: var(--accent-subtle);

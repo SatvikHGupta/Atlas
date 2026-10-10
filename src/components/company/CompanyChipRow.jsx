@@ -2,11 +2,7 @@ import Link from 'next/link';
 import CompanyBadge from './CompanyBadge.jsx';
 import styles from './CompanyChipRow.module.css';
 
-// companies: [{ id, name, domain, logo }]. `domain`/`logo` are optional (older callers may omit them) - CompanyBadge just falls
-// back to the initials badge when it's missing, same as everywhere else. Top `limit` shown as real linked badges,
-// the rest collapse into a
-// "+N more" pill that reveals the remaining names on hover/focus - pure CSS, no JS state needed,
-// so this works inside server components too, not just client ones.
+// companies: [{ id, name, domain, logo }]
 export default function CompanyChipRow({ companies, limit = 4 }) {
   if (!companies?.length) return null;
   const shown = companies.slice(0, limit);

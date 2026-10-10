@@ -1,8 +1,7 @@
 import styles from '../../app/companies/[id]/CompanyDetail.module.css';
 import { toExternalUrl } from '../../lib/urlPolicy.js';
 
-// Role families and research sources: reference material, so they close the page (after the problem list) instead of
-// sitting between the header and the content people came for.
+// Role families and research sources
 export default function CompanyFootnotes({ data }) {
   const families = data.roleFamilies || [];
   const sources = (data.rolesSources || []).map((s) => ({ ...s, safe: toExternalUrl(s.url) })).filter((s) => s.safe);

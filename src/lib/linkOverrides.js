@@ -1,15 +1,9 @@
-// Adds question links the source dataset does not have, WITHOUT editing the dataset (same overlay idea as the tags overlay).
-// Pure functions: scripts/build-content.mjs calls them, tests call them. Author: Satvik Hemant Gupta
+// Adds question links the source dataset does not have. Author: Satvik Hemant Gupta
 import { toExternalUrl } from './urlPolicy.js';
 
 export const OVERRIDE_PLATFORMS = new Set(['leetcode', 'geeksforgeeks', 'code360']);
 
-/**
- * Validate the overrides file against the live rows. Throws one error listing every problem (a stale id or a bad URL must
- * fail the build, never silently ship a dead or unsafe link).
- * @param {Array} overrides   data/source-link-overrides.json -> overrides
- * @param {Array} rows        the dataset rows (need canonical_id, source_platforms)
- */
+// Validate the overrides file against the live rows
 export function validateLinkOverrides(overrides, rows) {
   const byId = new Map(rows.map((r) => [r.canonical_id, r]));
   const seen = new Set();
@@ -28,7 +22,7 @@ export function validateLinkOverrides(overrides, rows) {
   if (errors.length) throw new Error(`source-link-overrides.json is out of sync:\n  - ${errors.join('\n  - ')}`);
 }
 
-/** Returns the rows with override platforms appended (new objects; the input rows are not mutated). */
+// Returns the rows with override platforms appended
 export function applyLinkOverrides(rows, overrides) {
   const byId = new Map(overrides.map((o) => [o.canonical_id, o]));
   return rows.map((row) => {

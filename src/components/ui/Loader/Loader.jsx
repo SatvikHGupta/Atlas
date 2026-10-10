@@ -1,6 +1,5 @@
 import styles from './Loader.module.css';
 
-// BUG-028: SkeletonDetail removed (unused, referenced missing CSS classes)
 export function Loader({ size = 24 }) {
   return (
     <span

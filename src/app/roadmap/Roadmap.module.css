@@ -23,7 +23,9 @@
   padding: var(--space-6);
   transition: border-color var(--transition-fast);
 }
-.levelCard:hover { border-color: var(--accent); }
+@media (hover: hover) {
+  .levelCard:hover { border-color: var(--accent); }
+}
 .levelCard[data-locked='true'] { opacity: 0.55; pointer-events: none; }
 
 .levelHeader {
@@ -67,7 +69,9 @@
   transition: all var(--transition-fast);
   text-decoration: none;
 }
-.topicChip:hover { border-color: var(--accent); background: var(--accent-subtle); }
+@media (hover: hover) {
+  .topicChip:hover { border-color: var(--accent); background: var(--accent-subtle); }
+}
 .topicChip[data-locked='true'] { opacity: 0.4; pointer-events: none; }
 
 .topicName     { font-size: 0.8rem; color: var(--text-secondary); }
@@ -87,9 +91,11 @@
   min-height: 38px;
   background: transparent;
 }
-.goBtn:hover { border-color: var(--accent); color: var(--accent); }
+@media (hover: hover) {
+  .goBtn:hover { border-color: var(--accent); color: var(--accent); }
+}
 
-/* ---- mobile ---- */
+/* mobile */
 @media (max-width: 768px) {
   .wrapper {
     padding: var(--space-4) var(--space-3);
@@ -103,7 +109,6 @@
   .goBtn { width: 100%; justify-content: center; }
 }
 
-/* ---- appended (handoff 3): lock hints, empty topics, skeleton, error, locked screen ---- */
 .lockHint {
   margin: 0;
   font-size: 0.85rem;
@@ -164,7 +169,9 @@
   cursor: pointer;
   min-height: 38px;
 }
-.retryBtn:hover { border-color: var(--accent); color: var(--accent); }
+@media (hover: hover) {
+  .retryBtn:hover { border-color: var(--accent); color: var(--accent); }
+}
 
 .lockedScreen {
   display: flex;
@@ -179,9 +186,10 @@
 .lockedScreen h1 { margin: 0; font-size: 1.5rem; }
 .lockedScreen p { margin: 0; color: var(--text-muted); line-height: 1.6; }
 .lockedLink { color: var(--accent); text-decoration: none; font-weight: 500; }
-.lockedLink:hover { text-decoration: underline; }
+@media (hover: hover) {
+  .lockedLink:hover { text-decoration: underline; }
+}
 
-/* the level's one-line goal under the title: readable measure, real spacing before whatever follows */
 .levelDescription {
   margin: var(--space-2) 0 var(--space-4);
   max-width: 68ch;

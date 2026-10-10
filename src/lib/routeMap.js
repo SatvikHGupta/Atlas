@@ -1,4 +1,4 @@
-/* Builds a smooth winding path through `count` points spread evenly across `width`, alternating between a high and low band of `height` for a gentle trail-like wave. Used to render the Atlas roadmap as a literal route rather than a generic stat block - see app/page.js. Returns { d, points } - `d` is the SVG path string, `points` is the [{x,y}] array so labels/dots can be placed at the exact same coordinates the line passes through. */
+// Builds a smooth winding path through `count` points spread evenly across `width`
 export function buildRoutePath(count, width, height) {
   const points = Array.from({ length: count }, (_, i) => {
     const x = (i / (count - 1)) * width;

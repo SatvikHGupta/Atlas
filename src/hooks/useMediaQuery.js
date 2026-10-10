@@ -3,7 +3,7 @@
 
 import { useSyncExternalStore } from 'react';
 
-// Server and first client render use `serverValue`, so markup matches.
+// Server and first client render use `serverValue`, so markup matches
 export function useMediaQuery(query, serverValue = false) {
   return useSyncExternalStore(
     (cb) => {

@@ -5,7 +5,6 @@ import { getPatternDetail, getAllPatternIndexRows, getTopicPatternEntry } from '
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 
-// PERF-04: unknown slugs 404 instead of returning a 200 "not found" image
 export const dynamicParams = false;
 
 export function generateStaticParams() {

@@ -7,7 +7,7 @@ export default function FilterChip({ label, active, onClick, count }) {
       className={styles.chip}
       data-active={active}
       type="button"
-      aria-pressed={!!active} // BUG-009
+      aria-pressed={!!active}
       onClick={onClick}
       whileTap={{ scale: 0.94 }}
       transition={{ type: 'spring', stiffness: 500, damping: 30 }}

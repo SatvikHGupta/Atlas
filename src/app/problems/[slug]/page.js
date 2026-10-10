@@ -17,10 +17,9 @@ import { BackButton, BookmarkButton, ProgressButtons } from './ProblemActions.js
 import { pickSolvePlatform } from '../../../lib/platforms.utils.js';
 import styles from './ProblemDetail.module.css';
 
-// BUG-125: only slugs returned by generateStaticParams exist, anything else is a 404.
 export const dynamicParams = false;
 
-// One static page per DSA problem, generated from the actual dataset - add a problem to content/problems/index.json and it gets a page on the next build, no route code changes needed. See lib/server/content.server.js.
+// One static page per DSA problem
 export function generateStaticParams() {
   return getAllProblemSlugs().map((slug) => ({ slug }));
 }
@@ -32,7 +31,6 @@ export async function generateMetadata({ params }) {
 
   const topics = (problem.topics || []).slice(0, 3).join(', ');
   return {
-    // BUG-10: duplicate imports point search engines at one original page
     alternates: canonicalAlternates(routes.problem(params.slug)),
     title: problem.title,
     description: problem.explanation_short
@@ -41,10 +39,8 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// BUG FIX / dep cleanup: RedirectButton was imported in the old ProblemDetail.jsx and never rendered - dropped rather than ported. The flat-key -> nested-solutions reshape that used to happen here on every render now happens once, at data-build time (see scripts/build-content.mjs) - `problem.solutions` arrives already shaped.
-// BUG-145, 146: never fall back to a generic LeetCode search. No real external URL means no button, just a short note.
 function SolveButton({ platforms }) {
-  const primary = pickSolvePlatform(platforms); // LeetCode first, else the first platform that has a URL
+  const primary = pickSolvePlatform(platforms);
   const url = primary?.url;
   if (!url) return <span className={styles.noSource}>No external link for this problem</span>;
   return (
@@ -59,7 +55,6 @@ export default async function ProblemDetailPage({ params }) {
   const problem = getProblemBundle(params.slug);
   if (!problem) notFound();
   const roadmapContext = getRoadmapContext(problem);
-  // BUG-139: a pattern tag links out only when its page really exists.
   const validPatternSlugs = new Set(getPatternIndex().map((p) => p.slug));
 
   const jsonLd = [
@@ -95,8 +90,6 @@ export default async function ProblemDetailPage({ params }) {
             )}
           </div>
 
-          {/* Tags (topics from the problem's own labels) and Patterns (Atlas technique pages) are different things, so
-              they get separate labelled rows instead of one mixed run of chips. */}
           {problem.topics_display?.length > 0 && (
             <div className={styles.tagGroup}>
               <span className={styles.tagGroupLabel}>Tags</span>
@@ -115,10 +108,6 @@ export default async function ProblemDetailPage({ params }) {
             </div>
           )}
 
-          {/* BUG FIX: askedAt is no longer capped upstream (build-content.mjs / build-companies.mjs both dropped
-              their truncation), so a popular problem can list 40-60+ companies now - rendering every one as a flat
-              chip would flood the page. CompanyChipRow does the "top 4 + N more" collapse instead, and shows real
-              logos via each company's `domain` (already present on every askedAt entry). */}
           {problem.askedAt?.length > 0 && (
             <div className={styles.askedAtRow}>
               <span className={styles.askedAtLabel}>Asked at</span>

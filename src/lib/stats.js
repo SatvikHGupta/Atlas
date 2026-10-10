@@ -1,20 +1,13 @@
-/*
-  Dashboard stats. Runs entirely off already-in-memory data: the progress list from the Firestore store and the
-  problem indexes from services/content/dataClient.js. Zero additional reads.
-
-  BUG-154/155/156: DSA and CP are reported as SEPARATE populations (`dsa`, `cp`) plus one `activity` section that
-  covers every solve, so a total and its breakdown always describe the same set of problems.
-  BUG-061: every calendar day is the viewer's LOCAL day (lib/dates.js), never a UTC slice of an ISO string.
-*/
+// Dashboard stats
 
 import { getDsaProblemsMap } from './problems.filter.js';
 import { getDifficultyBucket } from './difficulty.utils.js';
 import { localDateKey, todayKey, addDays, daysBetween } from './dates.js';
 
-// Same buckets as everywhere else (lib/difficulty.utils.js); a row with no difficulty counts as Easy here.
+// Same buckets as everywhere else
 const difficultyBucket = (score) => getDifficultyBucket(score) ?? 'Easy';
 
-// One population (DSA or CP): solved count, difficulty buckets, top topics.
+// One population (DSA or CP): solved count, difficulty buckets, top topics
 function emptySection() {
   return { solved: 0, attempted: 0, by_difficulty: { Easy: 0, Medium: 0, Hard: 0, Expert: 0 }, byTopic: {} };
 }
@@ -35,12 +28,6 @@ function finishSection({ solved, attempted, by_difficulty, byTopic }, loaded = t
   return { solved, attempted, by_difficulty, top_topics, loaded };
 }
 
-/*
-  @param {Array<{canonical_id, status, first_solved_at}>} progressList
-  @param {Array} allProblems - DSA index (for getDsaProblemsMap)
-  @param {Array} [cpProblems] - CP index; omit while it is not loaded (cp.loaded === false)
-  @param {Date} [now]
-*/
 export function getStats(progressList, allProblems, cpProblems, now = new Date()) {
   const dsaMap = getDsaProblemsMap(allProblems);
   const cpMap = cpProblems ? new Map(cpProblems.map((p) => [p.canonical_id, p])) : null;
@@ -50,7 +37,7 @@ export function getStats(progressList, allProblems, cpProblems, now = new Date()
   const solvesByDate = {};
   let totalSolved = 0;
   let totalAttempted = 0;
-  let unclassifiedSolved = 0; // solved ids found in neither index (removed problem, or CP index not loaded)
+  let unclassifiedSolved = 0;
 
   for (const p of progressList) {
     const dsaProb = dsaMap[p.canonical_id];
@@ -69,7 +56,7 @@ export function getStats(progressList, allProblems, cpProblems, now = new Date()
     else unclassifiedSolved++;
 
     if (p.first_solved_at) {
-      const day = localDateKey(p.first_solved_at); // BUG-061: local day, not UTC slice
+      const day = localDateKey(p.first_solved_at);
       if (day) solvesByDate[day] = (solvesByDate[day] || 0) + 1;
     }
   }
@@ -91,8 +78,6 @@ export function getStats(progressList, allProblems, cpProblems, now = new Date()
     dsa: dsaSection,
     cp: finishSection(cp, !!cpMap),
     activity,
-    // Deprecated flat aliases so older callers keep working. total_* and streaks are ALL activity
-    // (DSA + CP); by_difficulty and top_topics are DSA only, exactly as before. New code uses the sections.
     total_solved: activity.solved,
     total_attempted: activity.attempted,
     current_streak: currentStreak,
@@ -127,7 +112,7 @@ export function calcStreaks(solvesByDate, now = new Date()) {
   return { currentStreak, longestStreak };
 }
 
-// Sunday-based weeks, oldest first, all in local days.
+// Sunday-based weeks, oldest first, all in local days
 export function calcWeeklySolves(solvesByDate, numWeeks, now = new Date()) {
   const weeks = [];
   const today = todayKey(now);
@@ -143,7 +128,7 @@ export function calcWeeklySolves(solvesByDate, numWeeks, now = new Date()) {
   return weeks;
 }
 
-// GitHub-style calendar grid: weeksCount columns of 7 local days, ending on the current week's Saturday.
+// GitHub-style calendar grid: weeksCount columns of 7 local days
 export function buildHeatmapWeeks(solvesByDate, weeksCount, now = new Date()) {
   const today = todayKey(now);
   const endOfWeek = addDays(today, 6 - now.getDay());
@@ -161,19 +146,13 @@ export function buildHeatmapWeeks(solvesByDate, weeksCount, now = new Date()) {
   return weeks;
 }
 
-// "Sep" for a local "YYYY-MM-DD" key. Parsed by hand: new Date("2026-09-27") is UTC midnight and would
-// show the wrong month west of UTC (BUG-061, month labels).
+// "Sep" for a local "YYYY-MM-DD" key
 export function monthNameOfKey(key) {
   const [y, m] = key.split('-').map(Number);
   return new Date(y, m - 1, 1).toLocaleString('en-US', { month: 'short' });
 }
 
-/*
-  Groups entries by local calendar day, newest first (BUG-061, History). Entries without a usable
-  timestamp go to a final group with day === null instead of being dropped silently.
-  @param {Array} entries
-  @param {(entry) => string} pick - returns the ISO timestamp used for grouping and sorting
-*/
+// Groups entries by local calendar day, newest first , History)
 export function groupByLocalDay(entries, pick) {
   const dated = [];
   const undated = [];

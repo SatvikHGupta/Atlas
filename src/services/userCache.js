@@ -1,18 +1,16 @@
-// Versioned, uid-scoped, write-behind localStorage cache for user data.
-// Author: Satvik Hemant Gupta
+// Versioned, uid-scoped, write-behind localStorage cache for user data. Author: Satvik Hemant Gupta
 
 import { expandItemsMap, slimItemsMap } from '../lib/progressEntry.js';
 
-// BUG-071/190: payload is { v, uid, items, cachedAt }. Anything else is a miss.
 export const CACHE_VERSION = 2;
-export const CACHE_STALE_MS = 5 * 60 * 1000; // same as the TanStack staleTime
+export const CACHE_STALE_MS = 5 * 60 * 1000;
 export const WRITE_BEHIND_MS = 250;
 
 export const cacheKey = (kind, uid) => `atlas_${kind}_cache_${uid}`;
 // v1 blobs were never cleaned up and can be megabytes, so drop them too
 const legacyKey = (kind, uid) => `atlas_${kind}_cache_v1_${uid}`;
 
-// cachedAt of the blob already in storage for this user, or null. Used so a LOCAL write never re-stamps freshness.
+// cachedAt of the blob already in storage for this user, or null
 function existingCachedAt(storage, key, uid) {
   try {
     const parsed = JSON.parse(storage.getItem(key));
@@ -28,12 +26,10 @@ function safeRemove(storage, key) {
   try {
     storage.removeItem(key);
   } catch {
-    // nothing useful to do if storage itself is broken
   }
 }
 
-// Returns the expanded items map, or null on any miss. A cache written for
-// another uid or another schema version is removed, never trusted.
+// Returns the expanded items map, or null on any miss
 export function readCacheFrom(storage, kind, uid, now = Date.now()) {
   if (!storage || !uid) return null;
   const key = cacheKey(kind, uid);
@@ -60,10 +56,7 @@ export function readCacheFrom(storage, kind, uid, now = Date.now()) {
   }
 }
 
-// BUG-070: updates are coalesced into one JSON.stringify + setItem per
-// WRITE_BEHIND_MS instead of one per click. Callers also call flushNow() on
-// visibilitychange (hidden) and pagehide. Storage is passed as a getter so
-// this stays safe during SSR and when localStorage throws (private mode).
+// updates are coalesced into one JSON.stringify + setItem per WRITE_BEHIND_MS
 export function createCacheWriter({
   getStorage,
   now = Date.now,
@@ -71,7 +64,7 @@ export function createCacheWriter({
   clearTimer = clearTimeout,
   delayMs = WRITE_BEHIND_MS,
 } = {}) {
-  const dirty = new Map(); // "kind|uid" -> { kind, uid, items, fetchedAt }
+  const dirty = new Map();
   let timer = null;
 
   function storage() {
@@ -94,20 +87,15 @@ export function createCacheWriter({
     for (const { kind, uid, items, fetchedAt } of jobs) {
       const key = cacheKey(kind, uid);
       try {
-        // BUG-04: cachedAt means "when the SERVER last confirmed this data". A local write keeps the old stamp,
-        // otherwise an active user would keep a stale cache alive forever and never see other-device changes.
         const cachedAt = fetchedAt ?? existingCachedAt(target, key, uid) ?? now();
         const payload = { v: CACHE_VERSION, uid, items: slimItemsMap(items), cachedAt };
         target.setItem(key, JSON.stringify(payload));
       } catch {
-        // QuotaExceededError or storage disabled: drop the cache, never
-        // crash. The next load simply re-reads from Firestore.
         safeRemove(target, key);
       }
     }
   }
 
-  // fromServer: true only when `items` was just read from Firestore (freshness restarts); local edits omit it.
   function schedule(kind, uid, items, { fromServer = false } = {}) {
     if (!uid) return;
     const id = `${kind}|${uid}`;
@@ -116,7 +104,6 @@ export function createCacheWriter({
     if (timer === null) timer = setTimer(flushNow, delayMs);
   }
 
-  // sign-out, user switch, reset-all: forget pending writes AND the stored copy
   function discard(kind, uid) {
     if (!uid) return;
     dirty.delete(`${kind}|${uid}`);

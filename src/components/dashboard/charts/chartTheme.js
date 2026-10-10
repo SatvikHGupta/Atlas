@@ -1,8 +1,4 @@
-// Turns the site's CSS variables into the plain colours Chart.js needs (canvas cannot read `var(--x)`). Pure: the caller
-// passes a `getVar(name)` function, so this is testable without a browser. Author: Satvik Hemant Gupta
-//
-// Colours come from the active mode + accent (see src/themes), so a chart always matches the page around it. Every token has
-// a fallback, so a missing variable can never produce an invisible chart.
+// Turns the site's CSS variables into the plain colours Chart.js needs. Author: Satvik Hemant Gupta
 
 const FALLBACK = {
   '--text-primary': '#ececf2',
@@ -21,7 +17,7 @@ const FALLBACK = {
   '--solved': '#22c55e',
 };
 
-/** '#rgb' or '#rrggbb' -> 'r, g, b'; anything else -> null. */
+// '#rgb' or '#rrggbb' -> 'r, g, b'; anything else -> null
 export function hexToRgbTriplet(hex) {
   const m = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(String(hex || '').trim());
   if (!m) return null;
@@ -29,24 +25,18 @@ export function hexToRgbTriplet(hex) {
   return [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16)).join(', ');
 }
 
-/** `rgba(r, g, b, a)` from a 'r, g, b' triplet. */
+// `rgba(r, g, b, a)` from a 'r, g, b' triplet
 export const withAlpha = (triplet, alpha) => `rgba(${triplet}, ${alpha})`;
 
-/** A colour with transparency. Hex colours get an alpha; anything else (rgb(), hsl(), a name) is returned unchanged,
-    because a fully opaque correct colour is better than a broken one. */
+// A colour with transparency
 export function softColor(color, alpha) {
   const triplet = hexToRgbTriplet(color);
   return triplet ? withAlpha(triplet, alpha) : color;
 }
 
-/**
- * @param {(name:string)=>string} getVar  returns the computed value of a CSS custom property ('' when unset)
- * @param {string} [fontFamily]
- */
 export function readChartTheme(getVar, fontFamily = 'system-ui, sans-serif') {
   const v = (name) => (getVar(name) || '').trim() || FALLBACK[name];
   const accent = v('--accent');
-  // --accent-rgb is the exact triplet when the theme defines it; otherwise derive it from the accent colour itself
   const accentRgb = (getVar('--accent-rgb') || '').trim() || hexToRgbTriplet(accent) || FALLBACK['--accent-rgb'];
   return {
     font: fontFamily,
@@ -64,7 +54,7 @@ export function readChartTheme(getVar, fontFamily = 'system-ui, sans-serif') {
   };
 }
 
-/** Reads the live theme from the document. Browser only. */
+// Reads the live theme from the document
 export function readDocumentChartTheme() {
   const cs = getComputedStyle(document.documentElement);
   const body = getComputedStyle(document.body);

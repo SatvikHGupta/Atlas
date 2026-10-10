@@ -25,7 +25,9 @@
   margin-bottom: var(--space-2);
   transition: border-color 0.15s, color 0.15s;
 }
-.backBtn:hover { border-color: var(--border-strong); color: var(--text-secondary); }
+@media (hover: hover) {
+  .backBtn:hover { border-color: var(--border-strong); color: var(--text-secondary); }
+}
 
 .titleRow {
   display: flex;
@@ -54,7 +56,9 @@
   cursor: pointer;
 }
 .bookmarkBtn svg { width: 20px; height: 20px; }
-.bookmarkBtn:hover { color: var(--accent); transform: scale(1.15); }
+@media (hover: hover) {
+  .bookmarkBtn:hover { color: var(--accent); transform: scale(1.15); }
+}
 .bookmarkBtn[data-active='true'] { color: var(--accent-light); }
 
 .metaRow {
@@ -83,7 +87,9 @@
   text-decoration: none;
   transition: background 0.15s ease;
 }
-.patternTag:hover { background: var(--accent-glow); }
+@media (hover: hover) {
+  .patternTag:hover { background: var(--accent-glow); }
+}
 
 .tagGroup {
   display: flex;
@@ -100,7 +106,6 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-/* the two collapsed dropdowns at the end of the page sit together as one tidy stack */
 .disclosures { display: flex; flex-direction: column; gap: var(--space-3); }
 
 .askedAtRow {
@@ -116,8 +121,6 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
-/* .askedAtChip removed - superseded by CompanyChipRow.jsx's own .chip class (see the askedAt block above) now that
-   this row can hold 60+ companies instead of a hand-capped few. */
 
 .actions {
   display: flex;
@@ -128,7 +131,6 @@
 }
 
 .solvedBtn, .attemptedBtn {
-  /* flex:1 so they share space equally, Solve button stays at natural width */
   flex: 1;
   padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-md);
@@ -145,10 +147,12 @@
   text-align: center;
 }
 
-.solvedBtn:hover {
-  background: var(--solved-bg);
-  border-color: var(--solved);
-  color: var(--solved);
+@media (hover: hover) {
+  .solvedBtn:hover {
+    background: var(--solved-bg);
+    border-color: var(--solved);
+    color: var(--solved);
+  }
 }
 
 /* active = already marked- solid fill so clearly visible */
@@ -159,10 +163,12 @@
   font-weight: 600;
 }
 
-.attemptedBtn:hover {
-  background: var(--attempted-bg);
-  border-color: var(--attempted);
-  color: var(--attempted);
+@media (hover: hover) {
+  .attemptedBtn:hover {
+    background: var(--attempted-bg);
+    border-color: var(--attempted);
+    color: var(--attempted);
+  }
 }
 
 .attemptedBtn[data-active='true'] {
@@ -190,13 +196,15 @@
   white-space: nowrap;
   transition: background var(--transition-fast), opacity var(--transition-fast);
 }
-.solveBtn:hover { background: var(--accent-hover); opacity: 0.92; }
+@media (hover: hover) {
+  .solveBtn:hover { background: var(--accent-hover); opacity: 0.92; }
+}
 
 .section { display: flex; flex-direction: column; gap: var(--space-4); }
 .sectionTitle { font-size: 1rem; font-weight: 600; color: var(--text-primary); }
 .notFound { color: var(--text-muted); text-align: center; padding: var(--space-16); }
 
-/* ---- mobile ---- */
+/* mobile */
 @media (max-width: 768px) {
   .wrapper {
     padding: var(--space-3) var(--space-3);
@@ -214,7 +222,6 @@
   }
   .metaRow::-webkit-scrollbar { display: none; }
   .topicTag, .patternTag { flex-shrink: 0; white-space: nowrap; }
-  /* 3 buttons always in one row on mobile- nowrap keeps Solve visible */
   .actions { gap: var(--space-2); }
   .solvedBtn, .attemptedBtn {
     flex: 1;
@@ -226,11 +233,12 @@
 
 @media (max-width: 480px) {
   .title { font-size: 1rem; }
-  .wrapper { padding: var(--space-3) var(--space-2); }
+  .wrapper {
+    padding: var(--space-3) var(--space-2);
+    padding-bottom: calc(var(--bottom-nav-height, 60px) + env(safe-area-inset-bottom) + 16px);
+  }
 }
 
-
-/* --- appended: functional classes from an earlier merge round the theme-fix predates --- */
 .frequencyBadge {
   font-size: 0.9rem;
   line-height: 1;
@@ -247,10 +255,18 @@
   transition: color 0.15s ease, border-color 0.15s ease;
 }
 
-.askedAtChip:hover { color: var(--text-primary); border-color: var(--border-strong); }
+@media (hover: hover) {
+  .askedAtChip:hover { color: var(--text-primary); border-color: var(--border-strong); }
+}
 
-/* BUG-145: note shown instead of the Solve button when a problem has no external URL. */
 .noSource {
   font-size: 0.8125rem;
   opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
+  .actions > * { min-height: 44px; }
+  .actions > :nth-child(n + 3) { grid-column: 1 / -1; }
+  .bookmarkBtn { min-width: 44px; min-height: 44px; }
 }

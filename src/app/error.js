@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import styles from './not-found.module.css';
 
-// RES-01: route-level error boundary. The navbar/layout stay on screen, only the page content is replaced.
+// route-level error boundary
 export default function RouteError({ error, reset }) {
   return (
     <div className={styles.page}>

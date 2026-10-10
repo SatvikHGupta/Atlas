@@ -1,5 +1,3 @@
-/* Pattern detail page module - practice rows are hover-lift cards with a colored difficulty pill. */
-
 .page {
   color: var(--text-primary);
   max-width: 1000px;
@@ -15,7 +13,9 @@
   margin-bottom: 24px;
   transition: color 0.15s ease;
 }
-.back:hover { color: var(--text-primary); }
+@media (hover: hover) {
+  .back:hover { color: var(--text-primary); }
+}
 
 .header { margin-bottom: 28px; }
 .header h1 {
@@ -33,11 +33,6 @@
   margin: 0 0 14px;
 }
 
-/* one light row under the subtitle - complexity + "most asked by" together, no boxes, so the header
-   stays a single glanceable unit instead of stacking separate bordered cards */
-/* ─── complexity: proper cards, not pills - some notes have a single "O(n)" here, others (like
-   Array, which covers several techniques) have a full sentence, so a pill shape stretched into an
-   oval looked broken. A bordered card with a small label wraps either case cleanly. ─── */
 .complexityGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -69,8 +64,6 @@
 .topCompaniesInline { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; }
 .topCompaniesLabel { font-size: 0.78rem; color: var(--text-muted); flex-shrink: 0; }
 
-/* ─── note callout: a plain div now, not a Link - it holds real links to the note AND to related
-   patterns, and an <a> can't contain another <a> ─── */
 .noteCallout {
   background: linear-gradient(160deg, rgba(var(--cyan-rgb), 0.07), transparent 60%), var(--bg-card);
   border: 1px solid var(--border);
@@ -123,7 +116,10 @@
   text-decoration: none;
   transition: background 0.15s ease, transform 0.15s ease;
 }
-.noteCalloutLink:hover, .noteCalloutLink:focus-visible { background: var(--accent-hover); outline: none; transform: translateX(2px); }
+.noteCalloutLink:focus-visible { background: var(--accent-hover); outline: none; transform: translateX(2px); }
+@media (hover: hover) {
+  .noteCalloutLink:hover { background: var(--accent-hover); outline: none; transform: translateX(2px); }
+}
 .noteCalloutLink:focus-visible { box-shadow: 0 0 0 3px var(--accent-subtle); }
 
 .relatedRow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
@@ -137,9 +133,10 @@
   text-decoration: none;
   transition: color 0.15s ease;
 }
-.relatedChip:hover { color: var(--text-primary); }
+@media (hover: hover) {
+  .relatedChip:hover { color: var(--text-primary); }
+}
 
-/* ─── practice section heading - matches .sectionTitle on the list page for a consistent feel ─── */
 .sectionHeading {
   font-size: 0.8rem;
   font-weight: 700;
@@ -150,7 +147,7 @@
 }
 .sectionCount { font-weight: 500; text-transform: none; letter-spacing: 0; opacity: 0.7; }
 
-/* ─── filter bar (difficulty tabs + sort) ─── */
+/* filter bar (difficulty tabs + sort) */
 .filterBar {
   display: flex;
   flex-wrap: wrap;
@@ -202,10 +199,12 @@
   border-radius: var(--radius-md);
   transition: border-color var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
 }
-.practiceRow:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--cyan);
-  box-shadow: 0 4px 24px rgba(var(--cyan-rgb), 0.16);
+@media (hover: hover) {
+  .practiceRow:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--cyan);
+    box-shadow: 0 4px 24px rgba(var(--cyan-rgb), 0.16);
+  }
 }
 
 .practiceTop { display: flex; align-items: center; justify-content: flex-start; gap: 8px; margin-bottom: 10px; }
@@ -221,7 +220,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.practiceTitle:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+@media (hover: hover) {
+  .practiceTitle:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+}
 
 .diffPill { font-weight: 700; padding: 2px 9px; border-radius: 999px; border: 1px solid; flex-shrink: 0; font-size: 0.72rem; }
 .diffEasy   { color: var(--diff-easy, #86efac); border-color: color-mix(in srgb, var(--diff-easy) 40%, transparent); background: var(--diff-easy-bg); }
@@ -241,9 +242,9 @@
   text-decoration: none;
   transition: color 0.15s ease;
 }
-.alsoTaggedChip:hover { color: var(--text-primary); }
-
-/* company chips ("asked at") rendered by CompanyChipRow.jsx (src/components/company/) - shared with the notes flashcards */
+@media (hover: hover) {
+  .alsoTaggedChip:hover { color: var(--text-primary); }
+}
 
 @media (max-width: 560px) {
   .page { padding: 32px 14px 70px; }

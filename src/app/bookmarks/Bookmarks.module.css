@@ -42,7 +42,6 @@
   gap: var(--space-4);
 }
 
-/* ---- appended (handoff 3): DSA/CP badge, CP card, unresolved note, error ---- */
 .cell { position: relative; }
 
 .kindBadge {
@@ -81,7 +80,9 @@
   text-decoration: none;
   color: var(--text-primary);
 }
-.cpLink:hover .cpTitle { color: var(--accent); }
+@media (hover: hover) {
+  .cpLink:hover .cpTitle { color: var(--accent); }
+}
 .cpTitle { font-size: 0.95rem; font-weight: 600; overflow-wrap: anywhere; }
 .cpMeta { display: flex; align-items: center; gap: var(--space-2); color: var(--text-muted); font-size: 0.8rem; }
 .cpCode { font-family: var(--font-mono); font-size: 0.72rem; }
@@ -118,4 +119,6 @@
   color: var(--text-primary);
   cursor: pointer;
 }
-.retryBtn:hover { border-color: var(--accent); color: var(--accent); }
+@media (hover: hover) {
+  .retryBtn:hover { border-color: var(--accent); color: var(--accent); }
+}

@@ -3,21 +3,11 @@
 import { useState } from 'react';
 import styles from './OriginalStatement.module.css';
 
-/* Point 2 of the data audit, resolved as a deliberate design choice rather than a straightforward
-   "add it" fix: description (91% coverage) and constraints (91%) are fully loaded on every page and
-   never shown - only Atlas's own explanation_short/explanation_long ever render. Two real reads on
-   that: Atlas's explanation might be meant to REPLACE the original phrasing (showing the raw text
-   undermines that), or it might be a gap - interview prep specifically benefits from practicing on
-   problems exactly as they're actually phrased, not a paraphrase. This threads both: closed by
-   default so it never competes with or duplicates the Explanation section, but one click away for
-   someone who wants it. `client` only because of the open/close toggle - the content itself is
-   static, already in the page's HTML either way (no fetch on expand). */
+// Point 2 of the data audit, resolved as a deliberate design choice rather
 export default function OriginalStatement({ description, constraints }) {
   const [open, setOpen] = useState(false);
   if (!description && !constraints) return null;
 
-  // constraints arrive as one string with embedded newlines, one bound per line - rendering as a
-  // list reads far better than a wall of text for something inherently itemized
   const constraintLines = constraints?.split('\n').map((l) => l.trim()).filter(Boolean) || [];
 
   return (

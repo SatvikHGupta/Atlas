@@ -18,7 +18,9 @@
   font-weight: 600;
   cursor: pointer;
 }
-.signOutBtn:hover { border-color: var(--border-strong); }
+@media (hover: hover) {
+  .signOutBtn:hover { border-color: var(--border-strong); }
+}
 
 .dangerZone {
   border: 1px solid var(--danger);
@@ -58,7 +60,9 @@
   border: 1px solid var(--danger);
   color: var(--danger);
 }
-.danger:hover:not(:disabled) { background: var(--danger); color: var(--danger-fg); }
+@media (hover: hover) {
+  .danger:hover:not(:disabled) { background: var(--danger); color: var(--danger-fg); }
+}
 .danger:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .confirmBox {
@@ -88,4 +92,6 @@
   cursor: pointer;
   padding: 8px 10px;
 }
-.cancelBtn:hover { color: var(--text-secondary); }
+@media (hover: hover) {
+  .cancelBtn:hover { color: var(--text-secondary); }
+}

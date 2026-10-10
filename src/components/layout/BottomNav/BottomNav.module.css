@@ -1,10 +1,6 @@
-/* Mobile-only bottom navigation. Height comes from --bottom-nav-height (theme.css), the same token every page already
-   reserves as bottom padding, so nothing is covered. Hidden on desktop where the Navbar link row is shown. */
-.wrap { display: none; }
+.bar { display: none; }
 
 @media (max-width: 768px) {
-  .wrap { display: block; }
-
   .bar {
     position: fixed;
     left: 0;
@@ -13,6 +9,8 @@
     z-index: 100;
     height: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
     padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     background: rgba(var(--bg-primary-rgb), 0.92);
@@ -24,62 +22,75 @@
   .item {
     position: relative;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 3px;
     min-width: 0;
-    padding: 0 4px;
+    min-height: 48px;
+    padding: 0 2px;
     font: inherit;
-    font-size: 0.78rem;
-    font-weight: 500;
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
     color: var(--text-muted);
     background: none;
     border: 0;
     cursor: pointer;
+    touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
     transition: color var(--transition-fast);
   }
-  .item[data-active='true'] { color: var(--accent); font-weight: 600; }
-  /* active marker sits on the top edge so it is not confused with the page content above */
+  .item span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .icon { width: 22px; height: 22px; flex-shrink: 0; }
+  .item[data-active='true'] { color: var(--accent-light); }
   .item[data-active='true']::before {
     content: '';
     position: absolute;
     top: 0;
-    left: 28%;
-    right: 28%;
+    left: 30%;
+    right: 30%;
     height: 2px;
     border-radius: 0 0 2px 2px;
     background: var(--accent);
   }
   .item:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
 
-  .sheet {
-    position: fixed;
-    right: var(--space-3);
-    bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom) + var(--space-2));
-    z-index: 101;
-    min-width: 200px;
-    max-width: calc(100vw - 2 * var(--space-3));
+  .moreList { display: flex; flex-direction: column; padding: var(--space-2) var(--space-3) var(--space-4); }
+
+  .moreRow {
     display: flex;
-    flex-direction: column;
-    padding: var(--space-2);
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
-  }
-  .sheetLink {
-    display: block;
+    align-items: center;
     width: 100%;
-    padding: 12px var(--space-3); /* 44px+ tap target */
-    text-align: left;
+    min-height: 52px;
+    padding: 0 var(--space-3);
     font: inherit;
-    font-size: 0.92rem;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: left;
     color: var(--text-primary);
     background: none;
     border: 0;
-    border-radius: var(--radius-md);
+    border-bottom: 1px solid var(--border-subtle, var(--border));
     cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
-  .sheetLink:hover, .sheetLink:focus-visible { background: var(--surface-hover); outline: none; }
-  .sheetLink[data-active='true'] { color: var(--accent); font-weight: 600; }
+  .moreRow[data-active='true'] { color: var(--accent-light); font-weight: 600; }
+  .moreRow:active { background: var(--surface-hover); }
+  .moreRow:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: var(--radius-md); }
+
+  .moreAccent { margin-top: var(--space-3); justify-content: center; border: 0; border-radius: var(--radius-md); background: var(--accent); color: var(--accent-fg); font-weight: 700; }
+  .moreAccent:active { background: var(--accent-hover); }
+
+  .iosSteps {
+    margin: var(--space-2) var(--space-3) var(--space-3);
+    padding: var(--space-3) var(--space-4) var(--space-3) var(--space-6);
+    border-radius: var(--radius-md);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
 }

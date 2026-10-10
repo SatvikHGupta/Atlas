@@ -10,7 +10,7 @@ function difficultyClass(difficulty) {
   return DIFFICULTY_CLASS[key] ? styles[DIFFICULTY_CLASS[key]] : '';
 }
 
-// BUG FIX: Atlas-linked rows now use next/link instead of a full-reload <a>; added a left accent bar keyed to confidenceTier.
+// Atlas-linked rows now use next/link instead of a full-reload <a>
 export default function ProblemRow({ problem }) {
   const {
     title, atlasProblemId, atlasSlug, leetcodeSlug, difficulty,
@@ -19,7 +19,7 @@ export default function ProblemRow({ problem }) {
 
   const internalHref = atlasProblemId ? `/problems/${atlasSlug || atlasProblemId}` : null;
   const externalHref = !atlasProblemId && leetcodeSlug ? `https://leetcode.com/problems/${leetcodeSlug}/` : null;
-  const safeSource = toExternalUrl(sourceUrl); // only http(s) data URLs become links
+  const safeSource = toExternalUrl(sourceUrl);
   const confidenceClass = confidenceTier === 'A' ? styles.rowVerified : styles.rowReported;
 
   return (
